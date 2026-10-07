@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>venn-diagram-triad — three-set Venn with intersection claim (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  venn-diagram-triad  ·  family venn-diagram
+  Evidence (see MANUAL.md -> SOURCE):
+    EY — EY Academic Resource Center, Analytics Mindset mission (2019) p10
+      "3-circle Venn + title/bullets": bullets left, Venn right; dark brand
+      page, white/grey/blue circle tones, yellow "analytics mindset" callout
+      box fanning connector lines down into the overlap zones, triple
+      intersection filled solid yellow. Sampled from
+      sw_sheets/ey__ey_ey_academic_resource_center_mission_2019_s00.jpg (row 2).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL, so every length
+  below is a 1:1 stage-pixel coordinate with the same numbers MANUAL.md quotes.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ----------------------------------------------------------------------------
+  GEOMETRY: three equal circles, centers on a circle of radius d = 97 around
+  the Venn centre C = (270, 300) in SVG viewBox coords, spaced 120 degrees
+  apart, each radius r = 150. Overlap brightness is opacity stacking, not a
+  blend trick. The SOLID accent region is exactly the intersection of the
+  three circles, obtained by nesting each circle's clipPath one inside the
+  next — see FILL for adding/removing sets.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: --accent emphasis (EY yellow wedge, measured
+     #FDE700 on this page), --ink text, --gray-* secondary + "the rest",
+     --rule hairlines, --bg the dark brand field (sampled #264F83).
+     Contrast on this ground (measured):
+       #FFFFFF on --bg #264F83          =  6.9:1
+       --gray-1 #D8E4F4 on --bg         =  9.5:1
+       --gray-2 #A8BCD8 on --bg         =  5.4:1
+       --gray-3 #7E92AD on --bg         =  3.0:1  -> >=18px only (notes)
+       #14243A (dark navy) on --accent   = 10.4:1  (text ON yellow)
+     ================================================================= */
+  :root{
+    --bg:      #264F83;   /* EY dark brand field (steel navy) */
+    --ink:     #FFFFFF;   /* titles, primary text   */
+    --accent:  #FDE700;   /* EY yellow: THE emphasis */
+    --ink-accent: #14243A;/* dark text ON accent    */
+    --gray-1:  #D8E4F4;   /* body text              */
+    --gray-2:  #A8BCD8;   /* secondary, tags, notes */
+    --gray-3:  #7E92AD;   /* source line, footnotes */
+    --gray-4:  #A7C6E4;   /* the one circle tone: all three sets, stacked */
+    --rule:    rgba(255,255,255,.22);
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#0E1A22;                    /* studio backdrop, not the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink);
+  }
+
+  /* ------------------------------ header ------------------------------ */
+  .kicker{
+    position:absolute; left:64rem; top:36rem; right:64rem;
+    display:flex; align-items:center; gap:10rem;
+    font:700 12rem/14rem var(--font-display); letter-spacing:1.8px;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .kicker .tick{ width:22rem; height:3rem; background:var(--accent); border-radius:2rem; }
+  .kicker .sec{ color:var(--accent); }
+
+  h1.title{                                /* slot gate: <=15 words / 2 lines */
+    position:absolute; left:64rem; right:64rem; top:60rem;
+    max-height:84rem;
+    font:700 31rem/42rem var(--font-display); letter-spacing:-0.35px;
+    color:var(--ink);
+  }
+  h1.title sup{ font-size:.5em; line-height:0; color:var(--accent); }
+
+  /* --------------------------- left bullet rail --------------------------- */
+  ul.bullets{
+    position:absolute; left:64rem; top:166rem; width:560rem;
+    list-style:none;
+  }
+  ul.bullets li{
+    position:relative; padding-left:20rem;
+    font:400 14rem/19.5rem var(--font-body);
+    color:var(--gray-1);
+    margin-bottom:17rem;                   /* 6 items: 6 x 37 = 222, fits 166..410 */
+  }
+  ul.bullets li::before{                   /* yellow wedge marker, EY house device */
+    content:""; position:absolute; left:0; top:.35em;
+    border-left:9rem solid var(--accent);
+    border-top:5rem solid transparent; border-bottom:5rem solid transparent;
+  }
+  ul.bullets li b{ color:var(--ink); font-weight:700; }
+  ul.bullets li .num{ color:var(--accent); font-weight:700; }
+
+  /* ------------------------------- Venn SVG ------------------------------- */
+  .venn{
+    position:absolute; left:676rem; top:110rem; width:540rem; height:530rem;
+  }
+  .venn text{ font-family:var(--font-body); }
+  .node-name{ font:700 15.5rem/15.5rem var(--font-display); fill:var(--ink); }
+  .node-tag { font:400 12rem/15rem var(--font-body); fill:var(--gray-2); }
+  .chip-text{ font:700 13rem/16rem var(--font-display); fill:var(--ink-accent); }
+
+  /* ------------------------------- footer ------------------------------- */
+  .foot{
+    position:absolute; left:64rem; right:64rem; bottom:20rem;
+    display:flex; align-items:baseline; justify-content:space-between;
+    font:400 10rem/13rem var(--font-body); color:var(--gray-3);
+  }
+  .foot .lockup{
+    font:700 11rem/13rem var(--font-display); letter-spacing:2.2px;
+    color:rgba(255,255,255,.85); text-transform:uppercase;
+    padding-right:18rem; margin-right:18rem;
+    border-right:1px solid var(--rule);
+  }
+  .foot .src{ max-width:640rem; }
+  .foot .runhead{ margin-left:24rem; white-space:nowrap; }
+  .foot .pg{ font-weight:700; color:var(--gray-1); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker">
+    <span class="tick" aria-hidden="true"></span>
+    <span data-slot="kicker"><span class="sec">04 | Lecture material</span> — building the analytics mindset</span>
+  </div>
+
+  <h1 class="title" data-slot="title">Three roles, one mindset: analytics works only when consumers, producers and enablers move together<sup>1</sup></h1>
+
+  <!-- ============================ the exhibit ============================ -->
+  <!-- Left rail: the agenda bullets, exactly the EY p10 pairing. -->
+  <ul class="bullets">
+    <li data-slot="bullet-1"><b>Define the business question</b> before selecting an analytical technique</li>
+    <li data-slot="bullet-2">Ask the right questions — <span class="num">three</span> hypothesis frames per engagement</li>
+    <li data-slot="bullet-3">Extract, transform and load relevant data — the ETL stage</li>
+    <li data-slot="bullet-4">Apply appropriate analytics techniques, from regression to clustering</li>
+    <li data-slot="bullet-5">Interpret and share results with stakeholders — <span class="num">one</span> chart, <span class="num">one</span> decision</li>
+    <li data-slot="bullet-6"><span class="num">41%</span> of our analysts work across two of the three roles within year one</li>
+  </ul>
+
+  <!-- Venn: right field, viewBox 540x530 maps 1:1 onto the .venn box.
+       Each SET appears twice on purpose: once visible (g#sets) and once as
+       its clipPath (used to carve the triple-intersection). Keep both in
+       sync — see MANUAL FILL for add/remove. -->
+  <svg class="venn" viewBox="0 0 540 530" aria-label="Three-set Venn: business analysts, analytics modelers, analytics architects">
+    <defs>
+      <clipPath id="clip-a"><circle cx="270" cy="203"   r="150"/></clipPath>
+      <clipPath id="clip-b"><circle cx="186" cy="348.5" r="150"/></clipPath>
+      <clipPath id="clip-c"><circle cx="354" cy="348.5" r="150"/></clipPath>
+    </defs>
+
+    <!-- the three sets: same tone, fill-opacity .33 each -> pairs ~.55,
+         triple ~.70 automatically. Do not add blend modes. -->
+    <g id="sets">
+      <g data-slot="set-a">
+        <circle cx="270" cy="203"   r="150" fill="var(--gray-4)" fill-opacity=".33"/>
+      </g>
+      <g data-slot="set-b">
+        <circle cx="186" cy="348.5" r="150" fill="var(--gray-4)" fill-opacity=".33"/>
+      </g>
+      <g data-slot="set-c">
+        <circle cx="354" cy="348.5" r="150" fill="var(--gray-4)" fill-opacity=".33"/>
+      </g>
+    </g>
+
+    <!-- THE INTERSECTION: solid accent, carved by nesting one clip per set.
+         Two levels = the lens of the remaining pair if a set is removed. -->
+    <g clip-path="url(#clip-a)">
+      <g clip-path="url(#clip-b)">
+        <g clip-path="url(#clip-c)">
+          <rect x="0" y="0" width="540" height="530" fill="var(--accent)" fill-opacity=".92"/>
+        </g>
+      </g>
+    </g>
+
+    <!-- chip + fanned connectors: the claim, wired into the overlaps -->
+    <g data-slot="callout">
+      <line x1="270" y1="96" x2="228" y2="264" stroke="var(--accent)" stroke-width="1.6"/>
+      <line x1="270" y1="96" x2="312" y2="264" stroke="var(--accent)" stroke-width="1.6"/>
+      <line x1="270" y1="96" x2="270" y2="346" stroke="var(--accent)" stroke-width="1.6"/>
+      <circle cx="228" cy="264" r="3.5" fill="var(--accent)"/>
+      <circle cx="312" cy="264" r="3.5" fill="var(--accent)"/>
+      <circle cx="270" cy="346" r="3.5" fill="var(--accent)"/>
+      <rect x="150" y="61" width="240" height="35" rx="3" fill="var(--accent)"/>
+      <text class="chip-text" x="270" y="83" text-anchor="middle" data-slot="chip">The analytics mindset</text>
+    </g>
+
+    <!-- node labels: one per set, centred outward from C.
+         (270,120)/(150,415)/(400,415) sit inside each disc, clear of the lenses. -->
+    <g data-slot="label-a">
+      <text class="node-name" x="270" y="115" text-anchor="middle">Business analysts</text>
+      <text class="node-tag"  x="270" y="131" text-anchor="middle">(consumers)</text>
+    </g>
+    <g data-slot="label-b">
+      <text class="node-name" x="150" y="410" text-anchor="middle">Analytics modelers</text>
+      <text class="node-tag"  x="150" y="426" text-anchor="middle">(producers)</text>
+    </g>
+    <g data-slot="label-c">
+      <text class="node-name" x="400" y="410" text-anchor="middle">Analytics architects</text>
+      <text class="node-tag"  x="400" y="426" text-anchor="middle">(enablers)</text>
+    </g>
+  </svg>
+
+  <!-- ============================== footer ============================== -->
+  <div class="foot">
+    <span class="lockup" data-slot="lockup">EY Foundation</span>
+    <span class="src" data-slot="source">Source: EY Academic Resource Center curriculum map, n = 41 modules<sup>1</sup>; role definitions per module syllabi, 2019 edition.</span>
+    <span class="runhead"><span class="pg" data-slot="page">9</span>&nbsp;|&nbsp;Analytics mindset</span>
+  </div>
+</div>
+</body>
+</html>

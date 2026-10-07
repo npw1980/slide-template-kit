@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>sketch-checklist-equation — hand-sketched "A + B = C" ring diagram (1280×720)</title>
+<style>
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  body{ margin:0; background:#fff; }
+  .stage{ position:absolute; inset:0; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); }
+  .page{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #1F2A65;   /* deep navy — titles, emphasis                      */
+    --accent:  #00D4C8;   /* teal brand hue (used for the result ring)         */
+    --accent-deep: #006F68; /* teal, darkened — result ring stroke + emphasis  */
+    --gray-1:  #23262B;   /* near-black body text                              */
+    --gray-2:  #4A4F55;   /* input-ring strokes, secondary text                */
+    --gray-3:  #818990;   /* captions, notes, source line                      */
+    --gray-4:  #E9ECEF;   /* neutral fill (unused ring interior tint)          */
+    --gray-5:  #F4F6F8;   /* faint panel fill                                  */
+    --rule:    #C9CFD4;   /* hairlines                                         */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  .kicker{ font-family:var(--font-display); font-size:11.5px; font-weight:700;
+           letter-spacing:1.8px; fill:var(--gray-2); }
+  .title { font-family:var(--font-display); font-size:30px; font-weight:700;
+           letter-spacing:-.2px; fill:var(--ink); }
+
+  .ringlabel{ font-family:var(--font-display); font-size:12px; font-weight:700;
+              letter-spacing:1.5px; fill:var(--gray-2); }
+  .ringlabel.result{ fill:var(--accent-deep); }
+  .ringword{ font-family:var(--font-display); font-size:17px; font-weight:700;
+             fill:var(--gray-1); }
+  .ringword.result{ fill:var(--accent-deep); }
+  .caption{ font-family:var(--font-body); font-size:12px; fill:var(--gray-3); }
+  .annot{ font-family:var(--font-body); font-size:10.5px; fill:var(--gray-3); stroke:none; }
+
+  .op{ fill:none; stroke:var(--gray-2); stroke-width:3px; stroke-linecap:round; }
+  .ring{ fill:none; stroke:var(--gray-2); stroke-width:2.2px; }
+  .ring.result{ stroke:var(--accent-deep); }
+  .ring.rough2{ opacity:.55; }
+
+  .src{ font-family:var(--font-body); font-size:9.5px; fill:var(--gray-3); }
+  .pageno{ font-family:var(--font-body); font-size:9.5px; fill:var(--gray-3); letter-spacing:1px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <svg class="page" viewBox="0 0 1280 720" role="img" aria-label="Three hand-sketched rings in a row: cash trust plus operating company equals public successor company">
+    <defs>
+      <filter id="sk" x="-25%" y="-25%" width="150%" height="150%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="5" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="5"/>
+      </filter>
+    </defs>
+
+    <text class="kicker" x="64" y="64">STRUCTURE OF THE DEAL</text>
+    <text class="title"  x="64" y="106">A trust pool plus an operating company</text>
+    <text class="title"  x="64" y="146">equals one listed successor</text>
+
+    <!-- ============ RING ROW ============ -->
+    <!-- Three ring groups, centers at x=240 / 640 / 1040, cy=330. Each ring = two
+         rough overlapping circles for the hand-drawn double-stroke. To add a ring,
+         copy a <g class="ringnode"> and shift per the MANUAL FILL formula. -->
+    <g id="equation">
+      <g class="ringnode" transform="translate(240,330)">
+        <text class="ringlabel" x="0" y="-155" text-anchor="middle">LISTED SPAC</text>
+        <g filter="url(#sk)">
+          <ellipse class="ring" cx="0" cy="0" rx="121" ry="117"/>
+          <ellipse class="ring rough2" cx="5" cy="-4" rx="118" ry="114" transform="rotate(7)"/>
+        </g>
+        <text class="ringword" x="0" y="-2" text-anchor="middle">Cash held</text>
+        <text class="ringword" x="0" y="22" text-anchor="middle">in trust</text>
+        <text class="caption" x="0" y="160" text-anchor="middle">Blind pool of cash raised by the</text>
+        <text class="caption" x="0" y="177" text-anchor="middle">sponsor through a Nasdaq IPO</text>
+      </g>
+
+      <!-- PLUS operator between ring 1 and ring 2, centered x=440.
+           Only the two strokes get the wobble filter — text must stay unfiltered. -->
+      <g class="op" transform="translate(440,330)">
+        <g filter="url(#sk)">
+          <line x1="-16" y1="0" x2="16" y2="-2"/>
+          <line x1="1" y1="-16" x2="-1" y2="16"/>
+        </g>
+        <text class="annot" x="0" y="52" text-anchor="middle">acquisition,</text>
+        <text class="annot" x="0" y="66" text-anchor="middle">typically 12–24 months</text>
+      </g>
+
+      <g class="ringnode" transform="translate(640,330)">
+        <text class="ringlabel" x="0" y="-155" text-anchor="middle">TARGET COMPANY</text>
+        <g filter="url(#sk)">
+          <ellipse class="ring" cx="0" cy="0" rx="121" ry="117"/>
+          <ellipse class="ring rough2" cx="-4" cy="5" rx="117" ry="113" transform="rotate(-6)"/>
+        </g>
+        <text class="ringword" x="0" y="-2" text-anchor="middle">Target operating</text>
+        <text class="ringword" x="0" y="22" text-anchor="middle">company</text>
+        <text class="caption" x="0" y="160" text-anchor="middle">Fully operating private company</text>
+        <text class="caption" x="0" y="177" text-anchor="middle">contributing the business</text>
+      </g>
+
+      <!-- EQUALS operator between ring 2 and ring 3, centered x=840 -->
+      <g class="op" transform="translate(840,330)" filter="url(#sk)">
+        <line x1="-15" y1="-7"  x2="15" y2="-8"/>
+        <line x1="-16" y1="8"   x2="14" y2="7"/>
+      </g>
+
+      <g class="ringnode" transform="translate(1040,330)">
+        <text class="ringlabel result" x="0" y="-155" text-anchor="middle">LISTED "SUCCESSOR" COMPANY</text>
+        <g filter="url(#sk)">
+          <ellipse class="ring result" cx="0" cy="0" rx="121" ry="117"/>
+          <ellipse class="ring result rough2" cx="4" cy="-5" rx="118" ry="112" transform="rotate(6)"/>
+        </g>
+        <text class="ringword result" x="0" y="-2" text-anchor="middle">Publicly listed</text>
+        <text class="ringword result" x="0" y="22" text-anchor="middle">operating company</text>
+        <text class="caption" x="0" y="160" text-anchor="middle">Combined entity; incentive structures</text>
+        <text class="caption" x="0" y="177" text-anchor="middle">drive post-close value creation</text>
+      </g>
+    </g>
+
+    <!-- ============ FOOTER ============ -->
+    <text class="src" x="64" y="700">Source: Nasdaq, "SPACs: Special Purpose Acquisition"; Company Listing on Nasdaq (June 2020).</text>
+    <text class="pageno" x="1216" y="700" text-anchor="end">16 | DEAL STRUCTURE</text>
+  </svg>
+</div>
+</body>
+</html>

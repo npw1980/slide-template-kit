@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>three-horizons-circles — cascading horizon circles with notes and the planned/emergent loop (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  three-horizons-circles  ·  family three-horizons
+  Evidence (see MANUAL.md -> SOURCE): Gartner "Three Strategic Planning
+    Horizons", corpus slide S0030 — read on corpus/sheets/sheet_003.jpg frame 10
+    (S0021..S0030 row-major 5col×2row, S0030 = frame 10, row 2 col 5). Observed:
+    a blue 2-line claim title, THREE SOLID OVERLAPPING CIRCLES cascading
+    down-right (Long-Term / Midterm / Short-Term planning horizon, biggest to
+    smallest, white labels inside) and TWO ANNOTATION BOXES —
+    "Planned Strategy: cascading goals and continuous alignment" and "Emergent
+    Strategy: Calibration and continuous learning" — joined by arrows.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html font-size maps 1rem == 1 STAGE PIXEL, so every length
+  is a 1:1 stage-pixel coordinate with the same numbers MANUAL.md quotes.
+  ----------------------------------------------------------------------------
+  GEOMETRY (stage px; one full-stage SVG, viewBox 0 0 1280 720):
+    Cascade rule (this is what makes the page resizable):
+      radius  r(k) = 150 − 32(k−1)          centre dx: d(k) = r(k)+r(k+1) − 25
+      centres:  #h1 (360,350) r145  ·  #h2 (593,365) r113  ·  #h3 (762,380) r81
+      successive circles overlap 25px on the cascade line, drawn back-to-front
+      h1 → h2 → h3 with a 3px --bg stroke, so the seam reads as one shape.
+    Each #h<k> group carries: circle + numbered badge (on the 135° rim point) +
+    caps + 2 name lines + share pill.  Right rail = notes, x 936..1216.
+    Bottom band = the two strategy annotations (boxes 255×56 at x215 / x585).
+    #h1 accent = EMPHASIS, #h2 grey-1, #h3 grey-3 — one accent + grey ramp.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+      Roles per DESIGN_PLAYBOOK (corpus original is Gartner blue only — the kit
+      keeps a single hue; the two other circles are grey steps):
+        --accent #155C99     6.0:1 on white, #FFF on accent 6.0:1  (horizon 1)
+        --ink #1A1A1A 16.9:1 · --gray-1 #404040 9.8:1 (white labels OK)
+        --gray-2 #8C8C8C 3.8:1 (large/bold) · --gray-3 #D9D9D9 fill, ink label
+        --gray-note #666666 5.9:1 (notes, footnotes).  No second hue anywhere.
+     ================================================================= */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;
+    --gray-1:      #404040;
+    --gray-2:      #8C8C8C;
+    --gray-3:      #D9D9D9;
+    --gray-note:   #666666;
+    --rule:        #D9D9D9;
+    --accent:      #155C99;
+    --accent-soft: #E9F1F8;
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, Calibri, "Helvetica Neue", "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{ background:#4A4A50; display:grid; place-items:center; min-height:100vh; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink); overflow:hidden;
+  }
+  /* ---------- header band: kicker / claim title / lead ---------- */
+  .kicker{
+    position:absolute; left:64rem; top:34rem; font-size:11rem; line-height:1;
+    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    font-family:var(--font-display); color:var(--gray-1);
+  }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  h1.title{
+    position:absolute; left:64rem; top:56rem; width:1152rem;
+    font-family:var(--font-display); font-size:30rem; line-height:36rem;
+    font-weight:700; letter-spacing:-.015em; color:var(--ink);
+    max-height:72rem; overflow:hidden;   /* 2-line gate: a 3rd line clips */
+  }
+  p.lead{
+    position:absolute; left:64rem; top:150rem; width:1152rem;
+    font-size:14rem; line-height:20rem; color:var(--gray-1); font-weight:400;
+  }
+  p.lead .em{ color:var(--accent); font-weight:700; }
+  /* ------------------------------ diagram ------------------------------ */
+  svg.diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+  .ring        { stroke:var(--bg); stroke-width:3; }
+  .ring-1      { fill:var(--accent); }     /* EMPHASIS horizon */
+  .ring-2      { fill:var(--gray-1); }
+  .ring-3      { fill:var(--gray-3); }
+  .cap-w       { font:700 10px var(--font-display); fill:#FFFFFF; letter-spacing:.2em; }
+  .cap-k       { font:700 10px var(--font-display); fill:var(--ink); letter-spacing:.2em; }
+  .nm-w        { font:700 13px var(--font-body); fill:#FFFFFF; }
+  .nm-k        { font:700 13px var(--font-body); fill:var(--ink); }
+  .pill-w      { fill:rgba(255,255,255,.20); stroke:#FFFFFF; stroke-width:1; }
+  .pill-k      { fill:var(--bg); stroke:var(--gray-2); stroke-width:1; }
+  .pill-t-w    { font:700 9.5px var(--font-body); fill:#FFFFFF; }
+  .pill-t-k    { font:700 9.5px var(--font-body); fill:var(--ink); }
+  .badge       { fill:#FFFFFF; stroke:var(--gray-1); stroke-width:1.4; }
+  .badge-n     { font:700 11px var(--font-body); fill:var(--gray-1); }
+  /* notes rail */
+  .disc        { fill:#FFFFFF; stroke:var(--gray-2); stroke-width:1.2; }
+  .disc-n      { font:700 10px var(--font-body); fill:var(--gray-1); }
+  .note-kick   { font:700 9px var(--font-body); fill:var(--gray-2); letter-spacing:.14em; }
+  .note-kick.em{ fill:var(--accent); }
+  .note-title  { font:700 12.5px var(--font-body); fill:var(--ink); }
+  .note-body   { font:11px var(--font-body); fill:var(--gray-1); }
+  .note-body tspan{ font-weight:700; fill:var(--ink); }
+  .rail-rule   { stroke:var(--gray-3); stroke-width:1; }
+  /* planned / emergent annotations */
+  .ann-box     { fill:var(--bg); stroke:var(--gray-3); stroke-width:1; }
+  .ann-bar     { fill:var(--gray-1); }
+  .ann-caps    { font:700 9.5px var(--font-display); fill:var(--gray-1); letter-spacing:.18em; }
+  .ann-body    { font:11px var(--font-body); fill:var(--gray-1); }
+  .ann-leader  { stroke:var(--gray-2); stroke-width:1; stroke-dasharray:4 3; fill:none; }
+  .ann-head    { fill:var(--gray-2); }
+  .loop-line   { stroke:var(--gray-2); stroke-width:1.2; fill:none; }
+  .loop-head   { fill:var(--gray-2); }
+  .loop-caps   { font:700 8.5px var(--font-display); fill:var(--gray-2); letter-spacing:.14em; }
+  /* ------------------------------ footer ------------------------------ */
+  .source{
+    position:absolute; left:64rem; bottom:20rem; width:1000rem;
+    font-size:10rem; line-height:13rem; color:var(--gray-note);
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:20rem; font-size:10rem; color:var(--gray-note); }
+  .pageno b{ color:var(--ink); font-weight:700; }
+  .hairline{ position:absolute; left:64rem; right:64rem; bottom:38rem; border-top:1px solid var(--rule); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. KICKER · 2. CLAIM TITLE · 3. LEAD -->
+  <div class="kicker" data-slot="kicker"><b>2 |</b> Portfolio Ambition</div>
+  <h1 class="title" data-slot="title">All three horizons run on one funding chain — H1 pays for H2 and H3</h1>
+  <p class="lead" data-slot="lead">The cascade is the operating model, not decoration: <span class="em">each horizon hands over while it is still funded</span>.¹</p>
+
+  <!-- 4. THE DIAGRAM: three overlapping circles + notes + strategy loop -->
+  <svg class="diagram" viewBox="0 0 1280 720" aria-label="Three cascading horizon circles joined by a planned and emergent strategy loop">
+
+    <!-- NOTES RAIL (numbers match the circle badges) -->
+    <g id="notes" data-slot="notes">
+      <line class="rail-rule" x1="922" y1="312" x2="1216" y2="312"/>
+      <line class="rail-rule" x1="922" y1="437" x2="1216" y2="437"/>
+      <g class="note" id="note-1">
+        <circle class="disc" cx="916" cy="229" r="11"/><text class="disc-n" x="916" y="232" text-anchor="middle">1</text>
+        <text class="note-kick em" x="936" y="228">THE BASE THAT BUYS TIME</text>
+        <text class="note-title"  x="936" y="250">Defend first, then harvest</text>
+        <text class="note-body"   x="936" y="268">Hold share in the four cash</text>
+        <text class="note-body"   x="936" y="283">engines and release <tspan>6–8% of costs</tspan> to fund H2.²</text>
+      </g>
+      <g class="note" id="note-2">
+        <circle class="disc" cx="916" cy="354" r="11"/><text class="disc-n" x="916" y="357" text-anchor="middle">2</text>
+        <text class="note-kick" x="936" y="353">THE BRIDGE THAT PAYS</text>
+        <text class="note-title"  x="936" y="375">Hand over, not hand off</text>
+        <text class="note-body"   x="936" y="393">H2 graduates to its own P&amp;L once</text>
+        <text class="note-body"   x="936" y="408">it clears <tspan>€40M revenue</tspan> and 20% payback.³</text>
+      </g>
+      <g class="note" id="note-3">
+        <circle class="disc" cx="916" cy="479" r="11"/><text class="disc-n" x="916" y="482" text-anchor="middle">3</text>
+        <text class="note-kick" x="936" y="478">THE OPTION THAT WAITS</text>
+        <text class="note-title"  x="936" y="500">Buy options, not plants</text>
+        <text class="note-body"   x="936" y="518">Six venture gates, <tspan>€18M</tspan> total</text>
+        <text class="note-body"   x="936" y="533">commitment, each renewed at 18 months.⁴</text>
+      </g>
+    </g>
+
+    <!-- THE CASCADE — back to front: h1 (accent) then h2 then h3 -->
+    <g class="horizon" id="h1" data-slot="horizon-1">
+      <circle class="ring ring-1" cx="360" cy="350" r="145"/>
+      <text class="cap-w" x="360" y="314" text-anchor="middle">HORIZON 1</text>
+      <text class="nm-w"  x="360" y="346" text-anchor="middle">Maintain and</text>
+      <text class="nm-w"  x="360" y="366" text-anchor="middle">defend the core</text>
+      <rect class="pill-w" x="285" y="382" width="150" height="19" rx="9.5"/>
+      <text class="pill-t-w" x="360" y="396" text-anchor="middle">1–3 yrs · 62% of revenue</text>
+    </g>
+
+    <g class="horizon" id="h2" data-slot="horizon-2">
+      <circle class="ring ring-2" cx="593" cy="365" r="113"/>
+      <text class="cap-w" x="593" y="330" text-anchor="middle">HORIZON 2</text>
+      <text class="nm-w"  x="593" y="358" text-anchor="middle">Foster the emerging</text>
+      <text class="nm-w"  x="593" y="378" text-anchor="middle">businesses</text>
+      <rect class="pill-w" x="538" y="394" width="110" height="17" rx="8.5"/>
+      <text class="pill-t-w" x="593" y="407" text-anchor="middle">3–5 yrs · 28%</text>
+    </g>
+
+    <g class="horizon" id="h3" data-slot="horizon-3">
+      <circle class="ring ring-3" cx="762" cy="380" r="81"/>
+      <text class="cap-k" x="762" y="346" text-anchor="middle">HORIZON 3</text>
+      <text class="nm-k"  x="762" y="372" text-anchor="middle">Seed the future</text>
+      <text class="nm-k"  x="762" y="390" text-anchor="middle">business cases</text>
+      <rect class="pill-k" x="710" y="400" width="104" height="16" rx="8"/>
+      <text class="pill-t-k" x="762" y="411" text-anchor="middle">5+ yrs · 10%</text>
+    </g>
+
+    <!-- BADGES on the 135° rim point of each circle (numbers match the rail) -->
+    <g id="badges">
+      <circle class="badge" cx="258" cy="248" r="13"/><text class="badge-n" x="258" y="252" text-anchor="middle">1</text>
+      <circle class="badge" cx="513" cy="285" r="13"/><text class="badge-n" x="513" y="289" text-anchor="middle">2</text>
+      <circle class="badge" cx="705" cy="323" r="13"/><text class="badge-n" x="705" y="327" text-anchor="middle">3</text>
+    </g>
+
+    <!-- PLANNED / EMERGENT STRATEGY ANNOTATIONS (the reference's two boxes) -->
+    <g id="annotations">
+      <!-- planned: goals cascade down the horizons -->
+      <g class="ann" id="ann-planned">
+        <line class="ann-leader" x1="342" y1="596" x2="342" y2="500"/>
+        <polygon class="ann-head" points="342,492 337,502 347,502"/>
+        <rect class="ann-box" x="215" y="596" width="255" height="56"/>
+        <rect class="ann-bar" x="215" y="596" width="3" height="56"/>
+        <text class="ann-caps" x="231" y="616">PLANNED STRATEGY</text>
+        <text class="ann-body" x="231" y="634">Cascading goals and</text>
+        <text class="ann-body" x="231" y="646">continuous alignment</text>
+      </g>
+      <!-- emergent: the loop back up the horizons -->
+      <g class="ann" id="ann-emergent">
+        <line class="ann-leader" x1="712" y1="596" x2="712" y2="456"/>
+        <polygon class="ann-head" points="712,448 707,458 717,458"/>
+        <rect class="ann-box" x="585" y="596" width="255" height="56"/>
+        <rect class="ann-bar" x="585" y="596" width="3" height="56"/>
+        <text class="ann-caps" x="601" y="616">EMERGENT STRATEGY</text>
+        <text class="ann-body" x="601" y="634">Calibration and</text>
+        <text class="ann-body" x="601" y="646">continuous learning</text>
+      </g>
+      <!-- the two-way loop between them -->
+      <line class="loop-line" x1="474" y1="624" x2="581" y2="624"/>
+      <polygon class="loop-head" points="470,624 480,620 480,628"/>
+      <polygon class="loop-head" points="585,624 575,620 575,628"/>
+      <text class="loop-caps" x="528" y="615" text-anchor="middle">THE LOOP</text>
+    </g>
+  </svg>
+
+  <!-- 5. FOOTER -->
+  <div class="hairline"></div>
+  <div class="source" data-slot="source-line">Source: group strategy review FY26, horizon tagging of the 11-unit portfolio and FY26 cash-allocation model<sup>1</sup> · cost-release range from the four engine deep-dives<sup>2</sup> · graduation thresholds agreed at the March portfolio board<sup>3</sup><sup>4</sup></div>
+  <div class="pageno"><b>08</b> | Portfolio Ambition</div>
+</div>
+</body>
+</html>

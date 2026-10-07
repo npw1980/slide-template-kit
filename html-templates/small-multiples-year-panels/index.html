@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>small-multiples-year-panels — 2×3 panel grid of annual column charts, current-year emphasis (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  small-multiples-year-panels  ·  family small-multiples
+  Evidence: kpmg__kpmg_pulse_of_fintech_h1_21_2021 p07/p12 (sheet sw_sheets/
+            kpmg__kpmg_pulse_of_fintech_h1_21_2021_s00.jpg) — review §charts:
+            "annual small-multiples 2×3 grids (2018–2021) ... each regional
+            spread re-runs the same exhibit set — a template, not bespoke";
+            "Current-year 2021 bars PURPLE against navy history bars — a
+            clear what-changed device"; "values printed on bars". Weaknesses
+            we fix in this build: legends repeated per subplot (ONE shared
+            legend row here) and no zero-line emphasis (axis rule on every
+            panel baseline). Purple #90278E / grays #D1D3D4 #58595B sampled
+            from reviews/kpmg__kpmg_pulse_of_fintech_h1_21_2021.md.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280,100vh/720)} → 1rem == 1
+  stage pixel; the SVG overlay uses viewBox 0 0 1280 720 (plain px coords).
+  ----------------------------------------------------------------------------
+  DATA ARRAYS — SWAP NUMBERS, NOT GEOMETRY.
+    Panel grid: 2 rows × 3 cols. Panel title x = 72, 462, 852 (w≈354);
+    row 1 baseline y = 384, row 2 baseline y = 644.
+      row1: "Global venture"  "Americas"      "Europe"
+      row2: "Asia-Pacific"    "Middle East &" "Fintech M&A"
+                              "Africa"
+    Per panel: 4 annual columns 2018–2021. Column geometry (panel-local):
+      column width 56, xs = (panelX+30, +114, +198, +282); year labels
+      baseline = baseline_y + 18.
+      SHARED height scale across ALL panels:
+        height(v) = round(v × 150 / PAGE_MAX)   // PAGE_MAX = largest value
+        on the whole page — here 43.8 ($bn) so 150px per $43.8bn (3.4247 px
+        per $1bn). Bars: y = baseline − height, floor 4px.
+      Zero line: 1px axis rule on every panel baseline (zero-line emphasis
+      is ON — the fixed KPMG weakness).
+    Values ($bn, one decimal, printed on bar tops; page max = 43.8 M&A 2021):
+      Global venture   : 2018 21.0 · 2019 19.2 · 2020 17.6 · 2021 38.9
+      Americas         : 2018 11.8 · 2019 10.4 · 2020 9.1  · 2021 24.7
+      Europe           : 2018 8.6  · 2019 8.9  · 2020 7.4 · 2021 14.2
+      Asia-Pacific     : 2018 7.2  · 2019 5.8  · 2020 6.9 · 2021 17.6
+      Middle East/Afr. : 2018 1.6  · 2019 1.8  · 2020 1.5 · 2021 3.4
+      Fintech M&A      : 2018 33.1 · 2019 27.5 · 2020 19.8 · 2021 43.8
+    Emphasis rule: the 2021 column takes --accent (#90278E); history columns
+    are the gray ramp #D1D3D4 (2018) → #B7BBC0 (2019) → #9CA1A6 (2020),
+    darkest-gray-nearest-history order so recency reads. 2021 value labels
+    bold purple (--accent-deep); history labels --gray-ink.
+    Delta chip: ONE per page max, on the panel carrying the claim — accent-
+    deep pill above that panel's 2021 bar ("2.4× 2018").
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts, zero network calls.
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;
+    --accent:      #90278E;   /* KPMG purple — ONE accent: the current-year column */
+    --accent-deep: #5A1758;   /* purple ink: kicker head, running head, delta pill */
+    --gray-ink:    #58595B;   /* history value labels, year labels, source */
+    --hist1:       #D1D3D4;   /* 2018 (oldest = lightest) */
+    --hist2:       #B7BBC0;   /* 2019 */
+    --hist3:       #9CA1A6;   /* 2020 (newest history = darkest gray) */
+    --rule:        #E4E5E7;   /* panel dividers, footer hairline */
+    --axis:        #9CA1A6;   /* zero line */
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#10141c; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); color:var(--ink); }
+  .stage > svg{ position:absolute; left:0; top:0; width:1280rem; height:720rem; }
+
+  .kicker{ position:absolute; left:64rem; top:38rem; width:960rem;
+           font-size:14rem; line-height:19rem; color:var(--gray-ink); }
+  .kicker b{ color:var(--accent-deep); font-weight:700; }
+  .kicker sup{ font-size:10rem; color:var(--accent-deep); }
+  .title{ position:absolute; left:64rem; top:63rem; width:1000rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700;
+          line-height:35rem; letter-spacing:-.6rem; max-height:71rem; overflow:hidden; }
+  .title em{ font-style:normal; color:var(--accent); }          /* operative clause */
+
+  /* shared legend — ONE key for the whole grid (the fixed KPMG weakness) */
+  .legend{ position:absolute; left:64rem; top:142rem; display:flex; gap:22rem;
+           font-size:11.5rem; color:var(--gray-ink); }
+  .legend span{ display:flex; align-items:center; gap:7rem; }
+  .sw{ width:13rem; height:9rem; display:inline-block; }
+
+  .foot-rule{ position:absolute; left:64rem; right:64rem; top:684rem; height:0;
+              border-top:1px solid var(--rule); }
+  .source{ position:absolute; left:64rem; top:692rem; width:1000rem;
+           font-size:10.5rem; line-height:14rem; color:var(--gray-ink); }
+  .source sup{ font-size:8rem; }
+  .pageno{ position:absolute; right:64rem; top:692rem; font-size:10.5rem;
+           color:var(--gray-ink); letter-spacing:.4rem; }
+  .pageno b{ color:var(--accent-deep); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>How did deal value move across segments in 2018–2021?</b><sup>1</sup> — venture and M&amp;A deal value, US$bn, as reported<sup>2</sup></div>
+  <div class="title">2021 deal value <em>outpaces every prior year</em>, but the rebound is concentrated in venture and M&amp;A</div>
+
+  <div class="legend">
+    <span><i class="sw" style="background:var(--hist1)"></i>2018</span>
+    <span><i class="sw" style="background:var(--hist2)"></i>2019</span>
+    <span><i class="sw" style="background:var(--hist3)"></i>2020</span>
+    <span><i class="sw" style="background:var(--accent)"></i>2021 (current year)</span>
+  </div>
+
+  <!-- ======================================================================
+       CHART LAYER — 2×3 panel grid. Column xs = panelX+30/+114/+198/+282,
+       width 56; row1 baseline 384, row2 baseline 644. height = v × 3.4247
+       (= 150/PAGE_MAX 43.8). Value label baseline = barTop − 6.
+       ====================================================================== -->
+  <svg viewBox="0 0 1280 720" aria-label="Small-multiples grid of annual venture and M&A deal value panels">
+    <defs>
+      <style>
+        .pn  { font-family:Arial, sans-serif; font-size:12.5px; font-weight:700; fill:var(--ink); }
+        .sub { font-family:Arial, sans-serif; font-size:10.5px; fill:var(--gray-ink); }
+        .yr  { font-family:Arial, sans-serif; font-size:10.5px; fill:var(--gray-ink); }
+        .vh  { font-family:Arial, sans-serif; font-size:10.5px; fill:var(--gray-ink); }
+        .vc  { font-family:Arial, sans-serif; font-size:11.5px; font-weight:700; fill:var(--accent-deep); }
+        .b0  { fill:var(--hist1); } .b1{ fill:var(--hist2); } .b2{ fill:var(--hist3); } .bc{ fill:var(--accent); }
+        .ax  { stroke:var(--axis); stroke-width:1; }
+        .div { stroke:var(--rule); stroke-width:1; }
+        .pill{ fill:var(--accent-deep); }
+        .piltxt{ font-family:Arial, sans-serif; font-size:11px; font-weight:700; fill:#FFFFFF; }
+      </style>
+    </defs>
+
+    <!-- panel dividers (row/column hairlines) -->
+    <line class="div" x1="72"  y1="188" x2="1170" y2="188"/>
+    <line class="div" x1="72"  y1="448" x2="1170" y2="448"/>
+    <line class="div" x1="440" y1="188" x2="440" y2="672"/>
+    <line class="div" x1="830" y1="188" x2="830" y2="672"/>
+
+    <!-- panel 1 · Global venture (row1 col1) -->
+    <text class="pn" x="72" y="216">Global venture</text>
+    <text class="sub" x="72" y="231">VC deal value, $bn</text>
+    <line class="ax" x1="96" y1="384" x2="420" y2="384"/>
+    <rect class="b0" x="102" y="312" width="56" height="72"/><text class="vh" x="110" y="306">21.0</text>
+    <rect class="b1" x="186" y="318" width="56" height="66"/><text class="vh" x="194" y="312">19.2</text>
+    <rect class="b2" x="270" y="324" width="56" height="60"/><text class="vh" x="278" y="318">17.6</text>
+    <rect class="bc" x="354" y="251" width="56" height="133"/><text class="vc" x="362" y="245">38.9</text>
+    <text class="yr" x="106" y="402">2018</text><text class="yr" x="190" y="402">2019</text>
+    <text class="yr" x="274" y="402">2020</text><text class="yr" x="358" y="402">2021</text>
+
+    <!-- panel 2 · Americas (row1 col2) -->
+    <text class="pn" x="462" y="216">Americas</text>
+    <text class="sub" x="462" y="231">VC deal value, $bn</text>
+    <line class="ax" x1="486" y1="384" x2="810" y2="384"/>
+    <rect class="b0" x="492" y="344" width="56" height="40"/><text class="vh" x="500" y="338">11.8</text>
+    <rect class="b1" x="576" y="348" width="56" height="36"/><text class="vh" x="584" y="342">10.4</text>
+    <rect class="b2" x="660" y="353" width="56" height="31"/><text class="vh" x="668" y="347">9.1</text>
+    <rect class="bc" x="744" y="299" width="56" height="85"/><text class="vc" x="752" y="293">24.7</text>
+    <text class="yr" x="496" y="402">2018</text><text class="yr" x="580" y="402">2019</text>
+    <text class="yr" x="664" y="402">2020</text><text class="yr" x="748" y="402">2021</text>
+
+    <!-- panel 3 · Europe (row1 col3) -->
+    <text class="pn" x="852" y="216">Europe</text>
+    <text class="sub" x="852" y="231">VC deal value, $bn</text>
+    <line class="ax" x1="876" y1="384" x2="1200" y2="384"/>
+    <rect class="b0" x="882" y="355" width="56" height="29"/><text class="vh" x="890" y="349">8.6</text>
+    <rect class="b1" x="966" y="354" width="56" height="30"/><text class="vh" x="974" y="348">8.9</text>
+    <rect class="b2" x="1050" y="359" width="56" height="25"/><text class="vh" x="1058" y="353">7.4</text>
+    <rect class="bc" x="1134" y="335" width="56" height="49"/><text class="vc" x="1142" y="329">14.2</text>
+    <text class="yr" x="886" y="402">2018</text><text class="yr" x="970" y="402">2019</text>
+    <text class="yr" x="1054" y="402">2020</text><text class="yr" x="1138" y="402">2021</text>
+
+    <!-- panel 4 · Asia-Pacific (row2 col1) — carries the ONE delta chip -->
+    <text class="pn" x="72" y="476">Asia-Pacific</text>
+    <text class="sub" x="72" y="491">VC deal value, $bn</text>
+    <line class="ax" x1="96" y1="644" x2="420" y2="644"/>
+    <rect class="b0" x="102" y="619" width="56" height="25"/><text class="vh" x="110" y="613">7.2</text>
+    <rect class="b1" x="186" y="624" width="56" height="20"/><text class="vh" x="194" y="618">5.8</text>
+    <rect class="b2" x="270" y="620" width="56" height="24"/><text class="vh" x="278" y="614">6.9</text>
+    <rect class="bc" x="354" y="584" width="56" height="60"/><text class="vc" x="362" y="578">17.6</text>
+    <!-- delta chip: ONE per page, anchored above the 2021 column -->
+    <rect class="pill" x="354" y="544" width="86" height="20" rx="10"/>
+    <text class="piltxt" x="365" y="558">2.4× 2018</text>
+    <text class="yr" x="106" y="662">2018</text><text class="yr" x="190" y="662">2019</text>
+    <text class="yr" x="274" y="662">2020</text><text class="yr" x="358" y="662">2021</text>
+
+    <!-- panel 5 · Middle East & Africa (row2 col2) -->
+    <text class="pn" x="462" y="476">Middle East &amp; Africa</text>
+    <text class="sub" x="462" y="491">VC deal value, $bn</text>
+    <line class="ax" x1="486" y1="644" x2="810" y2="644"/>
+    <rect class="b0" x="492" y="639" width="56" height="5"/><text class="vh" x="500" y="633">1.6</text>
+    <rect class="b1" x="576" y="638" width="56" height="6"/><text class="vh" x="584" y="632">1.8</text>
+    <rect class="b2" x="660" y="639" width="56" height="5"/><text class="vh" x="668" y="633">1.5</text>
+    <rect class="bc" x="744" y="632" width="56" height="12"/><text class="vc" x="752" y="626">3.4</text>
+    <text class="yr" x="496" y="662">2018</text><text class="yr" x="580" y="662">2019</text>
+    <text class="yr" x="664" y="662">2020</text><text class="yr" x="748" y="662">2021</text>
+
+    <!-- panel 6 · Fintech M&A (row2 col3) — PAGE MAX 43.8 sets the 150px full column -->
+    <text class="pn" x="852" y="476">Fintech M&amp;A</text>
+    <text class="sub" x="852" y="491">M&amp;A deal value, $bn</text>
+    <line class="ax" x1="876" y1="644" x2="1200" y2="644"/>
+    <rect class="b0" x="882" y="531" width="56" height="113"/><text class="vh" x="890" y="525">33.1</text>
+    <rect class="b1" x="966" y="550" width="56" height="94"/><text class="vh" x="974" y="544">27.5</text>
+    <rect class="b2" x="1050" y="576" width="56" height="68"/><text class="vh" x="1058" y="570">19.8</text>
+    <rect class="bc" x="1134" y="494" width="56" height="150"/><text class="vc" x="1142" y="488">43.8</text>
+    <text class="yr" x="886" y="662">2018</text><text class="yr" x="970" y="662">2019</text>
+    <text class="yr" x="1054" y="662">2020</text><text class="yr" x="1138" y="662">2021</text>
+  </svg>
+
+  <div class="foot-rule"></div>
+  <div class="source">Source: KPMG analysis of public deal data, Pulse of Fintech H1’21. Figures as reported; global totals exclude secondary market activity.<sup>1,2</sup></div>
+  <div class="pageno"><b>07</b> | GLOBAL</div>
+
+</div>
+</body>
+</html>

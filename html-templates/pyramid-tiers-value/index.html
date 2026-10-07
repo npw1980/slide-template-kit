@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pyramid-tiers-value — three-tier value pyramid with per-tier notes (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  pyramid-tiers-value  ·  family pyramid-tiers
+  Evidence (see MANUAL.md -> SOURCE):
+    Gartner services-transformation page, corpus slide S0034 — read on
+    corpus/sheets/sheet_004.jpg (S0031..S0040 row-major, S0034 = frame 4,
+    row 1 col 4). Observed: blue 2-line claim title across the top, one
+    CENTERED triangle cut into three tiers (amber / blue / amber in the
+    original; here re-encoded as grey ramp + one accent band), white tier
+    labels centered inside, Gartner mark bottom-right.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html font-size maps 1rem == 1 STAGE PIXEL, so every length
+  is a 1:1 stage-pixel coordinate with the same numbers MANUAL.md quotes.
+  ----------------------------------------------------------------------------
+  GEOMETRY (stage px, inside full-stage SVG viewBox 0 0 1280 720):
+    Triangle: apex (515,168), base y560, half-base 250 -> base 265..765.
+    Horizontal tier cuts at y299 and y429 (thirds of the 392 height).
+    Edge x at any y:  xEdge = 515 + 250*(y-168)/392   (right side).
+    Tier groups #tier-1 (apex, grey-1), #tier-2 (accent EMPHASIS), #tier-3
+    (grey-3) each carry polygon + 2 label lines + leader + numbered disc +
+    right-rail note title + 2 note body lines. Notes rail x 806..1216.
+    Escalation arrow x228 (rotated label), pyramid caption y600 baseline.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Original S0034 ships blue+amber tiers; kit
+     rule = ONE accent + grey ramp, so blue is dropped and amber's emphasis
+     role is carried by a single consulting blue accent:
+       --accent #155C99 :  6.0:1 on white (AA body), #FFF on accent 6.0:1
+       --ink #1A1A1A 16.9:1 · --gray-1 #404040 9.8:1 (white labels OK)
+       --gray-note #666666 5.9:1 (notes) · --gray-2 #8C8C8C 3.8:1 (large/bold)
+       --gray-3 #D9D9D9 fill + ink label = 11.8:1.
+     ================================================================= */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;
+    --gray-1:      #404040;
+    --gray-2:      #8C8C8C;
+    --gray-3:      #D9D9D9;
+    --gray-note:   #666666;
+    --rule:        #D9D9D9;
+    --accent:      #155C99;
+    --accent-soft: #E9F1F8;
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, Calibri, "Helvetica Neue", "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{ background:#4A4A50; display:grid; place-items:center; min-height:100vh; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink); overflow:hidden;
+  }
+  /* ---------- header band: kicker / claim title / lead line ---------- */
+  .kicker{
+    position:absolute; left:64rem; top:34rem; font-size:11rem; line-height:1;
+    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    font-family:var(--font-display); color:var(--gray-1);
+  }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  h1.title{
+    position:absolute; left:64rem; top:56rem; width:1152rem;
+    font-family:var(--font-display); font-size:30rem; line-height:36rem;
+    font-weight:700; letter-spacing:-.015em; color:var(--ink);
+    max-height:72rem; overflow:hidden;   /* 2-line gate: a 3rd line clips */
+  }
+  p.lead{
+    position:absolute; left:64rem; top:150rem; width:1152rem;
+    font-size:14rem; line-height:20rem; color:var(--gray-1); font-weight:400;
+  }
+  p.lead .em{ color:var(--accent); font-weight:700; }
+  /* ------------------------------ diagram ------------------------------ */
+  svg.diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+  .tier        { stroke:var(--bg); stroke-width:3; }          /* white seams */
+  .tier-top    { fill:var(--gray-1); }
+  .tier-em     { fill:var(--accent); }                        /* EMPHASIS tier */
+  .tier-base   { fill:var(--gray-3); }
+  .tier-lab    { font:700 14px var(--font-body); fill:#FFFFFF; }
+  .tier-base + .tier-lab{ }                                   /* (labels set inline) */
+  .lab-in-k    { fill:#FFFFFF; }
+  .lab-in-b    { fill:var(--ink); }                           /* on grey-3 */
+  .leader      { fill:none; stroke:var(--gray-2); stroke-width:1.2; }
+  .disc        { fill:#FFFFFF; stroke:var(--gray-2); stroke-width:1.2; }
+  .disc-n      { font:700 10px var(--font-body); fill:var(--gray-1); }
+  .note-kick   { font:700 9px var(--font-body); fill:var(--gray-2); letter-spacing:.12em; }
+  .note-kick.em{ fill:var(--accent); }
+  .note-title  { font:700 12.5px var(--font-body); fill:var(--ink); }
+  .note-body   { font:11px var(--font-body); fill:var(--gray-1); }
+  .note-body tspan{ font-weight:700; fill:var(--ink); }
+  .cap-arrow   { stroke:var(--gray-2); fill:none; stroke-width:1.5; }
+  .cap-arrow-h { fill:var(--gray-2); }
+  .cap-label   { font:700 10.5px var(--font-body); fill:var(--gray-2); letter-spacing:.16em; }
+  .pyr-cap     { font:11px var(--font-body); fill:var(--gray-note); }
+  .pyr-cap tspan   { font-weight:700; fill:var(--gray-1); }
+  /* ------------------------------ footer ------------------------------ */
+  .source{
+    position:absolute; left:64rem; bottom:20rem; width:1000rem;
+    font-size:10rem; line-height:13rem; color:var(--gray-note);
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:20rem; font-size:10rem; color:var(--gray-note); }
+  .pageno b{ color:var(--ink); font-weight:700; }
+  .hairline{ position:absolute; left:64rem; right:64rem; bottom:38rem; border-top:1px solid var(--rule); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. KICKER · 2. CLAIM TITLE · 3. LEAD -->
+  <div class="kicker" data-slot="kicker"><b>6 |</b> Value Architecture</div>
+  <h1 class="title" data-slot="title">This services company moves from delivering value for money to selling value-added solutions</h1>
+  <p class="lead" data-slot="lead">Margin is won at the top of the pyramid — <span class="em">where price decouples from hours</span> — in three deliberate moves.¹</p>
+
+  <!-- 4. THE DIAGRAM: centered 3-tier triangle + per-tier notes -->
+  <svg class="diagram" viewBox="0 0 1280 720" aria-label="Three-tier value pyramid">
+
+    <!-- TIER 1 (apex). Geometry: triangle apex (515,168) cut at y299. -->
+    <g class="tier-group" id="tier-1">
+      <polygon class="tier tier-top" points="515,168 431,299 599,299"/>
+      <text class="tier-lab lab-in-k" x="515" y="243" text-anchor="middle">Value-added</text>
+      <text class="tier-lab lab-in-k" x="515" y="261" text-anchor="middle">solutions</text>
+      <line class="leader" x1="565" y1="249" x2="800" y2="249"/>
+      <circle class="disc" cx="812" cy="249" r="11"/><text class="disc-n" x="812" y="252" text-anchor="middle">1</text>
+      <text class="note-kick" x="836" y="240">TOP OF THE PYRAMID</text>
+      <text class="note-title" x="836" y="266">Re-price above hours</text>
+      <text class="note-body" x="836" y="284">Move <tspan>38%</tspan> of new contracts to outcome and risk-share</text>
+      <text class="note-body" x="836" y="299">pricing with a gainshare; <tspan>68%</tspan> of pipeline by FY26.¹</text>
+    </g>
+
+    <!-- TIER 2 (middle, EMPHASIS = accent). Cut band y299..y429. -->
+    <g class="tier-group" id="tier-2">
+      <polygon class="tier tier-em" points="431,299 599,299 681,429 349,429"/>
+      <text class="tier-lab lab-in-k" x="515" y="358" text-anchor="middle">Remove duplication</text>
+      <text class="tier-lab lab-in-k" x="515" y="376" text-anchor="middle">and complexity</text>
+      <line class="leader" x1="638" y1="364" x2="800" y2="364"/>
+      <circle class="disc" cx="812" cy="364" r="11"/><text class="disc-n" x="812" y="367" text-anchor="middle">2</text>
+      <text class="note-kick em" x="836" y="355">THE MOVES THAT PAY FOR THE REST</text>
+      <text class="note-title" x="836" y="381">Cut the duplicated middle</text>
+      <text class="note-body" x="836" y="399">Retire the <tspan>1,412 roles</tspan> of overlap between delivery</text>
+      <text class="note-body" x="836" y="414">layers and collapse three hand-offs: <tspan>−180 bps</tspan> SG&amp;A.²</text>
+    </g>
+
+    <!-- TIER 3 (base). Band y429..y560. -->
+    <g class="tier-group" id="tier-3">
+      <polygon class="tier tier-base" points="349,429 681,429 765,560 265,560"/>
+      <text class="tier-lab lab-in-b" x="515" y="491" text-anchor="middle">Deliver value for</text>
+      <text class="tier-lab lab-in-b" x="515" y="509" text-anchor="middle">the money</text>
+      <line class="leader" x1="719" y1="494" x2="800" y2="494"/>
+      <circle class="disc" cx="812" cy="494" r="11"/><text class="disc-n" x="812" y="497" text-anchor="middle">3</text>
+      <text class="note-kick" x="836" y="485">THE UTILITY BASE</text>
+      <text class="note-title" x="836" y="511">Hold the base, not the discounts</text>
+      <text class="note-body" x="836" y="529">Run-rate services priced at market; exit <tspan>212</tspan> below-cost</text>
+      <text class="note-body" x="836" y="544">accounts or convert to pass-through — protects <tspan>245</tspan> renewals.³</text>
+    </g>
+
+    <!-- Escalation arrow (left of pyramid): value moves bottom -> apex -->
+    <g id="escalation">
+      <line class="cap-arrow" x1="228" y1="558" x2="228" y2="188"/>
+      <polygon class="cap-arrow-h" points="228,176 222,192 234,192"/>
+      <text class="cap-label" x="210" y="372" transform="rotate(-90 210 372)" text-anchor="middle">VALUE ESCALATION</text>
+    </g>
+
+    <!-- Pyramid caption: the from->to the title claims -->
+    <text class="pyr-cap" x="515" y="606" text-anchor="middle">from <tspan>value-for-money delivery</tspan>  →  to <tspan>value-added solutions</tspan></text>
+  </svg>
+
+  <!-- 5. FOOTER -->
+  <div class="hairline"></div>
+  <div class="source" data-slot="source-line">Source: company management data, FY25 plan and service-line P&amp;Ls · n = 11 service lines, 24 repriced contracts<sup>1</sup> · price/mix bridge, two-year view<sup>2</sup><sup>3</sup></div>
+  <div class="pageno"><b>12</b> | Strategy &amp; Operations</div>
+</div>
+</body>
+</html>

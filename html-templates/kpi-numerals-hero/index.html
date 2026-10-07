@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>kpi-numerals-hero — purple claim title + section word + row of giant near-black KPI numerals with purple-keyword captions + footnotes + brand chevron (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  kpi-numerals-hero  ·  family kpi-numerals
+  Evidence: accenture__accenture_accenture_investor_analyst_conference_2022
+  p14–p16 ("Highlights of our 360° value…"): purple claim title across the
+  top, one section word (Diversity / People / Communities & Sustainability)
+  at the left, then 3–4 oversized near-black numerals in columns, each with a
+  tiny caption whose keywords carry purple (and occasionally magenta)
+  bolding, superscript footnote markers, footnote block above the footer,
+  brand chevron bottom-left. Read from
+  sw_sheets/accenture__accenture_accenture_investor_analyst_conference_2022_s01.jpg
+  row0/col3–4 and row1/col0. Review §type: "giant KPI numerals ≈50–60pt
+  near-black with a micro-caption beneath".
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL at the current viewport
+  fit; every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+  ----------------------------------------------------------------------------
+  DATA MODEL: leading wide column (a RANGE, two stacked numerals) + 3 single-
+  numeral columns. Number baseline y188; captions start y258 under the numbers;
+  column dividers run y148→y330. The field below y360 stays intentionally
+  EMPTY — negative space is the device (the deck's stat rows float over a
+  quiet gradient field). Do not fill it.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Two-hue discipline per reviews/accenture__...investor_analyst...md §color:
+     violet = Accenture's own figures, magenta = the emphasis word, greys +
+     near-black elsewhere. Violet sampled from p14/p11 title pixels (band
+     #6A40A0–#A880D8 over JPEG, anti-aliased): --accent is the midpoint of
+     that band, remappable to the brand hex. */
+  :root{
+    --bg:         #FFFFFF;
+    --field-1:    #F7F7FA;    /* faint silver field (gradient stops) */
+    --field-2:    #EDEDF2;
+    --ink:        #1A1A1A;    /* giant numerals — near-black, per review */
+    --gray-1:     #595959;    /* captions */
+    --gray-2:     #7D7D7D;    /* footnotes, footer */
+    --rule:       #D9D9D9;
+    --accent:     #6A3FB5;    /* brand violet — titles, keywords, chevron */
+    --accent-ink: #4B2A91;    /* keyword bold on white ≥4.5:1 (~8.6:1) */
+    --magenta:    #B01769;    /* the single emphasis word; unverified hex,
+                                 review describes magenta keyword emphasis */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  *{ padding:0; box-sizing:border-box; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+  /* faint silver brand field: two soft radial washes, no imagery */
+  .wash-a{ position:absolute; left:0; top:0; width:1280rem; height:720rem;
+           background:radial-gradient(900rem 520rem at 78% 30%, var(--field-2) 0%, var(--bg) 68%); }
+
+  /* ---------------- title zone ---------------- */
+  .title{                               /* slot 1 — purple claim, ≤2 lines */
+    position:absolute; left:76rem; top:40rem; width:1104rem;
+    font-family:var(--font-display); font-size:28rem; font-weight:400;
+    line-height:1.18; color:var(--accent); letter-spacing:-.2rem;
+  }
+
+  /* ---------------- section word (left rail) ---------------- */
+  .section{                             /* slot 2 */
+    position:absolute; left:76rem; top:152rem; width:220rem;
+    font-family:var(--font-display); font-size:23rem; font-weight:400;
+    line-height:1.25; color:var(--ink);
+  }
+
+  /* ---------------- numeral row ---------------- */
+  .row{                                 /* slot 3 container */
+    position:absolute; left:316rem; top:148rem; width:888rem; height:206rem;
+    display:flex;
+  }
+  .col{ flex:1 1 0; min-width:0; padding:0 20rem; }
+  .col + .col{ border-left:1px solid var(--rule); }
+  .col.lead{ flex:0 0 180rem; padding-left:0; }
+  .col .range{                          /* leading column: "44% to / 47%¹" */
+    font-family:var(--font-display); color:var(--ink);
+  }
+  .col .range .pre{ font-size:26rem; font-weight:700; letter-spacing:-.4rem; }
+  .col .range .big{ display:block; font-size:58rem; font-weight:700;
+                    letter-spacing:-1.6rem; line-height:1.0; }
+  .col .num{                            /* single numeral */
+    font-family:var(--font-display); font-size:58rem; font-weight:700;
+    letter-spacing:-1.6rem; line-height:1.0; color:var(--ink);
+    white-space:nowrap;
+  }
+  .col .num sup, .col .range sup{       /* footnote markers */
+    font-size:22rem; font-weight:700; color:var(--accent-ink);
+    letter-spacing:0; vertical-align:super; line-height:0;
+  }
+  .caps{                                /* caption block, under the numbers */
+    position:absolute; left:316rem; top:264rem; width:888rem; display:flex;
+  }
+  .caps .cc{ flex:1 1 0; min-width:0; padding:0 20rem;
+             font-size:11rem; line-height:1.4; color:var(--gray-1); }
+  .caps .cc.lead{ flex:0 0 180rem; padding-left:0; }
+  .caps .cc + .cc{ border-left:1px solid var(--rule); }
+  .caps .kw{ font-weight:700; color:var(--accent-ink); }
+  .caps .mag{ font-weight:700; color:var(--magenta); }
+  .caps .fn{ color:var(--accent-ink); font-size:8.5rem; vertical-align:super; }
+
+  /* ---------------- footnotes + brand chevron ---------------- */
+  .foot{                                /* slot: footnote block */
+    position:absolute; left:76rem; top:640rem; width:860rem;
+    font-size:9.5rem; line-height:1.45; color:var(--gray-2);
+  }
+  .foot sup{ font-size:7.5rem; vertical-align:super; }
+  .chev{ position:absolute; left:26rem; top:686rem; }
+  .frule{ position:absolute; left:76rem; top:672rem; width:1128rem; height:1px;
+          background:var(--rule); }
+
+  /* ---------------- footer ---------------- */
+  .source{                              /* slot 12 */
+    position:absolute; left:76rem; top:696rem; width:900rem;
+    font-size:10.5rem; color:var(--gray-2);
+  }
+  .pageno{                              /* slot 13 */
+    position:absolute; right:76rem; top:695rem;
+    font-size:11.5rem; color:var(--gray-2);
+  }
+  .pageno b{ color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="wash-a"></div>
+
+  <div class="title">Three in four stakeholders can already point to the 360° model working — and one number proves the rest</div>
+
+  <div class="section">Diversity &amp; inclusion</div>
+
+  <div class="row">
+    <div class="col lead"><div class="range"><span class="pre">44% to</span><span class="big">47%<sup>1</sup></span></div></div>
+    <div class="col"><div class="num">75%<sup>1</sup></div></div>
+    <div class="col"><div class="num">100%<sup>2</sup></div></div>
+    <div class="col"><div class="num">32%<sup>1</sup></div></div>
+  </div>
+  <div class="caps">
+    <div class="cc lead"><span class="kw">gender diversity</span> on a 100% pay-equity<span class="fn">3</span> baseline since FY20<sup>1</sup></div>
+    <div class="cc"><span class="mag">accessibility</span> of our global, high-traffic internal platforms<span class="fn">1</span></div>
+    <div class="cc"><span class="kw">same-sex benefits</span> offered to all employees, worldwide<span class="fn">2</span></div>
+    <div class="cc"><span class="kw">diverse supplier</span> spend across the US, FY21<span class="fn">1</span></div>
+  </div>
+
+  <div class="frule"></div>
+  <div class="foot"><sup>1</sup> Beginning of FY20 through FY22, self-reported by operating groups; <sup>2</sup> where legally permitted in all operating countries; <sup>3</sup> where pay-equity reporting is permitted by local law.</div>
+  <svg class="chev" width="26" height="22" viewBox="0 0 26 22" aria-hidden="true"><polyline points="6,2 20,11 6,20" fill="none" stroke="#6A3FB5" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <div class="source">Source: Accenture People and Supplier Diversity dashboards, FY22 Q2 close; platform access audit by third-party assessor, March 2022; supplier spend per certified diversity registry.</div>
+  <div class="pageno"><b>14</b> | STAKEHOLDER VALUE</div>
+
+</div>
+</body>
+</html>

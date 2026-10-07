@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>donut-claim-center — multi-segment donut whose hole carries the argument sentence, radial segment labels, spend-vs-reach bridge rail (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  donut-claim-center  ·  family donut (donut with claim in the hole)
+  Evidence: accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o
+            p16/p21/p29 — "donut-with-center-claim (center holds the sentence,
+            donut is argumentative not decorative)" per
+            reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md,
+            single-hue lightness-token palette, grey reserved for "the
+            alternative", NOTE/SOURCE footer contract, purple chevron glyph.
+            Radial segment labels also evidenced by the moneyball deck p24
+            (multi-segment donut with radial labels).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280,100vh/720)} maps 1rem ==
+  1 stage pixel; inside the inline SVG 1 user unit == 1 stage px (no viewBox).
+  ----------------------------------------------------------------------------
+  DATA ARRAY — swap the NUMBERS, not the geometry:
+      SEGMENTS = [                                // allocation % of spend, SUMS TO 100
+        { name:"Linear TV",       value:31, reach:41 },
+        { name:"CTV",             value:26, reach:16 },
+        { name:"Social video",    value:18, reach:21 },
+        { name:"Search & display",value:15, reach:13 },
+        { name:"Audio & other",   value:10, reach: 9 }
+      ];
+      // "reach" feeds the right-rail bars + the small radial labels only.
+    Ring geometry:  centre (418, 398), outer radius 176, ring stroke 64
+      → circle r = 144, circumference C = 2π·144 = 904.779
+      segment i:  len_i   = value_i/100 × C
+                  offset_i = −(cumulative value before i)/100 × C
+      dasharray "len C", dashoffset = offset_i, group rotated −90° about the
+      centre so segment 1 starts at 12 o'clock, running clockwise.
+      Len/offset for the placeholder data:
+        1  Linear TV        len 280.481  offset     0
+        2  CTV              len 235.242  offset −280.481
+        3  Social video     len 162.860  offset −515.724
+        4  Search & display len 135.717  offset −678.584
+        5  Audio & other    len  90.478  offset −814.301
+      Radial labels sit on the mid-angle ray of each segment (leader line
+      r 182 → elbow r 205 → 28px horizontal stub); recompute from mid-angle
+      = 360° × (start_i + value_i/2)/100 measured from 12 o'clock clockwise.
+      Right-rail rows: bar width = value × 1.75 px (scale 175 px = 100%).
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript, no external requests.
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #1A1A1A;   /* body text, titles, ring labels             */
+    --accent:    #7500C0;   /* brand violet — sampled from the source band */
+    --accent-2:  #8E24EA;   /* review-token mid violet                     */
+    --accent-3:  #A45CF0;   /* review-token light violet                   */
+    --lav-1:     #D9C6F4;   /* review lavender 1                           */
+    --lav-2:     #E7D9F8;   /* review lavender 2 (wash / bars)             */
+    --wash:      #F5F1FB;   /* implication band fill                       */
+    --gray-1:    #7D7D7D;   /* secondary text, "the alternative"           */
+    --gray-2:    #B8B8B8;   /* grey residual series fill                   */
+    --rule:      #E3E3E3;   /* hairlines                                   */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#16121C; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+
+  /* ---- slot: kicker chip (white-on-violet pill) ---- */
+  .chip{ position:absolute; left:64rem; top:44rem; height:30rem; line-height:30rem; padding:0 16rem;
+         background:var(--accent); border-radius:15rem;
+         font-family:var(--font-display); font-weight:700; font-size:11rem; letter-spacing:0.11em;
+         text-transform:uppercase; color:#FFFFFF; }
+
+  /* ---- slot: claim title (sentence case, two lines max) ---- */
+  .claim{ position:absolute; left:64rem; top:96rem; width:1050rem;
+          font-family:var(--font-display); font-weight:700; font-size:26rem; line-height:33rem;
+          color:var(--ink); }
+  .claim .hi{ color:var(--accent); }
+
+  /* ---- slot: right-rail text blocks ---- */
+  .rail-head{ position:absolute; left:792rem; top:192rem; font-size:11rem; letter-spacing:0.09em;
+              text-transform:uppercase; color:var(--gray-1); font-weight:700; }
+  .rail-legend{ position:absolute; left:792rem; top:209rem; font-size:10.5rem; color:var(--gray-1); }
+  .rail-legend b{ color:var(--accent); font-weight:700; }
+  .impl{ position:absolute; left:792rem; top:486rem; width:386rem;
+         border-left:3px solid var(--accent); background:var(--wash); padding:12rem 16rem; }
+  .impl h3{ font-size:10.5rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--accent); margin-bottom:6rem; }
+  .impl p{ font-size:13rem; line-height:17.5rem; color:var(--ink); }
+  .impl sup{ font-size:9rem; }
+
+  /* ---- slot: footer — chevron, source, note, page ---- */
+  .footer{ position:absolute; left:64rem; right:64rem; top:674rem; display:flex; align-items:flex-start;
+           border-top:1px solid var(--rule); padding-top:9rem; gap:14rem;
+           font-size:11rem; color:var(--gray-1); line-height:14rem; }
+  .footer svg{ flex:0 0 auto; margin-top:1rem; }
+  .footer .src{ max-width:720rem; }
+  .footer .note{ flex:1; text-align:left; }
+  .footer .pg{ white-space:nowrap; font-weight:700; color:var(--ink); letter-spacing:0.04em; }
+  sup{ font-size:9rem; }
+</style>
+</head>
+<body>
+<section class="stage" role="img" aria-label="One large five-segment donut of ad-spend allocation with the argument sentence centred in its hole, radial segment labels, and a right-hand rail comparing each channel's share of spend with its share of reach">
+
+  <header>
+    <span class="chip">Case study — channel allocation</span>
+    <h1 class="claim">Linear TV and CTV carry most reach, but claim <span class="hi">just a third</span> of the budget</h1>
+  </header>
+
+  <svg class="chart" aria-hidden="true" focusable="false">
+
+    <!-- ================= the donut ================= -->
+    <!-- 5 segment circles, dasharray "len C", offsets advance clockwise -->
+    <g transform="rotate(-90 418 398)">
+      <circle cx="418" cy="398" r="144" fill="none" stroke="var(--gray-3, #EEEEEE)" stroke-width="64"/>
+      <circle cx="418" cy="398" r="144" fill="none" stroke="#7500C0" stroke-width="64" stroke-dasharray="280.481 904.779" stroke-dashoffset="0"/>
+      <circle cx="418" cy="398" r="144" fill="none" stroke="#8E24EA" stroke-width="64" stroke-dasharray="235.242 904.779" stroke-dashoffset="-280.481"/>
+      <circle cx="418" cy="398" r="144" fill="none" stroke="#A45CF0" stroke-width="64" stroke-dasharray="162.860 904.779" stroke-dashoffset="-515.724"/>
+      <circle cx="418" cy="398" r="144" fill="none" stroke="#D9C6F4" stroke-width="64" stroke-dasharray="135.717 904.779" stroke-dashoffset="-678.584"/>
+      <circle cx="418" cy="398" r="144" fill="none" stroke="#B8B8B8" stroke-width="64" stroke-dasharray="90.478 904.779" stroke-dashoffset="-814.301"/>
+    </g>
+
+    <!-- value labels inside the ring at segment mids (white on dark, ink on light) -->
+    <text x="537.1" y="322.1" text-anchor="middle" font-weight="700" font-size="13" fill="#FFFFFF">31%</text>
+    <text x="471.0" y="536.9" text-anchor="middle" font-weight="700" font-size="13" fill="#FFFFFF">26%</text>
+    <text x="296.4" y="480.2" text-anchor="middle" font-weight="700" font-size="12.5" fill="#1A1A1A">18%</text>
+    <text x="289.7" y="337.6" text-anchor="middle" font-weight="700" font-size="12.5" fill="#1A1A1A">15%</text>
+    <text x="373.5" y="266.0" text-anchor="middle" font-weight="700" font-size="12.5" fill="#1A1A1A">10%</text>
+
+    <!-- THE CLAIM IN THE HOLE — an argument sentence, not a bare numeral -->
+    <text x="418" y="366" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="10" letter-spacing="0.16em" fill="var(--gray-1)">THE GAP</text>
+    <text x="418" y="390" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="15" fill="var(--ink)">Reach lives</text>
+    <text x="418" y="408" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="15" fill="var(--ink)">ahead of the</text>
+    <text x="418" y="426" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="15" fill="var(--ink)">budget line</text>
+
+    <!-- radial segment labels: leader r182 → elbow r205 → 28px stub -->
+    <g stroke="var(--gray-1)" stroke-width="1" fill="none">
+      <polyline points="568.5,295.7 587.6,282.8 615.6,282.8"/>
+      <polyline points="485.0,567.2 493.5,588.6 521.5,588.6"/>
+      <polyline points="264.3,495.5 244.9,507.8 216.9,507.8"/>
+      <polyline points="255.8,315.4 235.3,304.9 207.3,304.9"/>
+      <polyline points="361.8,224.9 354.7,203.0 326.7,203.0"/>
+    </g>
+    <g font-family="var(--font-display)">
+      <text x="622" y="279" font-weight="700" font-size="12" fill="var(--ink)">LINEAR TV</text>
+      <text x="622" y="294" font-size="10.5" fill="var(--gray-1)">reach 41%</text>
+      <text x="528" y="586" font-weight="700" font-size="12" fill="var(--ink)">CTV</text>
+      <text x="528" y="601" font-size="10.5" fill="var(--gray-1)">reach 16%</text>
+      <text x="211" y="505" text-anchor="end" font-weight="700" font-size="12" fill="var(--ink)">SOCIAL VIDEO</text>
+      <text x="211" y="520" text-anchor="end" font-size="10.5" fill="var(--gray-1)">reach 21%</text>
+      <text x="201" y="302" text-anchor="end" font-weight="700" font-size="12" fill="var(--ink)">SEARCH &amp; DISPLAY</text>
+      <text x="201" y="317" text-anchor="end" font-size="10.5" fill="var(--gray-1)">reach 13%</text>
+      <text x="321" y="200" text-anchor="end" font-weight="700" font-size="12" fill="var(--ink)">AUDIO &amp; OTHER</text>
+      <text x="321" y="215" text-anchor="end" font-size="10.5" fill="var(--gray-1)">reach 9%</text>
+    </g>
+
+    <!-- ================= right rail: spend vs reach ================= -->
+    <!-- header -->
+    <!-- NOTE: no HTML sup tags inside SVG — use the ¹ literal, a </sup> here would close the SVG island -->
+    <text x="792" y="196" font-size="11" letter-spacing="0.09em" text-transform="uppercase" font-weight="700" fill="var(--gray-1)">SPEND VS. REACH — SHARE OF TOTAL¹</text>
+
+    <!-- rows i: baseline y = 232 + i·54 ; name col 792..960 ; bars x 966, 175 px = 100% -->
+    <g font-family="var(--font-body)">
+      <!-- row 1 · Linear TV  spend 31 / reach 41 / delta +10 -->
+      <text x="792" y="250" font-weight="700" font-size="13" fill="var(--ink)">Linear TV</text>
+      <rect x="966" y="234" width="54" height="8" fill="var(--lav-1)"/>
+      <text x="1026" y="242" font-size="10.5" fill="var(--gray-1)">31%</text>
+      <rect x="966" y="247" width="72" height="8" fill="var(--accent)"/>
+      <text x="1044" y="256" font-size="10.5" fill="var(--accent)">41%</text>
+      <rect x="1160" y="236" width="52" height="15" rx="7.5" fill="var(--lav-2)"/>
+      <text x="1186" y="247" text-anchor="middle" font-weight="700" font-size="10.5" fill="var(--accent)">+10 pt</text>
+      <line x1="792" x2="1216" y1="266" y2="266" stroke="var(--rule)" stroke-width="1"/>
+
+      <!-- row 2 · CTV  26 / 16 / −10 -->
+      <text x="792" y="304" font-weight="700" font-size="13" fill="var(--ink)">CTV</text>
+      <rect x="966" y="288" width="46" height="8" fill="var(--lav-1)"/>
+      <text x="1018" y="296" font-size="10.5" fill="var(--gray-1)">26%</text>
+      <rect x="966" y="301" width="28" height="8" fill="var(--accent)"/>
+      <text x="1000" y="310" font-size="10.5" fill="var(--accent)">16%</text>
+      <rect x="1160" y="290" width="52" height="15" rx="7.5" fill="var(--lav-2)"/>
+      <text x="1186" y="301" text-anchor="middle" font-weight="700" font-size="10.5" fill="var(--gray-1)">−10 pt</text>
+      <line x1="792" x2="1216" y1="320" y2="320" stroke="var(--rule)" stroke-width="1"/>
+
+      <!-- row 3 · Social video  18 / 21 / +3 -->
+      <text x="792" y="358" font-weight="700" font-size="13" fill="var(--ink)">Social video</text>
+      <rect x="966" y="342" width="32" height="8" fill="var(--lav-1)"/>
+      <text x="1004" y="350" font-size="10.5" fill="var(--gray-1)">18%</text>
+      <rect x="966" y="355" width="37" height="8" fill="var(--accent)"/>
+      <text x="1009" y="364" font-size="10.5" fill="var(--accent)">21%</text>
+      <rect x="1160" y="344" width="52" height="15" rx="7.5" fill="var(--lav-2)"/>
+      <text x="1186" y="355" text-anchor="middle" font-weight="700" font-size="10.5" fill="var(--accent)">+3 pt</text>
+      <line x1="792" x2="1216" y1="374" y2="374" stroke="var(--rule)" stroke-width="1"/>
+
+      <!-- row 4 · Search & display  15 / 13 / −2 -->
+      <text x="792" y="412" font-weight="700" font-size="13" fill="var(--ink)">Search &amp; display</text>
+      <rect x="966" y="396" width="26" height="8" fill="var(--lav-1)"/>
+      <text x="998" y="404" font-size="10.5" fill="var(--gray-1)">15%</text>
+      <rect x="966" y="409" width="23" height="8" fill="var(--accent)"/>
+      <text x="995" y="418" font-size="10.5" fill="var(--accent)">13%</text>
+      <rect x="1160" y="398" width="52" height="15" rx="7.5" fill="var(--lav-2)"/>
+      <text x="1186" y="409" text-anchor="middle" font-weight="700" font-size="10.5" fill="var(--gray-1)">−2 pt</text>
+      <line x1="792" x2="1216" y1="428" y2="428" stroke="var(--rule)" stroke-width="1"/>
+
+      <!-- row 5 · Audio & other  10 / 9 / −1 -->
+      <text x="792" y="466" font-weight="700" font-size="13" fill="var(--ink)">Audio &amp; other</text>
+      <rect x="966" y="450" width="18" height="8" fill="var(--lav-1)"/>
+      <text x="990" y="458" font-size="10.5" fill="var(--gray-1)">10%</text>
+      <rect x="966" y="463" width="16" height="8" fill="var(--accent)"/>
+      <text x="988" y="472" font-size="10.5" fill="var(--accent)">9%</text>
+      <rect x="1160" y="452" width="52" height="15" rx="7.5" fill="var(--lav-2)"/>
+      <text x="1186" y="463" text-anchor="middle" font-weight="700" font-size="10.5" fill="var(--gray-1)">−1 pt</text>
+      <line x1="792" x2="1216" y1="482" y2="482" stroke="var(--rule)" stroke-width="1"/>
+    </g>
+  </svg>
+
+  <div class="impl">
+    <h3>Implication</h3>
+    <p>Moving 10 pts of Search &amp; display budget into Linear TV + CTV buys roughly 1.3&times; incremental reach at flat total spend<sup>2</sup> — reach is bought, not made.</p>
+  </div>
+
+  <footer class="footer">
+    <svg width="14" height="14" aria-hidden="true"><polygon points="0,7 10,0 10,14" fill="var(--accent)"/></svg>
+    <span class="src">Source: Accenture analysis; media consumption panel, n&nbsp;=&nbsp;2,420 adults, March 2021<sup>1</sup></span>
+    <span class="note">Note: allocation = share of measured ad spend; reach = weekly channel reach. Implication figures modelled, not measured<sup>2</sup>.</span>
+    <span class="pg">1 | ALLOCATION</span>
+  </footer>
+
+</section>
+</body>
+</html>

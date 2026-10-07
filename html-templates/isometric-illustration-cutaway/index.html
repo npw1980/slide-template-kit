@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>isometric-illustration-cutaway — labeled 3D cutaway of a reference stack (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  isometric-illustration-cutaway  ·  family isometric-illustration
+  Evidence (see MANUAL.md -> SOURCE):
+    Catalog S1009 (catalog_101-134.csv, "technical-isometric-diagram"),
+    rendered on corpus/sheets/sheet_101.jpg frame 9: a cutaway isometric
+    building drawn in true 3D with ray lines + colored callout labels
+    ("SUMMER SUN 70°", "WINTER SUN 42°", "Solar PV @ 42°", "Thermal mass",
+    "Cross ventilation", "High-performance glazing / insulation") pinned to
+    the surfaces. Same family archetype on S1476 ("diagram-isometric").
+    Device: an object as the exhibit, labels pinned to surfaces by leaders —
+    the diagram is the payload, not decoration.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS; 1rem == 1 stage px via the html rule; coords 1:1 with
+  MANUAL.md. SELF-CONTAINED: inline CSS + inline SVG, system font stacks,
+  no images, no webfonts, no @import, no JS, no network calls.
+  ----------------------------------------------------------------------------
+  GEOMETRY: true 2:1 dimetric. Inside the <g id="scene" transform="translate(
+  620,378)">, every point is screen(x,y,z) = (x−y, (x+y)/2 − z): x = depth
+  axis to the lower right, y = depth axis to the lower left, z = height.
+  Shell + boxes are the only geometry; callouts are stage-space text pinned
+  to their anchor by a leader line. Add a feature: copy one <g class="box">,
+  swap its 3 face polygons, add the callout group; nothing reflows (see
+  MANUAL SLOTS/FILL). All label text is stage-space <text>, not SVG-in-SVG.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     No palette anchor exists for the catalog-sourced pages (S1009/S1476
+     have no reviews/*.md) — this template therefore uses a neutral
+     consulting default: one accent + gray ramp per DESIGN_PLAYBOOK.
+     The source page used 4+ label hues; per the one-accent rule, ONE
+     feature is accent-pinned and every other element renders in gray.
+       #1F1F1F on #FFF = 15.9:1   #58595B = 7.0:1   #757575 = 4.9:1
+       #7C1148-ish accent avoided; #2E4374 on #FFF = 8.8:1 (callout)
+     ================================================================= */
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #1F1F1F;
+    --accent:  #2E4374;   /* single emphasis hue: emphasized feature + its label */
+    --accent-1:#DDE4F0;   /* one lightness of accent: washes / arrow fill */
+    --gray-1:  #4A4F55;   /* body */
+    --gray-2:  #6E7478;   /* secondary labels */
+    --gray-3:  #9AA0A6;   /* faint parts, source */
+    --gray-4:  #D6D9DC;   /* box faces */
+    --gray-5:  #EDEEEF;   /* floor / page washes */
+    --rule:    #D9D9D9;
+    --font-body: Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); } /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#0E1A22; font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink);
+  }
+  svg{ position:absolute; inset:0; width:1280rem; height:720rem; }
+
+  .t-kicker{ font:700 11px var(--font-body); letter-spacing:.14em; fill:var(--gray-2); }
+  .t-h1   { font:700 30px var(--font-body); letter-spacing:-.01em; fill:var(--ink); }
+  .t-sub  { font:12.5px var(--font-body); fill:var(--gray-2); }
+  .t-lab  { font:700 12.5px var(--font-body); fill:var(--gray-1); }
+  .t-lab-a{ font:700 12.5px var(--font-body); fill:var(--accent); }
+  .t-micro{ font:10.5px var(--font-body); fill:var(--gray-2); }
+  .t-src  { font:10.5px var(--font-body); fill:var(--gray-3); }
+  .t-page { font:700 10.5px var(--font-body); letter-spacing:.08em; fill:var(--gray-3); }
+
+  /* faces: 3-tone shading is a face convention, NOT extra hues */
+  .f-top { fill:#FFFFFF; stroke:var(--gray-3); stroke-width:1.4; }
+  .f-r   { fill:var(--gray-4); stroke:var(--gray-3); stroke-width:1.4; }
+  .f-l   { fill:var(--gray-5); stroke:var(--gray-3); stroke-width:1.4; }
+  .a-top { fill:var(--accent-1); stroke:var(--accent); stroke-width:1.6; }
+  .a-r   { fill:#C3CCE0; stroke:var(--accent); stroke-width:1.6; }
+  .a-l   { fill:#E6EBF5; stroke:var(--accent); stroke-width:1.6; }
+  .leader{ stroke:var(--gray-2); stroke-width:1; fill:none; }
+  .leader-a{ stroke:var(--accent); stroke-width:1.2; fill:none; }
+  .dash  { stroke-dasharray:4 3; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <svg viewBox="0 0 1280 720" role="img"
+       aria-label="Cutaway isometric diagram of a reference event stack: shell with four stacked layers and two side services, labeled.">
+
+    <!-- ================= header ================= -->
+    <text class="t-kicker" x="64" y="60">EXHIBIT 2 · TARGET ARCHITECTURE</text>
+    <!-- title gate: 9 words / 1 line -->
+    <text class="t-h1" x="64" y="104">Real-time ingest replaces the nightly batch</text>
+    <text class="t-sub" x="64" y="130">Four in-shell layers + two side services — everything pinned to surfaces it actually lives on (1)</text>
+
+    <!-- ================= the scene =================
+         scene-local coords: screen(x,y,z) = (x−y, (x+y)/2 − z), stage origin
+         (620,378). Everything below is derived from that one mapping. -->
+    <g id="scene" transform="translate(620,378)">
+
+      <!-- ground shadow slab -->
+      <polygon points="-59,-115 201,15 41,121 -193,-11" fill="var(--gray-5)" stroke="var(--rule)" stroke-width="1"/>
+
+      <!-- ---------- shell walls (two back walls, cut-away open front) ---------- -->
+      <!-- back-left wall (along D–A), h=78 -->
+      <polygon class="f-l" points="-205,-18 -45,-98 -45,-176 -205,-96"/>
+      <!-- back-right wall (along A–B), h=96 -->
+      <polygon class="f-r" points="-45,-98 195,22 195,-74 -45,-194"/>
+      <!-- floor: A B C D -->
+      <polygon points="-45,-98 195,22 35,103 -205,-18" fill="#FAFAFB" stroke="var(--gray-3)" stroke-width="1.4"/>
+
+      <!-- dashed roofline hint (the roof is cut away) -->
+      <polyline class="leader dash" points="-205,-96 -45,-176 -45,-194 195,-74"/>
+
+      <!-- ---------- four stacked layer plates inside the shell ---------- -->
+      <!-- plate z-levels at 20 / 38 / 56 / 74, drawn as flat iso rects -->
+      <polygon class="f-l" points="-96,-76 -8,-32 -56,-8 -144,-52"/>   <!-- L1 -->
+      <polygon class="f-l" points="-88,-80 0,-36 -48,-12 -136,-56"/>   <!-- L2 -->
+      <polygon class="f-l" points="-80,-84 8,-40 -40,-16 -128,-60"/>   <!-- L3 -->
+      <polygon class="f-l" points="-72,-88 16,-44 -32,-20 -120,-64"/>  <!-- L4 -->
+      <polygon points="-72,-88 16,-44 -32,-20 -120,-64" fill="none" stroke="var(--gray-2)" stroke-width="1.6" class="dash"/>
+
+      <!-- side service box A: streaming broker (gray) -->
+      <g class="box">
+        <polygon class="f-top" points="-30,-113 16,-90 -18,-73 -64,-96"/>
+        <polygon class="f-r"   points="16,-90 16,-54 -18,-37 -18,-73"/>
+        <polygon class="f-l"   points="-64,-96 -18,-73 -18,-37 -64,-60"/>
+      </g>
+      <!-- side service box B: state store (gray) -->
+      <g class="box">
+        <polygon class="f-top" points="-78,-39 -38,-19 -82,3 -122,-17"/>
+        <polygon class="f-r"   points="-38,-19 -38,17 -82,23 -82,-3"/>
+        <polygon class="f-l"   points="-122,-17 -82,-3 -82,23 -122,3"/>
+      </g>
+
+      <!-- EMPHASIZED feature: the pipeline node sits inside the stack — accent face -->
+      <g class="box">
+        <polygon class="a-top" points="20,-10 86,23 36,48 -30,15"/>
+        <polygon class="a-r"   points="86,23 86,57 36,82 36,48"/>
+        <polygon class="a-l"   points="-30,15 36,48 36,82 -30,49"/>
+        <polygon points="20,-10 86,23 36,48 -30,15" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      </g>
+
+      <!-- inbound/outbound data rays (like S1009's sun rays), gray -->
+      <g stroke="var(--gray-2)" stroke-width="2" fill="none">
+        <line class="dash" x1="-150" y1="-215" x2="-72" y2="-92"/>
+        <line class="dash" x1="-118" y1="-228" x2="-58" y2="-96"/>
+      </g>
+      <polygon points="-72,-92 -58,-96 -66,-108" fill="var(--gray-2)"/>
+
+      <!-- floor-plane arrows between layers (2:1 iso, one direction each) -->
+      <g stroke="var(--gray-2)" stroke-width="2" fill="none">
+        <line x1="-144" y1="-52" x2="-108" y2="-34"/>
+        <line x1="-128" y1="-60" x2="-92" y2="-42"/>
+      </g>
+      <polygon points="-108,-34 -116,-46 -96,-40" fill="var(--gray-2)"/>
+
+      <!-- exit flow out the open front (accent: the thing that changed) -->
+      <line class="leader-a" x1="36" y1="82" x2="118" y2="123" stroke-width="2.4"/>
+      <polygon points="118,123 102,124 104,112" fill="var(--accent)"/>
+    </g>
+
+    <!-- ================= callouts (stage space, pinned by leaders) =================
+         ONE accent callout (the emphasized pipeline node) + gray for the rest.
+         To rename: only the <text> changes. To add: copy one <g class="call">
+         block, repoint leader end to a surface point of the scene. -->
+
+    <!-- C1: four stacked layers -->
+    <g class="call">
+      <polyline class="leader" points="447,258 561,312 570,306"/>
+      <circle cx="570" cy="306" r="2.5" fill="var(--gray-2)"/>
+      <text class="t-lab" x="318" y="252">Four stacked layers</text>
+      <text class="t-micro" x="318" y="268">1. ingest · 2. normalize · 3. enrich · 4. serve</text>
+    </g>
+    <!-- C2: streaming broker -->
+    <g class="call">
+      <line class="leader" x1="610" y1="176" x2="612" y2="278"/>
+      <circle cx="612" cy="278" r="2.5" fill="var(--gray-2)"/>
+      <text class="t-lab" x="610" y="166">Streaming broker · dual-zone</text>
+    </g>
+    <!-- C3: state store -->
+    <g class="call">
+      <polyline class="leader" points="892,254 794,324 742,345"/>
+      <circle cx="742" cy="345" r="2.5" fill="var(--gray-2)"/>
+      <text class="t-lab" x="892" y="248">State store (exactly-once)</text>
+      <text class="t-micro" x="892" y="264">replays 30 min without re-drain</text>
+    </g>
+    <!-- C4: emphasized pipeline node — the ONLY accent callout -->
+    <g class="call">
+      <polyline class="leader-a" points="935,415 819,433 654,429"/>
+      <circle cx="654" cy="429" r="3" fill="var(--accent)"/>
+      <text class="t-lab-a" x="935" y="409">Stateful pipeline — the changed box</text>
+      <text class="t-micro" x="935" y="425">event-time joins, 50 ms p95</text>
+    </g>
+    <!-- C5: exit to downstream -->
+    <g class="call">
+      <line class="leader" x1="818" y1="510" x2="748" y2="501"/>
+      <circle cx="748" cy="501" r="2.5" fill="var(--gray-2)"/>
+      <text class="t-lab" x="818" y="514">Downstream: BI, CRM, CDP — same second, same number</text>
+    </g>
+    <!-- C6: sun-style rays = the trigger -->
+    <g class="call">
+      <line class="leader" x1="330" y1="180" x2="498" y2="174"/>
+      <circle cx="498" cy="174" r="2.5" fill="var(--gray-2)"/>
+      <text class="t-lab" x="150" y="174">Trigger: event at the edge, not the ETL window</text>
+    </g>
+
+    <!-- ================= footer anatomy ================= -->
+    <text class="t-src" x="64" y="694">Source: target-state workshop synthesis, 2026-09; latency figures from the p95 service dashboard, weeks 36–40. (1) Diagram is illustrative of the reference stack, not the current deployment.</text>
+    <text class="t-page" x="1216" y="694" text-anchor="end">4 | ARCHITECTURE</text>
+  </svg>
+</div>
+</body>
+</html>

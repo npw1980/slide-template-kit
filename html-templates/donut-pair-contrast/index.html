@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>donut-pair-contrast — dual donut "market disconnect" with centre gap numeral, arrows, one accent arc per ring (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  donut-pair-contrast  ·  family donut (dual-donut contrast page)
+  Evidence: accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019
+            p23 (two grey rings, red share arcs, giant centre numerals 20% / 8%,
+            "12% Market Disconnect" gap block with outward arrows, red/black
+            all-caps action title with one red clause) — the deck's signature
+            device per reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019.md
+            ("Donut-pair current vs optimal with delta arrow … the deck's
+            signature device"; variant also p10).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length is a 1:1 stage-pixel coordinate as MANUAL.md
+  quotes. Inside the inline SVG, 1 user unit == 1 stage px (no viewBox).
+  ----------------------------------------------------------------------------
+  DATA ARRAY — swap the NUMBERS, not the geometry:
+      LEFT_SHARE  = 20;   // % shown as the accent arc on the LEFT ring
+      RIGHT_SHARE = 8;    // % shown as the accent arc on the RIGHT ring
+      GAP = LEFT_SHARE − RIGHT_SHARE = 12   // percentage points, centre numeral
+    Ring geometry (both rings identical):
+      outer radius 132, ring stroke width 34  →  circle r = 115
+      circumference C = 2π·115 = 722.566
+      accent arc dasharray = SHARE/100 × C   →  20% = 144.51,  8% = 57.81
+      dasharray "arc C", dashoffset 0, group rotated −90° about each centre
+      so every arc starts at 12 o'clock and runs clockwise.
+      GAP numerals: recompute as difference, label "points" not "%".
+  ----------------------------------------------------------------------------
+  SEMANTIC ENCODING (from the review's colour system):
+      accent red  = the highlighted finding / "the number that argues"
+      grey ring   = "the rest" / unmeasured remainder — never a second hue
+      black text  = comparative baselines, captions, arrows
+      one hue on the page, grey ramp for context, zero chart junk.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript, no external requests.
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #111111;   /* title, numerals, captions — the comparison */
+    --accent:    #DC0017;   /* Accenture red, sampled from the source arc */
+    --accent-t:  #FF0000;   /* pure red used on the source title (spare)  */
+    --gray-1:    #595959;   /* secondary text, source line                */
+    --gray-2:    #BFBFBF;   /* the donut ring track ("the rest")          */
+    --gray-3:    #E5E5E5;   /* hairlines                                  */
+    --rule:      #E0E0E0;   /* footer hairline                            */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#1A1715; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+
+  /* ---- slot: action title, all-caps, one clause in accent ---- */
+  .claim{ position:absolute; left:64rem; top:52rem; width:1152rem;
+          font-family:var(--font-display); font-weight:700; font-size:31rem; line-height:38rem;
+          letter-spacing:0.01em; text-transform:uppercase; color:var(--ink); }
+  .claim .red{ color:var(--accent); }
+
+  /* ---- slot: red chart subline (all-caps, letter-spaced) ---- */
+  .subline{ position:absolute; left:64rem; top:156rem; width:1152rem;
+            font-family:var(--font-display); font-weight:700; font-size:15rem; letter-spacing:0.07em;
+            text-transform:uppercase; color:var(--accent); }
+  .subline sup{ font-size:10rem; vertical-align:super; }
+
+  /* ---- slot: donut captions (two lines, bold, centred under each ring) ---- */
+  .cap{ position:absolute; width:280rem; text-align:center;
+        font-family:var(--font-display); font-weight:700; font-size:16rem; line-height:21rem;
+        text-transform:uppercase; color:var(--ink); }
+  .cap.l{ left:200rem; top:560rem; }
+  .cap.r{ left:808rem; top:560rem; }
+
+  /* ---- slot: gap block is drawn in SVG (numerals + arrows) ---- */
+
+  /* ---- slot: footer — note mid-left, source left, running head right ---- */
+  .footer{ position:absolute; left:64rem; right:64rem; top:676rem; display:flex; justify-content:space-between;
+           border-top:1px solid var(--rule); padding-top:9rem;
+           font-size:11rem; color:var(--gray-1); line-height:14rem; }
+  .footer .src{ max-width:760rem; }
+  .footer .note{ max-width:300rem; padding-right:12rem; }
+  .footer .pg{ white-space:nowrap; font-weight:700; color:var(--ink); letter-spacing:0.04em; }
+  sup{ font-size:9rem; }
+</style>
+</head>
+<body>
+<section class="stage" role="img" aria-label="Two donut rings side by side: the left ring shows a 20 percent measure with a red arc, the right ring shows 8 percent; between them a 12-point Market Disconnect gap block with arrows pointing to each ring">
+
+  <header>
+    <h1 class="claim">Viewership has grown at a <span class="red">20% CAGR</span>, while ad spend has grown at only 8%</h1>
+    <p class="subline">Comparison of viewership CAGR to ad-spend CAGR, larger-screen advertising, 2012&ndash;2017<sup>1</sup></p>
+  </header>
+
+  <svg class="chart" aria-hidden="true" focusable="false">
+
+    <!-- ============ donut 1 (left) : LEFT_SHARE = 20 ============
+         track = full grey ring; arc = red dasharray 144.51 of C=722.566 -->
+    <g transform="rotate(-90 340 388)">
+      <circle cx="340" cy="388" r="115" fill="none" stroke="var(--gray-2)" stroke-width="34"/>
+      <!-- DATA: dash length = LEFT_SHARE/100 × C -->
+      <circle cx="340" cy="388" r="115" fill="none" stroke="var(--accent)" stroke-width="34"
+              stroke-dasharray="144.51 722.57" stroke-dashoffset="0" stroke-linecap="butt"/>
+    </g>
+    <text x="340" y="410" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="64" fill="var(--ink)">20%</text>
+    <text x="398" y="378" text-anchor="start" font-size="16" fill="var(--gray-1)">1</text>
+
+    <!-- ============ donut 2 (right) : RIGHT_SHARE = 8 ============ -->
+    <g transform="rotate(-90 946 388)">
+      <circle cx="946" cy="388" r="115" fill="none" stroke="var(--gray-2)" stroke-width="34"/>
+      <circle cx="946" cy="388" r="115" fill="none" stroke="var(--accent)" stroke-width="34"
+              stroke-dasharray="57.81 722.57" stroke-dashoffset="0" stroke-linecap="butt"/>
+    </g>
+    <text x="946" y="410" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="64" fill="var(--ink)">8%</text>
+    <text x="1004" y="378" text-anchor="start" font-size="16" fill="var(--gray-1)">1</text>
+
+    <!-- ============ gap block: GAP = 12 percentage points ============
+         giant numeral + two-line label + outward arrows (black = comparison) -->
+    <text x="643" y="348" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="58" fill="var(--ink)">12%</text>
+    <text x="643" y="380" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="12" letter-spacing="0.09em" fill="var(--ink)">MARKET</text>
+    <text x="643" y="396" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="12" letter-spacing="0.09em" fill="var(--ink)">DISCONNECT</text>
+
+    <!-- arrows pointing outward at the two rings -->
+    <g fill="var(--ink)">
+      <rect x="590" y="427" width="26" height="6"/>
+      <polygon points="592,419 576,430 592,441"/>
+      <rect x="670" y="427" width="26" height="6"/>
+      <polygon points="694,419 710,430 694,441"/>
+    </g>
+
+    <!-- baseline between donut and gap block (structure, not decoration) -->
+    <line x1="180" y1="536" x2="1100" y2="536" stroke="var(--gray-3)" stroke-width="1"/>
+
+    <!-- donut captions -->
+    <text x="340" y="584" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="16" letter-spacing="0.03em" fill="var(--ink)">VIEWERSHIP CAGR</text>
+    <text x="340" y="605" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="16" letter-spacing="0.03em" fill="var(--ink)">2012&ndash;2017</text>
+    <text x="946" y="584" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="16" letter-spacing="0.03em" fill="var(--ink)">AD-SPEND CAGR</text>
+    <text x="946" y="605" text-anchor="middle" font-family="var(--font-display)" font-weight="700" font-size="16" letter-spacing="0.03em" fill="var(--ink)">2012&ndash;2017</text>
+
+  </svg>
+
+  <footer class="footer">
+    <span class="src">Source: Accenture analysis, ThinkTV, Numeris, IAB Canada Media Technology Monitor, CRTC 2018<sup>1</sup></span>
+    <span class="note">Note: CAGR = compound annual growth rate, 2012 base year; figures illustrative.</span>
+    <span class="pg">1 | MEDIA ECONOMICS</span>
+  </footer>
+
+</section>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>timeline-node-milestones — dated node rail with alternating callout flags (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  timeline-node-milestones  ·  family timeline (event/milestone rail)
+  Evidence: pwc_strategy__pwc_e_mobility_in_india p10 (review CSV p09), read on
+            sw_pages/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20/pg-10.png
+            (sheet: sw_sheets/..._s00.jpg row 2 last frame). Convention per
+            review §"Timeline convention: numbered circular nodes on a horizontal
+            axis with above/below callout flags" (used twice in that deck: govt
+            measures 2011–21, battery investments 2019–21; review line 40, 51).
+            PwC palette hexes from reviews/pwc_strategy__pwc_e_mobility...md:
+            red #E2192A, deep red #7A0F1F, greys #F2F2F2/#D9D9D9/#9AA0A6,
+            ink #1A1A1A. Footer discipline (Source / deck tag / page number)
+            is the review's "steal these" item 10.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280,100vh/720)} maps 1rem == 1
+  STAGE PIXEL, so every length below is a 1:1 stage-pixel coordinate and the
+  inline SVG (viewBox 0 0 1280 720) uses plain numbers == px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY — 7 nodes on one horizontal rail. Swap NODE DATA, keep geometry:
+    SCALE:  month t measured from Jan 2011 (t=0) ; window 0..117 (Jan 2011→Oct 2021)
+    x(t)  = 90 + t × 9.15            (t=0 → x 90 ; t=117 → x 1160 ; rail drawn 90→1172)
+    NODES (index, month t, date label, side of callout — odd idx = callout UP):
+      1  t=2   "Mar 2011"   above   lead: National Mission on Electric Mobility
+      2  t=15  "Apr 2012"   below   lead: FAME India launched
+      3  t=51  "Apr 2015"   above   lead: 100% EV target declared
+      4  t=62  "Mar 2016"   below   lead: NBEM formed
+      5  t=77  "Jun 2017"   above   lead: State EV policies begin
+      6  t=99  "Apr 2019"   below   lead: FAME II launched
+      7  t=117 "Apr 2021"   above   lead: FAME II extended
+    TODAY = t 90 (Jun 2018) → x = 913. The today marker is the ONLY accent:
+            dashed rule + chip. Everything else is grey ramp.
+    GEOMETRY CONSTANTS (all SVG px):
+      rail        : y = 430, from x 90 to x 1172, stroke var(--gray-2) 3px;
+                    end chevron = 2 accent-free grey polygons (1172→1206).
+      node disc   : cx = x(t), cy = 430, r = 17, fill var(--gray-1), white bold 12.
+      dates       : callout side OPPOSITE to the flag (odd→dates BELOW y=465,
+                    even→dates ABOVE y=415); bold 12.5 ink, centred on x(t).
+      flags(above): box bottom y = 390; flags(below): box top y = 500;
+                    box w = 176, rounded rx 8, fill var(--gray-5), 1px var(--gray-3).
+      connectors  : node-edge → box edge, var(--gray-2) 1.5px + small grey arrowhead
+                    at the box end (grey on purpose: accent stays on TODAY only).
+    COLLISION RULE: adjacent nodes closer than ~90px → nudge date labels off
+    centre (text-anchor start/end) or shorten the window; the rail must stay legible.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================ */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;   /* titles, dates, body lead */
+    --accent:      #E2192A;   /* PwC red — ONE emphasis hue: today marker + chip */
+    --gray-1:      #56616C;   /* node discs, primary secondary text */
+    --gray-2:      #9AA0A6;   /* rail, connectors, legend, source */
+    --gray-3:      #D9D9D9;   /* flag borders, hairlines */
+    --gray-4:      #F2F2F2;   /* hairline bands */
+    --gray-5:      #F7F8F9;   /* callout flag fill */
+    --rule:        #E3E6E9;
+  }
+  html{ font-size:min(100vw / 1280, 100vh / 720); }
+  body{ margin:0; background:var(--bg); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          font-family:Arial, Calibri, sans-serif; }
+
+  /* ---- masthead ---- */
+  .kicker{ position:absolute; left:64rem; top:34rem; font-size:13rem; color:var(--gray-1);
+           letter-spacing:.02em; }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  .kicker sup{ font-size:8.5rem; }
+  .title{ position:absolute; left:64rem; top:56rem; width:1152rem; font-size:30rem;
+          line-height:37rem; color:var(--ink);
+          font-family:Georgia,"Times New Roman",serif; letter-spacing:-.01em; }
+
+  /* ---- footer anatomy ---- */
+  .source{ position:absolute; left:64rem; bottom:24rem; width:980rem; font-size:11rem;
+           color:var(--gray-1); line-height:15rem; }
+  .source sup{ font-size:8.5rem; }
+  .runhead{ position:absolute; right:64rem; bottom:26rem; font-size:11.5rem; font-weight:700;
+            color:var(--gray-1); letter-spacing:.04em; }
+
+  svg{ position:absolute; inset:0; width:1280rem; height:720rem; }
+  .n   { fill:var(--gray-1); }
+  .num { font:bold 12px Arial, sans-serif; fill:#FFFFFF; }
+  .date{ font:bold 12.5px Arial, sans-serif; fill:var(--ink); }
+  .lead{ font:bold 11px Arial, sans-serif; fill:var(--ink); }
+  .body{ font:11px Arial, sans-serif; fill:var(--gray-1); }
+  .cap { font:italic 10.5px Arial, sans-serif; fill:var(--gray-2); }
+  .chip{ font:bold 9.5px Arial, sans-serif; fill:#FFFFFF; letter-spacing:.08em; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>EV policy track record, 2011–2021:</b> national measures, stated intent, and the gaps each round was meant to close<sup>1</sup></div>
+  <div class="title">Seven waves of policy since 2011 — each narrowed the same gaps:<br>funding, firm targets, and domestic supply</div>
+
+  <svg viewBox="0 0 1280 720" role="img" aria-label="Horizontal milestone timeline with seven numbered nodes, alternating callout flags, and a today marker at June 2018">
+    <!-- ===== rail + direction chevron (grey; no accent on the rail) ===== -->
+    <line x1="90" y1="430" x2="1172" y2="430" stroke="var(--gray-2)" stroke-width="3"/>
+    <polygon points="1172,422 1186,430 1172,438" fill="var(--gray-2)"/>
+    <polygon points="1184,422 1198,430 1184,438" fill="var(--gray-3)"/>
+
+    <!-- ===== TODAY marker — the single accent object ===== -->
+    <line x1="913" y1="196" x2="913" y2="610" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <path d="M913 194 l6 -8 h-12 z" fill="var(--accent)"/>
+    <rect x="881" y="166" width="64" height="20" rx="10" fill="var(--accent)"/>
+    <text class="chip" x="913" y="180" text-anchor="middle">TODAY</text>
+
+    <!-- =========================================================
+         NODE 1 · x=108 · flag ABOVE · date below (odd rule)
+         ========================================================= -->
+    <line x1="108" y1="411" x2="108" y2="394" stroke="var(--gray-2)" stroke-width="1.5"/>
+    <polygon points="104,398 112,398 108,391" fill="var(--gray-2)"/>
+    <rect x="66" y="278" width="176" height="112" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="lead" x="78" y="300">National Mission on<tspan x="78" dy="15">Electric Mobility</tspan></text>
+    <text class="body" x="78" y="340">Draft policy sets a 2030<tspan x="78" dy="14">target; funding line still</tspan><tspan x="78" dy="14">to follow.</tspan></text>
+    <text class="date" x="108" y="466" text-anchor="middle">Mar 2011</text>
+
+    <!-- =========================================================
+         NODE 2 · x=227 · flag BELOW · date above (even rule)
+         ========================================================= -->
+    <line x1="227" y1="449" x2="227" y2="498" stroke="var(--gray-2)" stroke-width="1.5"/>
+    <polygon points="223,494 231,494 227,501" fill="var(--gray-2)"/>
+    <rect x="139" y="501" width="176" height="100" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="lead" x="151" y="523">FAME India launched</text>
+    <text class="body" x="151" y="545">₹75 Cr over five years;<tspan x="151" dy="14">pilot projects, no purchase</tspan><tspan x="151" dy="14">subsidy yet.</tspan></text>
+    <text class="date" x="227" y="415" text-anchor="middle">Apr 2012</text>
+
+    <!-- =========================================================
+         NODE 3 · x=557 · flag ABOVE · date below
+         ========================================================= -->
+    <line x1="557" y1="411" x2="557" y2="394" stroke="var(--gray-2)" stroke-width="1.5"/>
+    <polygon points="553,398 561,398 557,391" fill="var(--gray-2)"/>
+    <rect x="469" y="298" width="176" height="92" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="lead" x="481" y="320">100% EV target<tspan x="481" dy="15">declared</tspan></text>
+    <text class="body" x="481" y="358">Ministry intent: 100%<tspan x="481" dy="14">electric mobility by 2030.</tspan></text>
+    <text class="date" x="557" y="466" text-anchor="middle">Apr 2015</text>
+
+    <!-- =========================================================
+         NODE 4 · x=659 · flag BELOW · date above
+         ========================================================= -->
+    <line x1="659" y1="449" x2="659" y2="498" stroke="var(--gray-2)" stroke-width="1.5"/>
+    <polygon points="655,494 663,494 659,501" fill="var(--gray-2)"/>
+    <rect x="571" y="501" width="176" height="92" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="lead" x="583" y="523">NBEM formed</text>
+    <text class="body" x="583" y="545">Brings ministries and OEMs<tspan x="583" dy="14">into one standing forum.</tspan></text>
+    <text class="date" x="659" y="415" text-anchor="middle">Mar 2016</text>
+
+    <!-- =========================================================
+         NODE 5 · x=795 · flag ABOVE · date below
+         ========================================================= -->
+    <line x1="795" y1="411" x2="795" y2="394" stroke="var(--gray-2)" stroke-width="1.5"/>
+    <polygon points="791,398 799,398 795,391" fill="var(--gray-2)"/>
+    <rect x="707" y="298" width="176" height="92" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="lead" x="719" y="320">State EV policies<tspan x="719" dy="15">begin</tspan></text>
+    <text class="body" x="719" y="358">Karnataka, then 11 more<tspan x="719" dy="14">states, publish incentives.</tspan></text>
+    <text class="date" x="795" y="466" text-anchor="middle">Jun 2017</text>
+
+    <!-- =========================================================
+         NODE 6 · x=995 · flag BELOW · date above
+         ========================================================= -->
+    <line x1="995" y1="449" x2="995" y2="498" stroke="var(--gray-2)" stroke-width="1.5"/>
+    <polygon points="991,494 999,494 995,501" fill="var(--gray-2)"/>
+    <rect x="907" y="501" width="176" height="108" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="lead" x="919" y="523">FAME II launched</text>
+    <text class="body" x="919" y="545">₹10,000 Cr: demand<tspan x="919" dy="14">subsidy, 2,700 charging</tspan><tspan x="919" dy="14">points, M&amp;G support.</tspan></text>
+    <text class="date" x="995" y="415" text-anchor="middle">Apr 2019</text>
+
+    <!-- =========================================================
+         NODE 7 · x=1160 · flag ABOVE · date below
+         ========================================================= -->
+    <line x1="1160" y1="411" x2="1160" y2="394" stroke="var(--gray-2)" stroke-width="1.5"/>
+    <polygon points="1156,398 1164,398 1160,391" fill="var(--gray-2)"/>
+    <rect x="1036" y="280" width="176" height="112" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="lead" x="1048" y="302">FAME II extended<tspan x="1048" dy="15">to Sept 2024</tspan></text>
+    <text class="body" x="1048" y="340">Adds 45% localisation<tspan x="1048" dy="14">floor and battery-reuse</tspan><tspan x="1048" dy="14">outlays.</tspan></text>
+    <text class="date" x="1160" y="466" text-anchor="middle">Apr 2021</text>
+
+    <!-- ===== node discs (drawn last so connectors pass under them) ===== -->
+    <circle class="n" cx="108"  cy="430" r="17"/><text class="num" x="108"  y="434" text-anchor="middle">1</text>
+    <circle class="n" cx="227"  cy="430" r="17"/><text class="num" x="227"  y="434" text-anchor="middle">2</text>
+    <circle class="n" cx="557"  cy="430" r="17"/><text class="num" x="557"  y="434" text-anchor="middle">3</text>
+    <circle class="n" cx="659"  cy="430" r="17"/><text class="num" x="659"  y="434" text-anchor="middle">4</text>
+    <circle class="n" cx="795"  cy="430" r="17"/><text class="num" x="795"  y="434" text-anchor="middle">5</text>
+    <circle class="n" cx="995"  cy="430" r="17"/><text class="num" x="995"  y="434" text-anchor="middle">6</text>
+    <circle class="n" cx="1160" cy="430" r="17"/><text class="num" x="1160" y="434" text-anchor="middle">7</text>
+
+    <!-- caption strip: what the rail encodes -->
+    <text class="cap" x="90" y="646">Timeline is date-scaled (month from Jan 2011 → x = 90 + t×9.15); node numbers mark event order; flags alternate above/below to keep the rail legible.</text>
+  </svg>
+
+  <div class="source">Source: DHI and SMEV policy documents; PwC Research &amp; Analysis, desk review of national EV measures Jan 2011–Oct 2021.<sup>1</sup> Months shown = announcement dates, not in-force dates.</div>
+  <div class="runhead">11 | POLICY TRACK</div>
+</div>
+</body>
+</html>

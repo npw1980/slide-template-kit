@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>recommendation-numbered — numbered recommendation list with priority emphasis (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  recommendation-numbered  ·  family recommendation
+  Evidence: deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p11
+            "Top areas for review in phase 2" — 12 numbered disc items, single
+            numbering run, items 10-11 re-colored to green as priority marks;
+            lead-in sentence names the evidence base ("Based on our research,
+            interviews and workshops, we recommend the following opportunities
+            to take forward into Phase 2"); two-part grey footer (source left,
+            page + copyright right). No connector lines, no boxes, no kicker
+            box, no chart.
+  Corroborated: ey__ey_risk_management_in_a_time_of_transformation_2024 p38
+            "conclusion checklist" — same device, tick/box state instead of a
+            disc, conclusion sentence above the list (variant documented in
+            MANUAL.md, not built here).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate that
+  MANUAL.md quotes (1280x720 fixed stage, uniform scale). 1 user unit == 1
+  stage px inside inline SVG (the disc here is a CSS circle, not SVG).
+  ----------------------------------------------------------------------------
+  DATA MODEL: 12 ITEMS, numbered 1..12 across two columns of 6 (col A = 1-6,
+  col B = 7-12). Per item there are only three editable things:
+      item top  y = 214 + i*74        (i = 0..11, pitch 74)
+      disc fill = --num (default) | --accent (priority item)
+      item text <= 2 lines @ 14px/1.45 inside 498px
+  Row count is a function of pitch: 6/col (12 items) = pitch 74; 5/col (10
+  items) = pitch 88; 8/col (16 items) = pitch 55. See MANUAL.FILL.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG (none needed), system font stacks.
+  No images, no webfonts, no @import, no JavaScript. Nothing makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: one emphasis color + gray ramp.
+     Navy (numbering, rules) and green (priority) sampled from the p11
+     contact sheet; Deloitte's real 2015 house green is remappable. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1B1B1B;    /* body + item text */
+    --title:       #16364B;    /* action-title color (deep navy-teal) */
+    --num:         #10708C;    /* default numbering disc (blue-teal) */
+    --accent:      #7CB518;    /* PRIORITY emphasis: dot / ring / legend (Deloitte green) */
+    --accent-deep: #46710E;    /* one lightness darker of accent, used behind text (5.8:1) */
+    --gray-1:      #6E6E6E;    /* lead-in, footnotes, secondary */
+    --gray-2:      #A9A9A9;    /* hairlines */
+    --gray-3:      #E8EAEA;    /* priority legend wash */
+    --rule:        #D9DCDC;    /* footer rule */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  *{ padding:0; box-sizing:border-box; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+
+  /* ---------------- title zone ---------------- */
+  .kicker{                             /* slot 1: section chip / eyebrow */
+    position:absolute; left:64rem; top:48rem; width:600rem;
+    font-size:12rem; letter-spacing:.14em; text-transform:uppercase;
+    font-weight:700; color:var(--gray-1);
+  }
+  .title{                              /* slot 2: ACTION title (<=15 words / 2 lines) */
+    position:absolute; left:64rem; top:72rem; width:1072rem;
+    font-family:var(--font-display); font-size:31rem; line-height:1.12;
+    font-weight:700; color:var(--title);
+  }
+  .lead{                               /* slot 3: evidence-base lead-in sentence */
+    position:absolute; left:64rem; top:146rem; width:1040rem;
+    font-size:16rem; line-height:1.45; color:var(--gray-1);
+  }
+  .legend{                             /* slot 4: what the green discs mean */
+    position:absolute; left:64rem; top:181rem; width:620rem;
+    display:flex; align-items:center; gap:9rem;
+    font-size:12rem; color:var(--gray-1);
+  }
+  .legend .dot{
+    width:13rem; height:13rem; border-radius:50%;
+    background:var(--accent); display:inline-block;
+  }
+  .legend b{ color:var(--ink); font-weight:700; }
+
+  .footnote{                           /* slot 7: methodology footnotes */
+    position:absolute; left:64rem; right:64rem; bottom:56rem;
+    display:flex; flex-direction:column; gap:3rem;
+    font-size:10.5rem; line-height:1.35; color:var(--gray-1);
+  }
+  .foot{                               /* slot 8: source left, page+rights right */
+    position:absolute; left:64rem; right:64rem; bottom:24rem;
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-top:1rem solid var(--rule); padding-top:8rem;
+    font-size:11rem; color:var(--gray-1);
+  }
+  .foot .src{ max-width:720rem; }
+  .foot .right{ display:flex; gap:14rem; align-items:baseline; white-space:nowrap; }
+  .foot .page{ font-weight:700; color:var(--ink); }
+
+  /* ---------------- list ---------------- */
+  .col{ position:absolute; top:214rem; width:540rem; }
+  .col.a{ left:64rem; }
+  .col.b{ left:676rem; }
+  .vdiv{                               /* hairline between columns */
+    position:absolute; left:640rem; top:214rem; width:1rem; height:444rem;
+    background:var(--gray-2);
+  }
+  .item{
+    position:absolute; left:0; width:540rem; height:74rem;
+  }
+  /* item slots: stage y = 214 + i*74  ->  local top = i*74 (pitch rule) */
+  .item:nth-child(1){ top:0rem; }
+  .item:nth-child(2){ top:74rem; }
+  .item:nth-child(3){ top:148rem; }
+  .item:nth-child(4){ top:222rem; }
+  .item:nth-child(5){ top:296rem; }
+  .item:nth-child(6){ top:370rem; }
+  .item .disc{                         /* numbering disc — white numeral on fill */
+    position:absolute; left:0; top:1rem;
+    width:28rem; height:28rem; border-radius:50%;
+    background:var(--num); color:#FFFFFF;
+    font-family:var(--font-display); font-size:14rem; font-weight:700;
+    display:grid; place-items:center; line-height:1;
+  }
+  .item .txt{                          /* slot: one recommendation, <=2 lines */
+    position:absolute; left:42rem; top:2rem; width:498rem;
+    font-size:14rem; line-height:1.45; color:var(--ink);
+  }
+  .item .txt .leadin{ font-weight:700; }
+  .item.prio .disc{ background:var(--accent-deep); border:2rem solid var(--accent); }
+  .item.prio .txt{ font-weight:700; }
+  sup{ font-size:8.5rem; line-height:0; color:var(--gray-1); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · eyebrow -->
+  <div class="kicker">Recommendations &nbsp;&middot;&nbsp; Phase 2 scope</div>
+
+  <!-- 2 · action title (quantitative claim, 11 words / 1 line) -->
+  <div class="title">Twelve opportunities carry forward; two need a Phase&nbsp;2 decision now</div>
+
+  <!-- 3 · lead-in names the evidence base -->
+  <div class="lead">Based on 37 interviews, 4 workshops and 12 published assessments, we recommend the following for Phase&nbsp;2.</div>
+
+  <!-- 4 · emphasis legend (what green means) -->
+  <div class="legend"><span class="dot"></span><span><b>2 of 12</b> are priority items &mdash; no Phase&nbsp;2 start without a decision on these</span></div>
+
+  <div class="vdiv"></div>
+
+  <!-- 5 · items 1-6 -->
+  <div class="col a">
+    <div class="item">
+      <span class="disc">1</span>
+      <span class="txt"><span class="leadin">Standardise medtech pathways</span> to pharma parity, removing the 96-day assessment gap seen in 14 of 20 cases.</span>
+    </div>
+    <div class="item">
+      <span class="disc">2</span>
+      <span class="txt"><span class="leadin">Future-proof precision medicine</span> pathways for 12 rare-disease indications with a standing criteria review.</span>
+    </div>
+    <div class="item">
+      <span class="disc">3</span>
+      <span class="txt"><span class="leadin">Lightly regulate digital health</span> adoption via a 3-tier classification, not a new licensing regime.</span>
+    </div>
+    <div class="item">
+      <span class="disc">4</span>
+      <span class="txt"><span class="leadin">Review organisational mandates</span> across the 4 regional centres to close duplication in 3 overlapping boards.</span>
+    </div>
+    <div class="item">
+      <span class="disc">5</span>
+      <span class="txt"><span class="leadin">Fund innovation and incentives</span> through a ring-fenced pool tied to contracted outcomes, not block grants.<sup>1</sup></span>
+    </div>
+    <div class="item">
+      <span class="disc">6</span>
+      <span class="txt"><span class="leadin">Assess cultural barriers</span> to collaborative working &mdash; 218 of 434 respondents named funding as decisive.</span>
+    </div>
+  </div>
+
+  <!-- 6 · items 7-12 (two carry the priority emphasis) -->
+  <div class="col b">
+    <div class="item">
+      <span class="disc">7</span>
+      <span class="txt"><span class="leadin">Define data standards</span> for end-to-end pathway traceability, including consent and linkage rules.<sup>2</sup></span>
+    </div>
+    <div class="item">
+      <span class="disc">8</span>
+      <span class="txt"><span class="leadin">Incentivise NHS involvement</span> in clinical development against a published commercial framework.</span>
+    </div>
+    <div class="item">
+      <span class="disc">9</span>
+      <span class="txt"><span class="leadin">Update reimbursement methods</span> to incorporate early access and real-world evidence for 4 therapy classes.</span>
+    </div>
+    <div class="item prio">
+      <span class="disc">10</span>
+      <span class="txt"><span class="leadin">Promote patient engagement</span> across the end-to-end pathway, with 3 mandated checkpoints per case.</span>
+    </div>
+    <div class="item prio">
+      <span class="disc">11</span>
+      <span class="txt"><span class="leadin">Use regional centres as test beds</span> &mdash; AHSNs to pilot 2 innovation routes before national scale-up.</span>
+    </div>
+    <div class="item">
+      <span class="disc">12</span>
+      <span class="txt"><span class="leadin">Publish Phase 2 governance</span> and sequencing so owners and dates are visible outside the programme.</span>
+    </div>
+  </div>
+
+  <!-- 7 · footnotes (methodology claims carry superscripts) -->
+  <div class="footnote">
+    <span><sup>1</sup>&nbsp;Pool size assumes 60&nbsp;FTE&nbsp;@&nbsp;$90/hr through 2016-17; excludes capital.</span>
+    <span><sup>2</sup>&nbsp;Consent model pending legal review; see methodology p103.</span>
+  </div>
+
+  <!-- 8 · footer: source bottom-left, page + rights bottom-right -->
+  <div class="foot">
+    <div class="src">Source: 37 stakeholder interviews, 4 workshops and Deecon analysis</div>
+    <div class="right"><span class="page">11 | RECOMMENDATIONS</span><span>&copy; 2015 Deecon MCS Limited. Privileged and confidential.</span></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>matrix-2x2-scenario — real-axis scenario matrix (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  matrix-2x2-scenario  ·  family matrix-2x2
+  Evidence (see MANUAL.md -> SOURCE):
+    pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20
+      p13  "scenario matrix" — 2x2 with a filled column-header band, rotated
+           row-rail labels, per-quadrant heading pill + boxed line icon +
+           3 bullets, two opposite quadrants carrying the emphasis fill.
+    pwc_strategy__pwc_boardroom_agenda_2022 p35 — 2x2 quad (arrows omitted
+           here on purpose; see DON'T).
+    reviews/umbrex_patterns.md S1765-70 (BCG/GE/Ansoff grids) — same frame,
+           navy + one accent + gray, dimming rule for unexamined cells.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate with the
+  same numbers MANUAL.md quotes (left:64rem means x = 64 on the 1280x720
+  canvas). The stage stays a fixed 1280x720 canvas and scales uniformly.
+  To own the transform yourself: drop the html rule and use
+      .stage{width:1280px;height:720px;transform:scale(var(--fit,1));
+             transform-origin:50% 50%}
+  with --fit set by the embedding page. Then read every rem below as px.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles follow DESIGN_PLAYBOOK: --accent emphasis, --ink text,
+     --gray-* secondary + "the rest", --rule hairlines, --bg ground.
+     House ruling: deep navy ink + ONE accent + gray ramp; color is not
+     decorative — the accent marks "which cells matter".
+     Measured contrast on this ground:
+       --ink #051C2C on --bg #FFFFFF            = 16.0:1
+       #FFFFFF text on --accent #2251FF         =  5.7:1
+       --gray-2 #464646 on --bg                 =  8.6:1
+       --gray-3 #7D7D7D on --bg (notes only)    =  3.8:1  -> >=18px/14px bold
+     ================================================================= */
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #051C2C;   /* deep navy, title + body text     */
+    --accent:  #2251FF;   /* THE emphasis color               */
+    --accent-2:#DCE4FF;   /* one lightness of accent: soft fill */
+    --gray-1:  #2D2D2D;   /* body text                        */
+    --gray-2:  #464646;   /* secondary text, bullets           */
+    --gray-3:  #7D7D7D;   /* axis labels, source line          */
+    --gray-4:  #DEDEDE;   /* neutral fill: unexamined cells     */
+    --rule:    #C9CFD4;   /* hairlines + gutter cross-lines     */
+
+    /* Matrix geometry (stage px). These four numbers are the whole frame:
+       change them and the cells reflow, because cells are 1fr. */
+    --m-left:   64rem;    /* matrix left edge = side margin     */
+    --m-top:   196rem;    /* below the 2-line title + lead-in    */
+    --m-w:    1152rem;    /* 1280 - 2 x 64                       */
+    --m-h:     450rem;    /* 196 + 450 = 646, axis note + footer below */
+    --rail:      96rem;   /* left axis-rail column width         */
+    --head:      54rem;   /* column-header band height           */
+
+    /* Type. Real faces -> honest substitutes (see MANUAL):
+       PwC: Georgia headers / Arial body.  Kit: Arial display, Georgia fallback
+       where the deck is an editorial system. */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-serif:    Georgia, "Times New Roman", serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#0E1A22;                 /* studio backdrop, not part of the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink);
+  }
+
+  /* ------------------------------ header ------------------------------ */
+  .kicker{
+    position:absolute; left:var(--m-left); top:40rem; right:var(--m-left);
+    display:flex; align-items:center; gap:10rem;
+    font:700 12rem/14rem var(--font-display); letter-spacing:1.8px;
+    text-transform:uppercase; color:var(--gray-3);
+  }
+  .kicker .tick{ width:22rem; height:3rem; background:var(--accent); border-radius:2rem; }
+  .kicker .sec{ color:var(--accent); }
+
+  h1.title{                                  /* slot gate: <=15 words / 2 lines */
+    position:absolute; left:var(--m-left); right:var(--m-left); top:66rem;
+    max-height:84rem;                        /* 2 x 42 line box */
+    font:700 31rem/42rem var(--font-display); letter-spacing:-0.35px;
+    color:var(--ink);
+  }
+  h1.title sup{ font-size:.5em; line-height:0; color:var(--accent); }
+
+  .lead{                                     /* bold lead-in, accent underline */
+    position:absolute; left:var(--m-left); top:160rem;
+    padding-bottom:5rem; border-bottom:2px solid var(--accent);
+    font:700 13rem/16rem var(--font-display); letter-spacing:.2px; color:var(--ink);
+  }
+
+  /* ---------------------------- the matrix ----------------------------
+     DOM order is irrelevant: every cell declares its grid position.
+     Copy a cell block, bump grid-column / grid-row, done. See FILL. */
+  .matrix{
+    position:absolute; left:var(--m-left); top:var(--m-top);
+    width:var(--m-w); height:var(--m-h);
+    display:grid;
+    grid-template-columns: var(--rail) 1fr 1fr;
+    grid-template-rows: var(--head) 1fr 1fr;
+    gap:2rem;                               /* the cross-line gutter */
+    background:var(--rule);                 /* shows through the gap */
+    border:1px solid var(--rule);
+  }
+
+  /* column header band */
+  .colhead{
+    display:flex; align-items:center; justify-content:center;
+    background:var(--ink); color:#FFFFFF;
+    font:700 14rem/18rem var(--font-display); letter-spacing:.4px; text-align:center;
+    padding:0 10rem;
+  }
+  .colhead.alt{ background:var(--gray-3); }  /* second pole, one step lighter */
+  .colhead.corner{                            /* top-left: axis name */
+    background:transparent; color:var(--gray-3);
+    font:700 10rem/12rem var(--font-display); letter-spacing:1.4px;
+    text-transform:uppercase; justify-content:flex-end; padding-right:8rem;
+    text-align:right;
+  }
+
+  /* left rail: the y-axis poles, set vertically */
+  .rail{
+    display:flex; align-items:center; justify-content:center;
+    background:var(--gray-1); color:#FFFFFF;
+    font:700 13rem/17rem var(--font-display); letter-spacing:.4px;
+    writing-mode:vertical-rl; transform:rotate(180deg);
+    text-align:center; padding:6rem 0;
+  }
+
+  /* one quadrant cell */
+  .quad{
+    position:relative; background:var(--bg);
+    padding:13rem 15rem 11rem;
+    display:flex; flex-direction:column; gap:7rem;
+  }
+  .quad.dim{ background:var(--gray-4); }          /* unexamined branch: dim, do not delete */
+  .quad.dim .q-body li{ color:var(--gray-2); }    /* 4.9:1 on gray-4: quiet, still readable */
+  .quad.hl{ background:var(--accent); }           /* emphasis cell */
+
+  .q-head{
+    align-self:flex-start; max-width:100%;
+    padding:3rem 8rem; border-radius:2rem;
+    background:var(--accent); color:#FFFFFF;
+    font:700 12.5rem/16rem var(--font-display); letter-spacing:.2px;
+  }
+  .quad.hl .q-head{ background:#FFFFFF; color:var(--accent); }
+  .quad.dim .q-head{ background:var(--gray-1); color:#FFFFFF; }
+
+  /* icon sits in a hairline box, top-right of the cell */
+  .q-icon{
+    position:absolute; right:14rem; top:14rem; width:44rem; height:44rem;
+    border:1px solid var(--rule); border-radius:2rem;
+    display:flex; align-items:center; justify-content:center; color:var(--gray-1);
+  }
+  .quad.hl .q-icon{ border-color:rgba(255,255,255,.6); color:#FFFFFF; }
+  .q-icon svg{ display:block; }
+
+  /* bullets start BELOW the pill/icon row: margin-top = pill(22) + clearance(16)
+     so a wide first bullet can never slide under the icon box. */
+  .q-body{ list-style:none; display:flex; flex-direction:column; gap:5rem; margin-top:22rem; }
+  .q-body li{
+    position:relative; padding-left:12rem;
+    font:400 11.5rem/15rem var(--font-body); color:var(--gray-2);
+  }
+  .q-body li::before{
+    content:""; position:absolute; left:0; top:7rem; width:4rem; height:4rem;
+    background:var(--accent);
+  }
+  .quad.hl .q-body li{ color:#FFFFFF; }
+  .quad.hl .q-body li::before{ background:#FFFFFF; opacity:.85; }
+  .quad.dim .q-body li::before{ background:var(--gray-3); }
+  .q-body b{ font-weight:700; }
+
+  /* scale / reading notes under the grid */
+  .axis-note{
+    position:absolute; left:var(--m-left); right:var(--m-left); top:652rem;
+    display:flex; justify-content:space-between; gap:24rem;
+    font:400 10rem/13rem var(--font-body); color:var(--gray-3);
+  }
+  .axis-note .lg{ display:flex; align-items:center; gap:7rem; }
+  .axis-note .sw{ width:11rem; height:11rem; border-radius:2rem; }
+
+  /* ------------------------------ footer ------------------------------ */
+  .foot{
+    position:absolute; left:var(--m-left); right:var(--m-left); bottom:22rem;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:20rem;
+    font:400 10rem/13rem var(--font-body); color:var(--gray-3);
+  }
+  .foot .src{ max-width:640rem; }
+  .foot .src sup{ font-size:.75em; line-height:0; }
+  .foot .tag{ text-align:center; letter-spacing:.4px; }
+  .foot .pg{ font-weight:700; color:var(--gray-2); }
+
+  /* ==================== PwC VARIANT, for the comments ====================
+     The evidence deck (PwC Point of View, ACMA 2021) uses serif titles and a
+     house red. Swap four lines, nothing else:
+       --ink:#1A1A1A; --accent:#E2192A; --gray-1:#4A4A4A; --gray-4:#F2F2F2;
+       h1.title{font-family:var(--font-serif); letter-spacing:0;}
+     Measured: #FFFFFF on #E2192A = 4.8:1 (passes AA for 11.5px body).
+     Both emphasis cells then read as the two "end-state" scenarios, exactly
+     as p13 does. The amber used in the source deck for one ICE block is NOT
+     ported: a second hue in the same frame is the flaw, not the feature.
+     ====================================================================== */
+</style>
+</head>
+<body>
+<div class="stage" role="group" aria-label="Scenario matrix: how fast e-mobility scales, by sourcing footprint and adoption path">
+
+  <!-- ============================ header slots ============================ -->
+  <div class="kicker" data-slot="kicker">
+    <span class="tick" aria-hidden="true"></span>
+    <span><span class="sec">02</span> | Scenarios &amp; demand outlook</span>
+  </div>
+
+  <h1 class="title" data-slot="title">Four scenarios decide how fast e-mobility scales, and only two need no subsidy<sup>1</sup></h1>
+
+  <div class="lead" data-slot="lead-in">Different scenarios</div>
+
+  <!-- ============================== THE MATRIX ==============================
+       4 cells + 2 column headers + 2 rail labels. To add a node: copy one
+       <div class="quad"> and one .colhead (or .rail), then set its grid-line.
+       What reflows is listed in MANUAL.md -> SLOTS / FILL. -->
+  <div class="matrix" data-slot="matrix">
+
+    <!-- axis-name corner -->
+    <div class="colhead corner" style="grid-column:1;grid-row:1" data-slot="axis-name">Sourcing footprint &#8594;</div>
+
+    <!-- column headers (x-axis poles) -->
+    <div class="colhead" style="grid-column:2;grid-row:1" data-slot="col-1">Localized</div>
+    <div class="colhead alt" style="grid-column:3;grid-row:1" data-slot="col-2">Import-dependent</div>
+
+    <!-- rail labels (y-axis poles) -->
+    <div class="rail" style="grid-column:1;grid-row:2" data-slot="row-1">Increased shared mobility</div>
+    <div class="rail" style="grid-column:1;grid-row:3" data-slot="row-2">Enduring private usage</div>
+
+    <!-- cell 1,1  (light: the favourable case, no emphasis fill) -->
+    <div class="quad" style="grid-column:2;grid-row:2" data-slot="cell-11">
+      <div class="q-head" data-slot="cell-11-head">Mass, cost &amp; mobility driven</div>
+      <div class="q-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M2 18h6v4H2zM10 12h6v10h-6zM18 6h6v16h-6z"/>
+          <path d="M1 23h24" stroke-width="1"/>
+        </svg>
+      </div>
+      <ul class="q-body" data-slot="cell-11-points">
+        <li><b>Cost of ownership favourable</b> &mdash; 38% lower TCO than ICE at 40,000 km/yr</li>
+        <li>Fleets take to the road first: <b>25% of EV sales by 2024</b> in city pools</li>
+        <li>Government and private operated EVs, inter-city rides on shared corridors</li>
+        <li>Private buyers prefer EV over IC where the charging grid exists</li>
+      </ul>
+    </div>
+
+    <!-- cell 2,1  (EMPHASIS: white pill + white type on accent) -->
+    <div class="quad hl" style="grid-column:3;grid-row:2" data-slot="cell-21">
+      <div class="q-head" data-slot="cell-21-head">Selective, subsidies driven</div>
+      <div class="q-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M7 19 19 7M9 8.5h.01M17 17.5h.01"/><circle cx="8" cy="8" r="3"/><circle cx="18" cy="18" r="3"/>
+        </svg>
+      </div>
+      <ul class="q-body" data-slot="cell-21-points">
+        <li>Cost economics <b>not favourable</b> except where EV subsidies close the gap</li>
+        <li>Government-driven subsidized transport applications of EV, <b>6,000 buses</b> procured by 2025</li>
+        <li>Demand concentrated in 3&ndash;4 states with the largest outlays</li>
+      </ul>
+    </div>
+
+    <!-- cell 1,2  (EMPHASIS: the second end-state) -->
+    <div class="quad hl" style="grid-column:2;grid-row:3" data-slot="cell-12">
+      <div class="q-head" data-slot="cell-12-head">Selective, cost driven</div>
+      <div class="q-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4">
+          <circle cx="12" cy="12" r="8"/><path d="M18 18l6 6M12 8v8M8 12h8"/>
+        </svg>
+      </div>
+      <ul class="q-body" data-slot="cell-12-points">
+        <li>Acquisition favourable, <b>ownership and maintenance not</b> favourable for private buyers</li>
+        <li>Shared mobility <b>not a favourable option</b> to choose where lanes are absent</li>
+        <li>ICE demand replaced by EV slowly, in 11 of 28 reviewed state policies</li>
+      </ul>
+    </div>
+
+    <!-- cell 2,2  (dimmed: not examined in this cut of the work) -->
+    <div class="quad dim" style="grid-column:3;grid-row:3" data-slot="cell-22">
+      <div class="q-head" data-slot="cell-22-head">Selective, environment conscious</div>
+      <div class="q-icon" aria-hidden="true">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M13 23c0-7 5-12 11-13-1 8-4 12-11 13z"/><path d="M13 23C7 21 4 15 4 9c7 1 9 6 9 14z"/>
+        </svg>
+      </div>
+      <ul class="q-body" data-slot="cell-22-points">
+        <li>Cost economics not favourable outside subsidies</li>
+        <li>Shared mobility not a favourable option</li>
+        <li>Demand driven by environment-conscious and prestige segments</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- reading notes under the grid -->
+  <div class="axis-note" data-slot="axis-note">
+    <span>Cells are scenarios, not segments: read across the column for the sourcing model, down the rail for the adoption path.</span>
+    <span class="lg"><span class="sw" style="background:var(--accent)"></span> examined</span>
+    <span class="lg"><span class="sw" style="background:var(--gray-4);border:1px solid var(--rule)"></span> not examined</span>
+  </div>
+
+  <!-- ============================== footer ============================== -->
+  <div class="foot">
+    <span class="src" data-slot="source">Source: NITI Aayog and 28 state EV policies<sup>1</sup>; PwC Research &amp; Analysis, cost-economics model at 95% confidence.</span>
+    <span class="tag" data-slot="deck-tag">Point of View | E-Mobility</span>
+    <span class="pg" data-slot="page">13</span>
+  </div>
+</div>
+</body>
+</html>

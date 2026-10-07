@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>map-geo-highlight-table — highlight region map + numbered policy-focus table (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  map-geo-highlight-table  ·  family map-geo
+  Evidence: pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20
+            p11 "To push the e-mobility agenda further..." (read on sw_sheets/
+            pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20_s01.jpg
+            row 1 frame 2): grey country map, dark stacked callout bars
+            (policy levers) overlaying its right edge, and a 10-row numbered
+            table — accent disc badges + State | Key Focus — doing the actual
+            work. Choropleth-LEGIT: one region filled accent (focus state),
+            two slightly darker (named in the table), everything else flat grey.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280, 100vh/720)} maps 1rem == 1
+  STAGE PIXEL; the overlay SVG uses viewBox 0 0 1280 720, so every SVG number
+  below is also a stage-pixel coordinate.
+  ----------------------------------------------------------------------------
+  GEOGRAPHY IS A SCHEMATIC PLACEHOLDER: one rough country-silhouette path on a
+  fixed equirectangular frame (lon 65..98 → x 64..360, lat 7..36 → y 600..170)
+  plus three small overlay polygons standing in for the highlighted states.
+  When you paste your real map SVG, put the real state polygons at the SAME
+  frame and recolor via the classes below — the lever bars and table are
+  independent of geometry and don't move.
+  MARKER COORDINATE SYSTEM: x = 64 + (lon-65)/33 * 296 ; y = 600 - (lat-7)/29 * 430
+
+  DATA ARRAYS (both live in this comment; the SVG mirrors them row-for-row):
+    highlights = [
+      { id:"KA", name:"Karnataka",     fill:"accent" },  // FOCUS — the one that IS the claim
+      { id:"MH", name:"Maharashtra",   fill:"darker" },  // named further down the table
+      { id:"DL", name:"Delhi (NCT)",   fill:"darker" }
+    ]
+    levers = [ "Charging infrastructure", "EV-only cities / zones",
+               "Manufacturing zones", "R&D and innovation hubs",
+               "Segment focus: buses, e-rickshaws", "Tax rebates & fees" ]
+    states = [          // 10 rows, rank order = badge order
+      { n:1,  name:"Andhra Pradesh", focus:"Innovation, new tech, workforce training. Aim: 10L EVs on road by 2024; fleet fully EV by 2030." },
+      { n:2,  name:"Bihar",          focus:"Fastest-growing e-rickshaw market — leverage it for local manufacturing." },
+      { n:3,  name:"Delhi (NCT)",    focus:"Cut air pollution and create EV sales jobs. Target: 25% EV sales share by 2024; last-mile fleets 50% EV." },
+      { n:4,  name:"Karnataka",      focus:"First state with an EV-specific policy. Focus on R&D, production, services and customers. Aim: 100% e-mobility in fleets by 2030." },
+      { n:5,  name:"Kerala",         focus:"EV manufacturing, particularly e-buses. Procurement of 6,000 e-buses by 2025; concessions for in-state OEMs." },
+      { n:6,  name:"Maharashtra",    focus:"MSME manufacturing schemes; charging at petrol and commercial sites." },
+      { n:7,  name:"Tamil Nadu",     focus:"Focus on manufacturing, venture-capital incubation and 10% parking reserved for EVs." },
+      { n:8,  name:"Telangana",      focus:"Shared mobility and charging build-out; skills and jobs." },
+      { n:9,  name:"Uttar Pradesh",  focus:"Manufacturing hub, charging, battery management; aim 10L EVs by 2024." },
+      { n:10, name:"Uttarakhand",    focus:"Dedicated EV manufacturing zones; public transport electric by 2030." }
+    ]
+    EMPHASIS RULE: exactly ONE region fills --accent (the focus state the title
+    makes its claim about); exactly the states that appear as table rows with
+    bold emphasis may sit one step darker (--region-mid); the rest of the
+    country is flat --region-gray. No choropleth ramp, no legend.
+
+  LEVER-BAR GEOMETRY: 6 bars, x 138..313 (w 175), h 24, pitch 57, first top
+  189; right edge overlaps the map edge as in the original. Bar fill
+  #3A3F45 (charcoal — it is ink, not a hue), white 10.5px text, 3px radius.
+  If a lever text wraps to 2 lines, drop the bar's text to 9.5px, keep h.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts, zero network calls.
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:           #FFFFFF;
+    --ink:          #1A1A1A;   /* titles, names */
+    --accent:       #ED8B28;   /* PwC orange — the ONE highlighted region + badges */
+    --accent-deep:  #D93F00;   /* column heads, bold spans, running head */
+    --gray-ink:     #6B7280;   /* focus-text, kicker, source */
+    --region-gray:  #D9DEE2;   /* the rest of the country */
+    --region-mid:   #AEB6BD;   /* the two named-further regions */
+    --region-rule:  #B8C0C6;   /* coastline rule */
+    --lever:        #3A3F45;   /* callout bars (charcoal ink, not a hue) */
+    --rule:         #E6E8EB;   /* row rules, footer hairline */
+    --font-display: Georgia, "Times New Roman", "Liberation Serif", serif;  /* PwC editorial serif */
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#10141c; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); color:var(--ink); }
+  .stage > svg{ position:absolute; left:0; top:0; width:1280rem; height:720rem; }
+
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem;
+           font-size:13.5rem; line-height:18rem; color:var(--gray-ink); }
+  .kicker sup{ font-size:10rem; color:var(--accent-deep); }
+  .title{ position:absolute; left:64rem; top:59rem; width:1152rem;
+          font-family:var(--font-display); font-size:27rem; font-weight:700;
+          line-height:34rem; letter-spacing:-.3rem; max-height:70rem; overflow:hidden; }
+  .title em{ font-style:normal; color:var(--accent-deep); }   /* operative clause */
+
+  .foot-rule{ position:absolute; left:64rem; right:64rem; top:672rem; height:0;
+              border-top:1px solid var(--rule); }
+  .source{ position:absolute; left:64rem; top:681rem; width:1020rem;
+           font-size:10.5rem; line-height:14rem; color:var(--gray-ink); }
+  .source sup{ font-size:8rem; }
+  .pageno{ position:absolute; right:64rem; top:681rem; font-size:10.5rem;
+           color:var(--gray-ink); letter-spacing:.4rem; }
+  .pageno b{ color:var(--accent-deep); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker">State EV policies announced 2020–2023<sup>1</sup> — what each of the ten active states is prioritising for 2024–30</div>
+  <div class="title">Ten states have carved out their own EV policies<em> — each on different adoption levers</em></div>
+
+  <!-- ======================================================================
+       CHART LAYER — map column 64..313 (map body 64..360), table 430..1216.
+       Table row rhythm: header 232; row pitch 44, row baseline = 250 + 44i;
+       rules at baseline + 20. Badge disc r10 cx447 cy = baseline-4.
+       ====================================================================== -->
+  <svg viewBox="0 0 1280 720" aria-label="India map with highlighted focus states and lever callout bars, ten-row state policy table at right">
+
+    <!-- ============ MAP COLUMN (left) ============ -->
+    <!-- country silhouette — SCHEMATIC, replace with real SVG on same frame -->
+    <g id="map-geometry">
+      <path d="M91,348 L109,363 L127,407 L136,467 L145,503 L162,578 L180,555 L189,548
+               L198,503 L198,459 L216,436 L252,400 L261,377 L279,369 L306,369 L287,295
+               L270,295 L234,280 L198,250 L162,206 L145,191 L153,220 L136,235 L118,280 Z"
+            fill="var(--region-gray)" stroke="var(--region-rule)" stroke-width="1"/>
+      <!-- highlight polygons — schematic stand-ins for real state outlines -->
+      <path d="M167,487 l16,-6 12,10 -4,16 -16,4 -12,-10 Z" fill="var(--accent)" stroke="#FFFFFF" stroke-width="1"/>               <!-- Karnataka (FOCUS) -->
+      <path d="M131,413 l18,-6 10,14 -6,14 -18,2 -8,-10 Z"  fill="var(--region-mid)" stroke="#FFFFFF" stroke-width="1"/>           <!-- Maharashtra -->
+      <path d="M166,276 l12,-4 10,8 -2,12 -12,2 -10,-6 Z"   fill="var(--region-mid)" stroke="#FFFFFF" stroke-width="1"/>           <!-- Delhi -->
+      <!-- focus marker: leader from Karnataka blob to the lever stack -->
+      <line x1="195" y1="510" x2="238" y2="510" stroke="var(--accent-deep)" stroke-width="1.2"/>
+    </g>
+
+    <!-- LEVER BARS — 6 stacked, right edge overlapping the map, per evidence -->
+    <g font-family="Arial, sans-serif">
+      <rect x="138" y="189" width="175" height="24" rx="3" fill="var(--lever)"/><text x="150" y="205" font-size="10.5" fill="#FFFFFF">Charging infrastructure</text>
+      <rect x="138" y="246" width="175" height="24" rx="3" fill="var(--lever)"/><text x="150" y="262" font-size="10.5" fill="#FFFFFF">EV-only cities / zones</text>
+      <rect x="138" y="303" width="175" height="24" rx="3" fill="var(--lever)"/><text x="150" y="319" font-size="10.5" fill="#FFFFFF">Manufacturing zones</text>
+      <rect x="138" y="360" width="175" height="24" rx="3" fill="var(--lever)"/><text x="150" y="376" font-size="10.5" fill="#FFFFFF">R&amp;D and innovation hubs</text>
+      <rect x="138" y="417" width="175" height="24" rx="3" fill="var(--lever)"/><text x="150" y="433" font-size="10.5" fill="#FFFFFF">Segment focus: e-buses, rickshaws</text>
+      <rect x="138" y="474" width="175" height="24" rx="3" fill="var(--lever)"/><text x="150" y="490" font-size="10.5" fill="#FFFFFF">Tax rebates &amp; fee waivers</text>
+    </g>
+    <!-- map note -->
+    <text x="64" y="616" font-family="Arial, sans-serif" font-size="9.5" fill="var(--gray-ink)">Filled = focus state; darker = also named below. States as drawn.</text>
+
+    <!-- ============ TABLE COLUMN (right) ============ -->
+    <g font-family="Arial, sans-serif">
+      <!-- column heads -->
+      <text x="430" y="228" font-size="10.5" font-weight="700" letter-spacing="1" fill="var(--accent-deep)">STATE</text>
+      <text x="760" y="228" font-size="10.5" font-weight="700" letter-spacing="1" fill="var(--accent-deep)">KEY FOCUS</text>
+      <line x1="430" y1="236" x2="1216" y2="236" stroke="var(--ink)" stroke-width="1"/>
+
+      <!-- rows: badge r10 x447, name x470 w~270, focus x760, pitch 44 -->
+      <circle cx="447" cy="246" r="10" fill="var(--accent)"/><text x="447" y="250" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+      <text x="470" y="250" font-size="12" font-weight="700" fill="var(--ink)">Andhra Pradesh</text>
+      <text x="760" y="250" font-size="11.5" fill="var(--gray-ink)"><tspan font-weight="700" fill="var(--ink)">10L EVs on road by 2024</tspan> — innovation, tech, skills; fleet fully EV by 2030.</text>
+      <line x1="430" y1="261" x2="1216" y2="261" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="290" r="10" fill="var(--accent)"/><text x="447" y="294" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+      <text x="470" y="294" font-size="12" font-weight="700" fill="var(--ink)">Bihar</text>
+      <text x="760" y="294" font-size="11.5" fill="var(--gray-ink)">Fastest-growing <tspan font-weight="700" fill="var(--ink)">e-rickshaw market</tspan> — leverage it for local manufacturing.</text>
+      <line x1="430" y1="305" x2="1216" y2="305" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="334" r="10" fill="var(--accent)"/><text x="447" y="338" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+      <text x="470" y="338" font-size="12" font-weight="700" fill="var(--ink)">Delhi (NCT)</text>
+      <text x="760" y="338" font-size="11.5" fill="var(--gray-ink)">Cut air pollution; <tspan font-weight="700" fill="var(--ink)">25% EV sales share by 2024</tspan>, last-mile fleets 50% EV.</text>
+      <line x1="430" y1="349" x2="1216" y2="349" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="378" r="10" fill="var(--accent-deep)"/><text x="447" y="382" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+      <text x="470" y="382" font-size="12" font-weight="700" fill="var(--accent-deep)">Karnataka</text>
+      <text x="760" y="382" font-size="11.5" fill="var(--gray-ink)">First EV-specific policy — <tspan font-weight="700" fill="var(--ink)">100% e-mobility in fleets by 2030</tspan>.</text>
+      <line x1="430" y1="393" x2="1216" y2="393" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="422" r="10" fill="var(--accent)"/><text x="447" y="426" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+      <text x="470" y="426" font-size="12" font-weight="700" fill="var(--ink)">Kerala</text>
+      <text x="760" y="426" font-size="11.5" fill="var(--gray-ink)">EV manufacturing; <tspan font-weight="700" fill="var(--ink)">6,000 e-buses by 2025</tspan>, concessions for in-state OEMs.</text>
+      <line x1="430" y1="437" x2="1216" y2="437" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="466" r="10" fill="var(--accent)"/><text x="447" y="470" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
+      <text x="470" y="470" font-size="12" font-weight="700" fill="var(--ink)">Maharashtra</text>
+      <text x="760" y="470" font-size="11.5" fill="var(--gray-ink)"><tspan font-weight="700" fill="var(--ink)">MSME manufacturing schemes</tspan>; charging at petrol, commercial sites.</text>
+      <line x1="430" y1="481" x2="1216" y2="481" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="510" r="10" fill="var(--accent)"/><text x="447" y="514" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">7</text>
+      <text x="470" y="514" font-size="12" font-weight="700" fill="var(--ink)">Tamil Nadu</text>
+      <text x="760" y="514" font-size="11.5" fill="var(--gray-ink)">Manufacturing, VC incubation, <tspan font-weight="700" fill="var(--ink)">10% parking reserved for EVs</tspan>.</text>
+      <line x1="430" y1="525" x2="1216" y2="525" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="554" r="10" fill="var(--accent)"/><text x="447" y="558" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">8</text>
+      <text x="470" y="558" font-size="12" font-weight="700" fill="var(--ink)">Telangana</text>
+      <text x="760" y="558" font-size="11.5" fill="var(--gray-ink)">Shared mobility, <tspan font-weight="700" fill="var(--ink)">charging build-out</tspan>; skills and jobs.</text>
+      <line x1="430" y1="569" x2="1216" y2="569" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="598" r="10" fill="var(--accent)"/><text x="447" y="602" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">9</text>
+      <text x="470" y="602" font-size="12" font-weight="700" fill="var(--ink)">Uttar Pradesh</text>
+      <text x="760" y="602" font-size="11.5" fill="var(--gray-ink)">Manufacturing hub, charging, battery management; <tspan font-weight="700" fill="var(--ink)">10L EVs by 2024</tspan>.</text>
+      <line x1="430" y1="613" x2="1216" y2="613" stroke="var(--rule)" stroke-width="1"/>
+
+      <circle cx="447" cy="642" r="10" fill="var(--accent)"/><text x="447" y="646" font-size="10" font-weight="700" fill="#FFFFFF" text-anchor="middle">10</text>
+      <text x="470" y="646" font-size="12" font-weight="700" fill="var(--ink)">Uttarakhand</text>
+      <text x="760" y="646" font-size="11.5" fill="var(--gray-ink)">Dedicated <tspan font-weight="700" fill="var(--ink)">EV manufacturing zones</tspan>; public transport electric by 2030.</text>
+    </g>
+  </svg>
+
+  <div class="foot-rule"></div>
+  <div class="source">Source: State EV policy documents, 2020–2023; PwC India analysis. <sup>1</sup> Targets as stated in the original documents; timelines indicative and not independently verified against implementation.</div>
+  <div class="pageno"><b>12</b> &nbsp;|&nbsp; POLICY</div>
+
+</div>
+</body>
+</html>

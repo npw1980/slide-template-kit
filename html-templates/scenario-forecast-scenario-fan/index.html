@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>scenario-forecast-scenario-fan — one history, three diverging paths to 2031F (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  scenario-forecast-scenario-fan  ·  family scenario-forecast
+  Evidence: pwc_strategy__pwc_copernicus_market_report_2019 p86 (sw_sheets/
+            ..._s08.jpg row 1 col 2 — line projection to 2037, blue line +
+            grey, 2-line title; the "paths run long past the decision year"
+            habit) and pwc_strategy__strategy_electric_vehicle_sales_review_
+            q4_2022_2023 p16 (s01 row 2 col 2 — wide single-panel forecast
+            2019–2028F with ONE growth-% callout with arrow, F-suffixed axis
+            years, dual legend row). The three-path divergence itself is the
+            canonical scenario device of this family; where it is drawn it
+            keeps the kit's one-accent rule: LIKELIEST = solid accent line,
+            alternatives = grey dashed, fan fill = grey, never a third hue.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280, 100vh/720)} maps 1rem == 1
+  STAGE PIXEL; the inline SVG (viewBox 0 0 1280 720) uses numbers == px.
+  ----------------------------------------------------------------------------
+  DATA ARRAYS — swap NUMBERS, not geometry (14 x-points, 2018–2031F):
+      years  = [2018,2019,2020,2021,2022,2023,  2024F,2025F,2026F,2027F,
+                2028F,2029F,2030F,2031F];
+      history = [6.8, 7.7, 8.2, 8.9, 9.5,10.2];                // $B actual
+      upside  = [10.2,11.9,13.9,16.2,18.9,21.9,25.4,29.5,34.2]; // $B, 2023→2031F
+      base    = [10.2,11.4,12.8,14.3,16.1,18.0,20.2,22.7,25.1];
+      downside= [10.2,10.8,11.5,12.2,12.9,13.7,14.5,15.4,16.3];
+    History legs are 1 point i = 0..5 (2018–2023); scenario legs are points
+    5..13 — all three scenarios SHARE point 5 (x=475.4, y(10.2)=468.8), the
+    divergence starts there. x(i) = 110 + i × 73.077 (i = 0..13).
+    y(v) = 575 − v × 10.4167   (zero-based, 0 → 575, 36$B → 200).
+    FORECAST flags, exactly three: (1) scenario lines start at the vertical
+    "2023 — today" hairline at x=475.4; (2) axis years 2024F..2031F carry "F";
+    (3) scenario strokes are dashed except LIKELIEST. Endpoints labelled once
+    at the right edge, CAGRs as sub-labels; the single arrowed callout inside
+    the fan is the same EV-p16 device, one per page.
+      FAN FILL = upside path forward + downside path reversed (closed),
+      grey fill-opacity .10; scenario identity lives in line end labels +
+      the assumption strip, NEVER in more than one accent hue.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts. No network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Same PwC Strategy& stack as the family: navy ink, mid-blue accent,
+     greys for alternatives. The fan and both alternate lines are grey
+     ramp — the base case alone wears the accent. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1F3864;
+    --accent:      #1E5A90;
+    --accent-deep: #143A5E;
+    --gray-1:      #6B7280;
+    --gray-2:      #9AA3AF;
+    --gray-3:      #C4C9D1;   /* lightest ramp step — fan fill + downside line */
+    --rule:        #D5DAE1;
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Helvetica Neue", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  body{ background:var(--bg); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); color:var(--ink); font-family:var(--font-body); }
+
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem;
+           font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-deep); font-weight:700; }
+  .kicker sup{ font-size:10.5rem; color:var(--accent); }
+  .title{ position:absolute; left:64rem; top:64rem; width:1010rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700;
+          line-height:36rem; letter-spacing:-.6rem; color:var(--ink);
+          max-height:72rem; overflow:hidden; }
+  .title em{ font-style:normal; color:var(--accent); }
+  .rule-top{ position:absolute; left:64rem; top:146rem; width:1152rem;
+             height:1px; background:var(--rule); }
+
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem;
+             font-family:var(--font-body); }
+  .grid{ stroke:var(--rule); stroke-width:1; }
+  .axis{ stroke:var(--gray-2); stroke-width:1; }
+  .axlab{ font-size:12rem; fill:var(--gray-1); }
+  .xlab{ font-size:12.5rem; fill:var(--gray-1); text-anchor:middle; }
+  .xlab.f{ fill:var(--accent); }
+  .today{ stroke:var(--gray-2); stroke-width:1; stroke-dasharray:3 4; }
+  .todaylab{ font-size:10rem; fill:var(--gray-1); letter-spacing:.08em; text-anchor:middle; }
+  .unit{ font-size:11.5rem; fill:var(--gray-1); }
+
+  .line-hist{ fill:none; stroke:var(--ink); stroke-width:2.75; }
+  .line-base{ fill:none; stroke:var(--accent); stroke-width:3; }            /* LIKELIEST */
+  .line-alt{ fill:none; stroke:var(--gray-2); stroke-width:2; stroke-dasharray:7 5; }
+  .line-alt2{ fill:none; stroke:var(--gray-3); stroke-width:2; stroke-dasharray:2.5 4; }
+  .fan{ fill:var(--gray-2); fill-opacity:.10; }
+  .mark{ fill:var(--bg); stroke:var(--gray-2); stroke-width:2; }
+  .mark.base{ stroke:var(--accent); }
+  .mark.hist{ fill:var(--ink); stroke:var(--ink); }
+
+  .endlab{ font-size:12rem; fill:var(--gray-1); letter-spacing:.04em; }
+  .endval{ font-size:16.5rem; font-weight:700; font-family:var(--font-display);
+           letter-spacing:-.3rem; }
+  .endval.base{ fill:var(--accent); }
+  .endval.alt{ fill:var(--gray-1); }
+  .endcagr{ font-size:10.5rem; fill:var(--gray-2); }
+  .annote{ font-size:11.5rem; fill:var(--gray-1); }
+  .annoteline{ stroke:var(--gray-2); stroke-width:1; stroke-dasharray:3 3; }
+  .annotearr{ stroke:var(--gray-1); stroke-width:1.6; fill:none; }
+
+  /* ---- scenario-assumption strip ---- */
+  .strip{ position:absolute; left:110rem; top:612rem; width:1106rem;
+          display:flex; gap:16rem; }
+  .scard{ flex:1; border:1px solid var(--rule); border-left:4rem solid var(--gray-3);
+          border-radius:2rem; padding:8rem 12rem; }
+  .scard.base{ border-left-color:var(--accent); }
+  .scard .nm{ font-size:11rem; font-weight:700; letter-spacing:.06em;
+              text-transform:uppercase; color:var(--gray-1); }
+  .scard.base .nm{ color:var(--accent); }
+  .scard .cd{ font-size:10.5rem; line-height:14rem; color:var(--gray-1);
+              margin-top:3rem; }
+
+  .source{ position:absolute; left:64rem; bottom:26rem; width:1010rem;
+           font-size:11.5rem; color:var(--gray-1); line-height:16rem; }
+  .source sup{ font-size:8.5rem; }
+  .runhead{ position:absolute; right:64rem; bottom:26rem; font-size:12rem;
+            font-weight:700; color:var(--accent-deep); letter-spacing:.3rem;
+            text-align:right; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>Satellite-derived analytics, 2018–2031F:</b> revenue scenarios in US$ billions, PwC Strategy& model, three cases<sup>1</sup></div>
+  <div class="title">Scenario paths split on capacity timing — <em>base case lands at $25.1B by 2031F</em></div>
+  <div class="rule-top"></div>
+
+  <svg class="chart" viewBox="0 0 1280 720" role="img" aria-label="Scenario fan chart: solid actual history 2018 to 2023, then three diverging dashed paths to 2031F — upside, base and downside">
+    <!-- horizontal gridlines: every 6 $B, y = 575 − v×10.4167 -->
+    <line class="grid" x1="110" y1="575" x2="1060" y2="575"/>
+    <line class="grid" x1="110" y1="512.5" x2="1060" y2="512.5"/>
+    <line class="grid" x1="110" y1="450" x2="1060" y2="450"/>
+    <line class="grid" x1="110" y1="387.5" x2="1060" y2="387.5"/>
+    <line class="grid" x1="110" y1="325" x2="1060" y2="325"/>
+    <line class="grid" x1="110" y1="262.5" x2="1060" y2="262.5"/>
+    <line class="grid" x1="110" y1="200" x2="1060" y2="200"/>
+    <text class="axlab" x="98" y="579" text-anchor="end">$0</text>
+    <text class="axlab" x="98" y="516" text-anchor="end">$6</text>
+    <text class="axlab" x="98" y="453" text-anchor="end">$12</text>
+    <text class="axlab" x="98" y="391" text-anchor="end">$18</text>
+    <text class="axlab" x="98" y="328" text-anchor="end">$24</text>
+    <text class="axlab" x="98" y="266" text-anchor="end">$30</text>
+    <text class="axlab" x="98" y="204" text-anchor="end">$36</text>
+    <text class="unit" x="110" y="185">$ billions</text>
+
+    <!-- fan fill: upside forward + downside reversed -->
+    <polygon class="fan" points="475.4,468.8 548.5,451 621.5,430.2 694.6,406.2 767.7,378.1 840.8,346.9 913.8,310.4 986.9,267.7 1060,218.8 1060,405.2 986.9,414.6 913.8,424 840.8,432.3 767.7,440.6 694.6,447.9 621.5,455.2 548.5,462.5"/>
+
+    <!-- today hairline at x(5)=475.4 -->
+    <line class="today" x1="475.4" y1="198" x2="475.4" y2="575"/>
+    <text class="todaylab" x="768" y="191">SCENARIO PATHS — F = FORECAST, SHADING = UPSIDE–DOWNSIDE RANGE</text>
+
+    <!-- x axis + year ticks -->
+    <line class="axis" x1="110" y1="575" x2="1060" y2="575"/>
+    <text class="xlab" x="110" y="596">2018</text>
+    <text class="xlab" x="256.2" y="596">2020</text>
+    <text class="xlab" x="402.3" y="596">2022</text>
+    <text class="xlab f" x="548.5" y="596">2024F</text>
+    <text class="xlab f" x="694.6" y="596">2026F</text>
+    <text class="xlab f" x="840.8" y="596">2028F</text>
+    <text class="xlab f" x="986.9" y="596">2030F</text>
+    <text class="xlab f" x="1060" y="596">2031F</text>
+
+    <!-- HISTORY 2018–2023 (points 0..5) -->
+    <polyline class="line-hist" points="110,504.2 183.1,494.8 256.2,489.6 329.2,482.3 402.3,476 475.4,468.8"/>
+    <!-- UPSIDE (grey dashed) -->
+    <polyline class="line-alt" points="475.4,468.8 548.5,451 621.5,430.2 694.6,406.2 767.7,378.1 840.8,346.9 913.8,310.4 986.9,267.7 1060,218.8"/>
+    <!-- DOWNSIDE (lighter dashed) -->
+    <polyline class="line-alt2" points="475.4,468.8 548.5,462.5 621.5,455.2 694.6,447.9 767.7,440.6 840.8,432.3 913.8,424 986.9,414.6 1060,405.2"/>
+    <!-- BASE = LIKELIEST — accent, drawn last so it reads first -->
+    <polyline class="line-base" points="475.4,468.8 548.5,456.2 621.5,441.7 694.6,426 767.7,407.3 840.8,387.5 913.8,364.6 986.9,338.5 1060,313.5"/>
+    <circle class="mark hist" cx="475.4" cy="468.8" r="3.5"/>
+    <circle class="mark" cx="1060" cy="218.8" r="4"/>
+    <circle class="mark base" cx="1060" cy="313.5" r="4.5"/>
+    <circle class="mark" cx="1060" cy="405.2" r="4"/>
+
+    <!-- one arrowed callout (EV p16 device): gap between base and upside -->
+    <text class="annote" x="700" y="232">By 2031F the base case sits</text>
+    <text class="annote" x="700" y="247">27% below upside and 54% above</text>
+    <text class="annote" x="700" y="262">downside — timing decides</text>
+    <path class="annotearr" d="M 880 266 C 900 290 910 300 913.8 310.4" marker-end="none"/>
+    <line class="annotearr" x1="915" y1="305" x2="921" y2="299"/>
+    <line class="annotearr" x1="915" y1="305" x2="909" y2="299"/>
+
+    <!-- right-edge scenario labels: name / value / CAGR, each once -->
+    <text class="endlab" x="1075" y="211">UPSIDE</text>
+    <text class="endval alt" x="1075" y="231">$34.2B</text>
+    <text class="endcagr" x="1075" y="246">16% CAGR · 15% likelihood</text>
+    <text class="endlab" x="1075" y="306" style="fill:var(--accent)">BASE — LIKELIEST</text>
+    <text class="endval base" x="1075" y="326">$25.1B</text>
+    <text class="endcagr" x="1075" y="341">12% CAGR · 60% likelihood</text>
+    <text class="endlab" x="1075" y="398">DOWNSIDE</text>
+    <text class="endval alt" x="1075" y="418">$16.3B</text>
+    <text class="endcagr" x="1075" y="433">6% CAGR · 25% likelihood</text>
+  </svg>
+
+  <div class="strip">
+    <div class="scard"><div class="nm">Upside</div><div class="cd">Full launch cadence holds; fusion licensing clears antitrust — vendor IRRs above 14% pull in cross-industry demand</div></div>
+    <div class="scard base"><div class="nm">Base — likeliest</div><div class="cd">Pipeline clears FID hurdles on current cadence; pricing holds flat, consolidation continues among the top five</div></div>
+    <div class="scard"><div class="nm">Downside</div><div class="cd">Launch slippage above 18 months; commoditisation drives ~5% annual price deflation across analytic tasks</div></div>
+  </div>
+
+  <div class="source">Source: vendor filings and EO procurement data (2018–2023); PwC Strategy& scenario engine, October 2023 calibration; likelihoods = model weighting of path assumptions.<sup>1</sup></div>
+  <div class="runhead">15 | MARKET FORECAST</div>
+</div>
+</body>
+</html>

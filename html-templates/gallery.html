@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Slide Template Index</title>
+<style>
+  /* Read-mode specimen index: paper + ink, one navy accent, editorial serif display.
+     Theming of browser surfaces (selection, scrollbar, focus) comes from the palette. */
+  :root {
+    --paper:#FAF8F5; --card:#FFFFFF; --ink:#171512; --ink-2:#4A453E; --ink-3:#6E675F;
+    --rule:#E6E0D6; --accent:#1D3A63; --accent-soft:#EEF2F8; --danger:#8A2822;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--paper); color:var(--ink);
+    font:15px/1.55 Georgia,"Times New Roman",serif; }
+  ::selection { background:var(--accent); color:#fff; }
+  ::-webkit-scrollbar { width:12px; }
+  ::-webkit-scrollbar-track { background:var(--paper); }
+  ::-webkit-scrollbar-thumb { background:#CFC8BC; border:3px solid var(--paper); border-radius:9px; }
+  a { color:var(--accent); text-decoration:none; text-underline-offset:3px; }
+  a:hover { text-decoration:underline; }
+  a:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  header.masthead { max-width:1180px; margin:0 auto; padding:64px 40px 40px;
+    border-bottom:2px solid var(--ink); }
+  header.masthead h1 { font-size:clamp(2rem,4.5vw,3.4rem); line-height:1.05; margin:0 0 14px;
+    font-weight:700; letter-spacing:-0.01em; }
+  header.masthead p.dek { margin:0; color:var(--ink-2); font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:15px; max-width:62ch; }
+  header.masthead p.facts { margin:18px 0 0; font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:13px; color:var(--ink-3); }
+  header.masthead p.facts b { color:var(--ink); font-weight:600; }
+
+  .wrap { max-width:1180px; margin:0 auto; padding:0 40px 120px; display:grid;
+    grid-template-columns:280px 1fr; gap:56px; align-items:start; }
+  nav.fams { position:sticky; top:24px; padding:10px 0 4px; }
+  nav.fams .navhead { font-family:"Helvetica Neue",Arial,sans-serif; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); margin:0 0 10px; }
+  nav.fams a.navrow { display:flex; justify-content:space-between; padding:5px 8px 5px 10px;
+    font-family:"Helvetica Neue",Arial,sans-serif; font-size:12.5px; color:var(--ink-2);
+    border-left:2px solid var(--rule); }
+  nav.fams a.navrow:hover { background:var(--accent-soft); color:var(--ink); border-left-color:var(--accent);
+    text-decoration:none; }
+  nav.fams .nc { color:var(--ink-3); font-variant-numeric:tabular-nums; }
+  .howto { margin-top:26px; padding:14px 16px; background:var(--card); border:1px solid var(--rule);
+    border-radius:12px; font-family:"Helvetica Neue",Arial,sans-serif; font-size:12.5px; color:var(--ink-2); }
+  .howto b { color:var(--ink); }
+  .howto a { display:block; margin-top:6px; }
+
+  section.fam { padding-top:56px; }
+  section.fam + section.fam { margin-top:12px; }
+  section.fam h2 { font-size:1.55rem; letter-spacing:-0.01em; margin:0; }
+  section.fam .count { margin:4px 0 22px; font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); }
+
+  article.entry { display:grid; grid-template-columns:minmax(0,560px) 1fr; gap:28px;
+    align-items:start; padding:26px 0; border-top:1px solid var(--rule); }
+  a.shot, div.shot.pending { display:block; border:1px solid var(--rule); border-radius:10px;
+    overflow:hidden; background:var(--card); box-shadow:0 1px 0 rgba(23,21,18,.03); }
+  a.shot img { display:block; width:100%; height:auto; }
+  a.shot { transition:box-shadow .18s ease-out, transform .18s ease-out; }
+  a.shot:hover { box-shadow:0 10px 26px rgba(23,21,18,.14), 0 2px 6px rgba(23,21,18,.08);
+    transform:translateY(-2px); text-decoration:none; }
+  div.shot.pending { aspect-ratio:16/9; display:flex; align-items:center; justify-content:center;
+    color:var(--ink-3); font-family:"Helvetica Neue",Arial,sans-serif; font-size:12px; }
+  article.entry .meta h3 { margin:2px 0 6px; font-size:1.05rem; line-height:1.3; }
+  code.id { font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace; font-size:11.5px;
+    background:var(--accent-soft); color:var(--accent); padding:2px 7px; border-radius:6px; }
+  p.src { margin:10px 0 8px; font-size:13px; color:var(--ink-2); max-width:38ch; }
+  .meta .chip { display:inline-block; margin:2px 6px 2px 0; font-family:"Helvetica Neue",Arial,sans-serif;
+    font-size:11px; padding:2px 8px; border:1px solid var(--rule); border-radius:999px; color:var(--ink-2); }
+  p.links { font-family:"Helvetica Neue",Arial,sans-serif; font-size:12.5px; margin:6px 0 0; }
+  p.links span { display:inline-block; width:10px; }
+  footer.colophon { max-width:1180px; margin:0 auto; padding:26px 40px 60px; border-top:2px solid var(--ink);
+    font-family:"Helvetica Neue",Arial,sans-serif; font-size:12.5px; color:var(--ink-3); }
+  @media (max-width:960px) {
+    .wrap { grid-template-columns:1fr; gap:24px; }
+    nav.fams { position:static; display:flex; flex-wrap:wrap; gap:6px; }
+    nav.fams .navhead,.howto { display:none; }
+    nav.fams a.navrow { border:1px solid var(--rule); border-radius:999px; }
+    article.entry { grid-template-columns:1fr; }
+  }
+</style></head>
+<body>
+<header class="masthead">
+  <h1>Slide Template Index</h1>
+  <p class="dek">Buildable page templates extracted from visually-reviewed consulting decks and
+  market-research reports. Each entry ships a self-contained HTML page on a 1280×720 stage and a
+  build manual that says exactly how to fill and resize it.</p>
+  <p class="facts"><b>101 templates</b> · 50 layout families · extraction rules
+  in TEMPLATE_SPEC.md · design rules in DESIGN_PLAYBOOK.md · every template cites its source pages</p>
+</header>
+<div class="wrap">
+  <nav class="fams" aria-label="families">
+    <p class="navhead">Families</p>
+    <a class="navrow" href="#cover-standalone"><span class="nf">cover-standalone</span><span class="nc">3</span></a>
+<a class="navrow" href="#agenda-contents"><span class="nf">agenda-contents</span><span class="nc">2</span></a>
+<a class="navrow" href="#appendix-backmatter"><span class="nf">appendix-backmatter</span><span class="nc">2</span></a>
+<a class="navrow" href="#before-after"><span class="nf">before-after</span><span class="nc">2</span></a>
+<a class="navrow" href="#case-study"><span class="nf">case-study</span><span class="nc">2</span></a>
+<a class="navrow" href="#data-table"><span class="nf">data-table</span><span class="nc">2</span></a>
+<a class="navrow" href="#divider-section"><span class="nf">divider-section</span><span class="nc">2</span></a>
+<a class="navrow" href="#donut"><span class="nf">donut</span><span class="nc">2</span></a>
+<a class="navrow" href="#dual-axis-combo"><span class="nf">dual-axis-combo</span><span class="nc">2</span></a>
+<a class="navrow" href="#exec-summary-ataglance"><span class="nf">exec-summary-ataglance</span><span class="nc">2</span></a>
+<a class="navrow" href="#financial-table"><span class="nf">financial-table</span><span class="nc">2</span></a>
+<a class="navrow" href="#framework-named"><span class="nf">framework-named</span><span class="nc">2</span></a>
+<a class="navrow" href="#hbar"><span class="nf">hbar</span><span class="nc">2</span></a>
+<a class="navrow" href="#icon-column"><span class="nf">icon-column</span><span class="nc">2</span></a>
+<a class="navrow" href="#isometric-illustration"><span class="nf">isometric-illustration</span><span class="nc">2</span></a>
+<a class="navrow" href="#issue-tree"><span class="nf">issue-tree</span><span class="nc">2</span></a>
+<a class="navrow" href="#journey"><span class="nf">journey</span><span class="nc">2</span></a>
+<a class="navrow" href="#kpi-numerals"><span class="nf">kpi-numerals</span><span class="nc">2</span></a>
+<a class="navrow" href="#line-trend"><span class="nf">line-trend</span><span class="nc">2</span></a>
+<a class="navrow" href="#map-geo"><span class="nf">map-geo</span><span class="nc">2</span></a>
+<a class="navrow" href="#matrix-2x2"><span class="nf">matrix-2x2</span><span class="nc">2</span></a>
+<a class="navrow" href="#methodology"><span class="nf">methodology</span><span class="nc">2</span></a>
+<a class="navrow" href="#model-diagram"><span class="nf">model-diagram</span><span class="nc">2</span></a>
+<a class="navrow" href="#org-hub-map"><span class="nf">org-hub-map</span><span class="nc">2</span></a>
+<a class="navrow" href="#persona"><span class="nf">persona</span><span class="nc">2</span></a>
+<a class="navrow" href="#photo-bleed"><span class="nf">photo-bleed</span><span class="nc">2</span></a>
+<a class="navrow" href="#process-flow"><span class="nf">process-flow</span><span class="nc">2</span></a>
+<a class="navrow" href="#pyramid-tiers"><span class="nf">pyramid-tiers</span><span class="nc">2</span></a>
+<a class="navrow" href="#quote-pull"><span class="nf">quote-pull</span><span class="nc">2</span></a>
+<a class="navrow" href="#quote-visual-humor"><span class="nf">quote-visual-humor</span><span class="nc">2</span></a>
+<a class="navrow" href="#recommendation"><span class="nf">recommendation</span><span class="nc">2</span></a>
+<a class="navrow" href="#risk-opportunity"><span class="nf">risk-opportunity</span><span class="nc">2</span></a>
+<a class="navrow" href="#scatter-bubble"><span class="nf">scatter-bubble</span><span class="nc">2</span></a>
+<a class="navrow" href="#scenario-forecast"><span class="nf">scenario-forecast</span><span class="nc">2</span></a>
+<a class="navrow" href="#sketch-checklist"><span class="nf">sketch-checklist</span><span class="nc">2</span></a>
+<a class="navrow" href="#small-multiples"><span class="nf">small-multiples</span><span class="nc">2</span></a>
+<a class="navrow" href="#stacked-share"><span class="nf">stacked-share</span><span class="nc">2</span></a>
+<a class="navrow" href="#stat-callout-list"><span class="nf">stat-callout-list</span><span class="nc">2</span></a>
+<a class="navrow" href="#survey-question-exhibit"><span class="nf">survey-question-exhibit</span><span class="nc">2</span></a>
+<a class="navrow" href="#text-bullets"><span class="nf">text-bullets</span><span class="nc">2</span></a>
+<a class="navrow" href="#three-horizons"><span class="nf">three-horizons</span><span class="nc">2</span></a>
+<a class="navrow" href="#timeline"><span class="nf">timeline</span><span class="nc">2</span></a>
+<a class="navrow" href="#two-column-text"><span class="nf">two-column-text</span><span class="nc">2</span></a>
+<a class="navrow" href="#value-chain"><span class="nf">value-chain</span><span class="nc">2</span></a>
+<a class="navrow" href="#vbar"><span class="nf">vbar</span><span class="nc">2</span></a>
+<a class="navrow" href="#venn-diagram"><span class="nf">venn-diagram</span><span class="nc">2</span></a>
+<a class="navrow" href="#waffle-heat"><span class="nf">waffle-heat</span><span class="nc">2</span></a>
+<a class="navrow" href="#waterfall-bridge"><span class="nf">waterfall-bridge</span><span class="nc">2</span></a>
+<a class="navrow" href="#why-it-matters"><span class="nf">why-it-matters</span><span class="nc">2</span></a>
+<a class="navrow" href="#word-cloud"><span class="nf">word-cloud</span><span class="nc">2</span></a>
+    <div class="howto"><b>How to use</b>
+      Open a template, copy its files, replace the marked slots per its MANUAL.md.
+      Palettes and chart rules follow DESIGN_PLAYBOOK.md.
+      <a href="../README.md">README index</a><a href="../TEMPLATE_SPEC.md">kit spec</a>
+    </div>
+  </nav>
+  <main>
+    <section class="fam" id="cover-standalone">
+      <h2>cover-standalone</h2>
+      <p class="count">3 templates</p>
+      <article class="entry">
+      <a href="cover/index.html" class="shot"><img src="gallery/cover.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="cover/index.html">Full-bleed cover, firm mark bottom-right</a></h3>
+        <code class="id">cover</code>
+        <p class="src">accenture__accenture_the_nbn_effect (cover p00) + kpmg__kpmg_kpmg_2021_ceo_outlook (cover p00 variant)</p>
+        <p></p>
+        <p class="links"><a href="cover/index.html">template</a><span></span><a href="cover/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="cover-standalone-band/index.html" class="shot"><img src="gallery/cover-standalone-band.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="cover-standalone-band/index.html">Field Cover + Full-Width Value Band</a></h3>
+        <code class="id">cover-standalone-band</code>
+        <p class="src">KPMG Global Tech Report 2022 (kpmg__kpmg_kpmg_global_tech_report_2022_2022) cover p1 + Our Impact Plan 2023 cover p1; review kpmg__kpmg_kpmg_global_tech_report_2022_2022.md</p>
+        <p><span class="chip">title</span><span class="chip">kicker</span><span class="chip">bandtext</span><span class="chip">bandstat</span><span class="chip">meta</span><span class="chip">lockup</span><span class="chip">page</span></p>
+        <p class="links"><a href="cover-standalone-band/index.html">template</a><span></span><a href="cover-standalone-band/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="cover-standalone-flat/index.html" class="shot"><img src="gallery/cover-standalone-flat.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="cover-standalone-flat/index.html">Flat-Field Display Cover, Type-Only</a></h3>
+        <code class="id">cover-standalone-flat</code>
+        <p class="src">KPMG Global Tech Report 2022 (kpmg__kpmg_kpmg_global_tech_report_2022_2022) cover p1 + Our Impact Plan 2023 cover p1; review kpmg__kpmg_kpmg_global_tech_report_2022_2022.md</p>
+        <p><span class="chip">title</span><span class="chip">kicker</span><span class="chip">subtitle</span><span class="chip">meta</span><span class="chip">lockup</span><span class="chip">page</span></p>
+        <p class="links"><a href="cover-standalone-flat/index.html">template</a><span></span><a href="cover-standalone-flat/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="agenda-contents">
+      <h2>agenda-contents</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="agenda-contents-ruleset/index.html" class="shot"><img src="gallery/agenda-contents-ruleset.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="agenda-contents-ruleset/index.html">Numbered contents table on a ruled grid</a></h3>
+        <code class="id">agenda-contents-ruleset</code>
+        <p class="src">EY — European Banking Barometer 2015 (ey__ey_european_banking_barometer_2015_2015) Contents p2 — sw_pages/ey__ey_european_banking_barometer_2015_2015/pg-02.png + sw_sheets/ey__ey_european_banking_barometer_2015_2015_s00.jpg; reviews/ey__ey_european_banking_barometer_2015_2015.md (contents list + footer band); row-state device from reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">brand-rule</span><span class="chip">message</span><span class="chip">edition</span><span class="chip">rows</span><span class="chip">row-num</span><span class="chip">row-title</span></p>
+        <p class="links"><a href="agenda-contents-ruleset/index.html">template</a><span></span><a href="agenda-contents-ruleset/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="agenda-contents-tracker/index.html" class="shot"><img src="gallery/agenda-contents-tracker.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="agenda-contents-tracker/index.html">Contents that doubles as a section-progress tracker</a></h3>
+        <code class="id">agenda-contents-tracker</code>
+        <p class="src">Monitor Deloitte — Accelerated Access Review: UK Mapping (deloitte__deloitte_accelerated_access_review_uk_mapping_2015) Contents p3, reprinted p12/p20/p44/p69 — sw_pages/deloitte__deloitte_accelerated_access_review_uk_mapping_2015/pg-003.png + sw_sheets/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_s00.jpg cell 3; reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md (contents-as-section-tracker)</p>
+        <p><span class="chip">kicker</span><span class="chip">brandmark</span><span class="chip">title</span><span class="chip">message</span><span class="chip">progress</span><span class="chip">sections</span><span class="chip">section-label</span><span class="chip">section-span</span></p>
+        <p class="links"><a href="agenda-contents-tracker/index.html">template</a><span></span><a href="agenda-contents-tracker/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="appendix-backmatter">
+      <h2>appendix-backmatter</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="appendix-backmatter-contacts/index.html" class="shot"><img src="gallery/appendix-backmatter-contacts.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="appendix-backmatter-contacts/index.html">Back-matter contacts roster (headshot columns)</a></h3>
+        <code class="id">appendix-backmatter-contacts</code>
+        <p class="src">ey__ey_generative_ai_in_wealth_and_asset_management_2024 p25 &#x27;Ernst &amp; Young LLP contacts&#x27; (read on sw_sheets/ey__ey_generative_ai_in_wealth_and_asset_management_2024_s02.jpg row 1 frame 5); directory-roster variant ey__ey_european_banking_barometer_2015_2015 p46 (sheet _s04.jpg); palette + footer conventions from reviews/ey__ey_generative_ai_in_wealth_and_asset_management_2024.md §Color system</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">group-1</span><span class="chip">group-2</span><span class="chip">group-3</span><span class="chip">name (x9)</span><span class="chip">role (x9)</span><span class="chip">mail (x9)</span></p>
+        <p class="links"><a href="appendix-backmatter-contacts/index.html">template</a><span></span><a href="appendix-backmatter-contacts/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="appendix-backmatter-definitions/index.html" class="shot"><img src="gallery/appendix-backmatter-definitions.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="appendix-backmatter-definitions/index.html">Appendix glossary / key-definitions table</a></h3>
+        <code class="id">appendix-backmatter-definitions</code>
+        <p class="src">deloitte__deloitte_new_mexico_state_university_staffing_study_opportun p21 &#x27;Key Definitions&#x27; (read on sw_sheets/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_s02.jpg row 3 frame 1); taxonomy context same deck p10; palette notes (blue+yellow data pair, red emphasis, maroon band observed on-sheet) from reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun.md §Color system</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">col-term</span><span class="chip">col-def</span><span class="chip">term (x5)</span><span class="chip">sub-label (x1)</span><span class="chip">definition-bullets (x5 rows)</span><span class="chip">example-line</span></p>
+        <p class="links"><a href="appendix-backmatter-definitions/index.html">template</a><span></span><a href="appendix-backmatter-definitions/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="before-after">
+      <h2>before-after</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="before-after-item-bars/index.html" class="shot"><img src="gallery/before-after-item-bars.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="before-after-item-bars/index.html">Per-item before/after paired columns with delta pills, one pair ringed + leader + callout (the fix that worked), uneven-change claim title</a></h3>
+        <code class="id">before-after-item-bars</code>
+        <p class="src">ey__ey_ey_academic_resource_center_mission_2019 (p12–p21 before/after chart pairs + red-arrow correction device, recoloured to kit accent; sw_sheets/ey__ey_ey_academic_resource_center_mission_2019_s01.jpg p12 row1 col2; review ey__ey_ey_academic_resource_center_mission_2019.md); per-item paired bars: accenture NBN Effect p14 (review accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">unit_note</span><span class="chip">legend_before</span><span class="chip">legend_after</span><span class="chip">item1_cat</span><span class="chip">item1_sub</span></p>
+        <p class="links"><a href="before-after-item-bars/index.html">template</a><span></span><a href="before-after-item-bars/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="before-after-state-pair/index.html" class="shot"><img src="gallery/before-after-state-pair.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="before-after-state-pair/index.html">Before/after transformation reveal — two matched state panels, per-metric bars with delta pills, centre programme arrow, two-numeral KPI band</a></h3>
+        <code class="id">before-after-state-pair</code>
+        <p class="src">ey__ey_ey_academic_resource_center_mission_2019 (p12–p21 before/after chart pairs; sw_sheets/ey__ey_ey_academic_resource_center_mission_2019_s01.jpg p12 row1 col2; review ey__ey_ey_academic_resource_center_mission_2019.md device &#x27;before/after chart pair with red-arrow corrections&#x27;); two-number callout band: pwc_strategy__pwc_namibia_budget_on_a_plate_2019_2020_2019 p3 (sw_sheets/pwc_strategy__pwc_namibia_budget_on_a_plate_s00.jpg row1 col3)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">k1_num</span><span class="chip">k1_cap</span><span class="chip">k2_num</span><span class="chip">k2_cap</span><span class="chip">chip</span></p>
+        <p class="links"><a href="before-after-state-pair/index.html">template</a><span></span><a href="before-after-state-pair/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="case-study">
+      <h2>case-study</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="case-study-example-grid/index.html" class="shot"><img src="gallery/case-study-example-grid.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="case-study-example-grid/index.html">Named example-card grid — action claim + 2×3 company cards (violet name + underline) + bridge line + source</a></h3>
+        <code class="id">case-study-example-grid</code>
+        <p class="src">accenture__accenture_accelerating_global_companies_toward_net_zero_by_2 p26 (sw_sheets/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_s02.jpg row 2 frame 1); count-variant kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022 p19 (sw_sheets/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_s01.jpg); palette reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2.md §Color system</p>
+        <p><span class="chip">eyebrow</span><span class="chip">claim</span><span class="chip">lede</span><span class="chip">name (x6)</span><span class="chip">body (x6)</span><span class="chip">num-figure</span><span class="chip">violet-emphasis (x6)</span><span class="chip">footnote-marker</span></p>
+        <p class="links"><a href="case-study-example-grid/index.html">template</a><span></span><a href="case-study-example-grid/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="case-study-three-column/index.html" class="shot"><img src="gallery/case-study-three-column.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="case-study-three-column/index.html">Single case, three color-headed panels (Background/Issues/Challenges) + icon rail + implication bar</a></h3>
+        <code class="id">case-study-three-column</code>
+        <p class="src">deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p43/p67/p68 (sw_sheets/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_s04.jpg row 2 frame 3; ..._s06.jpg row 2 frames 4-5); title-zone and kicker-bar facts reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md</p>
+        <p><span class="chip">topic</span><span class="chip">message</span><span class="chip">band-background</span><span class="chip">band-issues</span><span class="chip">band-challenges</span><span class="chip">item-text (x9)</span><span class="chip">icon (x9, inline svg)</span><span class="chip">implication</span></p>
+        <p class="links"><a href="case-study-three-column/index.html">template</a><span></span><a href="case-study-three-column/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="data-table">
+      <h2>data-table</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/data-table-numeric-matrix/index.html" class="shot"><img src="gallery/data-table-numeric-matrix.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/data-table-numeric-matrix/index.html">Dense numeric matrix page - entity rows x metric columns, right-anchored decimals, one highlighted row + summary bar column + so-what band (EY bank-level convention)</a></h3>
+        <code class="id">data-table-numeric-matrix</code>
+        <p class="src">ey__ey_ey_ifrs_9_impairment_banking_survey_2018 p12 (bank-level data matrix; raw table; summary bars - viewed on sw_sheets/ey__ey_ey_ifrs_9_impairment_banking_survey_2018_s01.jpg row1 col2); secondary ey__ey_european_banking_barometer_2015_2015 p5 boxed crosstab, kpmg__kpmg_kpmg_our_impact_plan_2023 p23 grid+footnotes (s02). Colour rules: reviews/ey__ey_ey_ifrs_9_impairment_banking_survey_2018.md line 25 (two-colour yellow #FFE600 + grey), KPMG swap hexes from reviews/kpmg__kpmg_kpmg_our_impact_plan_2023.md lines 41-45. Screenshot qa/data-table-numeric-matrix.png (render clean, header collision fixed: drift-group caption anchored start x900).</p>
+        <p><span class="chip">kicker</span><span class="chip">title-claim</span><span class="chip">claim-sub</span><span class="chip">header.group-captions(x3)</span><span class="chip">header.col-captions(x4)</span><span class="chip">row.label(x7)</span><span class="chip">row.s1</span><span class="chip">row.s2</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/data-table-numeric-matrix/index.html">template</a><span></span><a href="data-table-numeric-matrix/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/data-table-status-matrix/index.html" class="shot"><img src="gallery/data-table-status-matrix.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/data-table-status-matrix/index.html">Grouped heat-cell verdict matrix - players under threshold band headers, word+glyph verdict cells on a one-accent silence ramp, numeric CAGR column, legend strip (Accenture post-parcel convention, red/green replaced per kit rule)</a></h3>
+        <code class="id">data-table-status-matrix</code>
+        <p class="src">accenture__accenture_2023_post_parcel_industry_trends_2023 p10 (grouped heat-cell table with CAGR band headers + legend strip - viewed on sw_sheets/accenture__accenture_2023_post_parcel_industry_trends_2023_s00.jpg row1 col5; convention claims reviews/accenture__accenture_2023_post_parcel_industry_trends_2023.md item 7 + line 33 RAG-cells note). Deliberate deviation: source red/green cells -&gt; single-accent #6E00C9 silence ramp (weak cells loudest), stated in index.html header + MANUAL. Secondary deloitte__deloitte_digital_transformation_2018 p7, ey__ey_ey_infrastructure_barometer_italy_2020 p8 (catalog). Screenshot qa/data-table-status-matrix.png.</p>
+        <p><span class="chip">kicker</span><span class="chip">title-claim</span><span class="chip">claim-sub</span><span class="chip">header.col-captions(x6)</span><span class="chip">band.caption(x3)</span><span class="chip">row.label(x7)</span><span class="chip">row.verdict-word(x4/row)</span><span class="chip">row.verdict-fill(x4/row)</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/data-table-status-matrix/index.html">template</a><span></span><a href="data-table-status-matrix/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="divider-section">
+      <h2>divider-section</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="divider-section-outline/index.html" class="shot"><img src="gallery/divider-section-outline.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="divider-section-outline/index.html">Outline-Type Chapter Divider (full-bleed duotone + giant hairline numeral)</a></h3>
+        <code class="id">divider-section-outline</code>
+        <p class="src">EY | IIF Global Insurance Risk Management Survey 2024 (ey__ey_risk_management_in_a_time_of_transformation_2024), chapter dividers p10/p17/p30 — p18 half-bleed form read in sw_sheets/ey__ey_risk_management_in_a_time_of_transformation_2024_s01.jpg; review ey__ey_risk_management_in_a_time_of_transformation_2024.md</p>
+        <p><span class="chip">furniture</span><span class="chip">eyebrow</span><span class="chip">lockup</span><span class="chip">kicker</span><span class="chip">title</span><span class="chip">titlerule</span><span class="chip">subtitle</span><span class="chip">intro</span></p>
+        <p class="links"><a href="divider-section-outline/index.html">template</a><span></span><a href="divider-section-outline/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="divider-section-tabrail/index.html" class="shot"><img src="gallery/divider-section-tabrail.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="divider-section-tabrail/index.html">Display-Title Section Divider with You-Are-Here Nav Rail</a></h3>
+        <code class="id">divider-section-tabrail</code>
+        <p class="src">KPMG 2021 CEO Outlook (kpmg__kpmg_kpmg_kpmg_2021_ceo_outlook_2021) section dividers + rail, pages p1-p10 via sw_sheets/kpmg__kpmg_kpmg_kpmg_2021_ceo_outlook_2021_s00.jpg; opener + stat claim from KPMG 2020 CEO Outlook COVID-19 Special Edition p5 via sw_sheets/kpmg__kpmg_kpmg_kpmg_2020_ceo_outlook_covid_19_special_edition_2020_s00.jpg; reviews for both decks</p>
+        <p><span class="chip">title</span><span class="chip">section_index</span><span class="chip">lede</span><span class="chip">stat_numeral</span><span class="chip">stat_claim</span><span class="chip">tiles</span><span class="chip">rail_tabs</span><span class="chip">rail_legend</span></p>
+        <p class="links"><a href="divider-section-tabrail/index.html">template</a><span></span><a href="divider-section-tabrail/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="donut">
+      <h2>donut</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/donut-claim-center/" class="shot"><img src="gallery/donut-claim-center.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/donut-claim-center/">Allocation donut with the argument sentence in the hole — 5-segment violet lightness ramp, radial reach labels, spend-vs-reach bridge rail + implication band</a></h3>
+        <code class="id">donut-claim-center</code>
+        <p class="src">accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o p16 (sw_pages/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o/pg-16.png; sheet sw_sheets/..._s01.jpg), donut-with-center-claim device p16/p21/p29 + NOTE/SOURCE footer contract + single-hue lightness-token palette from reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md; radial labels cross-checked against moneyball p24 (segment soup flagged, capped at 5); band violet #7500C0 sampled, ramp #8E24EA/#A45CF0/#D9C6F4/#E7D9F8 + grey #B8B8B8 cited from review</p>
+        <p><span class="chip">chip</span><span class="chip">claim_title</span><span class="chip">accent_span</span><span class="chip">center_overline</span><span class="chip">center_claim</span><span class="chip">segment-count-5</span><span class="chip">ring_value-labels</span><span class="chip">radial-names</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/donut-claim-center/">template</a><span></span><a href="donut-claim-center/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/donut-pair-contrast/" class="shot"><img src="gallery/donut-pair-contrast.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/donut-pair-contrast/">Dual donut disconnect — two grey-ring gauges, red share arcs, giant centre numerals, 12-point gap block with outward arrows (20% vs 8%)</a></h3>
+        <code class="id">donut-pair-contrast</code>
+        <p class="src">accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019 p23 (sw_pages/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019/pg-23.png; sheet sw_sheets/..._s02.jpg), variant p10; signature-device list, red=highlight/black=comparison/grey=rest semantics and the p24 pie-soup ignore note from reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019.md; arc red #DC0017, title red #FF0000, ring grey #BFBFBF sampled from the source page</p>
+        <p><span class="chip">claim_title</span><span class="chip">red_clause</span><span class="chip">subline</span><span class="chip">left_value</span><span class="chip">right_value</span><span class="chip">gap_numeral</span><span class="chip">gap_label</span><span class="chip">caption_left</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/donut-pair-contrast/">template</a><span></span><a href="donut-pair-contrast/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="dual-axis-combo">
+      <h2>dual-axis-combo</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/dual-axis-combo-bar-line-fiscal/" class="shot"><img src="gallery/dual-axis-combo-bar-line-fiscal.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/dual-axis-combo-bar-line-fiscal/">Fiscal-year crimson % bars (left axis) + black money line (right axis), Actual/Estimate/Budget qualifiers, amber projected-year flag</a></h3>
+        <code class="id">dual-axis-combo-bar-line-fiscal</code>
+        <p class="src">pwc_strategy__pwc_namibia_national_budget_2024_25_for_our_humanity_now_s_t p05/p06 (sheet s00, Interest Repayment); reviews/pwc_strategy__...md — palette § (crimson #C4172C–#D6006C, amber #F8C820 flag), dual-axis common (N$ left % right), fiscal-year axis qualifiers + footer convention (deck tag + month/page), triangle brand echo</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">brand_echo</span><span class="chip">rule_top</span><span class="chip">bars_left_axis</span><span class="chip">line_right_axis</span><span class="chip">bar_value_labels</span><span class="chip">line_end_label</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/dual-axis-combo-bar-line-fiscal/">template</a><span></span><a href="dual-axis-combo-bar-line-fiscal/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/dual-axis-combo-column-line/" class="shot"><img src="gallery/dual-axis-combo-column-line.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/dual-axis-combo-column-line/">Column+line dual-axis analysis page — cyan columns left $-axis, ink count line right axis, 2024* partial-year flag, 3-read commentary rail</a></h3>
+        <code class="id">dual-axis-combo-column-line</code>
+        <p class="src">kpmg__kpmg_venture_pulse_q3_2024_2024 p12/p13/p15 (sheet s01); reviews/kpmg__kpmg_venture_pulse_q3_2024_2024.md — palette § (cyan #00B8F6 measured), §Charts (column+line two axes, value labels), §71 (chart block + ~28-30% commentary column, legend row), §66 weaknesses (label-everywhere, dual-axis comparability) encoded as label-the-now + honesty rules</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">nav_active</span><span class="chip">rule_top</span><span class="chip">bars_left_axis</span><span class="chip">line_right_axis</span><span class="chip">value_labels</span><span class="chip">highlight_bar</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/dual-axis-combo-column-line/">template</a><span></span><a href="dual-axis-combo-column-line/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="exec-summary-ataglance">
+      <h2>exec-summary-ataglance</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="exec-summary-ataglance-editorial-spread/index.html" class="shot"><img src="gallery/exec-summary-ataglance-editorial-spread.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="exec-summary-ataglance-editorial-spread/index.html">Executive summary as two-column editorial spread with chapter numeral + photo</a></h3>
+        <code class="id">exec-summary-ataglance-editorial-spread</code>
+        <p class="src">EY/IIF — ey__ey_risk_management_in_a_time_of_transformation_2024 (executive summary p4; sheet ey__ey_risk_management_in_a_time_of_transformation_2024_s00.jpg frame 4); palette hexes #FFE600/#7B2FA6/#4B1F7D/#C8B4DC/#6E6E73/#EFEFF2 from reviews/ey__ey_risk_management_in_a_time_of_transformation_2024.md; claim-first habit confirmed on takeaway pages p5-p9</p>
+        <p><span class="chip">chapter-num</span><span class="chip">micro-caption</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">photo</span><span class="chip">figure-caption</span><span class="chip">body-claim</span><span class="chip">body-paragraph</span></p>
+        <p class="links"><a href="exec-summary-ataglance-editorial-spread/index.html">template</a><span></span><a href="exec-summary-ataglance-editorial-spread/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="exec-summary-ataglance-findings-rail/index.html" class="shot"><img src="gallery/exec-summary-ataglance-findings-rail.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="exec-summary-ataglance-findings-rail/index.html">Executive summary as numbered findings column + methodology rail</a></h3>
+        <code class="id">exec-summary-ataglance-findings-rail</code>
+        <p class="src">KPMG — kpmg__kpmg_genai_survey_2024_key_insights_2024 (executive summary p2; sheet kpmg__kpmg_genai_survey_2024_key_insights_2024_s00.jpg frame 2); navy #00338D from reviews/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024.md, cyan #019cde from reviews/kpmg__kpmg_kpmg_2020_ceo_outlook_covid_19_special_edition_2020.md; font fact from reviews/kpmg__kpmg_genai_survey_2024_key_insights_2024.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">edition</span><span class="chip">thesis</span><span class="chip">findings</span><span class="chip">finding-lead</span><span class="chip">finding-stat</span><span class="chip">methodology-prose</span></p>
+        <p class="links"><a href="exec-summary-ataglance-findings-rail/index.html">template</a><span></span><a href="exec-summary-ataglance-findings-rail/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="financial-table">
+      <h2>financial-table</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/financial-table-guidance-bridge/index.html" class="shot"><img src="gallery/financial-table-guidance-bridge.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/financial-table-guidance-bridge/index.html">Prior vs. current guidance table with change pills (1280x720) - two dated guidance vintages side by side, current column inside one tall violet panel, qualifier sub-lines on the current side and a per-row delta pill (up/down/unchanged, gray for flat)</a></h3>
+        <code class="id">financial-table-guidance-bridge</code>
+        <p class="src">Accenture Investor &amp; Analyst Conference 2022 (accenture__accenture_accenture_investor_analyst_conference_2022) p11 &#x27;Continued Strong Momentum&#x27;, read on sw_sheets/accenture__accenture_accenture_investor_analyst_conference_2022_s01.jpg (p11-p20 sheet; p11 = row 2 col 2), with the highlighted-column sibling device on p17; analysed in reviews/accenture__accenture_accenture_investor_analyst_conference_2022.md (architecture s1, palette semantics line 18, footnote/footer discipline line 12). Palette pixel-sampled (no hexes in the review), deepened for white stage, silver-gradient ground dropped to white. Verified by headless render.</p>
+        <p><span class="chip">title</span><span class="chip">claim-sub</span><span class="chip">rows[].label</span><span class="chip">rows[].prior</span><span class="chip">rows[].now</span><span class="chip">rows[].detail</span><span class="chip">rows[].delta.dir</span><span class="chip">rows[].delta.txt</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/financial-table-guidance-bridge/index.html">template</a><span></span><a href="financial-table-guidance-bridge/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/financial-table-step-up/index.html" class="shot"><img src="gallery/financial-table-step-up.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/financial-table-step-up/index.html">Fiscal-year financial table with one derived step-up column boxed (1280x720) - three-year right-anchored numerals, row labels hugging the numbers, violet header rule, and a magenta-boxed step-up column whose value is illustrative minus last actual</a></h3>
+        <code class="id">financial-table-step-up</code>
+        <p class="src">Accenture Investor &amp; Analyst Conference 2022 (accenture__accenture_accenture_investor_analyst_conference_2022) p2 and p3, read on sw_sheets/accenture__accenture_accenture_investor_analyst_conference_2022_s00.jpg (p1-p10 sheet; p2 = row 1 col 2, p3 = row 1 col 3) and p11/p17 variants on ..._s01.jpg; analysed in reviews/accenture__accenture_accenture_investor_analyst_conference_2022.md (architecture s1 &#x27;highlighted financial tables&#x27;, palette line 18, footer discipline line 12). Review lists no hexes: palette sampled from the p2 render crop (violet ~rgb(147,116,192), magenta ~rgb(180,115,181), numerals ~rgb(16,22,38)) and deepened for the white stage; the deck&#x27;s silver-gradient ground replaced by white. Verified by headless render.</p>
+        <p><span class="chip">title</span><span class="chip">rows[].label</span><span class="chip">rows[].a</span><span class="chip">rows[].b</span><span class="chip">rows[].c</span><span class="chip">rows[].box</span><span class="chip">rows[].bold</span><span class="chip">footnotes</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/financial-table-step-up/index.html">template</a><span></span><a href="financial-table-step-up/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="framework-named">
+      <h2>framework-named</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="framework-named-five-forces/index.html" class="shot"><img src="gallery/framework-named-five-forces.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="framework-named-five-forces/index.html">Porter Five Forces — four assessed force panels around a central competition-intensity disc, LOW/MODERATE/HIGH commitment per force, binding forces flagged in accent, drawn-not-SmartArt (Umbrex S1765 grammar)</a></h3>
+        <code class="id">framework-named-five-forces</code>
+        <p class="src">catalog_umbrex.csv S1765 &quot;Template — Porter&#x27;s Five Forces&quot; — corpus/sheets/sheet_177.jpg (ceil(1765/10)=177, row 1 col 5); device rule reviews/umbrex_patterns.md §9 (four corners + central intensity, Low/moderate/high prompt lines); palette navy ~#1F2A65/#1F2A4F + grey fills per §palette line 29, highlight normalized to house --accent #2251FF</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">force-1</span><span class="chip">force-2</span><span class="chip">force-3</span><span class="chip">force-4</span><span class="chip">center</span></p>
+        <p class="links"><a href="framework-named-five-forces/index.html">template</a><span></span><a href="framework-named-five-forces/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="framework-named-option-scorecard/index.html" class="shot"><img src="gallery/framework-named-option-scorecard.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="framework-named-option-scorecard/index.html">Option Comparison Scorecard — Option/Risk/Benefits/Cost/Decision table, navy header band, grey-ramp rating pills (light=Low → dark=High), zebra rows, accent left-bar + verdict reserved for the recommended row (Deloitte Tillsonburg p15 device + PwC AR2018 p26 scorecard discipline)</a></h3>
+        <code class="id">framework-named-option-scorecard</code>
+        <p class="src">deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd p15 — sw_sheets/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_s01.jpg (floor(15/10)=1, row 1 col 5); device praised as deck&#x27;s strongest in reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd.md §devices #4 + §palette (navy header band, zebra, semantic RAG); row discipline from pwc_strategy__pwc_pwc_annual_report_2018 p26 — sw_sheets/pwc_strategy__pwc_pwc_annual_report_2018_s02.jpg (row 1 col 5 = p25 offset), red/white zebra + bold actual/target per reviews/pwc_strategy__pwc_pwc_annual_report_2018.md §color (red ~#D60A2C normalized to house --accent #2251FF)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">col-opt</span><span class="chip">col-risk</span><span class="chip">col-ben</span><span class="chip">col-cost</span><span class="chip">col-dec</span></p>
+        <p class="links"><a href="framework-named-option-scorecard/index.html">template</a><span></span><a href="framework-named-option-scorecard/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="hbar">
+      <h2>hbar</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/hbar-likert/" class="shot"><img src="gallery/hbar-likert.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/hbar-likert/">100% stacked Likert horizontal bars — ordinal purple tint scale, grey for don&#x27;t-know, top-two-box pill column</a></h3>
+        <code class="id">hbar-likert</code>
+        <p class="src">accenture__accenture_2021_p_c_underwriting_survey_2021 (p19/p28, sheet s01)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">chart_rows</span><span class="chip">pill_column</span><span class="chip">axis</span><span class="chip">legend</span><span class="chip">note</span><span class="chip">footer</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/hbar-likert/">template</a><span></span><a href="hbar-likert/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/hbar-ranked/" class="shot"><img src="gallery/hbar-ranked.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/hbar-ranked/">Ranked horizontal bars — question-kicker survey page with end labels, one highlight + grey for reference series</a></h3>
+        <code class="id">hbar-ranked</code>
+        <p class="src">accenture__accenture_2021_p_c_underwriting_survey_2021 (p16, sheet s01); accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o (p10)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">chart_rows</span><span class="chip">callout</span><span class="chip">annot_rail</span><span class="chip">legend</span><span class="chip">remarks</span><span class="chip">footer</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/hbar-ranked/">template</a><span></span><a href="hbar-ranked/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="icon-column">
+      <h2>icon-column</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="icon-column-advice-trio/index.html" class="shot"><img src="gallery/icon-column-advice-trio.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="icon-column-advice-trio/index.html">Three line-icon advice columns — violet stroke icon, colon-ended segment label with accent underline, bold violet imperative, plain body with one bold phrase and superscript markers</a></h3>
+        <code class="id">icon-column-advice-trio</code>
+        <p class="src">accenture__accenture_accelerating_global_companies_toward_net_zero_by_2 p30 (maturity-spectrum advice; sw_sheets/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_s02.jpg row 2 frame 5), icon-row device p27-p28 (same sheet row 2 frames 2-3); palette hexes reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md + layout facts reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">label-1</span><span class="chip">label-2</span><span class="chip">label-3</span><span class="chip">action-1</span><span class="chip">action-2</span><span class="chip">action-3</span></p>
+        <p class="links"><a href="icon-column-advice-trio/index.html">template</a><span></span><a href="icon-column-advice-trio/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="icon-column-medallion-rail/index.html" class="shot"><img src="gallery/icon-column-medallion-rail.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="icon-column-medallion-rail/index.html">Dash-bullet commitment blocks over a five-disc gradient medallion rail with white pictograms and captions, blue title + magenta hairline</a></h3>
+        <code class="id">icon-column-medallion-rail</code>
+        <p class="src">kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022 p37 (Our commitments; sw_sheets/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_s03.jpg row 2 frame 2) with recurring disc device p38-p39 (same sheet row 2 frames 3-4); palette hexes + title/rule habit reviews/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">h2-1</span><span class="chip">h2-2</span><span class="chip">b1-1</span><span class="chip">b1-2</span><span class="chip">b1-3</span></p>
+        <p class="links"><a href="icon-column-medallion-rail/index.html">template</a><span></span><a href="icon-column-medallion-rail/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="isometric-illustration">
+      <h2>isometric-illustration</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/isometric-illustration-cutaway/index.html" class="shot"><img src="gallery/isometric-illustration-cutaway.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/isometric-illustration-cutaway/index.html">Labeled 2:1-isometric cutaway of a reference stack with surface-pinned callouts and one accent feature (1280x720)</a></h3>
+        <code class="id">isometric-illustration-cutaway</code>
+        <p class="src">Catalog S1009 (catalog_101-134.csv, technical-isometric-diagram) rendered on corpus/sheets/sheet_101.jpg frame 9 (sheet ceil(1009/10)=101, 5col x 2row row-major, frame 9 = row 2 col 4) — cutaway building with sun-ray lines and pinned labels (Solar PV @42°, thermal mass, cross ventilation); sibling S1476 (catalog_135-167.csv, diagram-isometric) on sheet_148.jpg frame 6. No reviews/*.md exists for either, so the palette is kit-default single accent #2E4374 + gray ramp (stated, not firm-evidenced); the source&#x27;s multi-hue labels collapsed per DESIGN_PLAYBOOK. Verified by headless render.</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">sub</span><span class="chip">scene.features[].box</span><span class="chip">scene.features[].call</span><span class="chip">scene.exit-arrow</span><span class="chip">source-line</span><span class="chip">runhead</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/isometric-illustration-cutaway/index.html">template</a><span></span><a href="isometric-illustration-cutaway/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/isometric-illustration-scene-trio/index.html" class="shot"><img src="gallery/isometric-illustration-scene-trio.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/isometric-illustration-scene-trio/index.html">Two-tone serif takeaway page with three isometric scene vignettes + C-suite vs non-C-suite stat pairs (1280x720)</a></h3>
+        <code class="id">isometric-illustration-scene-trio</code>
+        <p class="src">PwC Global Crisis Survey 2019 (pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le) p09, read on sw_sheets/pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le_s00.jpg (sheet floor(09/10)=s00, 5col x 2row row-major, p09 = row 2 col 4; p08 = row 2 col 3); analysed in reviews/pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le.md lines 14/17/72 (numbered chapters, Fig 5 split 42/25/41/24/39/20%, isometric 3D + percentage callouts flagged as infographic). Palette red #E30613/#E1251B per review line 54, rendered as #D60A2C; the deck&#x27;s orange chrome collapsed to gray per DESIGN_PLAYBOOK one-accent rule. Verified by headless render.</p>
+        <p><span class="chip">kicker</span><span class="chip">numeral</span><span class="chip">title-red</span><span class="chip">title-ink</span><span class="chip">lead</span><span class="chip">commentary[2]</span><span class="chip">figure-line</span><span class="chip">node[].scene</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/isometric-illustration-scene-trio/index.html">template</a><span></span><a href="isometric-illustration-scene-trio/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="issue-tree">
+      <h2>issue-tree</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="issue-tree-answers/index.html" class="shot"><img src="gallery/issue-tree-answers.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="issue-tree-answers/index.html">Question Tree with Answer Panels (2-level, stat+claim+status register)</a></h3>
+        <code class="id">issue-tree-answers</code>
+        <p class="src">Umbrex template deck S1752 &#x27;Hypothesis Tree&#x27;, read in corpus/sheets/sheet_176.jpg (row 1, panel 2): side-leaf boxes widened into answer panels; discipline from reviews/umbrex_patterns.md §4 + palette line</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">root-label</span><span class="chip">root-q</span><span class="chip">branch-1-q</span><span class="chip">branch-1-note</span><span class="chip">branch-2-q</span></p>
+        <p class="links"><a href="issue-tree-answers/index.html">template</a><span></span><a href="issue-tree-answers/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="issue-tree-hypothesis/index.html" class="shot"><img src="gallery/issue-tree-hypothesis.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="issue-tree-hypothesis/index.html">3-Level MECE Issue Tree (key question → numbered hypotheses → evidence leaves)</a></h3>
+        <code class="id">issue-tree-hypothesis</code>
+        <p class="src">Umbrex template deck S1753 &#x27;Issue Tree&#x27; + S1752 variant, read in corpus/sheets/sheet_176.jpg (row 1, panels 2-3); reviews/umbrex_patterns.md §4 (tree discipline) + house palette (navy #1F2A65 / teal #00D4C8 / cornflower #6E93C4)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">root-label</span><span class="chip">root-q</span><span class="chip">branch-1-h</span><span class="chip">branch-1-note</span><span class="chip">branch-2-h</span></p>
+        <p class="links"><a href="issue-tree-hypothesis/index.html">template</a><span></span><a href="issue-tree-hypothesis/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="journey">
+      <h2>journey</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/journey-conversion-funnel/index.html" class="shot"><img src="gallery/journey-conversion-funnel.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/journey-conversion-funnel/index.html">Stage funnel: proportional stage widths + retention chips + benchmark rail</a></h3>
+        <code class="id">journey-conversion-funnel</code>
+        <p class="src">Accenture, &#x27;Accelerating global companies toward net zero by 2050&#x27;, p39 (G2000 sample cascade: stacked stage-definition boxes each with its own n=, drop-off counts off the spine, one stage recoloured) read on sw_sheets/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_s03.jpg (sheet index floor(39/10)=3, 5col x 2row row-major -&gt; row 2 col 4); funnel/callout-arrow corroboration from catalog S0018 (corpus/sheets/sheet_002.jpg frame 8), S0257 (corpus/sheets/sheet_026.jpg), S0266 (corpus/sheets/sheet_027.jpg); palette is the kit default per DESIGN_PLAYBOOK line 57 (#051C2C ink, #2251FF single accent, grey ramp 2D2D2D/464646/7D7D7D/DEDEDE) — the source deck&#x27;s purple/violet gradient deliberately not ported; review analyzed: reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2.md (single-hue colour system, footnote/sample-size rigor); Verified by headless render.</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">stageName1</span><span class="chip">stageValue1</span><span class="chip">stageSub1</span><span class="chip">stageName2</span><span class="chip">stageValue2</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/journey-conversion-funnel/index.html">template</a><span></span><a href="journey-conversion-funnel/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/journey-lanes-to-target/index.html" class="shot"><img src="gallery/journey-lanes-to-target.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/journey-lanes-to-target/index.html">Path lanes converging into a target ring (proportional lane thickness)</a></h3>
+        <code class="id">journey-lanes-to-target</code>
+        <p class="src">PwC Strategy&amp;, &#x27;Global Entertainment &amp; Media Outlook 2023-2027, Hong Kong summary&#x27;, p28 (two-zone band-over-column device, small direct labels, white convergence arrows; magenta-&gt;orange gradient bands deliberately dropped) read on sw_sheets/pwc_strategy__pwc_global_entertainment_media_outlook_2023_2027_hong_kong_s_s02.jpg (sheet index floor(28/10)=2, 5col x 2row row-major); funnel-to-target ring form factor from catalog S0266 (corpus/sheets/sheet_027.jpg frame 6, &#x27;funnel arrows into target ring&#x27;) with S0018 (corpus/sheets/sheet_002.jpg frame 8) and S0257 (corpus/sheets/sheet_026.jpg); Accenture net-zero p39 read on sw_sheets/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_s03.jpg for stage-cascade context; palette is the kit default per DESIGN_PLAYBOOK line 57 (no hexes listed for this page type in the reviews); Verified by headless render.</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">stageAxis</span><span class="chip">laneName1</span><span class="chip">laneValue1</span><span class="chip">laneUnit1</span><span class="chip">laneRate1</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/journey-lanes-to-target/index.html">template</a><span></span><a href="journey-lanes-to-target/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="kpi-numerals">
+      <h2>kpi-numerals</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="kpi-numerals-band/index.html" class="shot"><img src="gallery/kpi-numerals-band.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="kpi-numerals-band/index.html">KPI stat band — four giant white numerals in a full-bleed inverted field + so-what claim + evidence floor</a></h3>
+        <code class="id">kpi-numerals-band</code>
+        <p class="src">deloitte__deloitte_digital_transformation_2018 p2 (sw_sheets/deloitte__deloitte_digital_transformation_2018_s00.jpg row0/col1)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">num-1</span><span class="chip">num-2</span><span class="chip">num-3</span><span class="chip">num-4</span><span class="chip">cap-1</span><span class="chip">cap-2</span></p>
+        <p class="links"><a href="kpi-numerals-band/index.html">template</a><span></span><a href="kpi-numerals-band/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="kpi-numerals-hero/index.html" class="shot"><img src="gallery/kpi-numerals-hero.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="kpi-numerals-hero/index.html">Giant KPI numeral row — purple claim title + section word + keyword-captioned near-black numerals with footnotes</a></h3>
+        <code class="id">kpi-numerals-hero</code>
+        <p class="src">accenture__accenture_accenture_investor_analyst_conference_2022 p14-p16 (sw_sheets/accenture__accenture_accenture_investor_analyst_conference_2022_s01.jpg row0/col3-4, row1/col0)</p>
+        <p><span class="chip">title</span><span class="chip">section</span><span class="chip">num-1</span><span class="chip">num-2</span><span class="chip">num-3</span><span class="chip">num-4</span><span class="chip">cap-1</span><span class="chip">cap-2</span></p>
+        <p class="links"><a href="kpi-numerals-hero/index.html">template</a><span></span><a href="kpi-numerals-hero/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="line-trend">
+      <h2>line-trend</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/line-trend-multi/" class="shot"><img src="gallery/line-trend-multi.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/line-trend-multi/">Multi-series time trend — one accent focus line, grey context lines, end-of-line value labels (no legend), dashed forecast leg + * years, region nav strip</a></h3>
+        <code class="id">line-trend-multi</code>
+        <p class="src">kpmg__kpmg_venture_pulse_q3_2024_2024 p8/p9/p24 (sheet s00 row 2; review §4 palette + §5 end-label line convention); corroborated pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_rising_tide p07 + pwc_strategy__pwc_21st_ceo_survey_the_anxious_optimist_in_the_corner_offic p03 (sheet s00)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">nav_active</span><span class="chip">rule_top</span><span class="chip">series_focus</span><span class="chip">series_context</span><span class="chip">value_labels_end</span><span class="chip">forecast_leg</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/line-trend-multi/">template</a><span></span><a href="line-trend-multi/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/line-trend-response/" class="shot"><img src="gallery/line-trend-response.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/line-trend-response/">Response curve — single accent curve vs grey dashed linear reference, threshold/ceiling pills + shaded zone, circled-number markers wired to a key-insight rail, ILLUSTRATIVE tag</a></h3>
+        <code class="id">line-trend-response</code>
+        <p class="src">accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019 p18/p19 (sheet s01 rows 2-3; review §10 response-curve+annotation, §chart discipline honest-tagging, red/black/grey encoding)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">tag_illustrative</span><span class="chip">axes</span><span class="chip">zone_band</span><span class="chip">threshold_vlines</span><span class="chip">pills</span><span class="chip">linear_reference</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/line-trend-response/">template</a><span></span><a href="line-trend-response/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="map-geo">
+      <h2>map-geo</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/map-geo-bubble-rail/index.html" class="shot"><img src="gallery/map-geo-bubble-rail.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/map-geo-bubble-rail/index.html">Proportional-symbol world map + ranked region rail (area bubbles, one accent focus, size key)</a></h3>
+        <code class="id">map-geo-bubble-rail</code>
+        <p class="src">pwc_strategy__pwc_five_global_shifts_reshaping_the_world_we_live_in_2022 (p21 &#x27;Megatrends: Social instability&#x27;, read on sw_sheets/pwc_strategy__pwc_five_global_shifts_reshaping_the_world_we_live_in_2022_s02.jpg row 1 frame 1); pattern cross-check pwc_strategy__pwc_copernicus_market_report_2019 p14 (map + charts on one evidence band)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">markers[8].label</span><span class="chip">markers[8].v</span><span class="chip">focus-id</span><span class="chip">rail-rank (x8)</span><span class="chip">rail-name (x8)</span><span class="chip">rail-value (x8)</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/map-geo-bubble-rail/index.html">template</a><span></span><a href="map-geo-bubble-rail/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/map-geo-highlight-table/index.html" class="shot"><img src="gallery/map-geo-highlight-table.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/map-geo-highlight-table/index.html">Choropleth-lite country map with stacked lever callouts + numbered focus table (one accent region, binary shading)</a></h3>
+        <code class="id">map-geo-highlight-table</code>
+        <p class="src">pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20 (p11, read on sw_sheets/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20_s01.jpg row 1 frame 2 — grey India map, 6 dark lever callout bars, 10-row State|Key Focus table with orange disc badges)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">region-highlight (accent)</span><span class="chip">region-named (x2, mid-grey)</span><span class="chip">lever-bars[6].label</span><span class="chip">focus-marker-leader</span><span class="chip">table-head-state</span><span class="chip">table-head-focus</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/map-geo-highlight-table/index.html">template</a><span></span><a href="map-geo-highlight-table/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="matrix-2x2">
+      <h2>matrix-2x2</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="matrix-2x2-panels/index.html" class="shot"><img src="gallery/matrix-2x2-panels.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="matrix-2x2-panels/index.html">2x2 Stakeholder / Theme Panel Grid</a></h3>
+        <code class="id">matrix-2x2-panels</code>
+        <p class="src">Deloitte Accelerated Access Review, UK mapping (2015) p26/p31/p36/p41/p50 — sw_pages/deloitte__deloitte_accelerated_access_review_uk_mapping_2015/pg-026.png, reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md; negative reference PwC Boardroom Agenda 2022 p35</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">deck-tag-line</span><span class="chip">panels</span><span class="chip">card-1</span><span class="chip">card-1-chip</span><span class="chip">card-1-title</span><span class="chip">card-1-count</span></p>
+        <p class="links"><a href="matrix-2x2-panels/index.html">template</a><span></span><a href="matrix-2x2-panels/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="matrix-2x2-scenario/index.html" class="shot"><img src="gallery/matrix-2x2-scenario.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="matrix-2x2-scenario/index.html">Real-Axis Scenario Matrix (2x2)</a></h3>
+        <code class="id">matrix-2x2-scenario</code>
+        <p class="src">PwC Point of View: E-Mobility in India, market paradigms and ways to play (ACMA 2021) p13 — sw_pages/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20/pg-13.png, reviews/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20.md; frame convention reviews/umbrex_patterns.md S1765-70</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead-in</span><span class="chip">matrix</span><span class="chip">axis-name</span><span class="chip">col-1</span><span class="chip">col-2</span><span class="chip">row-1</span></p>
+        <p class="links"><a href="matrix-2x2-scenario/index.html">template</a><span></span><a href="matrix-2x2-scenario/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="methodology">
+      <h2>methodology</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="methodology-fieldwork-rail/index.html" class="shot"><img src="gallery/methodology-fieldwork-rail.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="methodology-fieldwork-rail/index.html">Background &amp; methodology — N-figure rail + azure callout + approach columns + limitations line</a></h3>
+        <code class="id">methodology-fieldwork-rail</code>
+        <p class="src">ey__ey_generative_ai_in_retail_and_commercial_banking_2023 (p3 &#x27;Background and methodology&#x27;, sheet sw_sheets/ey__ey_generative_ai_in_retail_and_commercial_banking_2023_s00.jpg frame 3); limitation-line device from ey__ey_study_initial_coin_offerings_icos_the_class_of_2017_on p12; palette/source conventions from reviews/ey__ey_generative_ai_in_retail_and_commercial_banking_2023.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">callout</span><span class="chip">n-figure</span><span class="chip">n-caption</span><span class="chip">field-fieldwork</span><span class="chip">field-mode</span><span class="chip">field-geography</span></p>
+        <p class="links"><a href="methodology-fieldwork-rail/index.html">template</a><span></span><a href="methodology-fieldwork-rail/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="methodology-source-columns/index.html" class="shot"><img src="gallery/methodology-source-columns.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="methodology-source-columns/index.html">Methodology: band + icon-circle source columns</a></h3>
+        <code class="id">methodology-source-columns</code>
+        <p class="src">accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o (p30/p31 methodology-iconrow, sheet sw_sheets/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_s03.jpg); palette + footer contract from reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md §Color system</p>
+        <p><span class="chip">title</span><span class="chip">running-head</span><span class="chip">src-caption-1..4</span><span class="chip">src-source-1..4</span><span class="chip">src-bullets-1..4</span><span class="chip">inset-pointer</span><span class="chip">field-window</span><span class="chip">field-mode</span></p>
+        <p class="links"><a href="methodology-source-columns/index.html">template</a><span></span><a href="methodology-source-columns/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="model-diagram">
+      <h2>model-diagram</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="model-diagram-asis-tobe/index.html" class="shot"><img src="gallery/model-diagram-asis-tobe.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="model-diagram-asis-tobe/index.html">As-is vs future-state operating model: two mirrored component panels joined by a move chevron, ordinal centralised-hybrid-decentralised spectrum rail with today/target markers</a></h3>
+        <code class="id">model-diagram-asis-tobe</code>
+        <p class="src">Deloitte New Mexico State University staffing study - as-is vs future-state operating model spread (reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun.md archetype item 9; sw_sheets/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_s0*.jpg)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">panel-cap (x2)</span><span class="chip">row-head (x8)</span><span class="chip">row-body (x8)</span><span class="chip">rail-scale (x3)</span><span class="chip">rail-today</span></p>
+        <p class="links"><a href="model-diagram-asis-tobe/index.html">template</a><span></span><a href="model-diagram-asis-tobe/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="model-diagram-tom-stack/index.html" class="shot"><img src="gallery/model-diagram-tom-stack.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="model-diagram-tom-stack/index.html">Target operating model: accent vision banner over stacked layer bands with nested detail-column blocks and six margin callouts on leader lines</a></h3>
+        <code class="id">model-diagram-tom-stack</code>
+        <p class="src">PwC Strategy 2019 Global Treasury Benchmarking Survey p11 (sw_sheets/pwc_strategy__pwc_2019_global_treasury_benchmarking_survey_2019_s01.jpg row1 col1; reviews/pwc_strategy__pwc_2019_global_treasury_benchmarking_survey_2019.md reusable item 7 &#x27;TOM nested box tree with margin callouts&#x27;)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">band-vision</span><span class="chip">band-processes</span><span class="chip">band-organisation</span><span class="chip">band-technology</span><span class="chip">band-performance</span></p>
+        <p class="links"><a href="model-diagram-tom-stack/index.html">template</a><span></span><a href="model-diagram-tom-stack/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="org-hub-map">
+      <h2>org-hub-map</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="org-hub-map-network/index.html" class="shot"><img src="gallery/org-hub-map-network.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="org-hub-map-network/index.html">Partner-Universe Network Map — violet ecosystem disc, solid central advisor node, accent category ring + grey asset ring, straight spokes, Figure-1 caption block (Accenture p25 grammar)</a></h3>
+        <code class="id">org-hub-map-network</code>
+        <p class="src">accenture__accenture_2019_accenture_global_financial_services_consumer p25 — sw_sheets/accenture__accenture_2019_accenture_global_financial_services_consumer__s02.jpg (row 1, col 5); palette pixel-sampled from that crop (violet #7500C1, deep #460074, white ground), system confirmed by reviews/accenture__accenture_2019_accenture_global_financial_services_consumer_.md §color/§type</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">body</span><span class="chip">fig-tag</span><span class="chip">fig-cap</span><span class="chip">fig-sub</span><span class="chip">fnote</span></p>
+        <p class="links"><a href="org-hub-map-network/index.html">template</a><span></span><a href="org-hub-map-network/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="org-hub-map-orbit/index.html" class="shot"><img src="gallery/org-hub-map-orbit.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="org-hub-map-orbit/index.html">Capability Orbit Hub — central claim disc ringed by five capability satellites, one emphasis triple, claim lead under kicker (PwC hub-page grammar)</a></h3>
+        <code class="id">org-hub-map-orbit</code>
+        <p class="src">pwc_strategy__pwc_insurance_reimagined_spotlight_on_trust_convergence_and p18 — sw_sheets/pwc_strategy__pwc_insurance_reimagined_spotlight_on_trust_convergence_and__s01.jpg (row 2); palette cited from reviews/pwc_strategy__pwc_insurance_reimagined_spotlight_on_trust_convergence_and_.md §color (PwC red ≈#A6192E, greys #D9D9D9/#8C8C8C/#404040, white ground, body #333)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">hub</span><span class="chip">sat-N</span><span class="chip">sat-1</span><span class="chip">sat-2</span><span class="chip">sat-3</span></p>
+        <p class="links"><a href="org-hub-map-orbit/index.html">template</a><span></span><a href="org-hub-map-orbit/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="persona">
+      <h2>persona</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="persona-intro-grid/index.html" class="shot"><img src="gallery/persona-intro-grid.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="persona-intro-grid/index.html">4-column persona intro row — photo strip, accent-colored names, bold claim, body copy with segment shares</a></h3>
+        <code class="id">persona-intro-grid</code>
+        <p class="src">accenture__accenture_2019_accenture_global_financial_services_consumer (p8; sw_sheets/accenture__accenture_2019_accenture_global_financial_services_consumer__s00.jpg row 2 col 3); review accenture__accenture_2019_accenture_global_financial_services_consumer_.md</p>
+        <p><span class="chip">kicker</span><span class="chip">hashtag</span><span class="chip">title</span><span class="chip">photo1</span><span class="chip">name1</span><span class="chip">claim1</span><span class="chip">body1</span><span class="chip">photo2</span></p>
+        <p class="links"><a href="persona-intro-grid/index.html">template</a><span></span><a href="persona-intro-grid/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="persona-narrative/index.html" class="shot"><img src="gallery/persona-narrative.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="persona-narrative/index.html">Single persona told as a story — blue claim title, bold lead-in, en-dash narrative bullets, portrait right, firm lockup</a></h3>
+        <code class="id">persona-narrative</code>
+        <p class="src">catalog S0036 (corpus/sheets/sheet_004.jpg row 2 col 1; catalog_1-20.csv persona-narrative line, Gartner-type page, no review file)</p>
+        <p><span class="chip">title</span><span class="chip">lead</span><span class="chip">story1</span><span class="chip">story2</span><span class="chip">story3</span><span class="chip">portrait</span><span class="chip">portrait_caption</span><span class="chip">lockup</span></p>
+        <p class="links"><a href="persona-narrative/index.html">template</a><span></span><a href="persona-narrative/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="photo-bleed">
+      <h2>photo-bleed</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="photo-bleed-narrative-overlay/index.html" class="shot"><img src="gallery/photo-bleed-narrative-overlay.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="photo-bleed-narrative-overlay/index.html">Full-bleed photograph with floating opaque copy panel (serif-italic claim title with one accent keyword + fieldwork label + 3 justified paragraphs + source line printed on the image)</a></h3>
+        <code class="id">photo-bleed-narrative-overlay</code>
+        <p class="src">pwc_strategy__pwc_iab_podcast_ad_revenue_study_an_analysis_of_the_largest__ p04 (sw_sheets/pwc_strategy__pwc_iab_podcast_ad_revenue_study_an_analysis_of_the_largest__s00.jpg tile 4); palette + typography reviews/pwc_strategy__pwc_iab_podcast_ad_revenue_study_an_analysis_of_the_largest_.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">panel_head</span><span class="chip">panel_label</span><span class="chip">para_1</span><span class="chip">para_2</span><span class="chip">para_3</span><span class="chip">source_line</span></p>
+        <p class="links"><a href="photo-bleed-narrative-overlay/index.html">template</a><span></span><a href="photo-bleed-narrative-overlay/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="photo-bleed-split-divider/index.html" class="shot"><img src="gallery/photo-bleed-split-divider.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="photo-bleed-split-divider/index.html">White text field + right-edge photo bleed: oversized serif double-quote glyph, chapter kicker, serif claim title with one accent keyword, lead, three hairline-separated numbered highlights, source line + page stamp</a></h3>
+        <code class="id">photo-bleed-split-divider</code>
+        <p class="src">pwc_strategy__pwc_global_top_100_companies_by_market_capitalisation_2023 p03 (sw_sheets/pwc_strategy__pwc_global_top_100_companies_by_market_capitalisation_2023_s00.jpg tile 3), geometry + measured hexes + weakness notes reviews/pwc_strategy__pwc_global_top_100_companies_by_market_capitalisation_2023.md</p>
+        <p><span class="chip">glyph</span><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">point_1</span><span class="chip">point_2</span><span class="chip">point_3</span><span class="chip">point_fig(x3)</span></p>
+        <p class="links"><a href="photo-bleed-split-divider/index.html">template</a><span></span><a href="photo-bleed-split-divider/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="process-flow">
+      <h2>process-flow</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="process-flow-pathway/index.html" class="shot"><img src="gallery/process-flow-pathway.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="process-flow-pathway/index.html">Actor-swimlane pathway map — nodes + cross-lane arrows, milestone circles on a baseline with cumulative months, stage-duration ribbon + chevron stage band</a></h3>
+        <code class="id">process-flow-pathway</code>
+        <p class="src">deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p16 (sw_sheets/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_s01.jpg cell labeled p16 — swimlane node network + milestone circles w/ dashed drop-lines + per-stage duration arrows + 4-stage chevron band); reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md (title-zone style, deck-wide stage-colour semantics; deck paints one hue per stage, kit collapses to one accent #86BC25, same brand anchor as sibling agenda-contents-tracker)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">lanes</span><span class="chip">nodes</span><span class="chip">links_accent</span><span class="chip">milestones</span><span class="chip">durations</span></p>
+        <p class="links"><a href="process-flow-pathway/index.html">template</a><span></span><a href="process-flow-pathway/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="process-flow-stage-matrix/index.html" class="shot"><img src="gallery/process-flow-stage-matrix.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="process-flow-stage-matrix/index.html">Stage-band chevron header over model swim-rows — per-model node chains with icon glyphs, long arrows that skip stages (that IS the finding), accent emphasis arrows for model under test, B2C/B2B end rail</a></h3>
+        <code class="id">process-flow-stage-matrix</code>
+        <p class="src">accenture__accenture_2023_post_parcel_industry_trends_2023 p17 (sw_sheets/accenture__accenture_2023_post_parcel_industry_trends_2023_s01.jpg cell labeled p17 — chevron journey band over 3 icon swim-rows, bold quantitative bottom-right insight); reviews/accenture__accenture_2023_post_parcel_industry_trends_2023.md (claim title + magenta sub-claim, 1-hue-family discipline; kit keeps one hue #5B1B8A deepened for text contrast + one lightness #C9B3E6)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">subclaim</span><span class="chip">stages</span><span class="chip">rowlab</span><span class="chip">rowsub</span><span class="chip">chain_nodes</span><span class="chip">hops</span></p>
+        <p class="links"><a href="process-flow-stage-matrix/index.html">template</a><span></span><a href="process-flow-stage-matrix/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="pyramid-tiers">
+      <h2>pyramid-tiers</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="pyramid-tiers-levels/index.html" class="shot"><img src="gallery/pyramid-tiers-levels.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="pyramid-tiers-levels/index.html">Five-level decision-rights pyramid with aligned text rows (1280x720) - accent apex band, outline tiers, zone brackets, delegation envelope, metrics rail summing to 100%, methodology footnote</a></h3>
+        <code class="id">pyramid-tiers-levels</code>
+        <p class="src">corpus levels-pyramid family TEMPLATE_HARVEST.json pyramid-tiers exemplars S0259/S0260/S0264/S0269 (catalog_21-62.csv: 5-tier pyramid + text, corporate-to-operational tiers, white label per tier); source images resolve to Bing photo pages (sheet_026/027 [bing:benchmarking]) - reconstructed from catalog description + kit rules; screenshots qa/pv_levels.png</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">tier-1..5.band-name(x1)</span><span class="chip">tier-1..5.row-name</span><span class="chip">tier-1..5.row-desc(x2 lines)</span><span class="chip">tier-1..5.metric</span><span class="chip">zone-label(STRATEGIC/TACTICAL/OPERATIONAL)</span></p>
+        <p class="links"><a href="pyramid-tiers-levels/index.html">template</a><span></span><a href="pyramid-tiers-levels/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="pyramid-tiers-value/index.html" class="shot"><img src="gallery/pyramid-tiers-value.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="pyramid-tiers-value/index.html">Centered three-tier value pyramid (1280x720) - claim title, per-tier notes rail with bold numerals, escalation arrow, one-accent middle band, source+footnotes</a></h3>
+        <code class="id">pyramid-tiers-value</code>
+        <p class="src">Gartner services-transformation page, corpus slide S0034, read on corpus/sheets/sheet_004.jpg frame 4 (row 1 col 4); catalog row catalog_1-20.csv S0034 (blue+amber centered three-tier pyramid, white labels); recoloured to one accent + grey ramp per kit rule; screenshots qa/pv_value.png</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">tier-1.label(x2)</span><span class="chip">tier-1.note(kick/title/body)</span><span class="chip">tier-2.label(x2)</span><span class="chip">tier-2.note(kick/title/body)</span><span class="chip">tier-3.label(x2)</span></p>
+        <p class="links"><a href="pyramid-tiers-value/index.html">template</a><span></span><a href="pyramid-tiers-value/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="quote-pull">
+      <h2>quote-pull</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="quote-pull-bubble-cluster/index.html" class="shot"><img src="gallery/quote-pull-bubble-cluster.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="quote-pull-bubble-cluster/index.html">Stakeholder-coloured speech-bubble cluster around a speaker pair with inside-panel identity key</a></h3>
+        <code class="id">quote-pull-bubble-cluster</code>
+        <p class="src">deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p25 (measured on sw_sheets/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_s02.jpg tile 5), identical geometry p30; semantic stakeholder-colour system and chevron strip per reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md §color system / §archetypes #5</p>
+        <p><span class="chip">title</span><span class="chip">message_line</span><span class="chip">chevron_strip</span><span class="chip">panel_field</span><span class="chip">panel_caption</span><span class="chip">bubble_text_x9</span><span class="chip">bubble_speaker</span><span class="chip">speaker_pair</span></p>
+        <p class="links"><a href="quote-pull-bubble-cluster/index.html">template</a><span></span><a href="quote-pull-bubble-cluster/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="quote-pull-claim-rail/index.html" class="shot"><img src="gallery/quote-pull-claim-rail.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="quote-pull-claim-rail/index.html">Violet pull-quote rail with framing bars + two justified evidence paragraphs and footnote markers</a></h3>
+        <code class="id">quote-pull-claim-rail</code>
+        <p class="src">accenture__accenture_2019_accenture_global_financial_services_consumer p28 (measured on sw_sheets/accenture__accenture_2019_accenture_global_financial_services_consumer__s02.jpg tile 8), same grammar p31/p35/p41/p48; devices + palette anchors (violet #6E00C9-#7B1FF0, deep #3C0A80-#4B0E8F) per reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md and reviews/accenture__accenture_2019_accenture_global_financial_services_consumer_.md §recurring devices</p>
+        <p><span class="chip">kicker</span><span class="chip">hashtag</span><span class="chip">claim_line</span><span class="chip">quote_text</span><span class="chip">attribution</span><span class="chip">evidence_1</span><span class="chip">evidence_2</span><span class="chip">figure_tag</span></p>
+        <p class="links"><a href="quote-pull-claim-rail/index.html">template</a><span></span><a href="quote-pull-claim-rail/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="quote-visual-humor">
+      <h2>quote-visual-humor</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="quote-visual-humor-quote-over-still/index.html" class="shot"><img src="gallery/quote-visual-humor-quote-over-still.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="quote-visual-humor-quote-over-still/index.html">One bold-italic line over a full-bleed still with scrim, rule and named attribution (1280x720)</a></h3>
+        <code class="id">quote-visual-humor-quote-over-still</code>
+        <p class="src">Catalog S1089 (catalog_101-134.csv row 90: content, &#x27;quote-slide&#x27;, charts none, typography &#x27;bold-italic-quote-center&#x27;, colour &#x27;blur-bokeh-photo-bg&#x27;, layout &#x27;full-bleed-photo-with-center-quote&#x27;, device &#x27;quote over movie still&#x27;), image corpus/images3/slideuplift_0025_91a72c04.jpg (2400x1200, kind bing in slides_manifest.json — a web reference, not a firm page; sibling S1092 is the title-slide variant of the same device). No firm attribution and no reviews/*.md, so the palette is kit-default one hue #1F7CCE with its light lightness #79B6EE on dark ground and a grayscale photo ramp; the 2:1 source frame was re-derived to 16:9 with the quote block centred on y=402. Verified by headless render.</p>
+        <p><span class="chip">kicker</span><span class="chip">quote[2 lines, 3 at 46px]</span><span class="chip">rule (accent)</span><span class="chip">attribution</span><span class="chip">caption / still credit</span><span class="chip">page-stamp</span><span class="chip">firm-mark</span><span class="chip">still.placeholder-swap</span></p>
+        <p class="links"><a href="quote-visual-humor-quote-over-still/index.html">template</a><span></span><a href="quote-visual-humor-quote-over-still/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="quote-visual-humor-still-checks/index.html" class="shot"><img src="gallery/quote-visual-humor-still-checks.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="quote-visual-humor-still-checks/index.html">Film still left + three blue check takeaways right (1280x720)</a></h3>
+        <code class="id">quote-visual-humor-still-checks</code>
+        <p class="src">Catalog S0009 (catalog_1-20.csv row 10: content, &#x27;humor text plus still&#x27;, charts none, typography &#x27;blue checkmark callouts&#x27;, layout &#x27;photo left; checks right&#x27;, device &#x27;movie still joke slide&#x27;), rendered from corpus/pdfpages/4890_49c9_a1ee_77b0f75a86c7_St_-09.png (also frame 9 of corpus/sheets/sheet_001.jpg) — a Firms Mazars / &#x27;forvs mazars&#x27; page 9 with the (c) 2020 line bottom-right. No reviews/*.md exists for this deck, so the single accent hue was measured off the frame itself (mean RGB of blue callout pixels 31,124,206 = #1F7CCE), not invented; the photo region (x 0-756, y 176-628) and check column (x 836-1216, tops 206/306/426) were measured with a pixel-occupancy scan. Verified by headless render.</p>
+        <p><span class="chip">kicker</span><span class="chip">title[2 lines]</span><span class="chip">still.credit</span><span class="chip">still.placeholder-swap</span><span class="chip">check[].lead[1-2 lines]</span><span class="chip">check[].sub</span><span class="chip">source-line</span><span class="chip">page-stamp</span></p>
+        <p class="links"><a href="quote-visual-humor-still-checks/index.html">template</a><span></span><a href="quote-visual-humor-still-checks/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="recommendation">
+      <h2>recommendation</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="recommendation-driver-map/index.html" class="shot"><img src="gallery/recommendation-driver-map.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="recommendation-driver-map/index.html">Driver-to-recommendation mapping table</a></h3>
+        <code class="id">recommendation-driver-map</code>
+        <p class="src">deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd p8 (drivers -&gt; recommendations boxed table, row labels mirror p6 drivers -&gt; findings), rating-cell discipline p15, totals rule p12/p13 (read on sw_sheets/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_s00.jpg sheet 0); catalog_1-20.csv S0057 recommendation page; palette registers + semantic traffic-light rule from reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd.md (hexes unpublished, flagged by DESIGN_PLAYBOOK)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">driver-4</span><span class="chip">driver-metric-4</span><span class="chip">finding-4</span><span class="chip">recommendation-4</span><span class="chip">owner-4</span></p>
+        <p class="links"><a href="recommendation-driver-map/index.html">template</a><span></span><a href="recommendation-driver-map/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="recommendation-numbered/index.html" class="shot"><img src="gallery/recommendation-numbered.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="recommendation-numbered/index.html">Numbered recommendation list with priority emphasis</a></h3>
+        <code class="id">recommendation-numbered</code>
+        <p class="src">deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p11 (12 numbered discs, 2 re-coloured green as priorities, evidence-base lead-in, two-part grey footer; read on sw_sheets/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_s01.jpg sheet 1); EY conclusion-checklist sibling ey__ey_risk_management_in_a_time_of_transformation_2024 p38; title-gate and topic-title anti-pattern rulings from reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">legend</span><span class="chip">item-1</span><span class="chip">item-2</span><span class="chip">item-3</span><span class="chip">item-4</span></p>
+        <p class="links"><a href="recommendation-numbered/index.html">template</a><span></span><a href="recommendation-numbered/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="risk-opportunity">
+      <h2>risk-opportunity</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="risk-opportunity-heat-lattice/index.html" class="shot"><img src="gallery/risk-opportunity-heat-lattice.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="risk-opportunity-heat-lattice/index.html">Likelihood × Consequence Exposure Grid — 5x5 gray severity ramp cells, risk bubbles sized by $ exposure with in-bubble rank + $ label, hollow upside diamonds on the same axes, accent critical-band overlay, and a right response rail (exposure / owner / funded-vs-none) tying each dot to its action</a></h3>
+        <code class="id">risk-opportunity-heat-lattice</code>
+        <p class="src">kpmg__kpmg_kpmg_2022_ceo_outlook_2022 p5 (numbered risk list w/ one value numeral per item, one hue, Source: line — sw_sheets/kpmg__kpmg_kpmg_2022_ceo_outlook_2022_s00.jpg row1col5) + kpmg__kpmg_genai_survey_2024_key_insights_2024 p9 (ranked risk bars over gray with numerals — sw_sheets/kpmg__kpmg_genai_survey_2024_key_insights_2024_s00.jpg) + pwc_strategy__pwc_boardroom_agenda_2022 p26 (risks/opportunities across horizons — sw_sheets/pwc_strategy__pwc_boardroom_agenda_2022_s02.jpg); palette reviews/kpmg__kpmg_kpmg_2022_ceo_outlook_2022.md (#243CE4 / #002478 / grays) + reviews/pwc_strategy__pwc_boardroom_agenda_2022.md (decorative-colour failure =&gt; semantic grey ramp only)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">strip.fig1</span><span class="chip">strip.fig2</span><span class="chip">strip.fig3</span><span class="chip">lead</span><span class="chip">grid.cell</span><span class="chip">band.rect</span></p>
+        <p class="links"><a href="risk-opportunity-heat-lattice/index.html">template</a><span></span><a href="risk-opportunity-heat-lattice/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="risk-opportunity-paired-bracket/index.html" class="shot"><img src="gallery/risk-opportunity-paired-bracket.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="risk-opportunity-paired-bracket/index.html">Risk-to-Opportunity Pair Ladder — numbered risks bracketed across a response-lever gutter, rank + severity-trend pills on the left, the claim + payoff figure boxed right, one accent (focus pair) and one honest dashed pair for mitigation-only risks</a></h3>
+        <code class="id">risk-opportunity-paired-bracket</code>
+        <p class="src">kpmg__kpmg_kpmg_2022_ceo_outlook_2022 p5 (ranked risk list, one value numeral per item, single brand blue, Source: line — sw_sheets/kpmg__kpmg_kpmg_2022_ceo_outlook_2022_s00.jpg row1col5) + kpmg__kpmg_genai_survey_2024_key_insights_2024 p9 (risk ranking as ranked bars over gray tracks with in-bar numerals — sw_sheets/kpmg__kpmg_genai_survey_2024_key_insights_2024_s00.jpg) + pwc_strategy__pwc_boardroom_agenda_2022 p26 (numbered blocks whose copy names risks/opportunities across horizons — sw_sheets/pwc_strategy__pwc_boardroom_agenda_2022_s02.jpg); palette reviews/kpmg__kpmg_kpmg_2022_ceo_outlook_2022.md (#243CE4 / #002478 / grays) and reviews/pwc_strategy__pwc_boardroom_agenda_2022.md (its &#x27;colour is decorative, not semantic&#x27; finding is the semantic-colour DON&#x27;T rationale)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">strip.fig1</span><span class="chip">strip.fig2</span><span class="chip">strip.fig3</span><span class="chip">hdr.risk</span><span class="chip">hdr.lever</span><span class="chip">hdr.opp</span></p>
+        <p class="links"><a href="risk-opportunity-paired-bracket/index.html">template</a><span></span><a href="risk-opportunity-paired-bracket/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="scatter-bubble">
+      <h2>scatter-bubble</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/scatter-bubble-before-after-arrows/" class="shot"><img src="gallery/scatter-bubble-before-after-arrows.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/scatter-bubble-before-after-arrows/">Before/after scatter pairs with change arrows</a></h3>
+        <code class="id">scatter-bubble-before-after-arrows</code>
+        <p class="src">firm: accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o p13 right panel (before/now circle pairs with dashed transfer arrows, signed per-item delta labels, axis break) via sw_sheets/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_s01.jpg + reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md</p>
+        <p><span class="chip">band_title</span><span class="chip">sub_kicker</span><span class="chip">sub_line</span><span class="chip">legend_pair</span><span class="chip">size_key</span><span class="chip">pair</span><span class="chip">pair_name</span><span class="chip">pair_delta</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/scatter-bubble-before-after-arrows/">template</a><span></span><a href="scatter-bubble-before-after-arrows/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/scatter-bubble-quadrant-cluster/" class="shot"><img src="gallery/scatter-bubble-quadrant-cluster.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/scatter-bubble-quadrant-cluster/">Bubble scatter with shaded region and highlight callout</a></h3>
+        <code class="id">scatter-bubble-quadrant-cluster</code>
+        <p class="src">firm: accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o p13 (bubble scatter, dashed time-saving-essentials region, dashed leader callout, gray/violet series ramp, 1M reference circle) via sw_sheets/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_s01.jpg + reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md</p>
+        <p><span class="chip">band_title</span><span class="chip">sub_kicker</span><span class="chip">sub_line</span><span class="chip">legend_cat</span><span class="chip">size_key</span><span class="chip">series</span><span class="chip">point</span><span class="chip">inline_label</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/scatter-bubble-quadrant-cluster/">template</a><span></span><a href="scatter-bubble-quadrant-cluster/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="scenario-forecast">
+      <h2>scenario-forecast</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/scenario-forecast-scenario-fan/index.html" class="shot"><img src="gallery/scenario-forecast-scenario-fan.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/scenario-forecast-scenario-fan/index.html">One history, three diverging scenario paths to 2031F with right-edge labels and assumption strip (1280x720)</a></h3>
+        <code class="id">scenario-forecast-scenario-fan</code>
+        <p class="src">PwC Strategy&amp;, Copernicus Market Report 2019 p86 (sw_sheets/pwc_strategy__pwc_copernicus_market_report_2019_s08.jpg row1 col2 — long-horizon line projections, blue+grey) and Strategy&amp; EV Sales Review Q4 2022 p16 (sw_sheets/pwc_strategy__strategy_electric_vehicle_sales_review_q4_2022_2023_s01.jpg row2 col2 — wide forecast panel, F-suffixed years, single arrowed callout). Palette anchors per reviews/pwc_strategy__pwc_copernicus_market_report_2019.md (same #1F3864/#1E5A90 stack, grey ramp for alternatives). Verified by headless chromium render.</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">histSeries</span><span class="chip">upSeries</span><span class="chip">baseSeries</span><span class="chip">downSeries</span><span class="chip">upEnd</span><span class="chip">baseEnd</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/scenario-forecast-scenario-fan/index.html">template</a><span></span><a href="scenario-forecast-scenario-fan/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/scenario-forecast-split-line/index.html" class="shot"><img src="gallery/scenario-forecast-split-line.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/scenario-forecast-split-line/index.html">Actual-solid / forecast-dashed line with widening uncertainty band and CAGR callout (1280x720)</a></h3>
+        <code class="id">scenario-forecast-split-line</code>
+        <p class="src">PwC Strategy&amp;, Copernicus Market Report 2019 p24 (sw_sheets/pwc_strategy__pwc_copernicus_market_report_2019_s02.jpg row1 col5 — blue line + grey area, left text / right chart, dashed-border CAGR callout) and p86 (s08.jpg row1 col2 — line to 2037, 2-line title); Strategy&amp; EV Sales Review Q4 2022 p16 (sw_sheets/pwc_strategy__strategy_electric_vehicle_sales_review_q4_2022_2023_s01.jpg row2 col2 — F-suffixed forecast years, one arrowed % callout). Palette anchors sampled per reviews/pwc_strategy__pwc_copernicus_market_report_2019.md (navy #1F3864, mid-blue #1E5A90, light blue #A8C8E8, two-hue discipline). Verified by headless chromium render.</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">point1</span><span class="chip">point2</span><span class="chip">point3</span><span class="chip">calloutN</span><span class="chip">calloutD</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/scenario-forecast-split-line/index.html">template</a><span></span><a href="scenario-forecast-split-line/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="sketch-checklist">
+      <h2>sketch-checklist</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="sketch-checklist-doodle-list/index.html" class="shot"><img src="gallery/sketch-checklist-doodle-list.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="sketch-checklist-doodle-list/index.html">Hand-Drawn Figure + Check Bullet Habits Page</a></h3>
+        <code class="id">sketch-checklist-doodle-list</code>
+        <p class="src">corpus S0042 (Gartner conference material, 2017) via catalog_1-20.csv; rendered corpus/sheets/sheet_005.jpg</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">figure</span><span class="chip">items</span><span class="chip">source</span><span class="chip">page</span></p>
+        <p class="links"><a href="sketch-checklist-doodle-list/index.html">template</a><span></span><a href="sketch-checklist-doodle-list/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="sketch-checklist-equation/index.html" class="shot"><img src="gallery/sketch-checklist-equation.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="sketch-checklist-equation/index.html">Hand-Sketched A + B = C Ring Diagram</a></h3>
+        <code class="id">sketch-checklist-equation</code>
+        <p class="src">PwC/Mayer Brown &quot;Merging with a SPAC&quot; p15 (review pwc_strategy__pwc_merging_with_a_spac_preparing_for_life_as_a_public_compa_slides.csv p15; review.md p14-29)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">nodes</span><span class="chip">operators</span><span class="chip">source</span><span class="chip">page</span></p>
+        <p class="links"><a href="sketch-checklist-equation/index.html">template</a><span></span><a href="sketch-checklist-equation/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="small-multiples">
+      <h2>small-multiples</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/small-multiples-region-bars/" class="shot"><img src="gallery/small-multiples-region-bars.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/small-multiples-region-bars/">Small-multiples grid of ranked horizontal-bar panels (Global + 7 regions), % values on bar ends, one focus category in orange across all panels, question sidebar (PwC CEO Survey Exhibit 6)</a></h3>
+        <code class="id">small-multiples-region-bars</code>
+        <p class="src">pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_rising_tide p15/p17 (sw_sheets/pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_rising_tide_s01.jpg); exhibit-6 forms + question-sidebar + negative-space bar labels per reviews/pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_rising_tide.md §forms/§axis; orange hexes #F08300/#ED8B28/#D93F00 from that review</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">panel-titles-1-8</span><span class="chip">focus-category-bars</span><span class="chip">context-bars</span><span class="chip">bar-value-labels</span><span class="chip">question-sidebar</span><span class="chip">source</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/small-multiples-region-bars/">template</a><span></span><a href="small-multiples-region-bars/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/small-multiples-year-panels/" class="shot"><img src="gallery/small-multiples-year-panels.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/small-multiples-year-panels/">2x3 grid of annual column panels (2018-2021), shared height scale, purple current-year vs gray-ramp history, values on every bar, one delta chip, zero-line emphasis (KPMG Pulse of Fintech grid)</a></h3>
+        <code class="id">small-multiples-year-panels</code>
+        <p class="src">kpmg__kpmg_pulse_of_fintech_h1_21_2021 p07/p12 (sw_sheets/kpmg__kpmg_pulse_of_fintech_h1_21_2021_s00.jpg); 2x3 annual small-multiples, current-year accent device, values-on-bars and shared-legend fix per reviews/kpmg__kpmg_pulse_of_fintech_h1_21_2021.md §charts; palette #90278E purple + #D1D3D4 grays per §palette</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">legend</span><span class="chip">panel-titles-1-6</span><span class="chip">panel-sublines</span><span class="chip">year-labels</span><span class="chip">bar-columns-6x4</span><span class="chip">bar-value-labels</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/small-multiples-year-panels/">template</a><span></span><a href="small-multiples-year-panels/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="stacked-share">
+      <h2>stacked-share</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/stacked-share-100col/" class="shot"><img src="gallery/stacked-share-100col.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/stacked-share-100col/">100% stacked columns with inside share labels + percentage-point shift band</a></h3>
+        <code class="id">stacked-share-100col</code>
+        <p class="src">accenture__accenture_2023_post_parcel_industry_trends_2023 (p11, sheet s01 row 1 col 1); palette/footer/legend contract from accenture__accenture_the_nbn_effect…p07 (s00 row 2); reviews for both decks</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">chart_columns</span><span class="chip">shift_band</span><span class="chip">legend</span><span class="chip">base_note</span><span class="chip">source</span><span class="chip">pageno</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/stacked-share-100col/">template</a><span></span><a href="stacked-share-100col/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/stacked-share-bars/" class="shot"><img src="gallery/stacked-share-bars.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/stacked-share-bars/">Horizontal 100% stacks by respondent group — one accent ramp, dashed callout rail with ratio pill, n-breakdown</a></h3>
+        <code class="id">stacked-share-bars</code>
+        <p class="src">accenture__accenture_2021_p_c_underwriting_survey_2021 (p8/p9 profile by segment, sheet s00; cross-tab p15, s01); reviews accenture__accenture_2021_p_c_underwriting_survey_2021.md + …nbn_effect…md (lightness tokens, grey-reserved rule)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">legend</span><span class="chip">chart_bars</span><span class="chip">row_labels</span><span class="chip">callout_rail</span><span class="chip">remarks</span><span class="chip">base_note</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/stacked-share-bars/">template</a><span></span><a href="stacked-share-bars/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="stat-callout-list">
+      <h2>stat-callout-list</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="stat-callout-list-cards/index.html" class="shot"><img src="gallery/stat-callout-list-cards.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="stat-callout-list-cards/index.html">Serif Claim + Solid Callout Boxes</a></h3>
+        <code class="id">stat-callout-list-cards</code>
+        <p class="src">PwC Boardroom Agenda 2022 (pwc_strategy__pwc_boardroom_agenda_2022) p1 + p24; sw_sheets/pwc_strategy__pwc_boardroom_agenda_2022_s00.jpg + _s02.jpg; review pwc_strategy__pwc_boardroom_agenda_2022.md</p>
+        <p><span class="chip">eyebrow</span><span class="chip">claim</span><span class="chip">card.ck</span><span class="chip">card.fig</span><span class="chip">card.unit</span><span class="chip">card.sen</span><span class="chip">sowhat</span><span class="chip">ctx</span></p>
+        <p class="links"><a href="stat-callout-list-cards/index.html">template</a><span></span><a href="stat-callout-list-cards/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="stat-callout-list-kpmg-rail/index.html" class="shot"><img src="gallery/stat-callout-list-kpmg-rail.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="stat-callout-list-kpmg-rail/index.html">Blue Claim Title + Stat-Callout Rail</a></h3>
+        <code class="id">stat-callout-list-kpmg-rail</code>
+        <p class="src">KPMG Our Impact Plan 2024 Update (kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024) p27 + p32; sw_sheets/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024_s02.jpg; review kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024.md</p>
+        <p><span class="chip">kicker</span><span class="chip">claim</span><span class="chip">lead</span><span class="chip">points</span><span class="chip">method</span><span class="chip">callout.fig</span><span class="chip">callout.unit</span><span class="chip">callout.lab</span></p>
+        <p class="links"><a href="stat-callout-list-kpmg-rail/index.html">template</a><span></span><a href="stat-callout-list-kpmg-rail/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="survey-question-exhibit">
+      <h2>survey-question-exhibit</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/survey-question-exhibit-battery-matrix/index.html" class="shot"><img src="gallery/survey-question-exhibit-battery-matrix.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/survey-question-exhibit-battery-matrix/index.html">Question battery as a response matrix: 6 statements x 4 options with bars-in-cells, accent first column, top-box pill and prior-wave delta rail, base line under the exhibit</a></h3>
+        <code class="id">survey-question-exhibit-battery-matrix</code>
+        <p class="src">accenture__accenture_2019_accenture_global_financial_services_consumer p23 lower half / p34 / p55 via sw_sheets/accenture__accenture_2019_accenture_global_financial_services_consumer__s02.jpg and reviews/...consumer_.md line 37 (&#x27;percentage matrix tables with colored column bars&#x27;); matrix + claim-bearing &#x27;Figure N&#x27; caption + Source/footnote furniture from pwc_strategy__pwc_navigating_the_payments_matrix_charting_a_course_amid_ev Figure 8 p20-p22 read on sw_sheets/pwc_strategy__pwc_navigating_the_payments_matrix_charting_a_course_amid_ev_s02.jpg, convention and hexes (#D9105A/#F7A11D/#9AA0A6) from reviews/pwc_strategy__pwc_navigating_the_payments_matrix_charting_a_course_amid_ev.md sections 4-5</p>
+        <p><span class="chip">kicker-stem</span><span class="chip">title-claim</span><span class="chip">lead-line</span><span class="chip">figure-caption</span><span class="chip">columns[4].label</span><span class="chip">rows[6].q</span><span class="chip">rows[6].text</span><span class="chip">rows[6].v[4]</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/survey-question-exhibit-battery-matrix/index.html">template</a><span></span><a href="survey-question-exhibit-battery-matrix/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/survey-question-exhibit-segment-crosstab/index.html" class="shot"><img src="gallery/survey-question-exhibit-segment-crosstab.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/survey-question-exhibit-segment-crosstab/index.html">One survey question as grouped bars by respondent segment (question kicker, claim title, blue lead line, one accent + grey ramp, all-respondent marker, bases in legend)</a></h3>
+        <code class="id">survey-question-exhibit-segment-crosstab</code>
+        <p class="src">accenture__accenture_2019_accenture_global_financial_services_consumer p23 + p29, read on sw_sheets/accenture__accenture_2019_accenture_global_financial_services_consumer__s02.jpg (row 1 frame 4: persona columns + percentage matrix; row 2 frame 5: question header over 4-series bars); device/colour claims from reviews/accenture__accenture_2019_accenture_global_financial_services_consumer_.md line 31 (violet+azure persona code), line 37 (small, unframed, label-heavy persona-coded charts), line 60 (persona legend fixed on every chart)</p>
+        <p><span class="chip">kicker-question</span><span class="chip">title-claim</span><span class="chip">lead-line</span><span class="chip">figure-caption</span><span class="chip">options[4].label</span><span class="chip">options[4].seg[3]</span><span class="chip">options[4].all</span><span class="chip">segments[3].name</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/survey-question-exhibit-segment-crosstab/index.html">template</a><span></span><a href="survey-question-exhibit-segment-crosstab/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="text-bullets">
+      <h2>text-bullets</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="text-bullets-highlights/index.html" class="shot"><img src="gallery/text-bullets-highlights.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="text-bullets-highlights/index.html">All-caps label title + section kicker + giant KPI numeral + purple claim-subhead / bold-lead-in paragraph blocks (Accenture survey key-highlights page)</a></h3>
+        <code class="id">text-bullets-highlights</code>
+        <p class="src">accenture__accenture_2021_p_c_underwriting_survey_2021 p5 (sheet sw_sheets/accenture__accenture_2021_p_c_underwriting_survey_2021_s00.jpg cell r0c4; p4 same grammar); KPI-numeral device, monochrome-purple system + text-wall warning per reviews/accenture__accenture_2021_p_c_underwriting_survey_2021.md §1/§type/§color</p>
+        <p><span class="chip">title</span><span class="chip">kicker</span><span class="chip">kpi-num</span><span class="chip">kpi-cap</span><span class="chip">kpi-cap-small</span><span class="chip">sub-1</span><span class="chip">body-1</span><span class="chip">sub-2</span></p>
+        <p class="links"><a href="text-bullets-highlights/index.html">template</a><span></span><a href="text-bullets-highlights/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="text-bullets-numbered-blocks/index.html" class="shot"><img src="gallery/text-bullets-numbered-blocks.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="text-bullets-numbered-blocks/index.html">Numbered color blocks + chevron + single-bullet claim rail (Deloitte grouped-opportunities page)</a></h3>
+        <code class="id">text-bullets-numbered-blocks</code>
+        <p class="src">deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p10 (sheet sw_sheets/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_s00.jpg cell r1c4; p11 corroboration s01 r0c0); block fills + chevron navy pixel-sampled from p10, title green per reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md §palette</p>
+        <p><span class="chip">title</span><span class="chip">claim</span><span class="chip">blk-label-1</span><span class="chip">blk-label-2</span><span class="chip">blk-label-3</span><span class="chip">badge-1</span><span class="chip">badge-2</span><span class="chip">badge-3</span></p>
+        <p class="links"><a href="text-bullets-numbered-blocks/index.html">template</a><span></span><a href="text-bullets-numbered-blocks/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="three-horizons">
+      <h2>three-horizons</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="three-horizons-circles/index.html" class="shot"><img src="gallery/three-horizons-circles.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="three-horizons-circles/index.html">Three cascading horizons as overlapping circles with notes rail and planned/emergent strategy loop (1280x720) - claim title, size-ranked accent + grey circles with numbered badges, three numbered notes, two strategy annotation boxes with leaders</a></h3>
+        <code class="id">three-horizons-circles</code>
+        <p class="src">Gartner &#x27;Three Strategic Planning Horizons&#x27;, corpus slide S0030, read on corpus/sheets/sheet_003.jpg frame 10 (S0021-S0030 row-major 5col x 2row, row 2 col 5); catalog row catalog_1-20.csv S0030 (three overlapping circles plus box, blue circles, cascading-goals annotation box). Numbered badges, per-circle share pills and the three-note rail are kit additions per DESIGN_PLAYBOOK; the overlapping-circle cascade and the Planned/Emergent annotations are the corpus&#x27;s. Screenshot qa/three-horizons/three-horizons-circles.png</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">horizon-1.caps</span><span class="chip">horizon-1.name(2)</span><span class="chip">horizon-1.pill</span><span class="chip">horizon-2.caps</span><span class="chip">horizon-2.name(2)</span></p>
+        <p class="links"><a href="three-horizons-circles/index.html">template</a><span></span><a href="three-horizons-circles/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="three-horizons-curves/index.html" class="shot"><img src="gallery/three-horizons-curves.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="three-horizons-curves/index.html">Three growth horizons as rising curves on a value/time stage (1280x720) - claim title, NOW/NEW/NEXT bands, three labelled S-curves with a crossover ring, three-column readout table with right-aligned metrics, source+footnotes</a></h3>
+        <code class="id">three-horizons-curves</code>
+        <p class="src">Umbrex &#x27;Template - Three Horizons&#x27;, corpus slide S1782, read on corpus/sheets/sheet_179.jpg frame 2 (S1771-S1780 row-major 5col x 2row); catalog row catalog_umbrex.csv S1782 (blue curves on axes, Now/New/Next columns with growth curves, genuine horizon captions Maintain core 1-3 yrs / Foster emerging / Seed future). Value axis + FY tick scale, crossover annotation and readout table are kit additions (corpus page is an XXX-placeholder template); shape, 3-band columns and in-plot captions are the corpus&#x27;s. Screenshot qa/three-horizons/three-horizons-curves.png</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">lead</span><span class="chip">series-h1</span><span class="chip">series-h2</span><span class="chip">series-h3</span><span class="chip">horizon-caps[3]</span><span class="chip">end-values[3]</span></p>
+        <p class="links"><a href="three-horizons-curves/index.html">template</a><span></span><a href="three-horizons-curves/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="timeline">
+      <h2>timeline</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/timeline-gantt-roadmap/index.html" class="shot"><img src="gallery/timeline-gantt-roadmap.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/timeline-gantt-roadmap/index.html">Year-and-half-year workstream grid with state-coded initiative bars, duration tags, milestone diamonds, anchored callout gates and a today line (Deloitte council-update roadmap convention)</a></h3>
+        <code class="id">timeline-gantt-roadmap</code>
+        <p class="src">deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd p11 (read on sw_pages/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd/pg-11.png: &#x27;5 year roadmap&#x27; year x workstream grid, initiative bars spanning Jan-Jun/Jul-Dec cells, 3-part footer). Device claim: reviews/deloitte__deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd.md line 21 gantt-grid item and line 18 palette register (navy dominant / no decorative extra hues) — review lists no hexes, so accent #1F69AD is a kit stand-in for Deloitte navy, stated in MANUAL. State fills (done/ongoing/planned/active) replace p11&#x27;s yellow/blue bar tints; RAG fills from p15/p17 deliberately excluded per semantic-only rule.</p>
+        <p><span class="chip">kicker</span><span class="chip">title-claim</span><span class="chip">lead</span><span class="chip">row.label (x7)</span><span class="chip">bar.code (x16)</span><span class="chip">bar.tag (x16)</span><span class="chip">bar.name (x16)</span><span class="chip">callout-1 lead+body</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/timeline-gantt-roadmap/index.html">template</a><span></span><a href="timeline-gantt-roadmap/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/timeline-node-milestones/index.html" class="shot"><img src="gallery/timeline-node-milestones.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/timeline-node-milestones/index.html">Numbered circular nodes on a date-scaled horizontal rail with alternating above/below callout flags and an accent today marker (PwC policy-track convention)</a></h3>
+        <code class="id">timeline-node-milestones</code>
+        <p class="src">pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20 p10 (read on sw_pages/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20/pg-10.png; harvest labels it p09 — off-by-one, pg-09 is the ecosystem donut). Convention claims: reviews/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20.md line 40 (&#x27;numbered circular nodes on a horizontal axis with above/below callout flags&#x27;) and steal-list line 51 item (8); palette hexes #E2192A red, #F2F2F2/#D9D9D9 grey, #1A1A1A ink from that review&#x27;s palette register. Kit deviation documented in MANUAL: connectors stay grey, red reserved for the today marker.</p>
+        <p><span class="chip">kicker</span><span class="chip">title-claim</span><span class="chip">node.date (x7)</span><span class="chip">node.lead (x7)</span><span class="chip">node.body (x7)</span><span class="chip">today-date</span><span class="chip">caption</span><span class="chip">source-line</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/timeline-node-milestones/index.html">template</a><span></span><a href="timeline-node-milestones/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="two-column-text">
+      <h2>two-column-text</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="two-column-text-leadin-columns/index.html" class="shot"><img src="gallery/two-column-text-leadin-columns.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="two-column-text-leadin-columns/index.html">Two justified text columns with bold run-in leads and one accent kicker sentence</a></h3>
+        <code class="id">two-column-text-leadin-columns</code>
+        <p class="src">accenture__accenture_accelerating_global_companies_toward_net_zero_by_2 p3/p5/p8 (2-4 column body with purple bold leads inside the flow); deloitte__..._tillsonburg_..._p7/p9 single-column analogue; page image sw_sheets/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_s00.jpg tile 3</p>
+        <p><span class="chip">eyebrow</span><span class="chip">claim_title</span><span class="chip">col_a_paragraphs</span><span class="chip">col_b_kicker</span><span class="chip">col_b_paragraphs</span><span class="chip">sub_para</span><span class="chip">method_band</span><span class="chip">source_line</span></p>
+        <p class="links"><a href="two-column-text-leadin-columns/index.html">template</a><span></span><a href="two-column-text-leadin-columns/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="two-column-text-paired-boxes/index.html" class="shot"><img src="gallery/two-column-text-paired-boxes.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="two-column-text-paired-boxes/index.html">Navy header-banded paired panels — prose side plus numbered bold-lead asks side</a></h3>
+        <code class="id">two-column-text-paired-boxes</code>
+        <p class="src">deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd p4 (two navy-banded panels: Background prose | Objectives bold-lead bullets), device echoed p6/p8; page image sw_sheets/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_s00.jpg tiles 4 and 6</p>
+        <p><span class="chip">eyebrow</span><span class="chip">claim_title</span><span class="chip">panel_a_head</span><span class="chip">panel_a_lead</span><span class="chip">panel_a_prose</span><span class="chip">panel_b_head</span><span class="chip">panel_b_items</span><span class="chip">source_line</span></p>
+        <p class="links"><a href="two-column-text-paired-boxes/index.html">template</a><span></span><a href="two-column-text-paired-boxes/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="value-chain">
+      <h2>value-chain</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/value-chain-3box/" class="shot"><img src="gallery/value-chain-3box.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/value-chain-3box/">Three-box value chain with stage callouts, value bars + challenge strip</a></h3>
+        <code class="id">value-chain-3box</code>
+        <p class="src">pwc_strategy__pwc_copernicus_market_report_2019 (p41/p53/p64/p76/p89, sheets s03-s08, 5col x 2row row-major); review pwc_strategy__pwc_copernicus_market_report_2019.md §5/§36-44/§53</p>
+        <p><span class="chip">title</span><span class="chip">sub</span><span class="chip">icon</span><span class="chip">stage1</span><span class="chip">stage2</span><span class="chip">stage3</span><span class="chip">bullets1</span><span class="chip">bullets2</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/value-chain-3box/">template</a><span></span><a href="value-chain-3box/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/value-chain-analysis/" class="shot"><img src="gallery/value-chain-analysis.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/value-chain-analysis/">Value-chain stage columns + segment x dimension analysis matrix</a></h3>
+        <code class="id">value-chain-analysis</code>
+        <p class="src">pwc_strategy__pwc_copernicus_market_report_2019 (p40 sheet s03 row1col4; p53-p89 variants s05-s08); review pwc_strategy__pwc_copernicus_market_report_2019.md §5/§36-44</p>
+        <p><span class="chip">title</span><span class="chip">sub</span><span class="chip">icon</span><span class="chip">stagecol1</span><span class="chip">stagecol2</span><span class="chip">stagecol3</span><span class="chip">matrixhead</span><span class="chip">row1</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/value-chain-analysis/">template</a><span></span><a href="value-chain-analysis/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="vbar">
+      <h2>vbar</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/vbar-delta-arrows/" class="shot"><img src="gallery/vbar-delta-arrows.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/vbar-delta-arrows/">Benchmark columns — one accent bar, dashed benchmark line, directional delta arrows + spend-share row</a></h3>
+        <code class="id">vbar-delta-arrows</code>
+        <p class="src">accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019 (p16, sheet s01 row 2); review accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019.md</p>
+        <p><span class="chip">title</span><span class="chip">kicker</span><span class="chip">chart_bars</span><span class="chip">benchmark_line</span><span class="chip">delta_arrows</span><span class="chip">spend_row</span><span class="chip">note</span><span class="chip">footer</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/vbar-delta-arrows/">template</a><span></span><a href="vbar-delta-arrows/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/vbar-grouped-tints/" class="shot"><img src="gallery/vbar-grouped-tints.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/vbar-grouped-tints/">Clustered vertical columns — grey Overall + purple tint series, value labels above bars, dashed callouts</a></h3>
+        <code class="id">vbar-grouped-tints</code>
+        <p class="src">accenture__accenture_2021_p_c_underwriting_survey_2021 (p17/p18/p20, sheet s01 row 2); review accenture__accenture_2021_p_c_underwriting_survey_2021.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">chip</span><span class="chip">chart_groups</span><span class="chip">callouts</span><span class="chip">legend</span><span class="chip">remarks</span><span class="chip">n_rail</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/vbar-grouped-tints/">template</a><span></span><a href="vbar-grouped-tints/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="venn-diagram">
+      <h2>venn-diagram</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="venn-diagram-scope-rings/index.html" class="shot"><img src="gallery/venn-diagram-scope-rings.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="venn-diagram-scope-rings/index.html">Coverage Rings per Component — pathLength dasharray rings: audit arc + review wedge + grey track, editorial so-what band</a></h3>
+        <code class="id">venn-diagram-scope-rings</code>
+        <p class="src">PwC Annual Report 2017-2018 (pwc_strategy__pwc_pwc_annual_report_2018) p103 — sw_pages/pwc_strategy__pwc_pwc_annual_report_2018/pg-103.png (sheet cell s10 r1c2); harvested as venn/overlap-circles but reads as three non-overlapping coverage rings, reproduced as-is; palette cites reviews/pwc_strategy__pwc_pwc_annual_report_2018.md (#D60A2C red, #58595B charcoal, #E6E6E6)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">caption</span><span class="chip">ring-1</span><span class="chip">ring-2</span><span class="chip">ring-3</span><span class="chip">ring-1-label</span><span class="chip">ring-1-pct</span></p>
+        <p class="links"><a href="venn-diagram-scope-rings/index.html">template</a><span></span><a href="venn-diagram-scope-rings/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="venn-diagram-triad/index.html" class="shot"><img src="gallery/venn-diagram-triad.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="venn-diagram-triad/index.html">Three-Set Venn with Intersection Claim — bullets left, clip-carved yellow overlap, wired claim chip</a></h3>
+        <code class="id">venn-diagram-triad</code>
+        <p class="src">EY Academic Resource Center: Analytics Mindset (ey__ey_ey_academic_resource_center_mission_2019) p10 — sw_sheets/ey__ey_ey_academic_resource_center_mission_2019_s00.jpg (row 2); reviews/ey__ey_ey_academic_resource_center_mission_2019.md (device 7: 3-circle Venn + yellow callout box); colors sampled from slide (#264F83 field, #FDE700 EY yellow)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">bullet-1</span><span class="chip">bullet-2</span><span class="chip">bullet-3</span><span class="chip">bullet-4</span><span class="chip">bullet-5</span><span class="chip">bullet-6</span></p>
+        <p class="links"><a href="venn-diagram-triad/index.html">template</a><span></span><a href="venn-diagram-triad/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="waffle-heat">
+      <h2>waffle-heat</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/waffle-heat-matrix/index.html" class="shot"><img src="gallery/waffle-heat-matrix.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/waffle-heat-matrix/index.html">Adoption heat matrix — items × cohort paired in-cell bars (accent + one-lightness + gray for not-included) on one shared 0–100% scale, value labels at bar ends, 5-step change-arrow status column with thresholds legend, L.E.K. question/base/source footnote discipline</a></h3>
+        <code class="id">waffle-heat-matrix</code>
+        <p class="src">l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health p24 (ranked heat matrix x countries + delta arrows; measured on sw_sheets/l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health_s02.jpg sheet 2 row 1), sibling heat matrices p11/p25/p26; green #009537/#00712C/#C9E8CF + gray ramp + yellow/orange semantics per reviews/l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health.md §color system / §signature exhibits; colored-cell-matrix secondary witness: deloitte__deloitte_new_mexico_state_university_staffing_study_opportun p13</p>
+        <p><span class="chip">title</span><span class="chip">section_chip</span><span class="chip">item-8</span><span class="chip">item-examples-3</span><span class="chip">sea-value-8</span><span class="chip">china-india-value-8</span><span class="chip">delta-8</span><span class="chip">status-legend-5</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/waffle-heat-matrix/index.html">template</a><span></span><a href="waffle-heat-matrix/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/waffle-heat-panels/index.html" class="shot"><img src="gallery/waffle-heat-panels.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/waffle-heat-panels/index.html">Cohort waffle panel — hero 10×10 waffle (1 cell = 1%) with giant share numeral + per-cohort 10×5 dot mini-grids (1 dot = 2%), one hot group + gray rest, signed deltas vs overall, so-what band</a></h3>
+        <code class="id">waffle-heat-panels</code>
+        <p class="src">pwc_strategy__pwc_global_workforce_hopes_and_fears_survey_2022_2022 p13 (waffle + cohort matrix, &quot;65% have discussed…&quot;; measured on sw_sheets/pwc_strategy__pwc_global_workforce_hopes_and_fears_survey_2022_2022_s01.jpg sheet 1 row 1), multi-grid mini-waffle witness: kpmg__kpmg_ai_in_financial_reporting_and_audit_navigating_the_new_ Figure-5 dot-matrix page (10×5 grids, fill=%); crimson waffle-fill band (#E30345→#EC008C), grey inactive #BFBFBF/#D9D9D9 and 1-cell=1% convention per reviews/pwc_strategy__pwc_global_workforce_hopes_and_fears_survey_2022_2022.md §color + p13 description; accent #D62246 sits in that crimson band, second-series greys from review ramp</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">hero_value</span><span class="chip">cohort-name-4</span><span class="chip">cohort-desc-4</span><span class="chip">cohort-value-4</span><span class="chip">cohort-delta-4</span><span class="chip">kicker_band</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/waffle-heat-panels/index.html">template</a><span></span><a href="waffle-heat-panels/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="waterfall-bridge">
+      <h2>waterfall-bridge</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/waterfall-bridge-cascade/index.html" class="shot"><img src="gallery/waterfall-bridge-cascade.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/waterfall-bridge-cascade/index.html">100% failure-mode cascade — bars stepping down-right to a full-width total bar</a></h3>
+        <code class="id">waterfall-bridge-cascade</code>
+        <p class="src">corpus sheet S114 (corpus/sheets/sheet_012.jpg row 1 col 4, BCG Henderson ecosystem study p11)</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">cascade_rows</span><span class="chip">total_bar</span><span class="chip">legend</span><span class="chip">method_note</span><span class="chip">source</span><span class="chip">page</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/waterfall-bridge-cascade/index.html">template</a><span></span><a href="waterfall-bridge-cascade/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/waterfall-bridge-deltas/index.html" class="shot"><img src="gallery/waterfall-bridge-deltas.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/waterfall-bridge-deltas/index.html">From/to value bridge — floating delta bars with connectors, net pill, dashed directional marker</a></h3>
+        <code class="id">waterfall-bridge-deltas</code>
+        <p class="src">ey__ey_generative_ai_in_retail_and_commercial_banking_2023 (p9, sw_sheets ..._s00.jpg row 2 col 4); review reviews/ey__ey_generative_ai_in_retail_and_commercial_banking_2023.md</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">bridge_steps</span><span class="chip">net_pill</span><span class="chip">legend</span><span class="chip">method_note</span><span class="chip">source</span><span class="chip">page</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/waterfall-bridge-deltas/index.html">template</a><span></span><a href="waterfall-bridge-deltas/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="why-it-matters">
+      <h2>why-it-matters</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="why-it-matters-numbered/index.html" class="shot"><img src="gallery/why-it-matters-numbered.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="why-it-matters-numbered/index.html">Claim Title + Four Numbered Moves + Bottom Line Band</a></h3>
+        <code class="id">why-it-matters-numbered</code>
+        <p class="src">Deloitte BE TMT Predictions 2025 (content_dam_assets_zone2_be_e) p9/p14/p18/p21; corpus/sheets/sheet_006.jpg (S0057 row2col2) + sheet_007.jpg (S0062 row1col2, S0066 row2col1, S0069 row2col4); catalog_1-20.csv archetype &#x27;why-it-matters numbered&#x27; device &#x27;four numbered columns / Bottom Line&#x27;; palette pixel-sampled from corpus/pdfpages/_content_dam_assets_zone2_be_e_-13.png (no review file)</p>
+        <p><span class="chip">kicker</span><span class="chip">claim</span><span class="chip">col1.n</span><span class="chip">col1.h</span><span class="chip">col1.t</span><span class="chip">col2.n</span><span class="chip">col2.h</span><span class="chip">col2.t</span></p>
+        <p class="links"><a href="why-it-matters-numbered/index.html">template</a><span></span><a href="why-it-matters-numbered/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="why-it-matters-opener/index.html" class="shot"><img src="gallery/why-it-matters-opener.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="why-it-matters-opener/index.html">Giant Gradient &#x27;Why Does It Matter?&#x27; + Duotone Photo + Numbered Blocks</a></h3>
+        <code class="id">why-it-matters-opener</code>
+        <p class="src">Deloitte BE TMT Predictions 2025 (content_dam_assets_zone2_be_e) p8/p17/p20/p23; corpus/sheets/sheet_006.jpg (S0056 row2col1) + sheet_007.jpg (S0065 row1col5, S0068 row2col3); catalog_1-20.csv archetype &#x27;why-it-matters opener&#x27; device &#x27;gradient interrogative title&#x27;; palette pixel-sampled from corpus/pdfpages/_content_dam_assets_zone2_be_e_-08.png (no review file)</p>
+        <p><span class="chip">kicker</span><span class="chip">why</span><span class="chip">photo</span><span class="chip">lead</span><span class="chip">sub</span><span class="chip">blk1.h</span><span class="chip">blk1.t</span><span class="chip">blk2.h</span></p>
+        <p class="links"><a href="why-it-matters-opener/index.html">template</a><span></span><a href="why-it-matters-opener/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section><section class="fam" id="word-cloud">
+      <h2>word-cloud</h2>
+      <p class="count">2 templates</p>
+      <article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/word-cloud-definition/index.html" class="shot"><img src="gallery/word-cloud-definition.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/word-cloud-definition/index.html">Concept-definition word cloud (1280x720) - claim title band, then a 3-tier SVG text cloud: 5 teal anchor words (the definition) layered over 18 core attributes + 46 grey buzzword fillers, footnote carries the size-is-the-argument claim</a></h3>
+        <code class="id">word-cloud-definition</code>
+        <p class="src">Forvis Mazars &#x27;Strategic Planning&#x27;, corpus slide S0007, read on corpus/sheets/sheet_001.jpg frame 7 (S0001-S0010 row-major 5col x 2row, row 2 col 2; corpus tag 4890, corpus/pdfpages/4890_..._St_-07.png); catalog row catalog_1-20.csv S0007 (giant overlapping words; full-width word cloud, word-cloud typography device). No reviews/*.md exists for this deck, so palette hexes are eyeball-sampled from the contact sheet (stated in MANUAL + index.html header). The source&#x27;s green/teal/purple 3-hue cloud is deliberately collapsed to one teal accent + gray ramp per DESIGN_PLAYBOOK; overlap-as-layering and the 3 tier groups are the corpus device. Screenshot qa/word-cloud/word-cloud-definition.png</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">cloud.anchor[5].words</span><span class="chip">cloud.core[18].words</span><span class="chip">cloud.filler[46].words</span><span class="chip">footnote</span><span class="chip">source-line</span><span class="chip">runhead</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/word-cloud-definition/index.html">template</a><span></span><a href="word-cloud-definition/MANUAL.md">build manual</a></p>
+      </div></article><article class="entry">
+      <a href="/home/nathan-white/new projects/deck-research/html-templates/word-cloud-vision/index.html" class="shot"><img src="gallery/word-cloud-vision.png" alt="" loading="lazy"></a>
+      <div class="meta">
+        <h3><a href="/home/nathan-white/new projects/deck-research/html-templates/word-cloud-vision/index.html">Full-bleed vision-statement word cloud (1280x720) - question claim in a cleared top-left pocket, cloud bleeding to all stage edges, 8 sized anchors + one 90-degree rotated edge word over an ~55-word grey haze, frequency-is-the-encoding footnote</a></h3>
+        <code class="id">word-cloud-vision</code>
+        <p class="src">Forvis Mazars &#x27;Strategic Planning&#x27;, corpus slide S0016, read on corpus/sheets/sheet_002.jpg frame 6 (S0011-S0020 row-major 5col x 2row, row 2 col 1; corpus tag 4890, corpus/pdfpages/4890_..._St_-17.png); catalog row catalog_1-20.csv S0016 (dense multicolored words; full-bleed word cloud, word-cloud typography device). No reviews/*.md exists for this deck; teal/gray palette eyeball-sampled from the sheet (stated). Source&#x27;s green+teal 2-hue cloud collapsed to one accent + gray ramp per DESIGN_PLAYBOOK; the rotated right-edge word and the &#x27;become graduates&#x27; same-tier pair are corpus devices, the second one re-spread to keep both words legible (verified by headless render). Screenshot qa/word-cloud/word-cloud-vision.png</p>
+        <p><span class="chip">kicker</span><span class="chip">title</span><span class="chip">cloud.anchor[8 + 1 rotated].words</span><span class="chip">cloud.core[18].words</span><span class="chip">cloud.filler[~55].words</span><span class="chip">footnote</span><span class="chip">source-line</span><span class="chip">runhead</span></p>
+        <p class="links"><a href="/home/nathan-white/new projects/deck-research/html-templates/word-cloud-vision/index.html">template</a><span></span><a href="word-cloud-vision/MANUAL.md">build manual</a></p>
+      </div></article>
+    </section>
+  </main>
+</div>
+<footer class="colophon">Extracted from a corpus of 4,867 visually reviewed slides across firm decks
+(Accenture, Deloitte, EY, KPMG, L.E.K., PwC Strategy&) and vetted template archives. Fonts in the
+templates are honest stand-ins for the firms' licensed faces; manuals label every substitute.</footer>
+</body></html>

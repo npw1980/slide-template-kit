@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>photo-bleed-split-divider — white text field + right-edge photo bleed (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  photo-bleed-split-divider  ·  family photo-bleed
+  The sibling geometry of photo-bleed-narrative-overlay. Instead of covering
+  the whole canvas, the photograph bleeds down the RIGHT edge only — to the
+  top, right and bottom canvas edges — and the argument lives in a clean white
+  text field on the left (~55/45). The field is opened by an oversized serif
+  double-quote glyph, which is the divider device the source deck uses.
+  Evidence: PwC Strategy& Global Top 100 companies by market capitalisation
+  (2023) p03 — "large black double-quote glyph + serif chapter name on a white
+  left panel, right panel full-bleed stock photo" (review §Section dividers);
+  the same divider grammar recurs through that deck's chapter openers.
+  ----------------------------------------------------------------------------
+  WHAT THIS GEOMETRY IS FOR: chapter opening / "you are here" pages that must
+  say one thing clearly. The photograph is atmosphere; the white field carries
+  a claim + at most three highlights, so the page still argues.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport
+  fit, so every rem value below is a 1:1 coordinate on 1280x720 and matches
+  the px coords quoted in MANUAL.md.
+  SELF-CONTAINED: inline CSS + inline SVG only. No imports, no webfonts, no
+  img / link / script / iframe / url() — zero network requests.
+  PHOTOGRAPHY: right panel is an HONEST PLACEHOLDER — a cool blue-teal duotone
+  SVG stand-in carrying a visible "PHOTO PLACEHOLDER" badge. Replace with the
+  licensed image per MANUAL.md FILL step 1 (same crop behaviour preserved).
+  ============================================================================
+-->
+<style>
+  /* ============================== tokens ==============================
+     Palette anchors quoted from
+     reviews/pwc_strategy__pwc_global_top_100_companies_by_market_capitalisation_2023.md:
+     brand orange #F07D2D / #ED7D31 (emphasis), ink near-black #12232C, grays
+     #F2F2F2 / #EFEFEF, and — explicitly noted there — the stock photos are
+     COOL blue-teal #3C679A / #12232C, unrelated to the chart colours. So the
+     photo is a cool duotone and the ONE emphasis hue stays orange. */
+  :root{
+    --bg:          #FFFFFF;   /* the text field                             */
+    --field-soft:  #F2F2F2;   /* hairline fill / rule well                  */
+    --ink:         #12232C;   /* near-black (measured) for display + body   */
+    --ink-soft:    #3C4A52;   /* body copy on white                         */
+    --gray-1:      #595959;   /* source line, captions                      */
+    --gray-2:      #8C9599;   /* page stamp, quiet labels                   */
+    --rule:        #DDE1E3;   /* hairlines                                  */
+    --accent:      #F07D2D;   /* PwC orange — ONE emphasis hue              */
+    --accent-deep: #D04A03;   /* darker orange for text-size emphasis       */
+    --photo-hi:    #6E9BC4;   /* photo placeholder: cool highlight          */
+    --photo-mid:   #3C679A;   /* photo placeholder: cool mid (measured)     */
+    --photo-lo:    #12232C;   /* photo placeholder: cool shadow (measured)  */
+    --scrim:       rgba(9,17,22,.66);
+
+    /* The firm's real faces: humanist transitional SERIF for cover titles and
+       every page title (Georgia / PT-Serif-like per the review), grotesque
+       SANS for body/data/labels/footnotes. Stacks stand in; no webfonts. */
+    --font-display: Georgia, "PT Serif", "Times New Roman", serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{box-sizing:border-box}
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#111; font-family:var(--font-body)}
+  .viewport{display:flex; align-items:center; justify-content:center; min-height:100vh}
+
+  .stage{position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased}
+
+  /* ===================== photograph — right-edge bleed ================== */
+  /* x 704 -> 1280, full 720 height: bleeds to top, right and bottom edges
+     exactly like the source divider. "slice" = cover crop for a real image. */
+  .photo{position:absolute; left:704rem; top:0; width:576rem; height:720rem;
+    margin:0; overflow:hidden}
+  .photo svg{display:block; width:576rem; height:720rem}
+  .photo .stamp{position:absolute; left:12rem; bottom:12rem;
+    font:700 8rem/1 var(--font-body); letter-spacing:.11em; color:#fff;
+    opacity:.58; text-transform:uppercase; padding:3rem 6rem;
+    border:.1rem dashed rgba(255,255,255,.7)}
+  /* bottom wash so the page stamp can sit on the photo if it is placed there */
+  .photo .wash{position:absolute; inset:auto 0 0 0; height:150rem;
+    background:linear-gradient(180deg, rgba(9,17,22,0) 0%, var(--scrim) 100%);
+    pointer-events:none}
+  /* optional right-edge accent seam: 4px of the brand hue, the deck's way of
+     binding a photo page to the rest of the system */
+  .seam{position:absolute; right:0; top:0; width:4rem; height:720rem;
+    background:var(--accent)}
+
+  /* ============================ text field ============================= */
+  /* 0 -> 704 (the 4px seam sits inside the photo edge) */
+  .field{position:absolute; left:64rem; top:0; width:560rem; height:720rem;
+    display:flex; flex-direction:column}
+
+  /* oversized serif double-quote — the divider's signature device */
+  .glyph{font-family:var(--font-display); font-size:150rem; line-height:.72;
+    color:var(--ink); height:86rem; margin:0 0 22rem; user-select:none;
+    -webkit-user-select:none}
+
+  .kicker{display:flex; align-items:center; height:16rem; margin-bottom:16rem}
+  .kicker i{display:block; width:26rem; height:3rem; background:var(--accent);
+    margin-right:10rem}
+  .kicker span{font-size:10.5rem; font-weight:700; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--gray-1)}
+
+  /* claim title, serif, up to 3 lines — the MBB gate lives here */
+  h1.title{margin:0 0 18rem; font-family:var(--font-display); font-weight:700;
+    font-size:40rem; line-height:1.13; letter-spacing:-.3rem; color:var(--ink)}
+  h1.title em{font-style:normal; color:var(--accent-deep)}   /* one keyword */
+
+  .lead{margin:0 0 26rem; font-size:14rem; line-height:1.6; color:var(--ink-soft);
+    max-width:520rem}
+  .lead b{color:var(--ink)}
+
+  /* highlight list — the "so what" that keeps a divider page from being
+     decoration: 1px rules between rows, serif-italic figure refs allowed */
+  ol.points{list-style:none; margin:0; padding:0; border-top:.1rem solid var(--rule)}
+  ol.points li{display:flex; gap:12rem; align-items:flex-start;
+    padding:11rem 0 11rem; border-bottom:.1rem solid var(--rule)}
+  ol.points li b{flex:0 0 auto; font-family:var(--font-display); font-weight:700;
+    font-size:15rem; line-height:1.35; color:var(--accent-deep)}
+  ol.points li p{margin:0; font-size:13rem; line-height:1.5; color:var(--ink-soft)}
+  ol.points li p strong{color:var(--ink)}
+  ol.points sup{font-size:8.5rem; color:var(--accent-deep); font-weight:700}
+
+  /* footer strip inside the field: source left, page stamp right */
+  footer{margin-top:auto; padding-bottom:36rem}
+  .fline{border-top:.1rem solid var(--rule); padding-top:9rem; display:flex;
+    align-items:baseline}
+  .source{margin:0; font-size:9.5rem; line-height:1.35; color:var(--gray-1);
+    max-width:470rem}
+  .source sup{font-size:7.5rem}
+  .stampno{margin-left:auto; display:flex; align-items:center; white-space:nowrap}
+  .stampno b{font-family:var(--font-display); font-size:11rem; color:var(--ink)}
+  .stampno span{font-size:10rem; letter-spacing:.10em; text-transform:uppercase;
+    color:var(--gray-2); margin-left:7rem}
+  .credit{margin:7rem 0 0; font-size:8rem; letter-spacing:.04em; color:var(--gray-2)}
+</style>
+</head>
+<body>
+<div class="viewport">
+<main class="stage" aria-label="Slide: chapter divider with right-edge photograph">
+
+  <!-- slot 1 · PHOTOGRAPH — right bleed; replace contents per MANUAL -->
+  <figure class="photo" aria-label="Photograph: trading desk with market charts on screen, cool daylight (placeholder)">
+    <svg viewBox="0 0 576 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Placeholder photograph, cool blue-teal duotone">
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--photo-hi)"/>
+          <stop offset=".5" stop-color="var(--photo-mid)"/>
+          <stop offset="1" stop-color="var(--photo-lo)"/>
+        </linearGradient>
+        <filter id="blur" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="11"/>
+        </filter>
+      </defs>
+      <rect width="576" height="720" fill="url(#sky)"/>
+      <!-- window / screen bokeh: the stand-in for an office photograph -->
+      <g filter="url(#blur)" opacity=".7">
+        <rect x="56"  y="70"  width="150" height="112" rx="8" fill="#CFE2F4" opacity=".34"/>
+        <rect x="266" y="44"  width="214" height="150" rx="8" fill="#A8C8E6" opacity=".30"/>
+        <rect x="120" y="300" width="340" height="240" rx="10" fill="#0F1C24" opacity=".5"/>
+        <circle cx="480" cy="250" r="70" fill="#E8F2FB" opacity=".16"/>
+      </g>
+      <!-- two candlestick-style traces: reads as data-in-the-room, not a chart -->
+      <g stroke="#EAF3FB" stroke-width="3" fill="none" opacity=".85">
+        <path d="M140 300c46-58 78 34 116-14 36-46 70 22 104-18"/>
+        <path d="M140 372c40-30 74 14 106-24 34-40 76 26 118-10"/>
+      </g>
+      <!-- desk line + seated figure silhouette -->
+      <g filter="url(#blur)">
+        <rect y="560" width="576" height="160" fill="#0B141A" opacity=".55"/>
+        <ellipse cx="188" cy="614" rx="118" ry="88" fill="#060D11" opacity=".7"/>
+      </g>
+      <path d="M118 614c34-52 108-52 142 0" fill="#060D11" opacity=".6"/>
+      <!-- cool rim light -->
+      <path d="M56 190c90 46 220 62 372 40" fill="none" stroke="#DCEBFA"
+            stroke-width="6" opacity=".3" filter="url(#blur)"/>
+    </svg>
+    <div class="wash" aria-hidden="true"></div>
+    <span class="stamp">Photo placeholder</span>
+  </figure>
+  <div class="seam" aria-hidden="true"></div>
+
+  <!-- ======================= text field (left 55%) ===================== -->
+  <section class="field" aria-label="Chapter: market highlights">
+
+    <!-- slot 2 · oversized serif quote glyph (decorative divider device) -->
+    <div class="glyph" aria-hidden="true">&#8220;</div>
+
+    <!-- slot 3 · kicker / chapter tag -->
+    <div class="kicker"><i aria-hidden="true"></i><span>Chapter 2 · The ranking</span></div>
+
+    <!-- slot 4 · claim title (serif, one keyword in the accent) -->
+    <h1 class="title">The top twenty <em>own more</em> of the list than last year</h1>
+
+    <!-- slot 5 · lead -->
+    <p class="lead">Ten years of buybacks and index growth have moved value into a
+      narrower band of companies. Three shifts explain the change and set the shape
+      of the analysis that follows.</p>
+
+    <!-- slot 6 · highlight list (keeps the divider page arguing) -->
+    <ol class="points">
+      <li><b>1</b><p>The largest 20 companies hold <strong>51.4%</strong> of total
+        market capitalisation, up <strong>2.3pp</strong> against March 2022.<sup>1</sup></p></li>
+      <li><b>2</b><p>Technology and financials together account for
+        <strong>46.8%</strong> of the list; all other sectors are flat or declining.</p></li>
+      <li><b>3</b><p>Median organic growth among the top 100 was
+        <strong>6.1%</strong>, against 9.9% for the balance of the global universe.<sup>2</sup></p></li>
+    </ol>
+
+    <!-- slots 7-9 · source line, page stamp, photo credit -->
+    <footer>
+      <div class="fline">
+        <p class="source">Source: PwC analysis of company filings and market data,
+          31 March 2023; market capitalisation in USD, unadjusted, restated for
+          corporate actions.<sup>1,2</sup></p>
+        <p class="stampno"><b>3</b><span>| Highlights</span></p>
+      </div>
+      <p class="credit">Photo: PwC / licensed stock, cool grade, replaced on build.</p>
+    </footer>
+  </section>
+
+</main>
+</div>
+</body>
+</html>

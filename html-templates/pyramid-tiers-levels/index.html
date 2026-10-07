@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pyramid-tiers-levels — five-level decision pyramid with per-tier text rows (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  pyramid-tiers-levels  ·  family pyramid-tiers
+  Evidence (see MANUAL.md -> SOURCE):
+    Corpus "levels pyramid" family, catalog S0259 (catalog_21-62.csv):
+    "5-tier pyramid + text · white label per tier · corporate-to-operational
+    tiers · red-yellow-teal-blue". NOTE: the source image at
+    corpus/sheets/sheet_026.jpg frame 9 resolves to a Bing photo page (see
+    MANUAL SOURCE for the honest note), so the diagram is reconstructed from
+    the catalog note + the kit diagram rules (one accent + greys), with the
+    four-hue original re-encoded as one accent band + outlined grey bands.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html font-size maps 1rem == 1 STAGE PIXEL, so every length
+  is a 1:1 stage-pixel coordinate with the same numbers MANUAL.md quotes.
+  ----------------------------------------------------------------------------
+  GEOMETRY (stage px, inside full-stage SVG viewBox 0 0 1280 720):
+    Triangle: apex (430,170), base y580, half-base 300 -> base 130..730.
+    Tier cuts every 82px: 170 / 252 / 334 / 416 / 498 / 580.
+    Right edge:  xEdge = 430 + 300*(y-170)/410    (leader start = band mid)
+    Left edge:   xEdge = 430 - 300*(y-170)/410    (number inside band)
+    Tier groups #tier-1..#tier-5: each holds the band polygon, the centered
+    tier label, the rail leader (dashed, to x698), the numbered disc (x712),
+    the rail row (name / 2-line desc / metric) and the row's bottom hairline.
+    Rail x 700..1216; zone brackets x118 (strategic/tactical/operational);
+    delegation-envelope dash at the 2|3 cut (y334) labelled above.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. The corpus original fills five tiers in four
+     hues; kit rule = ONE accent + grey ramp. Here: ONE accent band (tier 1)
+     + outlined white bands + grey leader/bracket hairlines. Contrast:
+       --ink #1A1A1A on --bg 16.9:1 · --accent #155C99 6.0:1 (white label OK)
+       --gray-1 #404040 9.8:1 (tier names on white) · --gray-2 #8C8C8C 3.8:1
+       large/bold only · --gray-note #666666 5.9:1 (descriptions).
+     ================================================================= */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;
+    --gray-1:      #404040;
+    --gray-2:      #8C8C8C;
+    --gray-3:      #D9D9D9;
+    --gray-note:   #666666;
+    --rule:        #D9D9D9;
+    --accent:      #155C99;
+    --accent-soft: #E9F1F8;
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, Calibri, "Helvetica Neue", "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{ background:#4A4A50; display:grid; place-items:center; min-height:100vh; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink); overflow:hidden;
+  }
+  /* ---------- header band: kicker / claim title / lead line ---------- */
+  .kicker{
+    position:absolute; left:64rem; top:34rem; font-size:11rem; line-height:1;
+    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    font-family:var(--font-display); color:var(--gray-1);
+  }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  h1.title{
+    position:absolute; left:64rem; top:56rem; width:1152rem;
+    font-family:var(--font-display); font-size:30rem; line-height:36rem;
+    font-weight:700; letter-spacing:-.015em; color:var(--ink);
+    max-height:72rem; overflow:hidden;   /* 2-line gate */
+  }
+  p.lead{
+    position:absolute; left:64rem; top:150rem; width:1152rem;
+    font-size:14rem; line-height:20rem; color:var(--gray-1); font-weight:400;
+  }
+  p.lead .em{ color:var(--accent); font-weight:700; }
+  /* ------------------------------ diagram ------------------------------ */
+  svg.diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+  .band          { stroke:var(--gray-2); stroke-width:1.3; fill:#FFFFFF; }
+  .band-em       { stroke:var(--accent); stroke-width:1.3; fill:var(--accent); }
+  .band-name     { font:700 12.5px var(--font-body); fill:var(--ink); }
+  .band-name-k   { fill:#FFFFFF; }
+  .band-num      { font:700 10px var(--font-body); fill:var(--gray-2); }
+  .band-num-k    { fill:#FFFFFF; }
+  .leader        { stroke:var(--gray-2); stroke-width:1.2; stroke-dasharray:4 3; }
+  .dot           { fill:var(--gray-2); }
+  .rail-bar      { fill:var(--accent); }
+  .row-name      { font:700 13px var(--font-body); fill:var(--ink); }
+  .row-name-em   { fill:var(--accent); }
+  .row-desc      { font:10.5px var(--font-body); fill:var(--gray-note); }
+  .row-metric    { font:700 15px var(--font-body); fill:var(--ink); }
+  .row-unit      { font:700 8px var(--font-body); fill:var(--gray-note); letter-spacing:.14em; }
+  .hairline-row  { stroke:var(--gray-3); stroke-width:1; }
+  .bracket       { stroke:var(--gray-2); stroke-width:1; fill:none; }
+  .bracket-lab   { font:700 9.5px var(--font-body); fill:var(--gray-2); letter-spacing:.14em; }
+  .envelope      { stroke:var(--gray-2); stroke-width:1.2; stroke-dasharray:5 4; }
+  .envelope-lab  { font:9px var(--font-body); fill:var(--gray-note); }
+  .pyr-note      { font:10.5px var(--font-body); fill:var(--gray-note); }
+  .pyr-note tspan    { font-weight:700; fill:var(--gray-1); }
+  /* ------------------------------ footer ------------------------------ */
+  .source{
+    position:absolute; left:64rem; bottom:20rem; width:1000rem;
+    font-size:10rem; line-height:13rem; color:var(--gray-note);
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:20rem; font-size:10rem; color:var(--gray-note); }
+  .pageno b{ color:var(--ink); font-weight:700; }
+  .hairline{ position:absolute; left:64rem; right:64rem; bottom:38rem; border-top:1px solid var(--rule); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. KICKER · 2. CLAIM TITLE · 3. LEAD -->
+  <div class="kicker" data-slot="kicker"><b>5 |</b> Operating Model</div>
+  <h1 class="title" data-slot="title">Decision rights concentrate up the tiers, but accountability still sits with the tier that executes</h1>
+  <p class="lead" data-slot="lead">A five-level ladder from corporate agenda to field execution — one tier owns the <span class="em">portfolio decisions</span>; the other four must know what they still own.¹</p>
+
+  <!-- 4. THE DIAGRAM: 5-level pyramid + aligned text rows -->
+  <svg class="diagram" viewBox="0 0 1280 720" aria-label="Five-level decision-rights pyramid">
+
+    <!-- Zone brackets (left): strategic / tactical / operational -->
+    <g id="zones">
+      <path class="bracket" d="M112,170 h6 V334 h-6"/>
+      <path class="bracket" d="M112,334 h6 V416 h-6"/>
+      <path class="bracket" d="M112,416 h6 V580 h-6"/>
+      <text class="bracket-lab" x="130" y="190">STRATEGIC</text>
+      <text class="bracket-lab" x="130" y="354">TACTICAL</text>
+      <text class="bracket-lab" x="130" y="436">OPERATIONAL</text>
+    </g>
+
+    <!-- Delegation envelope: the line tier 2 grants tier 3 -->
+    <g id="envelope">
+      <line class="envelope" x1="310" y1="334" x2="700" y2="334"/>
+      <text class="envelope-lab" x="646" y="328" text-anchor="end">delegation envelope²</text>
+    </g>
+
+    <!-- TIER 1 · apex band · EMPHASIS (accent fill). y170..252 -->
+    <g class="tier-group" id="tier-1">
+      <polygon class="band band-em" points="430,170 370,252 490,252"/>
+      <text class="band-name band-name-k" x="432" y="222" text-anchor="middle">Corporate</text>
+      <line class="leader" x1="460" y1="211" x2="698" y2="211"/><circle class="dot" cx="460" cy="211" r="2.4"/>
+      <rect class="rail-bar" x="700" y="170" width="4" height="82"/>
+      <circle fill="#FFFFFF" stroke="var(--accent)" stroke-width="1.2" cx="716" cy="211" r="10"/>
+      <text class="band-num" style="fill:var(--accent)" x="716" y="215" text-anchor="middle">1</text>
+      <text class="row-name row-name-em" x="734" y="201">Corporate centre</text>
+      <text class="row-desc" x="734" y="219">Owns portfolio, capital and enterprise risk appetite;</text>
+      <text class="row-desc" x="734" y="233">escalations only move the plan.¹</text>
+      <text class="row-metric" x="1216" y="201" text-anchor="end">11%</text>
+      <text class="row-unit" x="1216" y="217" text-anchor="end">OF DECISIONS</text>
+      <line class="hairline-row" x1="700" y1="252" x2="1216" y2="252"/>
+    </g>
+
+    <!-- TIER 2 · y252..334 -->
+    <g class="tier-group" id="tier-2">
+      <polygon class="band" points="370,252 490,252 550,334 310,334"/>
+      <text class="band-name" x="430" y="298" text-anchor="middle">Business units</text>
+      <line class="leader" x1="520" y1="293" x2="698" y2="293"/><circle class="dot" cx="520" cy="293" r="2.4"/>
+      <circle fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.2" cx="716" cy="293" r="10"/>
+      <text class="band-num" x="716" y="297" text-anchor="middle">2</text>
+      <text class="row-name" x="734" y="283">Business-unit boards</text>
+      <text class="row-desc" x="734" y="301">Price, entry and capex inside the agreed envelope;</text>
+      <text class="row-desc" x="734" y="315">escalate only cross-portfolio bets.</text>
+      <text class="row-metric" x="1216" y="283" text-anchor="end">19%</text>
+      <text class="row-unit" x="1216" y="299" text-anchor="end">OF DECISIONS</text>
+      <line class="hairline-row" x1="700" y1="334" x2="1216" y2="334"/>
+    </g>
+
+    <!-- TIER 3 · y334..416 · 2-line description = worst plausible fill shown -->
+    <g class="tier-group" id="tier-3">
+      <polygon class="band" points="310,334 550,334 610,416 250,416"/>
+      <text class="band-name" x="430" y="380" text-anchor="middle">Functional centres</text>
+      <line class="leader" x1="580" y1="375" x2="698" y2="375"/><circle class="dot" cx="580" cy="375" r="2.4"/>
+      <circle fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.2" cx="716" cy="375" r="10"/>
+      <text class="band-num" x="716" y="379" text-anchor="middle">3</text>
+      <text class="row-name" x="734" y="365">Functional centres</text>
+      <text class="row-desc" x="734" y="383">Standards, tooling and shared policy below; own the</text>
+      <text class="row-desc" x="734" y="397">25 cross-cutting KPIs they police.¹</text>
+      <text class="row-metric" x="1216" y="365" text-anchor="end">24%</text>
+      <text class="row-unit" x="1216" y="381" text-anchor="end">OF DECISIONS</text>
+      <line class="hairline-row" x1="700" y1="416" x2="1216" y2="416"/>
+    </g>
+
+    <!-- TIER 4 · y416..498 -->
+    <g class="tier-group" id="tier-4">
+      <polygon class="band" points="250,416 610,416 670,498 190,498"/>
+      <text class="band-name" x="430" y="462" text-anchor="middle">Shared-service hubs</text>
+      <line class="leader" x1="640" y1="457" x2="698" y2="457"/><circle class="dot" cx="640" cy="457" r="2.4"/>
+      <circle fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.2" cx="716" cy="457" r="10"/>
+      <text class="band-num" x="716" y="461" text-anchor="middle">4</text>
+      <text class="row-name" x="734" y="447">Shared-service hubs</text>
+      <text class="row-desc" x="734" y="465">Transactional delivery under a live SLA; no policy</text>
+      <text class="row-desc" x="734" y="479">latitude by design.</text>
+      <text class="row-metric" x="1216" y="447" text-anchor="end">17%</text>
+      <text class="row-unit" x="1216" y="463" text-anchor="end">OF DECISIONS</text>
+      <line class="hairline-row" x1="700" y1="498" x2="1216" y2="498"/>
+    </g>
+
+    <!-- TIER 5 · base · y498..580 -->
+    <g class="tier-group" id="tier-5">
+      <polygon class="band" points="190,498 670,498 730,580 130,580"/>
+      <text class="band-name" x="430" y="544" text-anchor="middle">Field operations</text>
+      <line class="leader" x1="700" y1="539" x2="698" y2="539"/><circle class="dot" cx="700" cy="539" r="2.4"/>
+      <circle fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.2" cx="716" cy="539" r="10"/>
+      <text class="band-num" x="716" y="543" text-anchor="middle">5</text>
+      <text class="row-name" x="734" y="529">Field operations</text>
+      <text class="row-desc" x="734" y="547">Day-to-day calls inside the guardrail — logged,</text>
+      <text class="row-desc" x="734" y="561">replayable, escalates by exception.</text>
+      <text class="row-metric" x="1216" y="529" text-anchor="end">29%</text>
+      <text class="row-unit" x="1216" y="545" text-anchor="end">OF DECISIONS</text>
+    </g>
+
+    <!-- Pyramid footnote line (methodology honesty) -->
+    <text class="pyr-note" x="430" y="610" text-anchor="middle">band size shows decision rights per tier, <tspan>not headcount</tspan> — logged share, FY25 ytd³</text>
+  </svg>
+
+  <!-- 5. FOOTER -->
+  <div class="hairline"></div>
+  <div class="source" data-slot="source-line">Source: decision-rights workshop, 9 participants<sup>1</sup> · delegation matrix v4, Sept FY25<sup>2</sup> · n = 518 logged decisions across 6 governance forums<sup>3</sup></div>
+  <div class="pageno"><b>9</b> | Operating Model</div>
+</div>
+</body>
+</html>

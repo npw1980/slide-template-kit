@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>agenda-contents-tracker — contents that doubles as a section-progress tracker (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  agenda-contents-tracker  ·  family agenda-contents
+  A CONTENTS PAGE that keeps working after page 1: the same list of sections is
+  reprinted on later pages with three distinct states — read (grey, filled
+  marker), YOU ARE HERE (deep-green marker + accent bar + tag), and not yet
+  reached (hollow marker). One vertical hairline rail ties the markers into a
+  single path so the reader can see how far into the document they are.
+  Evidence: Monitor Deloitte — "Accelerated Access Review: UK Mapping" (2015).
+  Contents appears 7 times (p3, p12, p20, p44, p69 and later) with the active
+  section distinguished: "Contents pages (7 of them) double as section-progress
+  trackers — same page, active section distinguished — a cheap, effective way
+  to orient the reader in a 100+ page document"
+  (reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md,
+  Narrative / section structure + COPY list "contents-as-section-tracker").
+  Page geometry taken from sw_pages/deloitte__deloitte_accelerated_access_review_uk_mapping_2015/pg-003.png:
+  title upper-left, one entry per line, small square markers joined by a thin
+  vertical rule, bold black section title, bold page number at the right edge,
+  page number bottom-left, "© 2015 … Private and confidential." bottom-right.
+  ----------------------------------------------------------------------------
+  SCALING (zero JS): html font-size = min(100vw/1280, 100vh/720), so 1rem == 1
+  stage pixel. .stage is a fixed 1280x720 canvas. Every rem value below is a
+  1:1 coordinate on that canvas and is quoted identically in MANUAL.md.
+  SELF-CONTAINED: inline CSS + inline SVG only. No imports, no webfonts, no
+  img/link/script/iframe — zero network requests.
+  CONTRAST NOTE: the source paints section titles in raw brand green, which
+  measures 2.3:1 on white and fails WCAG even at display size. Here the brand
+  lime is reserved for MARKERS and rules (where text contrast does not apply)
+  and every piece of green type uses --accent-deep, the darkened step, which
+  clears 4.5:1. See MANUAL VERIFY + DON'T.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK.md "Palette ruling for our own masters":
+     one emphasis colour + grey ramp + hairlines. Brand anchor: Deloitte green
+     (the Pentagram-built Insights system; "green-dot hexes disagree across
+     regional toolkits" — see playbook line 53, unresolved, so the lime is used
+     as a graphic step only and type is darkened). */
+  :root{
+    --accent:      #86BC25;  /* brand lime — markers, rail, accent bar only    */
+    --accent-deep: #356604;  /* darkened step: ALL green type, clears 4.5:1    */
+    --accent-wash: #EEF6DE;  /* pale fill behind the current section row       */
+    --ink:         #1A1D1A;  /* body + section labels                          */
+    --gray-1:      #464646;  /* secondary copy, message line                   */
+    --gray-2:      #7D7D7D;  /* source line, spans, running head               */
+    --gray-3:      #DEDEDE;  /* hairline-adjacent fills, hollow marker stroke  */
+    --rule:        #C9CFC5;  /* hairlines (rail, rules)                        */
+    --bg:          #FFFFFF;  /* white ground, as in every reviewed firm deck   */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Verdana, "Segoe UI", Calibri, Arial, sans-serif;
+    --m-side:      88rem;    /* left/right margin                              */
+  }
+
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#12140f}
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  /* every block sits on the exact 1280x720 grid */
+  .abs{position:absolute}
+
+  /* ---------------- 1 · kicker / running head strip --------------------- */
+  .kicker{
+    left:var(--m-side); top:48rem; width:700rem;
+    font-family:var(--font-display); font-size:11rem; font-weight:700;
+    letter-spacing:.16rem; text-transform:uppercase; color:var(--gray-2);
+  }
+  .brandmark{
+    right:var(--m-side); top:46rem;
+    font-family:var(--font-display); font-size:14rem; font-weight:700;
+    letter-spacing:-.1rem; color:var(--ink);
+  }
+  .brandmark .dot{color:var(--accent-deep)}
+
+  /* ---------------- 2 · title zone (label + message line) --------------- */
+  .title{
+    left:var(--m-side); top:92rem; width:900rem;
+    font-family:var(--font-display); font-size:40rem; line-height:1.05;
+    font-weight:700; letter-spacing:-.7rem; color:var(--accent-deep);
+  }
+  .message{
+    left:var(--m-side); top:158rem; width:760rem;
+    font-size:16rem; line-height:1.45; color:var(--gray-1);
+  }
+  .message b{color:var(--ink); font-weight:700}
+
+  /* ---------------- 3 · the section list (semantic ordered list) -------- */
+  nav.toc{position:absolute; left:var(--m-side); right:var(--m-side); top:230rem}
+  .colhead{
+    position:relative; height:14rem; margin-bottom:6rem;
+    font-family:var(--font-display); font-size:9.5rem; font-weight:700;
+    letter-spacing:.13rem; text-transform:uppercase; color:var(--gray-2);
+  }
+  .colhead .c-page{position:absolute; right:0; top:0; width:130rem; text-align:right}
+  .colhead .c-span{position:absolute; right:116rem; top:0}
+
+  ol.rows{
+    list-style:none; margin:0; padding:0; position:relative;
+  }
+  /* the rail: one hairline through every marker (SVG so it can be hairline-exact) */
+  ol.rows::before{
+    content:""; position:absolute; left:6.5rem; top:14rem; bottom:14rem;
+    width:.1rem; background:var(--rule); z-index:0;
+  }
+  li.row{
+    position:relative; height:58rem; padding-left:38rem;
+    display:flex; align-items:center;
+  }
+  li.row .mk{
+    position:absolute; left:2rem; top:50%; margin-top:-6.5rem;
+    width:9rem; height:9rem; border-radius:2.6rem; z-index:1;
+    background:var(--gray-3);
+  }
+  li.row .lbl{
+    font-family:var(--font-display); font-size:18rem; font-weight:700;
+    letter-spacing:-.2rem; color:var(--ink); white-space:nowrap;
+    max-width:640rem; overflow:hidden; text-overflow:ellipsis;
+  }
+  li.row .sp{
+    position:absolute; right:116rem; top:50%; transform:translateY(-50%);
+    font-size:11rem; color:var(--gray-2); white-space:nowrap;
+  }
+  li.row .pg{
+    position:absolute; right:0; top:50%; transform:translateY(-50%);
+    font-family:var(--font-display); font-size:19rem; font-weight:700;
+    color:var(--ink); min-width:40rem; text-align:right;
+  }
+  li.row .tag{
+    position:absolute; right:230rem; top:50%; transform:translateY(-50%);
+    font-family:var(--font-display); font-size:9.5rem; font-weight:700;
+    letter-spacing:.12rem; text-transform:uppercase;
+    color:var(--accent-deep); background:var(--accent-wash);
+    padding:4rem 8rem; border-radius:2rem; white-space:nowrap;
+  }
+
+  /* state: read already */
+  li.row.read .mk{background:var(--gray-3)}
+  li.row.read .lbl{color:var(--gray-2); font-weight:600}
+  li.row.read .sp{color:var(--gray-3)}
+  li.row.read .pg{color:var(--gray-2)}
+  /* state: you are here */
+  li.row.current{
+    background:var(--accent-wash);
+    box-shadow:inset 0 0 0 .1rem #E1EDCB;
+  }
+  li.row.current .mk{background:var(--accent); box-shadow:0 0 0 3rem #FFFFFF, 0 0 0 3.6rem var(--accent)}
+  li.row.current .lbl{color:var(--accent-deep)}
+  li.row.current .sp{color:var(--gray-1)}
+  li.row.current .pg{color:var(--accent-deep)}
+  /* state: not yet reached */
+  li.row.next .mk{background:#FFFFFF; box-shadow:inset 0 0 0 1.6rem var(--gray-3)}
+  li.row.next .lbl{color:var(--ink)}
+
+  /* hairline closing the list */
+  .listrule{
+    left:var(--m-side); right:var(--m-side); top:660rem; height:.1rem;
+    background:var(--rule);
+  }
+  /* progress read-out (derived device: the tracker idea, not a deck copy) */
+  .progress{
+    right:var(--m-side); top:158rem; width:338rem;
+  }
+  .progress .cap{
+    font-family:var(--font-display); font-size:10rem; letter-spacing:.14rem;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .progress .bar{
+    position:relative; height:6rem; margin-top:9rem; border-radius:3rem;
+    background:#EDEDEA; overflow:hidden;
+  }
+  .progress .bar i{position:absolute; left:0; top:0; bottom:0; background:var(--accent)}
+  .progress .bar i.rail{background:var(--gray-3)}
+  .progress .num{
+    margin-top:9rem; font-family:var(--font-display); font-size:26rem;
+    font-weight:700; letter-spacing:-.6rem; color:var(--accent-deep);
+  }
+  .progress .num small{font-size:12rem; font-weight:700; color:var(--gray-2); letter-spacing:0}
+
+  /* ---------------- 4 · footer furniture -------------------------------- */
+  .source{
+    left:var(--m-side); bottom:26rem; width:660rem;
+    font-size:11rem; line-height:1.5; color:var(--gray-2);
+  }
+  .source sup{font-size:7.5rem; line-height:0; vertical-align:super; color:var(--gray-2)}
+  .legal{
+    left:var(--m-side); bottom:12rem; width:660rem;
+    font-size:9rem; color:#B3B3B0;
+  }
+  .pageno{
+    right:var(--m-side); bottom:26rem;
+    font-family:var(--font-display); font-size:12rem; color:var(--gray-2);
+  }
+  .pageno b{color:var(--ink); font-weight:700}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · kicker (running head of the document) + brand lockup -->
+  <div class="abs kicker">Accelerated Access Review · UK Mapping · Worksheet 1</div>
+  <div class="abs brandmark">Monitor<span class="dot"> .</span> Deloitte</div>
+
+  <!-- 2 · title (section-label slot) + message line -->
+  <h1 class="abs title" id="toc-title">Contents</h1>
+  <p class="abs message">
+    Seven sections, read end to end or by pathway. Each <b>Detailed findings</b>
+    section runs the same five pages, so you can drop in at any product line.
+  </p>
+
+  <!-- optional progress read-out (right column) -->
+  <div class="abs progress">
+    <div class="cap">You are on section</div>
+    <div class="num">2 <small>of 7 · page 20 of 109</small></div>
+    <div class="bar"><i class="rail" style="left:0;right:0"></i><i style="left:0;width:18.3%"></i></div>
+  </div>
+
+  <!-- 3 · the tracker itself -->
+  <nav class="toc" aria-labelledby="toc-title">
+    <div class="colhead" aria-hidden="true">
+      <span>Section</span><span class="c-span">Pages</span><span class="c-page">Starts</span>
+    </div>
+    <ol class="rows">
+      <li class="row read">
+        <span class="mk"></span><span class="lbl">Executive summary</span>
+        <span class="sp">4 – 12</span><span class="pg">4</span>
+      </li>
+      <li class="row current" aria-current="true">
+        <span class="mk"></span><span class="lbl">Introduction</span>
+        <span class="tag">you are here</span>
+        <span class="sp">13 – 20</span><span class="pg">13</span>
+      </li>
+      <li class="row next">
+        <span class="mk"></span><span class="lbl">Detailed findings — Medicines</span>
+        <span class="sp">21 – 44</span><span class="pg">21</span>
+      </li>
+      <li class="row next">
+        <span class="mk"></span><span class="lbl">Detailed findings — Medical devices and diagnostics</span>
+        <span class="sp">45 – 69</span><span class="pg">45</span>
+      </li>
+      <li class="row next">
+        <span class="mk"></span><span class="lbl">Detailed findings — In vitro diagnostics</span>
+        <span class="sp">70 – 94</span><span class="pg">70</span>
+      </li>
+      <li class="row next">
+        <span class="mk"></span><span class="lbl">Future-proofing the system</span>
+        <span class="sp">95 – 102</span><span class="pg">95</span>
+      </li>
+      <li class="row next">
+        <span class="mk"></span><span class="lbl">Methodology, limitations and glossary</span>
+        <span class="sp">103 – 109</span><span class="pg">103</span>
+      </li>
+    </ol>
+  </nav>
+  <div class="abs listrule"></div>
+
+  <!-- 4 · footer: source bottom-left, page | section running head bottom-right -->
+  <div class="abs source">
+    Source: Accelerated Access Review programme materials, stakeholder interviews and
+    workshops; Monitor Deloitte analysis.<sup>1</sup>
+  </div>
+  <div class="abs legal">© 2015 Deloitte MCS Limited. Private and confidential.</div>
+  <div class="abs pageno"><b>20</b> | Introduction</div>
+
+</div>
+</body>
+</html>

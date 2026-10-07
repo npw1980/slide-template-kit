@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>persona-intro-grid — 4-column persona row: photo strip, accent-colored names, bold claim, body copy (1280×720)</title>
+<!--
+  Evidence: accenture__accenture_2019_accenture_global_financial_services_consumer__p8
+  "Meet the personas:" — sw_sheets/accenture__accenture_2019_accenture_global_financial_services_consumer__s00.jpg
+  (rows: 5×2 sheet, page 8 = row 2, col 3). Review:
+  reviews/accenture__accenture_2019_accenture_global_financial_services_consumer_.md:
+  one-family weight-driven hierarchy, tiny all-caps kicker top-left + study hashtag
+  top-right on every content page, persona color cycle violet/cyan/charcoal/blue
+  (violet anchors sampled in sibling Accenture reviews: #8E24EA/#A45CF0).
+  NOTE vs source: the deck colors persona names with four hues; this template
+  enforces the kit rule "one accent + gray ramp + one accent lightness" — see MANUAL DON'T.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit,
+  so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+  ----------------------------------------------------------------------------
+-->
+<style>
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #14161A;   /* headlines + claims — Accenture deck sets text near-black */
+    --accent:      #8E24EA;   /* brand violet: kicker, persona name #1, rules emphasis */
+    --accent-soft: #B983F2;   /* one lightness step of accent: persona names #2 and #4 */
+    --gray-1:      #5D6167;   /* body copy, persona name #3 (charcoal persona), captions */
+    --gray-2:      #8B8F96;   /* kicker, hashtag, footnotes, page number */
+    --photo-field: #E9EAEE;   /* honest photo placeholder field */
+    --rule:        #D9DBDF;   /* hairline above footer */
+    --font-display:"Helvetica Neue", Arial, sans-serif;  /* stands in for Accenture grotesque */
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#101216; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    font-family:var(--font-display);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* --- header band: kicker left, study hashtag right, y=36..52 --- */
+  .kicker{
+    position:absolute; left:64rem; top:36rem; width:640rem;
+    font-size:11rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent);
+  }
+  .hashtag{
+    position:absolute; right:64rem; top:36rem; text-align:right;
+    font-size:11rem; font-weight:700; letter-spacing:.04em; color:var(--gray-2);
+  }
+
+  /* --- claim title slot: x=64, y=72..185, max 2 lines at 54rem/1.04 --- */
+  h1.title{
+    position:absolute; left:64rem; right:64rem; top:72rem; margin:0;
+    font-size:54rem; line-height:1.04; letter-spacing:-.02em; font-weight:800;
+    color:var(--ink);
+  }
+
+  /* --- persona row: 4 columns × 270rem, gap 24, y=208 --- */
+  .row{
+    position:absolute; left:64rem; top:208rem; width:1152rem;
+    display:flex; gap:24rem;
+  }
+  figure.card{ margin:0; flex:0 0 270rem; display:flex; flex-direction:column; }
+  .photo{ width:270rem; height:150rem; display:block; }
+  figcaption .name{
+    margin-top:18rem; font-size:16rem; font-weight:800; letter-spacing:.01em;
+  }
+  .c1 .name{ color:var(--accent); }
+  .c2 .name{ color:var(--accent-soft); }
+  .c3 .name{ color:var(--gray-1); }
+  .c4 .name{ color:var(--accent-soft); }
+  .claim{
+    margin-top:7rem; font-size:16rem; font-weight:700; line-height:1.28; color:var(--ink);
+  }
+  .body{
+    margin-top:9rem; font-size:12.5rem; line-height:1.55; color:var(--gray-1);
+    font-family:var(--font-body);
+  }
+
+  /* --- footer anatomy: hairline y=650, source+footnote bottom-left, running head bottom-right --- */
+  .foot-rule{ position:absolute; left:64rem; right:64rem; top:650rem; border-top:.1rem solid var(--rule); }
+  .source{
+    position:absolute; left:64rem; top:666rem; right:200rem;
+    font-size:10rem; line-height:1.45; color:var(--gray-2); font-family:var(--font-body);
+  }
+  .footnote{
+    position:absolute; left:64rem; top:692rem; right:320rem;
+    font-size:8.5rem; line-height:1.3; color:var(--gray-2); font-family:var(--font-body);
+  }
+  .runhead{
+    position:absolute; right:64rem; bottom:28rem;
+    font-size:10.5rem; font-weight:700; letter-spacing:.08em; color:var(--gray-2);
+  }
+  .runhead b{ color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker">Customer personas · survey segmentation</div>
+  <div class="hashtag">#RetailBankingStudy</div>
+
+  <h1 class="title">Four service personas explain why one in three customers churn</h1>
+
+  <main class="row" aria-label="Persona row">
+    <figure class="card c1">
+      <svg class="photo" viewBox="0 0 270 150" role="img" aria-label="Photo placeholder: Pioneers cohort in context">
+        <rect width="270" height="150" rx="4" fill="var(--photo-field)"/>
+        <circle cx="135" cy="58" r="26" fill="#C6C9D2"/>
+        <path d="M60 150c0-42 34-64 75-64s75 22 75 64z" fill="#C6C9D2"/>
+        <text x="10" y="142" font-size="9" font-family="Arial" fill="var(--gray-2)">photo · Pioneers cohort in context</text>
+      </svg>
+      <figcaption>
+        <div class="name">Pioneers:</div>
+        <div class="claim">Risk-takers who chase novelty and pay for frictionless service</div>
+        <div class="body">Early adopters who expect mobile-first service and will switch providers over one bad onboarding. They account for 19&nbsp;percent of respondents in this market and generate most inbound referrals.</div>
+      </figcaption>
+    </figure>
+
+    <figure class="card c2">
+      <svg class="photo" viewBox="0 0 270 150" role="img" aria-label="Photo placeholder: Pragmatists at a service counter">
+        <rect width="270" height="150" rx="4" fill="var(--photo-field)"/>
+        <circle cx="135" cy="58" r="26" fill="#C6C9D2"/>
+        <path d="M60 150c0-42 34-64 75-64s75 22 75 64z" fill="#C6C9D2"/>
+        <text x="10" y="142" font-size="9" font-family="Arial" fill="var(--gray-2)">photo · Pragmatists at a service counter</text>
+      </svg>
+      <figcaption>
+        <div class="name">Pragmatists:</div>
+        <div class="claim">Judge service by the outcome, not by the channel used to deliver it</div>
+        <div class="body">The largest segment: they use technology when it saves time and ignore it otherwise. Satisfaction tracks price and reliability, not digital features. They account for 34&nbsp;percent of respondents.</div>
+      </figcaption>
+    </figure>
+
+    <figure class="card c3">
+      <svg class="photo" viewBox="0 0 270 150" role="img" aria-label="Photo placeholder: Skeptics reviewing paper statements">
+        <rect width="270" height="150" rx="4" fill="var(--photo-field)"/>
+        <circle cx="135" cy="58" r="26" fill="#C6C9D2"/>
+        <path d="M60 150c0-42 34-64 75-64s75 22 75 64z" fill="#C6C9D2"/>
+        <text x="10" y="142" font-size="9" font-family="Arial" fill="var(--gray-2)">photo · Skeptics reviewing paper statements</text>
+      </svg>
+      <figcaption>
+        <div class="name">Skeptics:</div>
+        <div class="claim">Tech-wary, often dissatisfied, and slow to hand back trust</div>
+        <div class="body">Dissatisfaction with past providers makes this group price-sensitive and unlikely to engage digitally without a human fallback. They account for 30&nbsp;percent of respondents.</div>
+      </figcaption>
+    </figure>
+
+    <figure class="card c4">
+      <svg class="photo" viewBox="0 0 270 150" role="img" aria-label="Photo placeholder: Traditionalists meeting an advisor in branch">
+        <rect width="270" height="150" rx="4" fill="var(--photo-field)"/>
+        <circle cx="135" cy="58" r="26" fill="#C6C9D2"/>
+        <path d="M60 150c0-42 34-64 75-64s75 22 75 64z" fill="#C6C9D2"/>
+        <text x="10" y="142" font-size="9" font-family="Arial" fill="var(--gray-2)">photo · Traditionalists meeting an advisor</text>
+      </svg>
+      <figcaption>
+        <div class="name">Traditionalists:</div>
+        <div class="claim">Measure service by the relationship, not the app store rating</div>
+        <div class="body">Typically older and the smallest group: they engage least with digital channels and report the lowest satisfaction when forced to self-serve. They account for 17&nbsp;percent of respondents.</div>
+      </figcaption>
+    </figure>
+  </main>
+
+  <div class="foot-rule"></div>
+  <div class="source">Source: Global Financial Services Consumer Study, 2026 — n&nbsp;=&nbsp;18,400 banked customers across 12 markets; persona shares weighted to national census baselines<sup>1</sup></div>
+  <div class="footnote">1. Weighting per 2026 national census, age &times; region cells; unweighted shares in appendix table A3.</div>
+  <div class="runhead"><b>01</b>&nbsp;|&nbsp;PERSONAS</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cover-standalone-flat — flat-field display cover, type-only (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  cover-standalone-flat  ·  family cover-standalone
+  A display-only title page: one solid brand field, a left-aligned type stack,
+  a brand chip + kicker eyebrow, a hairline above a date | home | url footer,
+  and a page marker. NO photo, NO diagram. It is the "report cover that stands
+  on its own type", not a photo cover.
+  Evidence: KPMG Global Tech Report 2022, cover p1 — flat KPMG-blue field,
+            white left-aligned display title, subtitle kicker line, tiny footer
+            run "September 2022 | home | kpmgtechreport2022", wordmark top-left.
+            Same pattern re-sighted on KPMG Our Impact Plan 2023 cover p1.
+  ----------------------------------------------------------------------------
+  SCALING (zero JS): html font-size = min(100vw/1280, 100vh/720) so 1rem == 1
+  stage pixel at the current fit. The .stage is a fixed 1280×720 canvas and
+  scales uniformly with the window — identical geometry to a transform wrapper
+  but without script. Every rem below is a 1:1 coordinate on 1280×720 that
+  MANUAL.md quotes.
+  SELF-CONTAINED: inline CSS + inline SVG only. No imports, no webfonts, and
+  no img / link / script / iframe element of any kind — zero network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: --accent emphasis, --ink text, --gray-*
+     secondary + "the rest", --rule hairlines, --bg the field.
+     Field hue = KPMG brand blue, hex #00338D quoted from
+     reviews/kpmg__kpmg_kpmg_global_tech_report_2022_2022.md ("KPMG navy/blue
+     ground: ~#00338D"), not invented. One hue + achromes; grey is the only
+     "other thing". */
+  :root{
+    --bg:          #00338D;   /* brand field — the whole ground            */
+    --field-deep:  #001E3C;   /* darker band, reserved for the lower rule  */
+    --accent:      #00AEEF;   /* emphasis / kicker chip / brand bars       */
+    --tint:        #CFEEFB;   /* light azure tint for the url / marks       */
+    --ink:         #FFFFFF;   /* display title on the field                */
+    --gray-1:      #D6E4F5;   /* subtitle / kicker text  (>=7:1 on field)  */
+    --gray-2:      #A9C4E6;   /* tertiary (footer run)   (~4.9:1)          */
+    --rule:        rgba(255,255,255,.34);   /* hairlines                   */
+
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+
+    --t-kicker: 15rem;        /* eyebrow next to brand chip               */
+    --t-title:  56rem;        /* display title, exactly 2 lines           */
+    --t-sub:    19rem;        /* subtitle / value line                    */
+    --t-meta:   13rem;        /* date | home | url run                    */
+    --t-mark:   13rem;        /* page marker                              */
+    --m-side:   64rem;        /* left / right margin                      */
+  }
+
+  *{box-sizing:border-box}
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#0a0a0c}
+  .viewport{display:flex;align-items:center;justify-content:center;min-height:100vh}
+
+  .stage{
+    position:relative;
+    width:1280rem;height:720rem;
+    background:var(--bg);
+    overflow:hidden;
+    font-family:var(--font-body);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* brand chip + eyebrow — 64,56 */
+  .kicker{position:absolute;left:64rem;top:56rem;display:flex;align-items:center;height:20rem}
+  .kicker .chip{width:26rem;height:8rem;border-radius:1rem;background:var(--accent);flex:none}
+  .kicker .eyebrow{margin-left:12rem;font-size:var(--t-kicker);letter-spacing:.18em;
+    text-transform:uppercase;color:var(--gray-1);font-weight:600}
+
+  /* firm lockup — wordmark bars, top-right  */
+  .lockup{position:absolute;right:64rem;top:54rem;display:flex;align-items:center;gap:8rem}
+  .lockup .bars{display:flex;gap:3rem}
+  .lockup .bars i{display:block;width:4rem;height:26rem;background:var(--accent);border-radius:.5rem}
+  .lockup .bars i:nth-child(2){height:20rem}
+  .lockup .bars i:nth-child(3){height:14rem}
+  .lockup .word{font-size:15rem;font-weight:700;letter-spacing:.04em;color:var(--ink)}
+  .lockup .word sup{font-size:8rem;font-weight:400;vertical-align:super;color:var(--gray-2)}
+
+  /* display title — 64 -> 1152, y 288, exactly 2 lines */
+  .title{position:absolute;left:64rem;top:288rem;width:1040rem;margin:0;
+    font-family:var(--font-display);font-weight:700;font-size:var(--t-title);
+    line-height:1.08;letter-spacing:-0.6rem;color:var(--ink)}
+  .title em{font-style:normal;color:var(--tint)} /* one tinted emphasis word, same hue */
+
+  /* subtitle / value line — 64 -> 1152, y 486 */
+  .subtitle{position:absolute;left:64rem;top:486rem;width:1000rem;margin:0;
+    font-size:var(--t-sub);line-height:1.5;color:var(--gray-1)}
+  .subtitle b{color:var(--ink);font-weight:700}
+  .subtitle .sup{font-size:11rem;vertical-align:super;color:var(--tint)}
+
+  /* footer hairline + meta run — hairline 64->1216 @ 634 */
+  .hairline{position:absolute;left:64rem;right:64rem;top:634rem;height:1rem;background:var(--rule)}
+  .meta{position:absolute;left:64rem;top:656rem;display:flex;align-items:center;gap:16rem;
+    font-size:var(--t-meta);color:var(--gray-2);letter-spacing:.01em}
+  .meta .date{color:var(--ink);font-weight:700}
+  .meta .dot{width:3rem;height:3rem;border-radius:50%;background:var(--gray-2)}
+  .meta a{color:var(--tint);text-decoration:none;border-bottom:1rem solid var(--rule)}
+  .meta .home{color:var(--gray-1)}
+
+  /* page marker — bottom-right, 1 */
+  .page{position:absolute;right:64rem;bottom:26rem;font-size:var(--t-mark);
+    color:var(--gray-2);letter-spacing:.02em;font-variant-numeric:tabular-nums}
+
+  /* faint corner grid device — brand texture, low contrast, decorative only */
+  .device{position:absolute;right:0;bottom:0;width:360rem;height:360rem;
+    opacity:.10;pointer-events:none}
+</style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="stage">
+
+      <!-- 1 · brand chip + eyebrow -->
+      <div class="kicker"><span class="chip"></span><span class="eyebrow">Global Technology Report 2026</span></div>
+
+      <!-- firm lockup (placeholder wordmark — "YOURCO" is honest placeholder, not a real brand) -->
+      <div class="lockup">
+        <span class="bars"><i></i><i></i><i></i></span>
+        <span class="word">YOURCO<sup>&reg;</sup></span>
+      </div>
+
+      <!-- 2 · display title (2-line gate) -->
+      <h1 class="title">Digital Investment Held Steady, but Maturity Gaps Cap the <em>Payoff</em></h1>
+
+      <!-- 3 · subtitle / value line -->
+      <p class="subtitle">Global technology leaders report solid budgets and measured progress,
+        yet <b>64%</b> say governance is the real ceiling on scale
+        <span class="sup">1</span> — findings from <b>450</b> CIO interviews across <b>12</b> markets.</p>
+
+      <!-- decorative corner device -->
+      <svg class="device" viewBox="0 0 120 120" aria-hidden="true">
+        <g fill="none" stroke="#ffffff" stroke-width="0.6">
+          <circle cx="118" cy="118" r="110"/><circle cx="118" cy="118" r="80"/>
+          <circle cx="118" cy="118" r="52"/><circle cx="118" cy="118" r="26"/>
+        </g>
+      </svg>
+
+      <!-- 4 · footer hairline + date | home | url run -->
+      <div class="hairline"></div>
+      <div class="meta">
+        <span class="date">September 2026</span><span class="dot"></span>
+        <span class="home">Global</span><span class="dot"></span>
+        <a href="#" data-replace="report url">yourco.com/techreport</a>
+      </div>
+
+      <!-- 5 · page marker -->
+      <div class="page">1</div>
+
+    </div>
+  </div>
+</body>
+</html>

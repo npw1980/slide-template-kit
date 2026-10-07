@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>divider-section-outline — outline-type chapter divider (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  divider-section-outline  ·  family divider-section
+  A CHAPTER OPENING page. Full-bleed duotone photograph field; a giant
+  hairline-outlined "CHAPTER n" letterform sits as page furniture BEHIND the
+  copy; a filled accent kicker chip, a one-line section title with an accent
+  underline rule, a two-line subtitle, an "in this chapter" index, and a
+  chapters progress strip. Everything else is white type on the photo.
+  Evidence: EY | IIF Global Insurance Risk Management Survey 2024, chapter
+  dividers p10 / p17 / p30 (sw_sheets/...s01.jpg shows p11-p20, where the p18
+  half-bleed form sits). The review states the device verbatim: "Dividers
+  (p10, p17, p30) = full-bleed photo + giant outline 'CHAPTER n' + one-line
+  descriptive title beneath" and "giant outline/3D extruded letterforms used
+  as page furniture — usually hairline-outlined so body text sits inside them".
+  ----------------------------------------------------------------------------
+  SCALING (zero JS): html font-size = min(100vw/1280, min(100vh/720)) so 1rem
+  equals one stage pixel at the current fit. The .stage is a fixed 1280x720
+  canvas that scales uniformly with the window; every rem value below is a 1:1
+  coordinate on that canvas, quoted at the same number in MANUAL.md.
+  SELF-CONTAINED: inline CSS + inline SVG only. No imports, no webfonts, and no
+  img / link / script / iframe element of any kind — zero network requests.
+  The photo is a DUOTONE PLACEHOLDER: an SVG gradient field, labelled on-page
+  as a stand-in. Swap it for the real duotone photograph at print width.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles: --accent emphasis, --ink text, --gray-* secondary + "the rest",
+     --rule hairlines, --bg the ground. Hexes quoted from
+     reviews/ey__ey_risk_management_in_a_time_of_transformation_2024.md
+     (palette lines list #FFE600, #150A21, #3A0F4B, #7B2FA6, #C8B4DC, #6E6E73,
+     #EFEFF2, #FFFFFF) — not invented. One hue family (purple duotone ramp) +
+     EY yellow accent + achromes. */
+  :root{
+    --accent:      #FFE600;   /* EY yellow: kicker chip, rules, index ticks */
+    --bg:          #150A21;   /* photo ground (deepest duotone stop)        */
+    --field-mid:   #3A0F4B;   /* duotone mid stop                           */
+    --field-high:  #7B2FA6;   /* duotone highlight stop                     */
+    --ink:         #FFFFFF;   /* display copy on the field                  */
+    --gray-1:      #C8B4DC;   /* lilac "the rest": subtitle, index text     */
+    --gray-2:      #9E8BB2;   /* tertiary: header line, furniture captions  */
+    --gray-3:      #6E6E73;   /* brand-neutral footnote text                */
+    --rule:        rgba(255,255,255,.24);   /* hairlines on the field       */
+    --rule-soft:   rgba(255,255,255,.14);
+
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+
+    --m-side:   64rem;        /* left / right margin                        */
+    --t-eyebrow: 12rem;       /* sentence-case header line                  */
+    --t-outline: 190rem;      /* giant hairline "CHAPTER 1" furniture       */
+    --t-kicker:  14rem;       /* filled accent chip                         */
+    --t-title:   40rem;       /* section title — 2 lines max                */
+    --t-sub:     19rem;       /* subtitle / claim line                      */
+    --t-body:    14rem;       /* intro paragraph                            */
+    --t-index:   13rem;       /* "in this chapter" items                    */
+    --t-foot:    11rem;       /* source line + page number                  */
+  }
+
+  *{box-sizing:border-box}
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#0b0713}
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- 1 · full-bleed duotone photo field (placeholder) ---------- */
+  .photo{position:absolute; inset:0; z-index:0}
+  .photo svg{width:1280rem; height:720rem; display:block}
+  .photo-tag{                     /* honesty label: this is a stand-in */
+    position:absolute; right:11rem; top:290rem; z-index:5;
+    transform:rotate(90deg); transform-origin:100% 0;
+    font:500 9rem/1 var(--font-body); letter-spacing:.16em;
+    color:rgba(255,255,255,.40); text-transform:uppercase;
+    white-space:nowrap;
+  }
+
+  /* ---------- 2 · page furniture: giant hairline outline numeral -------- */
+  .furniture{
+    position:absolute; left:52rem; top:112rem; z-index:2;
+    font-family:var(--font-display); font-weight:700;
+    font-size:var(--t-outline); line-height:.84; letter-spacing:-.045em;
+    color:rgba(255,255,255,.05);                 /* faint fill = graceful    */
+    -webkit-text-stroke:1.6px rgba(255,255,255,.42);
+    white-space:nowrap; pointer-events:none;
+  }
+
+  /* ---------- 3 · header line + brand lockup ---------------------------- */
+  .eyebrow{
+    position:absolute; left:var(--m-side); top:44rem; z-index:4;
+    font-size:var(--t-eyebrow); letter-spacing:.13em; text-transform:uppercase;
+    color:var(--gray-2); max-width:940rem;
+  }
+  .lockup{position:absolute; right:var(--m-side); top:38rem; z-index:4; display:block}
+
+  /* ---------- 4 · the copy stack ---------------------------------------- */
+  .kicker{
+    position:absolute; left:var(--m-side); top:284rem; z-index:4;
+    display:inline-block; background:var(--accent); color:#150A21;
+    font:700 var(--t-kicker)/1 var(--font-body); letter-spacing:.14em;
+    text-transform:uppercase; padding:9rem 14rem; white-space:nowrap;
+    max-width:660rem; overflow:hidden; text-overflow:ellipsis;
+  }
+  .title{
+    position:absolute; left:var(--m-side); top:336rem; z-index:4;
+    width:740rem; font-family:var(--font-display); font-weight:300;
+    font-size:var(--t-title); line-height:1.14; letter-spacing:-.012em;
+    color:var(--ink);
+  }
+  .titlerule{
+    position:absolute; left:var(--m-side); top:444rem; z-index:4;
+    width:96rem; height:4rem; background:var(--accent);
+  }
+  .subtitle{
+    position:absolute; left:var(--m-side); top:466rem; z-index:4;
+    width:690rem; font-size:var(--t-sub); line-height:1.45; color:var(--gray-1);
+  }
+  .intro{
+    position:absolute; left:var(--m-side); top:544rem; z-index:4;
+    width:640rem; font-size:var(--t-body); line-height:1.6; color:var(--gray-1);
+  }
+  .intro sup{font-size:9rem; color:var(--accent); letter-spacing:0}
+
+  /* ---------- 5 · "in this chapter" index ------------------------------- */
+  .index{
+    position:absolute; left:800rem; top:284rem; z-index:4; width:196rem;
+  }
+  .index h3{
+    margin:0 0 10rem; font:600 10rem/1 var(--font-body);
+    letter-spacing:.16em; text-transform:uppercase; color:var(--gray-2);
+  }
+  .index ol{list-style:none; margin:0; padding:0; border-left:1px solid var(--rule)}
+  .index li{
+    display:flex; gap:9rem; align-items:baseline;
+    padding:12rem 0 12rem 12rem; border-bottom:1px solid var(--rule-soft);
+  }
+  .index li::before{content:""; width:6rem; height:6rem; flex:0 0 6rem; background:var(--accent)}
+  .index span{font-size:var(--t-index); line-height:1.35; color:var(--gray-1)}
+  .index em{font-style:normal; color:var(--ink); font-weight:700}
+
+  /* ---------- 6 · chapters progress strip ------------------------------- */
+  .progress{position:absolute; left:var(--m-side); top:612rem; z-index:4; width:600rem}
+  .progress .cap{
+    font-size:10rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gray-2); margin-bottom:8rem;
+  }
+  .progress .bars{display:flex; gap:4rem}
+  .progress .bars i{display:block; width:144rem; height:4rem; background:rgba(255,255,255,.20)}
+  .progress .bars i.now{background:var(--accent)}
+  .progress .names{display:flex; gap:4rem; margin-top:7rem}
+  .progress .names b{
+    flex:1 1 0; min-width:0; overflow:hidden; text-overflow:ellipsis;
+    font:400 10rem/1.25 var(--font-body); color:var(--gray-2);
+    white-space:nowrap;
+  }
+  .progress .names b.now{color:var(--accent); font-weight:700}
+
+  /* ---------- 7 · footer anatomy ---------------------------------------- */
+  .source{
+    position:absolute; left:var(--m-side); bottom:28rem; z-index:4;
+    width:780rem; font-size:var(--t-foot); line-height:1.5; color:var(--gray-1);
+  }
+  .source sup{color:var(--accent); font-size:8rem; vertical-align:super}
+  .pageno{
+    position:absolute; right:var(--m-side); bottom:24rem; z-index:4;
+    font-family:var(--font-display); font-weight:300; font-size:34rem;
+    line-height:1; color:var(--ink);
+  }
+  .pageno small{
+    display:block; font:500 9rem/1 var(--font-body); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--gray-2); text-align:right; margin-top:5rem;
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · duotone photo field (PLACEHOLDER — swap for the real bleed) -->
+  <div class="photo">
+    <svg viewBox="0 0 1280 720" role="img" aria-label="Duotone photograph placeholder, purple ramp">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0"   stop-color="#150A21"/>
+          <stop offset=".52" stop-color="#3A0F4B"/>
+          <stop offset="1"   stop-color="#7B2FA6"/>
+        </linearGradient>
+        <radialGradient id="v" cx=".70" cy=".16" r=".95">
+          <stop offset="0"  stop-color="#C8B4DC" stop-opacity=".34"/>
+          <stop offset=".55" stop-color="#150A21" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="1280" height="720" fill="url(#g1)"/>
+      <path d="M0 462 C 210 372 340 528 520 452 S 900 300 1280 396 L1280 720 L0 720 Z"
+            fill="#150A21" opacity=".55"/>
+      <path d="M0 606 C 260 552 398 662 640 606 S 1010 520 1280 580 L1280 720 L0 720 Z"
+            fill="#150A21" opacity=".78"/>
+      <rect width="1280" height="720" fill="url(#v)"/>
+    </svg>
+    <span class="photo-tag">duotone photo placeholder · swap for real bleed</span>
+  </div>
+
+  <!-- 3 · header line + brand lockup -->
+  <div class="eyebrow">Inaugural EY · IIF global insurance risk management survey</div>
+  <svg class="lockup" width="46" height="46" viewBox="0 0 46 46" role="img" aria-label="Brand mark placeholder">
+    <circle cx="23" cy="23" r="21" fill="none" stroke="#FFE600" stroke-width="1.5"/>
+    <circle cx="23" cy="23" r="7.5" fill="#FFE600"/>
+  </svg>
+
+  <!-- 2 · page furniture -->
+  <div class="furniture" aria-hidden="true">Chapter 1</div>
+
+  <!-- 4 · copy stack -->
+  <div class="kicker">Chapter 1 · Industry risk outlook</div>
+  <h1 class="title">The big picture across emerging and familiar risk types</h1>
+  <div class="titlerule"></div>
+  <p class="subtitle">Two-thirds of respondents call this an unusual moment in the industry, yet the near-term priorities sit in a narrow band.</p>
+  <p class="intro">Across the 356 insurers interviewed between January and February 2024, near-term risk priorities cluster into nine categories,<sup>1</sup> and cyber is the only one that rose on every regional cut.</p>
+
+  <!-- 5 · "in this chapter" index -->
+  <div class="index">
+    <h3>In this chapter</h3>
+    <ol>
+      <li><span>Figure 2 · Most-attention risks<br><em>12 categories</em></span></li>
+      <li><span>Figure 3 · 3-year outlook<br><em>8 categories</em></span></li>
+      <li><span>The outlook for emerging risks<br><em>4 case notes</em></span></li>
+    </ol>
+  </div>
+
+  <!-- 6 · progress -->
+  <div class="progress">
+    <div class="cap">Chapter 1 of 3</div>
+    <div class="bars" aria-hidden="true"><i class="now"></i><i></i><i></i></div>
+    <div class="names">
+      <b class="now">Industry risk outlook</b>
+      <b>Risk focal points</b>
+      <b>Advancing risk management</b>
+    </div>
+  </div>
+
+  <!-- 7 · footer -->
+  <div class="source">Source: EY · IIF Global Insurance Risk Management Survey, fieldwork Jan–Feb 2024, n=356 respondents across 14 markets. <sup>1</sup>Nine-category classification per Appendix B.</div>
+  <div class="pageno">10<small>Section</small></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>line-trend-multi — multi-series trend, end-of-line value labels (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  line-trend-multi  ·  family line-trend (time-series line chart page)
+  Evidence: kpmg__kpmg_venture_pulse_q3_2024_2024 p8/p9/p24 (sw_sheets/
+            ..._s00.jpg row 2) — analysis pages: navy claim title, two panels
+            with blue sub-heads + period line, multi-series line charts whose
+            series are IDENTIFIED BY END-OF-LINE VALUE LABELS, not legends
+            ("multi-series line charts ... annotated with end-of-series value
+            labels rather than legends" — review §5), forecast years flagged
+            with * (2024*), nav strip Global|US|Americas|Europe|Asia top-right.
+            pwc_strategy__pwc_23rd_annual_global_ceo_survey p07 (2012–2020
+            multi-line) + pwc_21st_ceo_survey p03 (3-series, circle markers)
+            confirm the end-label + circle-marker convention across firms.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280, 100vh/720)} maps 1rem == 1
+  STAGE PIXEL, so every length below is a 1:1 stage-pixel coordinate and the
+  inline SVG (viewBox 0 0 1280 720) uses plain numbers == px.
+  ----------------------------------------------------------------------------
+  DATA ARRAYS (10 x-points 2016–2025*, 3 series; swap NUMBERS, not geometry):
+      years  = [2016,2017,2018,2019,2020,2021,2022,2023,2024*,2025*];
+      large  = [15, 21, 29, 38, 46, 52, 57, 60, 62, 64];   // FOCUS — accent
+      overall= [12, 17, 23, 30, 36, 41, 45, 48, 50, 51];   // grey s1
+      mid    = [ 8, 12, 17, 23, 28, 33, 37, 41, 43, 44];   // grey s2
+    Geometry rule (values are % of respondents, linear, zero-based):
+      x(i)     = 110 + i × 104.44          (i = 0..9; first/last at 110/1050)
+      y(v)     = 565 − v × 4.6             (0% → 565, 80% → 197)
+      solid leg: points 0..7 (2016–2023); DASHED leg: points 7..9
+                 (2023→2025*) = the forecast, flagged once by the * axis note.
+      end marker: hollow circle r=4 at (1050, y(last)); the VALUE label sits
+      right of it (1062) in two lines: bold % over grey series name.
+      Series stroke: FOCUS = var(--accent) 3px solid; others = grey ramp 2px.
+      Annotation (optional, one per page): dashed leader + text box.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts. No images, no
+  webfonts, no @import, no JavaScript. Nothing here makes a network request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     KPMG-review palette (measured hexes): navy field #0A1F3A band not used
+     on this white-field page; accent navy-blue #1E49E3 (samples #1E49E3,
+     #2145E2); ink near-black; greys for gridlines/source. One hue discipline:
+     FOCUS series takes the accent, everything else lives on the grey ramp. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;   /* title, value labels */
+    --accent:      #1E49E3;   /* KPMG blue — the ONE accent, the focus series */
+    --accent-deep: #0A1F3A;   /* navy: kicker head, running head */
+    --gray-1:      #6B7280;   /* secondary text, axis labels, source */
+    --s1:          #AEB6BF;   /* grey series 1 (context: Overall) */
+    --s2:          #D4D9DE;   /* grey series 2 (context: Mid-market) */
+    --rule:        #E3E6EA;   /* gridlines, hairlines */
+    --axis:        #9AA1A9;   /* baseline / y-axis line */
+    --callout:     #4A5568;   /* annotation text */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#10141c; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+
+  /* ---- title zone ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:940rem; font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-deep); font-weight:700; }
+  .kicker sup{ font-size:10.5rem; color:var(--accent); }
+  .title{ position:absolute; left:64rem; top:64rem; width:1000rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700; line-height:36rem;
+          letter-spacing:-.6rem; max-height:72rem; overflow:hidden; }   /* 2-line slot = MBB gate */
+  .title em{ font-style:normal; color:var(--accent); }                 /* operative clause */
+
+  /* ---- region nav strip (KPMG device) ---- */
+  .nav{ position:absolute; right:64rem; top:34rem; display:flex; align-items:center;
+        height:26rem; border:1px solid var(--rule); border-radius:3rem; overflow:hidden;
+        font-size:12rem; font-weight:700; }
+  .nav span{ padding:0 11rem; line-height:26rem; color:var(--gray-1); border-left:1px solid var(--rule); }
+  .nav span:first-child{ border-left:none; }
+  .nav .active{ background:var(--accent); color:#fff; }
+
+  .rule-top{ position:absolute; left:64rem; top:138rem; width:1152rem; height:1rem; background:var(--rule); }
+
+  /* ---- exhibit: ONE inline SVG over the stage, 1 unit = 1 px ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .grid{ stroke:var(--rule); stroke-width:1; }
+  .axis{ stroke:var(--axis); stroke-width:1.4; }
+  .axlab{ font-size:12rem; fill:var(--gray-1); }
+  .xlab{ font-size:13rem; fill:var(--gray-1); text-anchor:middle; }
+  .xlab.f{ fill:var(--gray-1); font-style:italic; }
+  .s-acc{ stroke:var(--accent); stroke-width:3; fill:none; }
+  .s-g1{ stroke:var(--s1); stroke-width:2; fill:none; }
+  .s-g2{ stroke:var(--s2); stroke-width:2; fill:none; }
+  .fc{ stroke-dasharray:5 4; }                       /* forecast legs: dashed */
+  .enddot{ fill:#fff; stroke-width:2.5; }
+  .enddot.acc{ stroke:var(--accent); } .enddot.g1{ stroke:var(--s1); } .enddot.g2{ stroke:var(--s2); }
+  .vlab{ font-size:15rem; font-weight:700; fill:var(--ink); }
+  .vlab b.acc{ fill:var(--accent); }
+  .nlab{ font-size:11rem; fill:var(--gray-1); }
+  .callout{ font-size:12.5rem; fill:var(--callout); }
+  .lead{ stroke:var(--callout); stroke-width:1.2; stroke-dasharray:3 3; }
+  .cbox{ fill:#F5F7FA; stroke:var(--rule); }
+
+  /* ---- footer anatomy ---- */
+  .source{ position:absolute; left:64rem; bottom:26rem; width:1010rem; font-size:11.5rem; color:var(--gray-1); line-height:16rem; }
+  .source sup{ font-size:8.5rem; }
+  .runhead{ position:absolute; right:64rem; bottom:26rem; font-size:12rem; font-weight:700;
+            color:var(--accent-deep); letter-spacing:.3rem; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>Enterprise AI adoption, 2016–2025*:</b> share of respondents using AI in core operations (n = 1,847 per wave)<sup>1</sup></div>
+  <div class="title">Large enterprises pulled ahead on AI adoption —<br><em>and the gap should keep widening</em></div>
+
+  <div class="nav"><span class="active">Global</span><span>US</span><span>Americas</span><span>Europe</span><span>Asia</span></div>
+  <div class="rule-top"></div>
+
+  <svg class="chart" viewBox="0 0 1280 720" role="img" aria-label="Line chart: AI adoption by segment, 2016 to 2025">
+    <!-- horizontal gridlines 0%..80%, step 10 (y = 565 − v×4.6) -->
+    <line class="grid" x1="110" y1="519"  x2="1050" y2="519"/>
+    <line class="grid" x1="110" y1="473"  x2="1050" y2="473"/>
+    <line class="grid" x1="110" y1="427"  x2="1050" y2="427"/>
+    <line class="grid" x1="110" y1="381"  x2="1050" y2="381"/>
+    <line class="grid" x1="110" y1="335"  x2="1050" y2="335"/>
+    <line class="grid" x1="110" y1="289"  x2="1050" y2="289"/>
+    <line class="grid" x1="110" y1="243"  x2="1050" y2="243"/>
+    <line class="grid" x1="110" y1="197"  x2="1050" y2="197"/>
+    <!-- y-axis ticks + labels (percent of respondents) -->
+    <line class="axis" x1="110" y1="197" x2="110" y2="565"/>
+    <line class="axis" x1="110" y1="565" x2="1050" y2="565"/>
+    <text class="axlab" x="98" y="569" text-anchor="end">0%</text>
+    <text class="axlab" x="98" y="523" text-anchor="end">10%</text>
+    <text class="axlab" x="98" y="477" text-anchor="end">20%</text>
+    <text class="axlab" x="98" y="431" text-anchor="end">30%</text>
+    <text class="axlab" x="98" y="385" text-anchor="end">40%</text>
+    <text class="axlab" x="98" y="339" text-anchor="end">50%</text>
+    <text class="axlab" x="98" y="293" text-anchor="end">60%</text>
+    <text class="axlab" x="98" y="247" text-anchor="end">70%</text>
+    <text class="axlab" x="98" y="201" text-anchor="end">80%</text>
+
+    <!-- x = years 2016..2025*, x(i) = 110 + i×104.44 -->
+    <text class="xlab" x="110"  y="594">2016</text>
+    <text class="xlab" x="214"  y="594">2017</text>
+    <text class="xlab" x="319"  y="594">2018</text>
+    <text class="xlab" x="423"  y="594">2019</text>
+    <text class="xlab" x="528"  y="594">2020</text>
+    <text class="xlab" x="632"  y="594">2021</text>
+    <text class="xlab" x="737"  y="594">2022</text>
+    <text class="xlab" x="841"  y="594">2023</text>
+    <text class="xlab f" x="946"  y="594">2024*</text>
+    <text class="xlab f" x="1050" y="594">2025*</text>
+
+    <!-- SERIES: solid leg points 0..7, dashed forecast leg points 7..9.
+         FOCUS: large enterprise (accent). Context: grey ramp. -->
+    <polyline class="s-g2"        points="110,528.2 214.4,510.2 318.9,486.8 423.3,459.2 527.8,436.2 632.2,413.2 736.7,395.8 841.1,377.6"/>
+    <polyline class="s-g2 fc"     points="841.1,377.6 945.6,368.2 1050,362.6"/>
+    <polyline class="s-g1"        points="110,510.2 214.4,486.8 318.9,459.2 423.3,427 527.8,399.4 632.2,376.4 736.7,358 841.1,344.2"/>
+    <polyline class="s-g1 fc"     points="841.1,344.2 945.6,335 1050,329.6"/>
+    <polyline class="s-acc"       points="110,496 214.4,468.4 318.9,431.6 423.3,390.2 527.8,353.4 632.2,325.8 736.7,302.8 841.1,291"/>
+    <polyline class="s-acc fc"    points="841.1,291 945.6,281.8 1050,271"/>
+
+    <!-- end markers (the legend is replaced by these + labels) -->
+    <circle class="enddot g2"  cx="1050" cy="362.6" r="4"/>
+    <circle class="enddot g1"  cx="1050" cy="329.6" r="4"/>
+    <circle class="enddot acc" cx="1050" cy="271"   r="4.5"/>
+
+    <!-- END-OF-LINE VALUE LABELS: bold % over grey series name -->
+    <text class="vlab" x="1062" y="266"><tspan class="acc" fill="var(--accent)">64%</tspan></text>
+    <text class="nlab" x="1062" y="280">Large enterprise</text>
+    <text class="vlab" x="1062" y="331">51%</text>
+    <text class="nlab" x="1062" y="345">Overall</text>
+    <text class="vlab" x="1062" y="374">44%</text>
+    <text class="nlab" x="1062" y="388">Mid-market</text>
+
+    <!-- ONE annotation: dashed leader to the 2021 kink + claim box -->
+    <line class="lead" x1="632" y1="326" x2="700" y2="214"/>
+    <circle cx="632" cy="326" r="3" fill="var(--accent)"/>
+    <rect class="cbox" x="700" y="160" width="336" height="54" rx="4"/>
+    <text class="callout" x="714" y="183">2021: cheap capital and major</text>
+    <text class="callout" x="714" y="201">platform launches — adoption front-loaded</text>
+  </svg>
+
+  <div class="source">Source: KPMG Global Enterprise Pulse, waves 2016–2023, KPMG forecast to 2025 (n = 1,847 respondents per wave). *2024–2025 = KPMG forecasts; see methodology note.<sup>1</sup> Large-enterprise series = respondents with revenue &gt; $500M.</div>
+  <div class="runhead">8 | MARKET VIEW</div>
+
+</div>
+</body>
+</html>

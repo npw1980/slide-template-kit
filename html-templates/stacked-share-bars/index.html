@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>stacked-share-bars — horizontal 100% stacks by respondent group, callout rail + n-breakdown (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  stacked-share-bars  ·  family stacked-share (100% share stack page)
+  Evidence: accenture__accenture_2021_p_c_underwriting_survey_2021 p8/p9
+            ("profile by segment": horizontal 100% stacks, one respondent
+            group per row, n-breakdown, donut+stack pairing rejected by its
+            review — split instead) and p15 (cross-tab stacks), plus the
+            nbn-effect monochrome-violet + grey lightness-token palette.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280,100vh/720)} maps 1rem == 1
+  STAGE PIXEL; inside the inline SVG, viewBox makes 1 user unit == 1 stage px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY (4 respondent groups × 5 segments; each segs row sums to EXACTLY
+  100 — percentages of the row, not of the total):
+      segments = ["Personal lines", "Commercial P&C", "Specialty lines",
+                  "Reinsurance", "Other"];
+      rows = [
+        { name: "Large",    sub: "GWP > $10B",   n: 48,  segs: [12, 46, 28, 11,  3] },
+        { name: "Mid",      sub: "GWP $1–10B",   n: 96,  segs: [18, 52, 19,  8,  3] },
+        { name: "Small",    sub: "GWP $250M–1B", n: 141, segs: [26, 51, 12,  6,  5] },
+        { name: "Emerging", sub: "GWP < $250M",  n: 149, segs: [39, 44,  5,  3,  9] }
+      ];
+    Geometry rules (each row is its own 100%-wide bar, linear, zero-based):
+      segment width px  = round(value × 7.4)        (100% -> 740px bar)
+      LAST segment      = 740 − sum(previous)      -> bar closes at x = 1090
+      row i (0-3):      y = 196 + i × 70, bar height 44, bar x starts 350
+      inside label: centred in the segment, y = rowY + 26; use it when the
+        segment width >= 44px (≈6%). Below that: short leader line from the
+        bar's TOP edge + external "v%" above the bar (see Emerging rows'
+        Specialty/Reinsurance for the pattern). One leader style: straight up.
+      callout rail: dashed rects around the two segments being compared +
+        rail M 1090,rowMidY → x=1150 → down → back to 1090; pill centred
+        (1150, 323). Row midY = rowY + 22.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: --accent emphasis, --ink text, --gray-*
+     secondary + "the rest", --rule hairlines, --bg ground. Hexes from
+     reviews/accenture__accenture_the_nbn_effect…md + the underwriting-survey
+     review ("neutral grey reserved exclusively for Don't know / Overall").
+     Grey is RESERVED for residual series ("Other") — the focus segment is
+     deep accent; the other meaningful series are tints of the same hue. */
+  :root{
+    --bg:         #FFFFFF;
+    --ink:        #1A1A1A;   /* body text, title */
+    --accent:     #8E24EA;   /* brand purple — rail / legend / emphasis */
+    --accent-ink: #6E00C9;   /* deepest purple: keyword, focus segment, pill text */
+    --gray-1:     #7D7D7D;   /* secondary text, notes */
+    --gray-2:     #B8B8B8;   /* "Reinsurance" series fill */
+    --gray-3:     #E6E6E6;   /* "Other" series fill (residual) */
+    --rule:       #E3E3E3;   /* hairlines */
+    /* segment ramp — ONE hue + greys for residual series */
+    --seg-per:  #C9A6F2;   /* light accent  (Personal lines)     */
+    --seg-com:  #A45CF0;   /* mid accent    (Commercial P&C)     */
+    --seg-spe:  #6E00C9;   /* deep accent   (focus: Specialty)   */
+    --seg-rei:  #B8B8B8;   /* grey          (Reinsurance)        */
+    --seg-oth:  #E6E6E6;   /* grey-3        (Other / residual)   */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#141019; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+  /* ---- title zone ---- */
+  .kicker{ position:absolute; left:64rem; top:34rem; width:1152rem; font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-ink); font-weight:700; }
+  .kicker sup{ font-size:11rem; color:var(--accent-ink); }
+  .title{ position:absolute; left:64rem; top:62rem; width:1152rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700; line-height:36rem;
+          letter-spacing:-.6rem; max-height:72rem; overflow:hidden; }  /* 2-line slot = MBB gate */
+  .title em{ font-style:normal; color:var(--accent-ink); }
+  .rule-top{ position:absolute; left:64rem; top:138rem; width:1152rem; height:1rem; background:var(--rule); }
+  /* ---- chart: one inline SVG over the stage ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .seg-per{ fill:var(--seg-per); } .seg-com{ fill:var(--seg-com); } .seg-spe{ fill:var(--seg-spe); }
+  .seg-rei{ fill:var(--seg-rei); } .seg-oth{ fill:var(--seg-oth); }
+  .seg{ stroke:#FFFFFF; stroke-width:1.6 }
+  .lbl-w{ font-size:11px; font-weight:700; fill:#FFFFFF; text-anchor:middle }   /* on deep/mid accent */
+  .lbl-d{ font-size:11px; font-weight:700; fill:var(--ink); text-anchor:middle } /* on light tints/greys */
+  .lbl-x{ font-size:10px; font-weight:700; fill:var(--gray-1); text-anchor:middle } /* external, leader above */
+  .leader{ stroke:var(--gray-2); stroke-width:1 }
+  .rowname{ font-size:13.5px; font-weight:700; fill:var(--ink) }
+  .rowname.hi{ fill:var(--accent-ink) }
+  .rowsub{ font-size:10px; fill:var(--gray-1) }
+  .rail{ stroke:var(--accent); stroke-width:1.4; stroke-dasharray:5 4; fill:none }
+  .rail-box{ stroke:var(--accent); stroke-width:1.4; stroke-dasharray:5 4; fill:none }
+  .pill{ fill:#FFFFFF; stroke:var(--accent); stroke-width:1.4 }
+  .pill-n{ font-size:15px; font-weight:700; fill:var(--accent-ink); text-anchor:middle }
+  .pill-s{ font-size:9px; fill:var(--gray-1); text-anchor:middle }
+  /* ---- legend ---- */
+  .legend{ position:absolute; left:350rem; top:162rem; display:flex; gap:24rem; font-size:11rem; color:var(--ink); }
+  .legend .sw{ display:inline-block; width:11rem; height:11rem; margin-right:7rem; vertical-align:-1px; border:1px solid rgba(0,0,0,.08); }
+  /* ---- remarks bar ---- */
+  .remarks{ position:absolute; left:64rem; top:474rem; width:1152rem; height:66rem; background:var(--accent-ink); border-radius:4rem; }
+  .remarks .cap{ position:absolute; left:18rem; top:9rem; font-size:10rem; font-weight:700; letter-spacing:1.5rem; color:#E7D9F8; }
+  .remarks ol{ position:absolute; left:150rem; top:11rem; width:680rem; list-style:none; counter-reset:listing; }
+  .remarks li{ font-size:11.5rem; color:#fff; line-height:15rem; margin-bottom:2rem; }
+  .remarks li::before{ content:counter(listing)". "; font-weight:700; color:#E7D9F8; counter-increment:listing; }
+  .remarks .n{ position:absolute; right:18rem; top:11rem; width:290rem; text-align:right; font-size:9.5rem; color:#E7D9F8; line-height:14rem; }
+  .base-note{ position:absolute; left:64rem; top:552rem; width:1152rem; font-size:10rem; color:var(--gray-1); }
+  .base-note sup{ font-size:7.5rem; }
+  /* ---- footer ---- */
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:16rem; display:flex; justify-content:space-between; font-size:10rem; color:var(--gray-1); }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+  .footer sup{ font-size:7.5rem; color:var(--accent-ink); }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="Four horizontal 100% stacked bars, one per carrier size group, showing net written premium mix across Personal lines, Commercial, Specialty, Reinsurance and Other, with a dashed callout rail flagging Specialty falling from 28 percent to 5 percent">
+
+  <!-- slot 1 · question kicker (survey genre convention) -->
+  <div class="kicker">Q4: What <b>share of your net written premium</b> does each line of business represent? Please select all that apply<sup>1</sup></div>
+
+  <!-- slot 2 · claim title (≤15 words, 2-line slot — MBB gate) -->
+  <div class="title">Specialty Mix Falls <em>Five-Fold</em> from Large to Emerging Carriers — Portfolio Depth Follows Scale</div>
+
+  <div class="rule-top"></div>
+
+  <!-- ===================== CHART (inline SVG) =====================
+       Data arrays live in the file header. Each row = one <g>, 5 stacked
+       <rect>s left→right in segment order starting x=350, closing x=1090.
+       Inside label per segment >= 44px wide; below that a leader above the
+       bar's top edge with the external "v%". Callout rail flags the focus
+       segment (Specialty) on rows 1 and 4. -->
+  <svg class="chart" viewBox="0 0 1280 720">
+
+    <!-- row 0 · Large (GWP > $10B, n=48) : segs [12, 46, 28, 11, 3] -->
+    <g>
+      <text class="rowname hi" x="64" y="215">Large</text>
+      <text class="rowsub" x="64" y="230">GWP &gt; $10B · n = 48</text>
+      <rect class="seg seg-per" x="350" y="196" width="89" height="44"/>
+      <rect class="seg seg-com" x="439" y="196" width="340" height="44"/>
+      <rect class="seg seg-spe" x="779" y="196" width="207" height="44"/>
+      <rect class="seg seg-rei" x="986" y="196" width="81" height="44"/>
+      <rect class="seg seg-oth" x="1067" y="196" width="23" height="44"/>
+      <text class="lbl-d" x="395" y="222">12%</text>
+      <text class="lbl-w" x="609" y="222">46%</text>
+      <text class="lbl-w" x="883" y="222">28%</text>
+      <text class="lbl-d" x="1027" y="222">11%</text>
+      <line class="leader" x1="1079" y1="196" x2="1079" y2="186"/>
+      <text class="lbl-x" x="1079" y="182">3%</text>
+    </g>
+
+    <!-- row 1 · Mid (GWP $1–10B, n=96) : segs [18, 52, 19, 8, 3] -->
+    <g>
+      <text class="rowname" x="64" y="285">Mid</text>
+      <text class="rowsub" x="64" y="300">GWP $1–10B · n = 96</text>
+      <rect class="seg seg-per" x="350" y="266" width="133" height="44"/>
+      <rect class="seg seg-com" x="483" y="266" width="385" height="44"/>
+      <rect class="seg seg-spe" x="868" y="266" width="141" height="44"/>
+      <rect class="seg seg-rei" x="1009" y="266" width="59" height="44"/>
+      <rect class="seg seg-oth" x="1068" y="266" width="22" height="44"/>
+      <text class="lbl-d" x="417" y="292">18%</text>
+      <text class="lbl-w" x="676" y="292">52%</text>
+      <text class="lbl-w" x="939" y="292">19%</text>
+      <text class="lbl-d" x="1039" y="292">8%</text>
+      <line class="leader" x1="1079" y1="266" x2="1079" y2="256"/>
+      <text class="lbl-x" x="1079" y="252">3%</text>
+    </g>
+
+    <!-- row 2 · Small (GWP $250M–1B, n=141) : segs [26, 51, 12, 6, 5] -->
+    <g>
+      <text class="rowname" x="64" y="355">Small</text>
+      <text class="rowsub" x="64" y="370">GWP $250M–1B · n = 141</text>
+      <rect class="seg seg-per" x="350" y="336" width="192" height="44"/>
+      <rect class="seg seg-com" x="542" y="336" width="377" height="44"/>
+      <rect class="seg seg-spe" x="919" y="336" width="89" height="44"/>
+      <rect class="seg seg-rei" x="1008" y="336" width="44" height="44"/>
+      <rect class="seg seg-oth" x="1052" y="336" width="38" height="44"/>
+      <text class="lbl-d" x="446" y="362">26%</text>
+      <text class="lbl-w" x="731" y="362">51%</text>
+      <text class="lbl-w" x="964" y="362">12%</text>
+      <text class="lbl-d" x="1030" y="362">6%</text>
+      <line class="leader" x1="1071" y1="336" x2="1071" y2="326"/>
+      <text class="lbl-x" x="1071" y="322">5%</text>
+    </g>
+
+    <!-- row 3 · Emerging (GWP < $250M, n=149) : segs [39, 44, 5, 3, 9] -->
+    <g>
+      <text class="rowname" x="64" y="425">Emerging</text>
+      <text class="rowsub" x="64" y="440">GWP &lt; $250M · n = 149</text>
+      <rect class="seg seg-per" x="350" y="406" width="289" height="44"/>
+      <rect class="seg seg-com" x="639" y="406" width="326" height="44"/>
+      <rect class="seg seg-spe" x="965" y="406" width="37" height="44"/>
+      <rect class="seg seg-rei" x="1002" y="406" width="22" height="44"/>
+      <rect class="seg seg-oth" x="1024" y="406" width="66" height="44"/>
+      <text class="lbl-d" x="495" y="432">39%</text>
+      <text class="lbl-w" x="802" y="432">44%</text>
+      <line class="leader" x1="984" y1="406" x2="984" y2="396"/>
+      <text class="lbl-x" x="984" y="392">5%</text>
+      <line class="leader" x1="1013" y1="406" x2="1013" y2="396"/>
+      <text class="lbl-x" x="1013" y="392">3%</text>
+      <text class="lbl-d" x="1057" y="432">9%</text>
+    </g>
+
+    <!-- ===== callout rail · focus segment (Specialty) flagged rows 1 & 4 ===== -->
+    <rect class="rail-box" x="775" y="192" width="215" height="52"/>
+    <rect class="rail-box" x="961" y="402" width="45" height="52"/>
+    <path class="rail" d="M 1090 218 L 1150 218 L 1150 428 L 1090 428"/>
+    <rect class="pill" x="1108" y="305" width="100" height="34" rx="15"/>
+    <text class="pill-n" x="1158" y="322">5.4×</text>
+    <text class="pill-s" x="1158" y="333">28% → 5%</text>
+  </svg>
+
+  <!-- slot · legend (segment order = stack order, left→right) -->
+  <div class="legend">
+    <span><i class="sw" style="background:var(--seg-per)"></i>Personal lines</span>
+    <span><i class="sw" style="background:var(--seg-com)"></i>Commercial P&amp;C</span>
+    <span><i class="sw" style="background:var(--seg-spe)"></i>Specialty lines</span>
+    <span><i class="sw" style="background:var(--seg-rei)"></i>Reinsurance</span>
+    <span><i class="sw" style="background:var(--seg-oth)"></i>Other</span>
+  </div>
+
+  <!-- slot · REMARKS bar (deck's in-slide takeaway device) + n rail -->
+  <div class="remarks">
+    <span class="cap">REMARKS</span>
+    <ol>
+      <li>Specialty is a scale business: 28% of large-carrier premium vs. 5% for emerging carriers — a 5.4× depth gap</li>
+      <li>Reinsurance stays marginal across every group (3–11%) — a channel choice, not a size signal</li>
+    </ol>
+    <span class="n">Total responses = 434<br>Large = 48 · Mid = 96<br>Small = 141 · Emerging = 149</span>
+  </div>
+
+  <!-- slot · base note -->
+  <div class="base-note">Base: Q4 respondents, each carrier group normalised to 100% of its own net written premium; multi-select responses apportioned and weighted to GWP<sup>1</sup></div>
+
+  <!-- slot · footer: source bottom-left, running head bottom-right -->
+  <div class="footer">
+    <span>Source: 2021 P&amp;C Underwriting Survey, Accenture Research — question 4<sup>1</sup></span>
+    <span class="pagenum">9 | RESPONDENT PROFILE</span>
+  </div>
+</div>
+</body>
+</html>

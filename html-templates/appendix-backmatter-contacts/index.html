@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>appendix-backmatter-contacts — back-matter contacts roster, headshot columns (1280×720)</title>
+<!--
+  Evidence: ey__ey_generative_ai_in_wealth_and_asset_management_2024 p25 "Ernst & Young LLP
+  contacts" — read in sw_sheets/ey__ey_generative_ai_in_wealth_and_asset_management_2024_s02.jpg
+  (row 1, frame 5: title + hairline rule, "Authors"/"Contributors" roster columns with circular
+  headshots, name in blue, two-line title, gray e-mail, narrower "Key contacts" column divided by
+  a hairline, source line bottom-left, "Page 25" + EY|Parthenon lockup bottom-right).
+  Directory-roster variant cross-read with ey__ey_european_banking_barometer_2015 p46
+  (contacts directory roster, sheet ..._s04.jpg frame 6).
+  Palette: reviews/ey__ey_generative_ai_in_wealth_and_asset_management_2024.md §Color system —
+  white page, near-black/navy ink, blue family (#1E9FE0 bright bar blue; names set in a darker
+  shade of that blue family so 14-px text clears 4.5:1 on white), gray ramp, EY yellow inside the
+  wordmark only.
+  ---------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit,
+  so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+-->
+<style>
+  :root{
+    --bg:       #FFFFFF;
+    --ink:      #14284B;   /* titles, names context — dark navy */
+    --name:     #0F62A8;   /* name text — darker shade of the deck blue family for contrast */
+    --accent:   #1E9FE0;   /* bright blue of the family — title rule, markers */
+    --gray-1:   #3F3F46;   /* body copy */
+    --gray-2:   #6D6D76;   /* titles under names */
+    --gray-3:   #9A9AA2;   /* e-mail, captions */
+    --gray-occ: #C9CDD6;   /* avatar disc + placeholder glyph */
+    --rule:     #D7DBE2;   /* hairlines */
+    --yellow:   #FFDE00;   /* firm wordmark yellow — lockup only */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:  Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  html, body{ margin:0; }
+  body{ background:#101216; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- title block ---------- */
+  header.head{ position:absolute; left:56rem; right:56rem; top:40rem; }
+  .kicker{
+    margin:0; font-family:var(--font-display); font-size:12rem; font-weight:700;
+    letter-spacing:.10em; text-transform:uppercase; color:var(--name);
+  }
+  h1{
+    margin:8rem 0 0; font-family:var(--font-display); font-weight:500; font-size:30rem;
+    line-height:1.18; letter-spacing:-.003em; color:var(--ink); max-width:1120rem;
+  }
+  .head .rule{ height:2rem; background:var(--accent); margin-top:12rem; width:100%; }
+
+  /* ---------- roster columns ---------- */
+  main{ position:absolute; left:56rem; right:56rem; top:172rem; bottom:76rem; }
+  .col{ position:absolute; top:0; }
+  .col.authors{ left:0; width:380rem; }
+  .col.contributors{ left:428rem; width:380rem; }
+  .col.key{
+    left:860rem; width:348rem;
+    border-left:1px solid var(--rule); padding-left:28rem; box-sizing:border-box;
+  }
+  .col h2{
+    margin:0 0 18rem; font-family:var(--font-display); font-size:14rem; font-weight:700;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--gray-1);
+  }
+
+  .person{ position:relative; margin-bottom:20rem; min-height:56rem; }
+  .person .avatar{ position:absolute; left:0; top:2rem; width:52rem; height:52rem; }
+  .person .id{ margin-left:66rem; }
+  .person .nm{
+    margin:0; font-family:var(--font-display); font-size:15rem; font-weight:700;
+    line-height:1.25; color:var(--name);
+  }
+  .person .role{
+    margin:2rem 0 0; font-size:11.5rem; line-height:1.35; color:var(--gray-2);
+  }
+  .person .mail{
+    margin:2rem 0 0; font-size:11rem; line-height:1.3; color:var(--gray-3);
+    word-break:break-all;
+  }
+  .person.keyrow{ min-height:52rem; margin-bottom:18rem; }
+  .person.keyrow .avatar{ width:44rem; height:44rem; }
+  .person.keyrow .id{ margin-left:56rem; }
+
+  /* ---------- footer anatomy ---------- */
+  footer{ position:absolute; left:56rem; right:56rem; bottom:28rem; }
+  .src{ font-size:10.5rem; line-height:1.45; color:var(--gray-3); max-width:940rem; }
+  .src sup{ font-size:8rem; }
+  .stamp{
+    position:absolute; right:0; bottom:0; text-align:right;
+    font-size:10.5rem; color:var(--gray-2); letter-spacing:.02em;
+  }
+  .stamp .lock{ font-weight:700; color:var(--ink); }
+  .stamp .lock em{ font-style:normal; background:var(--yellow); color:var(--ink); padding:1rem 5rem; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <header class="head">
+    <p class="kicker" id="slot-kicker">Appendix — contacts</p>
+    <h1 id="slot-title">Who to reach for follow-up questions on the survey and the underlying models</h1>
+    <div class="rule"></div>
+  </header>
+
+  <main>
+    <section class="col authors" aria-label="Authors">
+      <h2 id="slot-group-1">Authors</h2>
+
+      <article class="person">
+        <svg class="avatar" viewBox="0 0 52 52" role="img" aria-label="placeholder headshot">
+          <circle cx="26" cy="26" r="26" fill="#C9CDD6"/>
+          <circle cx="26" cy="20" r="9" fill="#FFFFFF"/>
+          <path d="M9 47c3-11 10-16 17-16s14 5 17 16a26 26 0 0 1-34 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">Aaron Byrne</p>
+          <p class="role">Global Financial Services Leader<br>EY | EY | Partner</p>
+          <p class="mail">aaron.byrne@firm-parthenon.com</p>
+        </div>
+      </article>
+
+      <article class="person">
+        <svg class="avatar" viewBox="0 0 52 52" role="img" aria-label="placeholder headshot">
+          <circle cx="26" cy="26" r="26" fill="#C9CDD6"/>
+          <circle cx="26" cy="20" r="9" fill="#FFFFFF"/>
+          <path d="M9 47c3-11 10-16 17-16s14 5 17 16a26 26 0 0 1-34 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">Prashant Kher</p>
+          <p class="role">Financial Services Advisory Practice<br>Partner, Banking &amp; Capital Markets</p>
+          <p class="mail">prashant.kher@firm-parthenon.com</p>
+        </div>
+      </article>
+
+      <article class="person">
+        <svg class="avatar" viewBox="0 0 52 52" role="img" aria-label="placeholder headshot">
+          <circle cx="26" cy="26" r="26" fill="#C9CDD6"/>
+          <circle cx="26" cy="20" r="9" fill="#FFFFFF"/>
+          <path d="M9 47c3-11 10-16 17-16s14 5 17 16a26 26 0 0 1-34 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">Manali Patel</p>
+          <p class="role">Director, Wealth &amp; Asset Management<br>Analytics &amp; Transformation Services</p>
+          <p class="mail">manali.patel@firm-parthenon.com</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="col contributors" aria-label="Contributors">
+      <h2 id="slot-group-2">Contributors</h2>
+
+      <article class="person">
+        <svg class="avatar" viewBox="0 0 52 52" role="img" aria-label="placeholder headshot">
+          <circle cx="26" cy="26" r="26" fill="#C9CDD6"/>
+          <circle cx="26" cy="20" r="9" fill="#FFFFFF"/>
+          <path d="M9 47c3-11 10-16 17-16s14 5 17 16a26 26 0 0 1-34 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">Toshi Mogi</p>
+          <p class="role">GenAI Strategy Co-Leader<br>Advisory, Digital Engineering</p>
+          <p class="mail">toshi.mogi@firm-parthenon.com</p>
+        </div>
+      </article>
+
+      <article class="person">
+        <svg class="avatar" viewBox="0 0 52 52" role="img" aria-label="placeholder headshot">
+          <circle cx="26" cy="26" r="26" fill="#C9CDD6"/>
+          <circle cx="26" cy="20" r="9" fill="#FFFFFF"/>
+          <path d="M9 47c3-11 10-16 17-16s14 5 17 16a26 26 0 0 1-34 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">Martin Reguilla</p>
+          <p class="role">Financial Services Technology<br>Consulting | Partner</p>
+          <p class="mail">martin.reguilla@firm-parthenon.com</p>
+        </div>
+      </article>
+
+      <article class="person">
+        <svg class="avatar" viewBox="0 0 52 52" role="img" aria-label="placeholder headshot">
+          <circle cx="26" cy="26" r="26" fill="#C9CDD6"/>
+          <circle cx="26" cy="20" r="9" fill="#FFFFFF"/>
+          <path d="M9 47c3-11 10-16 17-16s14 5 17 16a26 26 0 0 1-34 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">Elizabeth Sun</p>
+          <p class="role">Financial Services Strategy<br>Senior Manager, Insurance</p>
+          <p class="mail">elizabeth.sun@firm-parthenon.com</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="col key" aria-label="Key contacts">
+      <h2 id="slot-group-3">Key contacts</h2>
+
+      <article class="person keyrow">
+        <svg class="avatar" viewBox="0 0 44 44" role="img" aria-label="placeholder headshot">
+          <circle cx="22" cy="22" r="22" fill="#C9CDD6"/>
+          <circle cx="22" cy="17" r="7.5" fill="#FFFFFF"/>
+          <path d="M7.5 39c2.5-9 8.5-13.5 14.5-13.5S34 30 36.5 39a22 22 0 0 1-29 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">Sameer Gupta</p>
+          <p class="role">Americas Financial Services GenAI<br>Co-Leader</p>
+          <p class="mail">sameer.gupta@firm.com</p>
+        </div>
+      </article>
+
+      <article class="person keyrow">
+        <svg class="avatar" viewBox="0 0 44 44" role="img" aria-label="placeholder headshot">
+          <circle cx="22" cy="22" r="22" fill="#C9CDD6"/>
+          <circle cx="22" cy="17" r="7.5" fill="#FFFFFF"/>
+          <path d="M7.5 39c2.5-9 8.5-13.5 14.5-13.5S34 30 36.5 39a22 22 0 0 1-29 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">Vidhya Sekhar</p>
+          <p class="role">Financial Services Innovation<br>Center — Research Lead</p>
+          <p class="mail">vidhya.sekhar@firm.com</p>
+        </div>
+      </article>
+
+      <article class="person keyrow">
+        <svg class="avatar" viewBox="0 0 44 44" role="img" aria-label="placeholder headshot">
+          <circle cx="22" cy="22" r="22" fill="#C9CDD6"/>
+          <circle cx="22" cy="17" r="7.5" fill="#FFFFFF"/>
+          <path d="M7.5 39c2.5-9 8.5-13.5 14.5-13.5S34 30 36.5 39a22 22 0 0 1-29 0Z" fill="#FFFFFF"/>
+        </svg>
+        <div class="id">
+          <p class="nm">David Kadio-Moroko</p>
+          <p class="role">Financial Services Innovation<br>Leader</p>
+          <p class="mail">david.kadio-moroko@firm.com</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p class="src">Source: Firm engagement roster, current as of the survey close date; titles reflect
+      the organization at publication<sup>a</sup>. Direct questions on weighting or the AUM model to the
+      named owner.</p>
+    <p class="stamp"><span class="lock"><em>FIRM</em> | PARTHENON</span><br>Page 25 | APPENDIX</p>
+  </footer>
+
+</div>
+</body>
+</html>

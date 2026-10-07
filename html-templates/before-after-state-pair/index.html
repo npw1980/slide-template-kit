@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>before-after-state-pair — Before/After transformation page (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  before-after-state-pair  ·  family before-after
+  Evidence (see MANUAL.md -> SOURCE):
+    ey__ey_ey_academic_resource_center_mission_2019 p12–p21 — before/after
+    chart pairs, read in sw_sheets/ey__ey_ey_academic_resource_center_mission_2019_s01.jpg
+    (p12 = row 1, col 2). The deck's "bad version vs cleaned version" device,
+    re-pointed at a state comparison: same metrics, two states, one arrow.
+    PwC namibia budget review p3 — the two-number callout band (see
+    reviews/pwc_strategy__pwc_namibia_budget_on_a_plate_2019_2020_2019.md).
+  ----------------------------------------------------------------------------
+  PALETTE: EY brand yellow, pixel-sampled from the sheet (dominant #FFE500),
+  is the ONE accent; EY House Sans is stood in for by the Helvetica/Arial
+  stack. White text on yellow is NEVER used — ink text on yellow (~16:1).
+  ----------------------------------------------------------------------------
+  RESIZE ANATOMY (why this page is a diagram, not a picture — see MANUAL FILL):
+    • The two panels are the ONLY containers. Inside each, one metric row is
+      <g class="row" translate(panelX, 264 + i*P)> with P = floor(342/N).
+      Add/remove metrics by copying (or deleting) one row group per panel —
+      the two panels must carry the same rows in the same order.
+    • A row bar is two rects: track (x=32, w=410, rx7) + fill
+      (x=32, w = value / scaleMax * 410). Per-row scaleMax is a comment.
+    • The KPI band and the centre chevron are fixed furniture; they never
+      move when rows change.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. 1rem == 1 STAGE PIXEL at the current viewport fit; the
+  SVG overlay maps viewBox 0 0 1280 720 onto the stage, so SVG user units ARE
+  stage pixels. SELF-CONTAINED: inline CSS, inline SVG, system fonts.
+  ============================================================================
+-->
+<style>
+  :root{
+    /* Roles per DESIGN_PLAYBOOK. Brand anchor: EY yellow #FFE500 (pixel-sampled
+       from the source sheet). One accent + grey ramp + ink, nothing else. */
+    --bg:      #FFFFFF;
+    --ink:     #1A1A1A;   /* text ink                                    */
+    --accent:  #FFE500;   /* EY yellow — the ONE emphasis colour         */
+    --accent-ink: #665800;/* readable yellow-tone text/labels            */
+    --gray-1:  #23262B;   /* body text on white                          */
+    --gray-2:  #4A4F55;   /* secondary text                              */
+    --gray-3:  #8A9198;   /* tertiary / before-state fills               */
+    --gray-4:  #E9ECEF;   /* neutral fill (bar tracks, chips)            */
+    --gray-5:  #F4F6F8;   /* wash                                        */
+    --rule:    #C9CFD4;   /* hairlines                                   */
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#101524;                 /* studio backdrop, not part of the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); }
+  .diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  /* ---- page furniture ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem;
+           font:600 12rem/1 var(--font-display); letter-spacing:.18rem;
+           text-transform:uppercase; color:var(--gray-2); }
+  .kicker .n{ color:var(--accent-ink); font-weight:700; }
+  .kicker .dim{ color:var(--gray-3); letter-spacing:.12rem; }
+
+  h1.title{ position:absolute; left:64rem; top:56rem; width:1152rem;
+            font:700 27rem/35rem var(--font-display); color:var(--ink);
+            letter-spacing:-.2rem; }
+  h1.title sup{ font-size:12rem; color:var(--gray-2); }
+
+  /* title runs 2 lines (ends y126) — lead sits below it, KPI band below that */
+  .lead{ position:absolute; left:64rem; top:134rem; width:1152rem;
+         font:700 12.5rem/16.5rem var(--font-body); color:var(--gray-1); }
+
+  .kpi{ position:absolute; top:154rem; font:700 40rem/1 var(--font-display);
+        color:var(--ink); letter-spacing:-.5rem; }
+  .kpi .u{ font-size:20rem; color:var(--gray-2); letter-spacing:0; }
+  .kcap{ position:absolute; top:196rem; width:288rem;
+         font:600 10.5rem/13rem var(--font-body); color:var(--gray-2); }
+  .k1{ left:64rem; }  .c1{ left:64rem; }
+  .k2{ left:388rem; } .c2{ left:388rem; }
+
+  .chip{ position:absolute; left:952rem; top:156rem; width:264rem; height:36rem;
+         display:grid; place-items:center; border:1rem solid var(--rule);
+         border-radius:6rem; background:var(--gray-5);
+         font:700 10.5rem/1 var(--font-display); letter-spacing:.14rem;
+         color:var(--gray-2); text-transform:uppercase; }
+
+  .source{ position:absolute; left:64rem; bottom:14rem; max-width:980rem;
+           font:10rem/1.35 var(--font-body); color:var(--gray-3); }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:14rem;
+           font:700 10rem/1.35 var(--font-body); color:var(--gray-2);
+           letter-spacing:.1rem; }
+
+  /* ---- diagram classes ---- */
+  .panel{ fill:var(--gray-5); stroke:var(--rule); stroke-width:1; }
+  .hd{ font:700 11.5rem var(--font-display); letter-spacing:.14rem;
+       fill:var(--gray-2); text-transform:uppercase; }
+  .sw-b{ fill:var(--gray-3); } .sw-a{ fill:var(--accent); stroke:var(--accent-ink); stroke-width:.8; }
+  .mname{ font:600 11.5rem var(--font-body); letter-spacing:.07em; fill:var(--gray-2);
+          text-transform:uppercase; }
+  .val{ font:700 17rem var(--font-display); fill:var(--ink); }
+  .track{ fill:var(--gray-4); }
+  .fillb{ fill:var(--gray-3); }   /* BEFORE bar */
+  .filla{ fill:var(--accent); }   /* AFTER bar  */
+  .dl{ font:700 11rem var(--font-body); fill:var(--gray-3); }
+  .dlA{ font:700 11rem var(--font-body); fill:var(--accent-ink); }
+  .pillA{ fill:var(--accent); fill-opacity:.18; stroke:var(--accent); stroke-width:1; }
+  .arw{ fill:var(--gray-2); }
+  .arwT{ font:700 10rem var(--font-display); letter-spacing:.14rem; fill:var(--gray-2);
+         text-transform:uppercase; }
+  .arwS{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Order-to-cash transformation: before FY18 baseline versus after FY20 run-rate">
+
+  <header>
+    <p class="kicker"><span class="n">17</span><span class="dim"> | Order-to-cash transformation</span></p>
+    <h1 class="title">Twelve months of process redesign cut order-to-cash by half — without new systems or added heads</h1>
+    <p class="lead">The pilot network’s four operating metrics moved together, and the gain came from how work is routed between systems — not from licence spend or headcount.</p>
+  </header>
+
+  <!-- KPI callout band: exactly two numerals (the PwC two-callout device) -->
+  <div class="kpi k1">−47<span class="u">%</span></div>
+  <div class="kcap c1">order-to-cash cycle time<br>FY18 → FY20, pilot network</div>
+  <div class="kpi k2">2.7<span class="u">×</span></div>
+  <div class="kcap c2">lines shipped per planning FTE<br>(1.0× baseline = FY18)</div>
+  <div class="chip">14-plant pilot · FY18 → FY20</div>
+
+  <svg class="diagram" viewBox="0 0 1280 720" role="img"
+       aria-label="Two state panels: before FY18 baseline and after FY20 run-rate, four matched metric rows each, joined by one process-redesign arrow">
+
+    <!-- ================= PANELS (the containers; x/width fixed) ============ -->
+    <g id="panels">
+      <rect class="panel" x="64"  y="226" width="508" height="380" rx="6"/>
+      <rect class="panel" x="708" y="226" width="508" height="380" rx="6"/>
+      <rect class="sw-b" x="96"  y="246" width="11" height="11" rx="2"/>
+      <text class="hd" x="114" y="255.5">Before — FY18 baseline</text>
+      <rect class="sw-a" x="740" y="246" width="11" height="11" rx="2"/>
+      <text class="hd" x="758" y="255.5">After — FY20 run-rate</text>
+    </g>
+
+    <!-- ============= BEFORE ROWS · panel 1 · translate(64, rowY) ==========
+         One <g class="row"> per metric. Copy a pair of rows (this panel +
+         its twin in rows-after) to ADD a metric. Per-row scaleMax below. -->
+    <g id="rows-before">
+      <!-- scaleMax = 40 days -->
+      <g class="row" id="rb1" transform="translate(64,278)">
+        <text class="mname" x="32" y="14">Cycle time (days)</text>
+        <text class="val" x="476" y="15" text-anchor="end">34.5</text>
+        <rect class="track" x="32" y="24" width="410" height="14" rx="7"/>
+        <rect class="fillb" x="32" y="24" width="353" height="14" rx="7"/>
+        <text class="dl" x="32" y="52">FY18 actual</text>
+      </g>
+      <!-- scaleMax = 45 USD -->
+      <g class="row" id="rb2" transform="translate(64,363)">
+        <text class="mname" x="32" y="14">Cost per order (USD)</text>
+        <text class="val" x="476" y="15" text-anchor="end">$41.20</text>
+        <rect class="track" x="32" y="24" width="410" height="14" rx="7"/>
+        <rect class="fillb" x="32" y="24" width="375" height="14" rx="7"/>
+        <text class="dl" x="32" y="52">FY18 actual</text>
+      </g>
+      <!-- scaleMax = 100 % -->
+      <g class="row" id="rb3" transform="translate(64,448)">
+        <text class="mname" x="32" y="14">Touchless orders (%)</text>
+        <text class="val" x="476" y="15" text-anchor="end">12%</text>
+        <rect class="track" x="32" y="24" width="410" height="14" rx="7"/>
+        <rect class="fillb" x="32" y="24" width="49" height="14" rx="7"/>
+        <text class="dl" x="32" y="52">FY18 actual</text>
+      </g>
+      <!-- scaleMax = 100 % -->
+      <g class="row" id="rb4" transform="translate(64,533)">
+        <text class="mname" x="32" y="14">First-pass yield (%)</text>
+        <text class="val" x="476" y="15" text-anchor="end">71%</text>
+        <rect class="track" x="32" y="24" width="410" height="14" rx="7"/>
+        <rect class="fillb" x="32" y="24" width="291" height="14" rx="7"/>
+        <text class="dl" x="32" y="52">FY18 actual</text>
+      </g>
+    </g>
+
+    <!-- ============= AFTER ROWS · panel 2 · translate(708, rowY) ==========
+         Must mirror rows-before: same metrics, same order, same rowY.
+         Delta pill replaces the "FY18 actual" note. -->
+    <g id="rows-after">
+      <g class="row" id="ra1" transform="translate(708,278)">
+        <text class="mname" x="32" y="14">Cycle time (days)</text>
+        <text class="val" x="476" y="15" text-anchor="end">18.2</text>
+        <rect class="track" x="32" y="24" width="410" height="14" rx="7"/>
+        <rect class="filla" x="32" y="24" width="187" height="14" rx="7"/>
+        <rect class="pillA" x="32" y="40" width="54" height="18" rx="9"/>
+        <text class="dlA" x="59" y="53" text-anchor="middle">−47%</text>
+      </g>
+      <g class="row" id="ra2" transform="translate(708,363)">
+        <text class="mname" x="32" y="14">Cost per order (USD)</text>
+        <text class="val" x="476" y="15" text-anchor="end">$28.60</text>
+        <rect class="track" x="32" y="24" width="410" height="14" rx="7"/>
+        <rect class="filla" x="32" y="24" width="261" height="14" rx="7"/>
+        <rect class="pillA" x="32" y="40" width="54" height="18" rx="9"/>
+        <text class="dlA" x="59" y="53" text-anchor="middle">−31%</text>
+      </g>
+      <g class="row" id="ra3" transform="translate(708,448)">
+        <text class="mname" x="32" y="14">Touchless orders (%)</text>
+        <text class="val" x="476" y="15" text-anchor="end">63%</text>
+        <rect class="track" x="32" y="24" width="410" height="14" rx="7"/>
+        <rect class="filla" x="32" y="24" width="258" height="14" rx="7"/>
+        <rect class="pillA" x="32" y="40" width="66" height="18" rx="9"/>
+        <text class="dlA" x="65" y="53" text-anchor="middle">+51 pts</text>
+      </g>
+      <g class="row" id="ra4" transform="translate(708,533)">
+        <text class="mname" x="32" y="14">First-pass yield (%)</text>
+        <text class="val" x="476" y="15" text-anchor="end">94%</text>
+        <rect class="track" x="32" y="24" width="410" height="14" rx="7"/>
+        <rect class="filla" x="32" y="24" width="385" height="14" rx="7"/>
+        <rect class="pillA" x="32" y="40" width="66" height="18" rx="9"/>
+        <text class="dlA" x="65" y="53" text-anchor="middle">+23 pts</text>
+      </g>
+    </g>
+
+    <!-- ============ CENTRE TRANSFORMATION ARROW (fixed) ===================
+         Block arrow pointing right in the gutter between panels.
+         Labels: programme name above, constraint note below. Never moves. -->
+    <g id="arrow">
+      <path class="arw" d="M588 396 H652 L678 416 L652 436 H588 V396 Z"/>
+      <text class="arwT" x="633" y="388" text-anchor="middle">Process redesign — 5 levers</text>
+      <text class="arwS" x="633" y="458" text-anchor="middle">no licence spend · no added heads</text>
+    </g>
+  </svg>
+
+  <footer>
+    <p class="source">Source: client order-to-cash benchmarking database — 14 pilot plants, 1,182 sampled transactions, FY18 actuals × FY20 run-rate<sup>1</sup>; touchless and first-pass rates self-reported by plant leads<sup>2</sup>.</p>
+    <p class="pageno">17 | Transformation</p>
+  </footer>
+</main>
+</body>
+</html>

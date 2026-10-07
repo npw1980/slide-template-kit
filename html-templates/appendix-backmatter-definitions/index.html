@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>appendix-backmatter-definitions — appendix glossary table, term/definition rows (1280×720)</title>
+<!--
+  Evidence: deloitte__deloitte_new_mexico_state_university_staffing_study_opportun p21
+  "Key Definitions" — read in sw_sheets/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_s02.jpg
+  (row 3, frame 1: kicker "Key Definitions", two-column table with a dark-maroon header band
+  ("Term" / "Definition" white caps), bold term cell left, bulleted definition right, generous
+  white row gutters, copyright + page stamp bottom-right). Taxonomy framing (the terms belong to a
+  published taxonomy) cross-read with the same deck's p10 "taxonomy triangle diagram".
+  Palette: reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun.md
+  §Color system — blue+yellow data pair, red-outline emphasis; header-band maroon is observed on
+  the p21 sheet itself (no hex published in the review — recolor --band to the client house color).
+  ---------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit,
+  so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+-->
+<style>
+  :root{
+    --bg:       #FFFFFF;
+    --ink:      #1A1A1A;   /* terms — near-black */
+    --band:     #7A1F3D;   /* observed maroon header band; swap for house color */
+    --accent:   #C8102E;   /* red-outline emphasis (review: red = "most expensive / fragmented") */
+    --gray-1:   #3F3F46;   /* definition text */
+    --gray-2:   #6D6D76;   /* notes, kicker body */
+    --gray-3:   #8A8A92;   /* source line, page stamp */
+    --gray-occ: #E8E8EA;   /* zebra fill on definition column */
+    --rule:     #D9D9DE;   /* inner vertical hairline */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:  Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  html, body{ margin:0; }
+  body{ background:#101216; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- title block ---------- */
+  header.head{ position:absolute; left:56rem; right:56rem; top:40rem; }
+  .kicker{
+    margin:0; font-family:var(--font-display); font-size:12rem; font-weight:700;
+    letter-spacing:.10em; text-transform:uppercase; color:var(--band);
+  }
+  h1{
+    margin:8rem 0 0; font-family:var(--font-display); font-weight:500; font-size:30rem;
+    line-height:1.18; letter-spacing:-.003em; color:var(--ink); max-width:1120rem;
+  }
+
+  /* ---------- definitions table ---------- */
+  .tablewrap{ position:absolute; left:56rem; right:56rem; top:150rem; }
+  table{ border-collapse:separate; border-spacing:0 10rem; width:100%; }
+  thead th{
+    background:var(--band); color:#FFFFFF; text-align:left; font-family:var(--font-display);
+    font-size:11.5rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    padding:11rem 18rem; line-height:1.2;
+  }
+  thead th:first-child{ width:300rem; border-right:1px solid rgba(255,255,255,.35); }
+  tbody th{
+    text-align:left; vertical-align:top; font-size:12.5rem; font-weight:700; color:var(--ink);
+    line-height:1.3; padding:10rem 18rem 10rem 0; font-family:var(--font-display);
+    border-bottom:4px solid var(--bg);
+  }
+  tbody th .sub{ display:block; margin-top:4rem; font-weight:400; font-size:10.5rem; color:var(--gray-2); }
+  tbody td{
+    vertical-align:top; padding:10rem 18rem; font-size:11.5rem; line-height:1.45;
+    color:var(--gray-1); background:var(--gray-occ);
+  }
+  tbody tr:nth-child(odd) td{ background:#F4F4F6; }
+  td ul{ margin:0; padding-left:16rem; }
+  td li{ margin:0 0 4rem; }
+  td li::marker{ color:var(--band); }
+  td .ex{ color:var(--gray-2); }
+  sup{ font-size:7.5rem; color:var(--accent); }
+
+  /* ---------- notes + footer anatomy ---------- */
+  .notes{
+    position:absolute; left:56rem; right:56rem; top:600rem;
+    font-size:10rem; line-height:1.5; color:var(--gray-2);
+  }
+  .notes p{ margin:0 0 3rem; }
+  footer{ position:absolute; left:56rem; right:56rem; bottom:28rem; }
+  .src{ font-size:10.5rem; line-height:1.45; color:var(--gray-3); max-width:900rem; margin:0; }
+  .stamp{
+    position:absolute; right:0; bottom:0; text-align:right;
+    font-size:10.5rem; color:var(--gray-3); letter-spacing:.02em;
+  }
+  .stamp .lock{ font-weight:700; color:var(--gray-1); letter-spacing:.06em; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <header class="head">
+    <p class="kicker" id="slot-kicker">Appendix C — definitions</p>
+    <h1 id="slot-title">Terms used throughout the staffing study and exactly how each is measured</h1>
+  </header>
+
+  <div class="tablewrap">
+    <table aria-label="Key terms and definitions">
+      <thead>
+        <tr>
+          <th scope="col" id="slot-col-term">Term</th>
+          <th scope="col" id="slot-col-def">Definition</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Span of Control (SoC)</th>
+          <td>
+            <ul>
+              <li>Number of people reporting directly to one individual; the ratio of managers to staff in an organization</li>
+              <li>Example: a manager who directly manages 5 employees has a SoC ratio of 5:1</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Management Layer</th>
+          <td>
+            <ul>
+              <li>Number of organizational levels having supervisory responsibilities</li>
+              <li>Also referred to as “management levels”; the taxonomy recognizes three layers</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Activity Analysis</th>
+          <td>
+            <ul>
+              <li>Survey of effort expended by staff within the university for each taxonomy process, aggregated by employee level</li>
+              <li>Percentage of effort captured at each level to calculate estimated FTEs per taxonomy process</li>
+              <li class="ex">Analysis supported by review of key operating data and metrics</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Fragmentation Analysis</th>
+          <td>
+            <ul>
+              <li>Taxonomy process where 50% or less of the FTEs are not centrally located</li>
+              <li>Can be advantageous when local support is required, but problematic when it duplicates effort</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Benchmark Set<sup>1</sup><span class="sub">comparison cohort</span></th>
+          <td>
+            <ul>
+              <li>Peer institutions of comparable enrollment, program mix and public-sector pay structure, screened on four criteria</li>
+              <li>Where a process has no peer coverage, campus performance stands alone — no interpolated peer value is reported</li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="notes">
+    <p><sup>1</sup> Benchmark cohort screened in April 2014; enrollment band ±8,000 FTE.</p>
+  </div>
+
+  <footer>
+    <p class="src">Source: NMSU HR documentation review and staff interviews (Feb–Apr 2014); Deloitte
+      staffing framework, taxonomy v3.1. Definitions align to the taxonomy on the preceding page.</p>
+    <p class="stamp"><span class="lock">FIRM | CONSULTING</span><br>Page 21 | APPENDIX</p>
+  </footer>
+
+</div>
+</body>
+</html>

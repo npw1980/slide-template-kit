@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>persona-narrative — single persona told as a story: bold lead-in, en-dash narrative bullets, portrait + firm lockup (1280×720)</title>
+<!--
+  Evidence: catalog S0036 (Gartner-type persona-narrative page) —
+  corpus/sheets/sheet_004.jpg, page 36 of that catalog block = row 2, col 1 of the sheet.
+  Observed anatomy: blue sentence title, bold narrative lead-in ("This is the story of
+  Michelle …"), three en-dash bullets of story facts on the left, cut-out portrait bottom-right,
+  firm wordmark bottom-right, copyright hairline bottom-left. Title blue is an eye-sampled
+  ~#1560A8; the catalog block carries no per-deck review file — recolor --accent to your house blue.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit,
+  so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+  ----------------------------------------------------------------------------
+-->
+<style>
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #16181D;   /* bullets and lead-in — near-black on white, as observed */
+    --accent:      #1560A8;   /* title blue (sampled from the S0036 crop; no review hex list) */
+    --gray-1:      #3C4149;   /* bullet text — one step under the source's pure black */
+    --gray-2:      #8B9099;   /* kicker-ish, copyright, portrait label, page number */
+    --photo-field: #E9EDF2;   /* honest portrait placeholder field */
+    --photo-fig:   #C9D2DD;   /* placeholder silhouette */
+    --rule:        #D7DBE1;   /* hairlines */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#101216; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    font-family:var(--font-display);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* --- blue claim title: x=64, y=56, max 2 lines at 42rem/1.08 --- */
+  h1.title{
+    position:absolute; left:64rem; right:64rem; top:56rem; margin:0;
+    font-size:42rem; line-height:1.08; letter-spacing:-.012em; font-weight:800;
+    color:var(--accent);
+  }
+
+  /* --- narrative column: x=64, width 780, y=168..~560 --- */
+  .lead{
+    position:absolute; left:64rem; top:168rem; width:780rem;
+    font-size:21rem; line-height:1.35; font-weight:700; color:var(--ink);
+  }
+  .lead .who{ color:var(--accent); }
+  ol.story{
+    position:absolute; left:64rem; top:240rem; width:790rem; margin:0;
+    padding:0 0 0 24rem; list-style:none; counter-reset:story;
+  }
+  ol.story li{
+    position:relative; margin:0 0 18rem; padding-left:26rem;
+    font-size:17rem; line-height:1.5; color:var(--gray-1); font-family:var(--font-body);
+  }
+  ol.story li::before{          /* en-dash marker, not SmartArt bullets */
+    content:"–"; position:absolute; left:0;
+    color:var(--accent); font-weight:700;
+  }
+
+  /* --- portrait placeholder: bottom-right, 250×290 --- */
+  figure.portrait{
+    position:absolute; right:64rem; top:262rem; margin:0; width:250rem;
+  }
+  figure.portrait svg{ display:block; width:250rem; height:290rem; }
+  figure.portrait figcaption{
+    margin-top:8rem; text-align:right;
+    font-size:10rem; color:var(--gray-2); font-family:var(--font-body);
+  }
+
+  /* --- firm lockup above the page number, bottom-right --- */
+  .lockup{
+    position:absolute; right:64rem; bottom:52rem; text-align:right;
+    font-size:15rem; font-weight:800; letter-spacing:.02em; color:var(--accent);
+  }
+  .lockup sup{ font-size:9rem; font-weight:700; }
+
+  /* --- footer anatomy: hairline y=662, source/copyright bottom-left, page bottom-right --- */
+  .foot-rule{ position:absolute; left:64rem; right:64rem; top:662rem; border-top:.1rem solid var(--rule); }
+  .source{
+    position:absolute; left:64rem; top:674rem; right:280rem;
+    font-size:9.5rem; line-height:1.5; color:var(--gray-2); font-family:var(--font-body);
+  }
+  .runhead{
+    position:absolute; right:64rem; bottom:18rem;
+    font-size:10.5rem; font-weight:700; letter-spacing:.08em; color:var(--gray-2);
+  }
+  .runhead b{ color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <h1 class="title">What Michelle&rsquo;s story changes about how we fund the whole curriculum</h1>
+
+  <main>
+    <p class="lead">This is the story of <span class="who">Michelle</span> &mdash; a first-generation student at a mid-sized state university.</p>
+    <ol class="story">
+      <li>She is the first in her family to attend college, so nobody in her network knows how to file aid paperwork.</li>
+      <li>She carries a full course load and works twenty hours a week, which makes every dollar of the aid package binding.</li>
+      <li>For her to graduate on time, advising, transport, and scheduling have to work together &mdash; not one at a time.</li>
+    </ol>
+  </main>
+
+  <figure class="portrait">
+    <svg viewBox="0 0 250 290" role="img" aria-label="Portrait placeholder: Michelle, the story persona">
+      <rect width="250" height="290" rx="6" fill="var(--photo-field)"/>
+      <circle cx="125" cy="112" r="52" fill="var(--photo-fig)"/>
+      <path d="M35 290c0-70 42-104 90-104s90 34 90 104z" fill="var(--photo-fig)"/>
+      <text x="125" y="176" text-anchor="middle" font-size="11" font-family="Arial" fill="var(--gray-2)">portrait</text>
+    </svg>
+    <figcaption>portrait &middot; the story persona (cut-out, right-aligned)</figcaption>
+  </figure>
+
+  <div class="lockup">YOUR&nbsp;FIRM<span style="letter-spacing:0">.</span><sup>&reg;</sup></div>
+
+  <div class="foot-rule"></div>
+  <div class="source">Source: learner success survey 2026 (n&nbsp;=&nbsp;4,120) and 26 student interviews; the persona is an anonymized composite, details changed.</div>
+  <div class="runhead"><b>02</b>&nbsp;|&nbsp;THE STUDENT</div>
+
+</div>
+</body>
+</html>

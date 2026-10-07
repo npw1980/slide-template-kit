@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Waffle Heat Matrix — adoption-by-journey heat table with status arrows</title>
+<style>
+  /* ============ PALETTE — L.E.K. anchor: green accent + gray ramp ============ */
+  :root{
+    --accent: #009537;        /* brand green — the emphasis color, everything else gray ramp */
+    --accent-deep: #00712C;   /* 1st lightness down: leaders / strong values / up-arrow strong */
+    --accent-soft: #C9E8CF;   /* 1 lightness of accent for reference bars ("other region") */
+    --ink: #232323;           /* body text */
+    --gray-1: #6E7072;        /* secondary text, footnotes */
+    --gray-2: #D9D9D9;        /* inactive / "not included" state */
+    --gray-3: #F2F2F2;        /* row bands, hairline fill */
+    --rule: #E1E3E4;
+    --bg: #FFFFFF;
+    /* STATUS-ARROW semantic colors (5-step ramp, not decorative — see CHART RECIPE) */
+    --st1: #0B6B2E;   /* increase >= 15 pts  */
+    --st2: #009537;   /* increase 3-14 pts   */
+    --st3: #B9BEC0;   /* no change           */
+    --st4: #D0021B;   /* decreasing          */
+    --st5: #C9CBCC;   /* not included (no 2022 baseline) */
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{background:#6d6f76}
+  body{display:flex;justify-content:center}
+  #fit{width:1280px;height:720px;position:relative;margin:0 auto}
+  #stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;background:var(--bg);
+         font-family:"Helvetica Neue",Arial,Calibri,sans-serif;color:var(--ink)}
+
+  /* SLOT 1: claim title — bold green, max 2 lines (gate <=15 words) */
+  .title{position:absolute;left:60px;top:40px;width:950px;font-size:27px;line-height:1.25;
+         font-weight:700;letter-spacing:-.005em;color:var(--accent-deep)}
+
+  /* SLOT 2: section chip — white bold in green pill, top-right */
+  .chip{position:absolute;right:56px;top:42px;height:24px;padding:0 12px;display:flex;align-items:center;
+        background:var(--accent);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.09em;
+        text-transform:uppercase;border-radius:12px}
+
+  /* matrix frame */
+  table{position:absolute;left:60px;top:118px;border-collapse:collapse;width:960px}
+  th{font-size:10.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--gray-1);
+     padding:0 10px 7px 10px;border-bottom:2px solid var(--accent);text-align:left}
+  th.num{text-align:right}
+  td{padding:0;border-bottom:1px solid var(--rule);height:46px}
+  tr.group td{height:24px;background:var(--gray-3);border-bottom:1px solid var(--rule)}
+  tr.group .g{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;
+              color:var(--accent-deep);padding-left:10px;line-height:26px}
+
+  /* row label cell */
+  td.label{width:378px;padding:0 10px 0 10px}
+  .item{font-size:13.5px;font-weight:400;color:var(--ink);line-height:1.15}
+  .item b{font-weight:700}
+  .item .ex{font-size:11px;color:var(--gray-1)}
+
+  /* paired-bar cell (SEA dark, China-India soft) */
+  td.bars{width:310px;padding:0 12px}
+  .pair .track{position:relative;height:13px;width:272px;background:var(--gray-3);
+               margin:2px 0;border-radius:2px}
+  .pair .fill{position:absolute;left:0;top:0;bottom:0;border-radius:2px 0 0 2px}
+  .pair .v{position:absolute;right:5px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:700;
+           color:var(--ink)}
+  .fill.sea{background:var(--accent)} .fill.chi{background:var(--accent-soft)}
+  .fill.na{background:var(--gray-2)}
+  .na-mark{font-size:10px;color:var(--gray-1);position:absolute;left:6px;top:50%;transform:translateY(-50%)}
+
+  /* country sub-columns (small paired numerals per geography) */
+  td.geo{width:116px;text-align:right;padding:0 10px}
+  .geo .g{display:flex;justify-content:flex-end;gap:6px;font-size:12.5px;font-weight:700}
+  .geo .g i{font-style:normal;color:var(--gray-1);font-weight:400;width:64px;text-align:left}
+  .geo .na{color:var(--gray-2)}
+
+  /* status arrow column */
+  td.status{width:110px;text-align:center}
+  .arw{display:inline-block;font-size:17px;line-height:1}
+  .legend{position:absolute;left:1042px;top:118px;width:178px}
+  .legend .lh{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+              color:var(--gray-1);border-bottom:2px solid var(--accent);padding-bottom:7px}
+  .legend .li{display:flex;align-items:center;gap:8px;font-size:10.5px;color:var(--ink);height:24px}
+  .legend .li .arw{width:16px}
+  .serkey{display:flex;gap:14px;margin-top:10px}
+  .serkey .sk{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink)}
+  .sw{width:14px;height:8px;border-radius:2px}
+  .sw.sea{background:var(--accent)} .sw.chi{background:var(--accent-soft)} .sw.na{background:var(--gray-2)}
+
+  /* kicker / so-what band */
+  .kickerbox{position:absolute;left:60px;right:60px;top:610px;height:36px;display:flex;align-items:center;
+             background:var(--gray-3);border-left:4px solid var(--accent);padding-left:14px;
+             font-size:14px;font-weight:700;color:var(--ink)}
+
+  /* footnote block: Question / Base / Source with bold lead-ins */
+  .foot{position:absolute;left:60px;right:262px;top:658px;font-size:9.5px;color:var(--gray-1);line-height:1.5}
+  .foot b{color:var(--ink)}
+
+  /* page stamp bottom-left, running head bottom-right */
+  .page{position:absolute;left:60px;bottom:12px;font-size:10px;color:var(--gray-1);letter-spacing:.04em}
+  .runhead{position:absolute;right:56px;bottom:12px;font-size:10px;color:var(--gray-1);letter-spacing:.04em}
+
+  /* diagonal logo notch, bottom-right corner (L.E.K. structural device) */
+  #notch{position:absolute;right:0;bottom:0;width:56px;height:56px}
+</style>
+</head>
+<body>
+<div id="fit"><div id="stage">
+
+  <div class="title">SEA hospitals are outpacing China and India on digital adoption — and the gap is widening</div>
+  <div class="chip">4 &nbsp;·&nbsp; Digitalization</div>
+
+  <table id="matrix"></table>
+
+  <!-- 5-step status legend + series key -->
+  <div class="legend">
+    <div class="lh">Change since 2022</div>
+    <div class="li"><span class="arw" style="color:var(--st1)">&#9650;</span> increase by ≥15 pts</div>
+    <div class="li"><span class="arw" style="color:var(--st2)">&#9650;</span> increase 3–14 pts</div>
+    <div class="li"><span class="arw" style="color:var(--st3)">&#9644;</span> no change</div>
+    <div class="li"><span class="arw" style="color:var(--st4)">&#9660;</span> decreasing</div>
+    <div class="li"><span class="arw" style="color:var(--st5)">&#8212;</span> not included</div>
+    <div class="serkey">
+      <div class="sk"><span class="sw sea"></span>SEA</div>
+      <div class="sk"><span class="sw chi"></span>China &amp; India</div>
+      <div class="sk"><span class="sw na"></span>n/a</div>
+    </div>
+  </div>
+
+  <div class="kickerbox">Every solution SEA hospitals lead on is also rising fastest there — China and India are adopting, not catching up.</div>
+
+  <div class="foot"><b>Question:</b> "What digital health solutions have you adopted or would you like to adopt?" — respondents could mark <i>currently using</i>. <b>Base:</b> 230 hospital directors, weighted by bed size; SEA n=84, China+India n=112. <b>Source:</b> L.E.K. 2023 APAC Hospital Insights Survey, fieldwork Mar–May 2023.</div>
+
+  <div class="page">24 &nbsp;|&nbsp; CONFIDENTIAL &mdash; DRAFT</div>
+  <div class="runhead">Digitalization · Adoption heat matrix</div>
+
+  <svg id="notch" viewBox="0 0 56 56" aria-hidden="true"><path d="M56 56 L56 0 L56 56 Z M56 14 L40 56 L56 56 Z" fill="#009537" opacity=".9"/><path d="M56 24 L48 56 L56 56 Z" fill="#A5C111"/></svg>
+
+</div></div>
+
+<script>
+/* ============ DATA — one row per solution; scale = max 100% of bar track ============ */
+const ROWS = [
+  { group: "Patient administration & scheduling", items: [
+    { item: "Online scheduling / appointment booking", ex: "", sea: 53, chi: 59, delta: 6 },
+    { item: "Bill estimator / payer coverage checker", ex: "", sea: 48, chi: 48, delta: 2 },
+    { item: "Patient online registration", ex: "", sea: 43, chi: 49, delta: 11 },
+  ]},
+  { group: "Treatment", items: [
+    { item: "AI diagnosis & decision-support tools", ex: "e.g. imaging triage", sea: 41, chi: 34, delta: 18 },
+    { item: "Closed-loop medication management", ex: "", sea: 29, chi: 31, delta: -4 },
+  ]},
+  { group: "Post-discharge monitoring", items: [
+    { item: "Digital remote patient monitoring", ex: "glucose, heart-rate", sea: 47, chi: 42, delta: 16 },
+    { item: "Patient education via AR / VR", ex: "chronic-disease programs", sea: 40, chi: 29, delta: 9 },
+    { item: "Automated follow-up / virtual nurse", ex: "reminders, auto Q&A", sea: 29, chi: null, delta: null },
+  ]},
+];
+/* Status ramp thresholds (pts of change vs 2022). null delta = "not included" state. */
+const STATUS = [
+  { min: 15,  color: 'var(--st1)', arrow: '&#9650;' },  // dark green up
+  { min: 3,   color: 'var(--st2)', arrow: '&#9650;' },  // green up
+  { min: -2,  color: 'var(--st3)', arrow: '&#9644;' },  // flat
+  { min: -999, color: 'var(--st4)', arrow: '&#9660;' }, // red down
+];
+function statusOf(d){
+  if (d === null || d === undefined) return { color:'var(--st5)', arrow:'&#8212;' };
+  for (const s of STATUS) if (d >= s.min) return s;
+  return STATUS[STATUS.length-1];
+}
+const BARW = 272; // px, 0%..100% scale is linear on track width
+
+function barCell(v, cls){
+  const w = v === null ? BARW : Math.max(2, Math.round(BARW * v / 100));
+  const label = v === null ? '<span class="na-mark">not included</span>' : '';
+  const vlab = v === null ? '' : `<span class="v">${v}%</span>`;
+  return `<div class="track"><div class="fill ${v===null?'na':cls}" style="width:${w}px"></div>${vlab}</div>`;
+}
+
+(function build(){
+  const t = document.getElementById('matrix');
+  let h = `<thead><tr>
+      <th style="width:378px">Solution, by patient-journey stage</th>
+      <th style="width:310px">Currently using — SEA vs China &amp; India</th>
+      <th class="num" style="width:116px">by geography</th>
+      <th style="width:156px;text-align:center">Change</th>
+    </tr></thead><tbody>`;
+  ROWS.forEach(g => {
+    h += `<tr class="group"><td colspan="4"><span class="g">${g.group}</span></td></tr>`;
+    g.items.forEach(it => {
+      const st = statusOf(it.delta);
+      const geoNa = it.chi === null;
+      h += `<tr>
+        <td class="label"><div class="item"><b>${it.item}</b>${it.ex ? ` <span class="ex">${it.ex}</span>` : ''}</div></td>
+        <td class="bars"><div class="pair">
+            ${barCell(it.sea, 'sea')}
+            ${barCell(it.chi, 'chi')}
+        </div></td>
+        <td class="geo"><div class="g"><i>SEA</i> ${it.sea}%</div>
+            <div class="g ${geoNa?'na':''}"><i>China·India</i> ${geoNa ? 'n/a' : it.chi + '%'}</div></td>
+        <td class="status"><span class="arw" style="color:${st.color}">${st.arrow}</span></td>
+      </tr>`;
+    });
+  });
+  h += `</tbody>`;
+  t.innerHTML = h;
+})();
+
+/* viewport fit — transform wrapper */
+function fit(){
+  const s = Math.min(innerWidth/1280, innerHeight/720);
+  const f = document.getElementById('fit'), st = document.getElementById('stage');
+  f.style.width = 1280*s + 'px'; f.style.height = 720*s + 'px';
+  st.style.transform = `scale(${s})`;
+  st.style.transformOrigin = 'left top';
+  st.style.left = (1280*s - 1280)/2 + 'px';
+  st.style.top  = (720*s - 720)/2 + 'px';
+  if (s >= 1){ f.style.width='1280px'; f.style.height='720px'; st.style.transform=''; st.style.left='0'; st.style.top='0'; }
+}
+addEventListener('resize', fit); fit();
+</script>
+</body>
+</html>

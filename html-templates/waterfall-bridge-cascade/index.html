@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>waterfall-bridge-cascade — 100% failure-mode cascade, bars stepping down-right + total bar (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  waterfall-bridge-cascade  ·  family waterfall-bridge
+  Evidence: corpus sheet S114 (corpus/sheets/sheet_012.jpg, row 1 col 4),
+            "failure-mode waterfall": relative share of primary failure modes
+            cascading down-right — each bar starts where the previous ended
+            (cumulative % of total), value labels INSIDE bars (white 700),
+            dashed step connectors, category labels left in series colour,
+            one full-width dark-grey 100% total bar, one accent series + grey.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html rule maps 1rem == 1 STAGE PIXEL (1280×720 fit); inside
+  SVG, viewBox user units == stage px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY (rows top→bottom; must sum to 100):
+    rows = [
+      { label:"Pricing gaps",          value:18, kind:"accent" },
+      { label:"Leaky discounting",     value:12, kind:"accent" },
+      { label:"Churn to competitors",  value:22, kind:"accent" },
+      { label:"Under-served mid-market",value:11, kind:"accent" },
+      { label:"Slow onboarding",       value:15, kind:"accent" },
+      { label:"Channel conflict",      value: 6, kind:"accent" },   // label goes OUTSIDE (w<46px)
+      { label:"Execution failures",    value:16, kind:"gray" }      // the one grey bar
+    ];
+    total = 100          // rendered as the full-width bottom bar
+  Geometry rule (linear, zero-based, 1% = 7 px):
+    plot band: x_start=460, x_end=1160  →  bar x = 460 + cumulative%×7
+               bar width = value×7
+    row pitch 48 px; centre y = 214 + i×48  (i=0..6); total row centre = 550
+    bar height 30 (y = centre−15)
+    value label: INSIDE bar, centred (white 700) when width ≥ 46 px,
+                 else OUTSIDE, 8 px right of bar end, dark ink
+    connectors: dashed vertical from (bar i right edge, its bottom) to
+                (same x, next row's bar top) — the x is shared by construction
+    left labels: right-anchored x=440, colour = series colour (accent/ink)
+    swap numbers = cumulative → x/w of each bar + both text nodes; pitch fixed.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     S114 cascade palette: ONE magenta accent for the "leak mode" series,
+     grey for the execution bucket, dark grey for the total. Measured from
+     the corpus sheet (pink fill ~#E61A57). Non-accent series = grey ramp.
+     Recolouring: swap --accent to brand hue; keep --gray-* as-is — they are
+     "everything that is not the claim", not decoration. */
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #16212E;   /* title, total-bar labels, outside value labels */
+    --accent:    #E61A57;   /* the ONE accent — leak modes (the claim) */
+    --accent-ink:#8E0F34;   /* accent-family text if ever needed (dark) */
+    --gray-1:    #6E747C;   /* secondary text, axis-ish captions */
+    --gray-bar:  #7D8288;   /* the grey bar series */
+    --total:     #3A3F45;   /* total bar + legend anchor */
+    --rule:      #D9DEE4;   /* hairlines */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#171116; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+  /* ---- title zone ---- */
+  .title{ position:absolute; left:64rem; top:34rem; width:1152rem;
+          font-family:var(--font-display); font-size:29rem; font-weight:700; line-height:37rem;
+          letter-spacing:-.6rem; max-height:76rem; }   /* 2-line slot, MBB gate */
+  .title .em{ color:var(--accent); }
+  .kicker{ position:absolute; left:64rem; top:116rem; width:1152rem;
+           font-size:14rem; font-weight:700; letter-spacing:.9rem; color:var(--gray-1); }
+  .kicker sup{ font-size:9rem; }
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .note{ position:absolute; left:64rem; bottom:34rem; right:64rem; font-size:10rem; line-height:14rem; color:var(--gray-1); }
+  .note sup{ font-size:8rem; }
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:14rem; display:flex; justify-content:space-between; font-size:10rem; color:var(--gray-1); }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="One-hundred percent cascade of forgone value by failure mode: leak modes account for the first bars stepping down-right to 84 percent, execution failures for the remaining 16 percent, on a full-width total bar of 100 percent">
+
+  <!-- slot 1 · claim title (12 words / 2 lines) -->
+  <div class="title">Value leaks, not execution, account for <span class="em">84% of forgone value</span></div>
+
+  <!-- slot 2 · kicker: figure caption -->
+  <div class="kicker">RELATIVE SHARE OF PRIMARY FAILURE MODES<sup>1</sup> · % OF TOTAL FORGONE VALUE, STEPPING TO 100%</div>
+
+  <!-- ===================== CHART (inline SVG) =====================
+       7 cascade rows + total row. One <g class="row"> per mode: swap x/width
+       from the cumulative, inside-or-outside value label, label colour by
+       series. Connector is dashed, vertical, sharing the step corner. -->
+  <svg class="chart" viewBox="0 0 1280 720">
+
+    <!-- scale rail: zero-based, 1% = 7px across the 700px band -->
+    <line x1="460" y1="176" x2="460" y2="584" stroke="#D9DEE4" stroke-width="1.2"/>
+
+    <!-- legend (top-right, quiet) -->
+    <g font-size="11.5" fill="#6E747C">
+      <rect x="820" y="150" width="13" height="13" rx="2" fill="#E61A57"/><text x="840" y="161">Value-leak modes</text>
+      <rect x="964" y="150" width="13" height="13" rx="2" fill="#7D8288"/><text x="984" y="161">Execution failures</text>
+      <rect x="1110" y="150" width="13" height="13" rx="2" fill="#3A3F45"/><text x="1130" y="161">Total</text>
+    </g>
+
+    <!-- row 1 · pricing gaps 18% · x=460 w=126 (cum 0→18) -->
+    <g class="row">
+      <text x="440" y="219" text-anchor="end" font-size="13" fill="#E61A57">Pricing gaps</text>
+      <rect x="460" y="199" width="126" height="30" fill="#E61A57"/>
+      <text x="523" y="219" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">18%</text>
+      <line x1="586" y1="229" x2="586" y2="247" stroke="#E61A57" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- row 2 · leaky discounting 12% · x=586 w=84 (cum 18→30) -->
+    <g class="row">
+      <text x="440" y="267" text-anchor="end" font-size="13" fill="#E61A57">Leaky discounting</text>
+      <rect x="586" y="247" width="84" height="30" fill="#E61A57"/>
+      <text x="628" y="267" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">12%</text>
+      <line x1="670" y1="277" x2="670" y2="295" stroke="#E61A57" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- row 3 · churn to competitors 22% · x=670 w=154 (cum 30→52) -->
+    <g class="row">
+      <text x="440" y="315" text-anchor="end" font-size="13" fill="#E61A57">Churn to competitors</text>
+      <rect x="670" y="295" width="154" height="30" fill="#E61A57"/>
+      <text x="747" y="315" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">22%</text>
+      <line x1="824" y1="325" x2="824" y2="343" stroke="#E61A57" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- row 4 · under-served mid-market 11% · x=824 w=77 (cum 52→63) -->
+    <g class="row">
+      <text x="440" y="363" text-anchor="end" font-size="13" fill="#E61A57">Under-served mid-market</text>
+      <rect x="824" y="343" width="77" height="30" fill="#E61A57"/>
+      <text x="862" y="363" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">11%</text>
+      <line x1="901" y1="373" x2="901" y2="391" stroke="#E61A57" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- row 5 · slow onboarding 15% · x=901 w=105 (cum 63→78) -->
+    <g class="row">
+      <text x="440" y="411" text-anchor="end" font-size="13" fill="#E61A57">Slow onboarding</text>
+      <rect x="901" y="391" width="105" height="30" fill="#E61A57"/>
+      <text x="953" y="411" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">15%</text>
+      <line x1="1006" y1="421" x2="1006" y2="439" stroke="#E61A57" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- row 6 · channel conflict 6% · x=1006 w=42 (cum 78→84) · OUTSIDE label demo -->
+    <g class="row">
+      <text x="440" y="459" text-anchor="end" font-size="13" fill="#E61A57">Channel conflict</text>
+      <rect x="1006" y="439" width="42" height="30" fill="#E61A57"/>
+      <text x="1056" y="459" text-anchor="start" font-size="12.5" font-weight="700" fill="#16212E">6%</text>
+      <line x1="1048" y1="469" x2="1048" y2="487" stroke="#E61A57" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- row 7 · execution failures 16% · GREY series · x=1048 w=112 (cum 84→100) -->
+    <g class="row">
+      <text x="440" y="507" text-anchor="end" font-size="13" fill="#16212E">Execution failures</text>
+      <rect x="1048" y="487" width="112" height="30" fill="#7D8288"/>
+      <text x="1104" y="507" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">16%</text>
+      <line x1="1160" y1="517" x2="1160" y2="535" stroke="#7D8288" stroke-width="1.2" stroke-dasharray="3 3"/>
+    </g>
+
+    <!-- total row · full-width 100% bar (dark grey anchor) -->
+    <g class="row">
+      <text x="440" y="555" text-anchor="end" font-size="13" font-weight="700" fill="#16212E">Total</text>
+      <rect x="460" y="535" width="700" height="30" fill="#3A3F45"/>
+      <text x="810" y="555" text-anchor="middle" font-size="12.5" font-weight="700" fill="#FFFFFF">100%</text>
+    </g>
+
+  </svg>
+
+  <!-- slot 4 · method note (honesty line) -->
+  <div class="note">Rows are coded as the single largest failure mode per deal (not multi-label); leakage shares do not net against realised synergies¹.</div>
+
+  <!-- slot 5 · footer anatomy -->
+  <div class="footer">
+    <span>Source: Post-merger value-leakage study, 112 transactions closed 2019–24, EBITDA gap vs synergy plan<sup>1</sup></span>
+    <span class="pagenum">3 | VALUE CAPTURE</span>
+  </div>
+
+</div>
+</body>
+</html>

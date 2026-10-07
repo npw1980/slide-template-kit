@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>scenario-forecast-split-line — actual solid / forecast dashed with uncertainty band (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  scenario-forecast-split-line  ·  family scenario-forecast
+  Evidence: pwc_strategy__pwc_copernicus_market_report_2019 p24 (sw_sheets/
+            ..._s02.jpg row 1 col 5 — "line forecast (Big Data market)",
+            "blue line, grey area", "left text, right line chart", "% callout",
+            and a DASHED-BORDER callout box with the CAGR sentence; the review
+            md confirms the chart stack: "navy → mid-blue #1E5A90 → light blue
+            #A8C8E8 sequential family, plus grey for 'other', orange reserved
+            for negatives"). p86 (same deck, s08 row 1 col 2) is the second
+            exemplar: 2-line claim title + line chart to 2037 + grey fill.
+            pwc_strategy__strategy_electric_vehicle_sales_review_q4_2022 p16
+            (s01 row 2 col 2) confirms the forecast-suffix convention: axis
+            years after today carry an "F" and one growth % callout rides the
+            chart with an arrow.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280, 100vh/720)} maps 1rem == 1
+  STAGE PIXEL, so every length below is a 1:1 stage-pixel coordinate and the
+  inline SVG (viewBox 0 0 1280 720) uses plain numbers == px.
+  ----------------------------------------------------------------------------
+  DATA ARRAYS — swap NUMBERS, not geometry (15 x-points, 2016–2030F):
+      years   = [2016,2017,2018,2019,2020,2021,2022,2023,
+                 2024F,2025F,2026F,2027F,2028F,2029F,2030F];
+      actual  = [1.4, 1.8, 2.3, 3.0, 3.9, 5.1, 6.6, 8.5];   // $B, 2016–2023
+      forecast= [8.5, 9.8,11.3,13.1,15.2,17.6,20.1,22.8];   // $B, 2023–2030F
+      bandPct = [ 0,  1,  3,  5,  7,  9.5, 12,  15 ];       // ±% per forecast yr
+    Point i is x(i) = 470 + i × 51.143 (i = 0..14; 2023 sits at x=828).
+    y(v) = 565 − v × 13.393   (zero-based linear, 0 → 565, 26$B → ~190).
+    FORECAST flag, exactly three, all required: (1) dashed stroke on the
+    forecast leg + band, (2) "F" suffix on 2024F..2030F axis ticks, (3) the
+    vertical "today / model start" hairline at x=828. No other forecast cue.
+      band polygon = bandUp points forward + bandLo points reversed (closed):
+        bandUp[i] = (x(7+i), y(forecast[i] × (1 + bandPct[i]/100)))
+        bandLo[i] = (x(7+i), y(forecast[i] × (1 − bandPct[i]/100)))
+      value labels: end-of-line only. "$22.8B" bold over "2030F" grey at the
+      line end; "$8.5B" at the today-hairline. Never label mid-points.
+      CAGR callout: dashed-border rounded box, one per page max, text
+      "2.7× — ~15% CAGR" + one supporting clause + model/method sup marker.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts. No images, no
+  webfonts, no @import, no JavaScript. Nothing here makes a network request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     PwC Strategy& chart stack (sampled hexes, copernicus review §Colour):
+     navy ink #1F3864 for titles/heads, mid-blue #1E5A90 as the ONE accent
+     (the forecast line), light blue #A8C8E8 for the uncertainty band, grey
+     ramp for axis/context, grey hairlines. Orange-family reserved strictly
+     for negative claims — not used here. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1F3864;   /* PwC title navy — titles, value numbers */
+    --accent:      #1E5A90;   /* mid-blue — the ONE accent: forecast line */
+    --accent-deep: #143A5E;   /* running head, kicker bold lead */
+    --band:        #A8C8E8;   /* light blue — uncertainty band fill */
+    --gray-1:      #6B7280;   /* secondary text, axis labels */
+    --gray-2:      #9AA3AF;   /* de-emphasis, actual-line context? (here: grid text) */
+    --rule:        #D5DAE1;   /* hairlines, gridlines */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Helvetica Neue", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{ background:var(--bg); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); color:var(--ink); font-family:var(--font-body); }
+
+  /* ---- header band ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem;
+           font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-deep); font-weight:700; }
+  .kicker sup{ font-size:10.5rem; color:var(--accent); }
+  .title{ position:absolute; left:64rem; top:64rem; width:1010rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700;
+          line-height:36rem; letter-spacing:-.6rem; color:var(--ink);
+          max-height:72rem; overflow:hidden; }          /* 2-line slot = MBB gate */
+  .title em{ font-style:normal; color:var(--accent); }
+  .rule-top{ position:absolute; left:64rem; top:146rem; width:1152rem;
+             height:1px; background:var(--rule); }
+
+  /* ---- left narrative column (copernicus p24: "left text, right line chart") ---- */
+  .lead{ position:absolute; left:64rem; top:172rem; width:310rem;
+         font-size:15rem; line-height:22rem; font-weight:700; color:var(--ink); }
+  .points{ position:absolute; left:64rem; top:268rem; width:310rem; }
+  .points li{ list-style:none; margin-bottom:16rem; font-size:12.5rem;
+              line-height:17rem; color:var(--gray-1); }
+  .points li b{ color:var(--accent); font-weight:700; }
+  .points li::before{ content:""; display:inline-block; width:6rem; height:6rem;
+                      background:var(--accent); margin-right:8rem;
+                      vertical-align:1.5rem; }
+
+  /* ---- callout: dashed-border box (copernicus p24 device) ---- */
+  .callout{ position:absolute; left:64rem; top:472rem; width:310rem;
+            border:1.5px dashed var(--accent); border-radius:3rem;
+            padding:14rem 16rem; }
+  .callout .n{ font-family:var(--font-display); font-size:26rem;
+               font-weight:700; color:var(--accent); letter-spacing:-.5rem; }
+  .callout .d{ font-size:11.5rem; line-height:16rem; color:var(--gray-1);
+               margin-top:6rem; }
+  .callout sup{ font-size:8.5rem; color:var(--accent); }
+
+  /* ---- chart ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem;
+             font-family:var(--font-body); }
+  .grid{ stroke:var(--rule); stroke-width:1; }
+  .axis{ stroke:var(--gray-2); stroke-width:1; }
+  .axlab{ font-size:12rem; fill:var(--gray-1); }
+  .xlab{ font-size:12.5rem; fill:var(--gray-1); text-anchor:middle; }
+  .xlab.f{ fill:var(--accent); }                       /* F-suffix years = accent text */
+  .today{ stroke:var(--gray-2); stroke-width:1; stroke-dasharray:3 4; }
+  .todaylab{ font-size:10rem; fill:var(--gray-1); letter-spacing:.08em; text-anchor:middle; }
+  .line-act{ fill:none; stroke:var(--ink); stroke-width:2.5; }  /* actuals = ink navy */
+  .line-fc{ fill:none; stroke:var(--accent); stroke-width:2.75;
+            stroke-dasharray:7 5; }                             /* forecast = accent dashed */
+  .mark-act{ fill:var(--ink); }
+  .mark-fc{ fill:var(--bg); stroke:var(--accent); stroke-width:2; }
+  .vlab{ font-size:16rem; font-weight:700; fill:var(--ink); }
+  .vlab.f{ fill:var(--accent); }
+  .vsub{ font-size:11rem; fill:var(--gray-1); }
+  .band{ fill:var(--band); fill-opacity:.4; }
+  .unit{ font-size:11.5rem; fill:var(--gray-1); }
+
+  /* ---- footer anatomy ---- */
+  .source{ position:absolute; left:64rem; bottom:26rem; width:1010rem;
+           font-size:11.5rem; color:var(--gray-1); line-height:16rem; }
+  .source sup{ font-size:8.5rem; }
+  .runhead{ position:absolute; right:64rem; bottom:26rem; font-size:12rem;
+            font-weight:700; color:var(--accent-deep); letter-spacing:.3rem;
+            text-align:right; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>Global satellite-derived analytics market, 2016–2030F:</b> revenue in US$ billions, actuals vs PwC Strategy& model<sup>1</sup></div>
+  <div class="title">Satellite analytics is on a <em>2.7× path to $22.8B by 2030F</em></div>
+  <div class="rule-top"></div>
+
+  <div class="lead">Revenues have compounded from $1.4B to $8.5B in seven years; the model projects the compounding to continue through 2030.</div>
+  <ul class="points">
+    <li>Imagery supply is the binding constraint — 215 active EO platforms in 2023, but launch pipelines double constant-volume coverage by 2027</li>
+    <li>Processing economics flip: cloud-native fusion cuts cost per analytic task ~30% per refresh cycle</li>
+    <li>Concentration holds — top five vendors take <b>58% of forecast revenue</b>, leaving a narrow integration niche below scale</li>
+  </ul>
+
+  <div class="callout">
+    <div class="n">2.7× — ~15% CAGR</div>
+    <div class="d">2023–2030F, PwC Strategy& market model, October 2023 calibration<sup>1</sup>. Band widens to ±15% by decade end on platform-launch uncertainty.</div>
+  </div>
+
+  <svg class="chart" viewBox="0 0 1280 720" role="img" aria-label="Line chart: satellite analytics revenue, actual 2016 to 2023 solid line, dashed forecast to 2030 with widening uncertainty band">
+    <!-- horizontal gridlines: every 5 $B, y = 565 − v×13.393 -->
+    <line class="grid" x1="470" y1="565" x2="1186" y2="565"/>
+    <line class="grid" x1="470" y1="498" x2="1186" y2="498"/>
+    <line class="grid" x1="470" y1="431.1" x2="1186" y2="431.1"/>
+    <line class="grid" x1="470" y1="364.1" x2="1186" y2="364.1"/>
+    <line class="grid" x1="470" y1="297.1" x2="1186" y2="297.1"/>
+    <line class="grid" x1="470" y1="230.2" x2="1186" y2="230.2"/>
+    <!-- y axis: values $B -->
+    <text class="axlab" x="458" y="569" text-anchor="end">$0</text>
+    <text class="axlab" x="458" y="502" text-anchor="end">$5</text>
+    <text class="axlab" x="458" y="435" text-anchor="end">$10</text>
+    <text class="axlab" x="458" y="368" text-anchor="end">$15</text>
+    <text class="axlab" x="458" y="301" text-anchor="end">$20</text>
+    <text class="axlab" x="458" y="234" text-anchor="end">$25</text>
+    <text class="unit" x="470" y="177">$ billions</text>
+
+    <!-- uncertainty band: bandUp forward then bandLo reversed (closed polygon) -->
+    <polygon class="band" points="828,451.2 879.1,432.4 930.3,409.1 981.4,380.8 1032.6,347.2 1083.7,306.9 1134.9,263.5 1186,213.8 1186,305.4 1134.9,328.1 1083.7,351.7 1032.6,375.7 981.4,398.3 930.3,418.2 879.1,435.1 828,451.2"/>
+
+    <!-- today / model-start hairline at x(7)=828 (2023) -->
+    <line class="today" x1="828" y1="190" x2="828" y2="565"/>
+    <text class="todaylab" x="1007" y="183">MODEL FORECAST — BAND = UNCERTAINTY RANGE</text>
+
+    <!-- x axis + year ticks: F suffix after today -->
+    <line class="axis" x1="470" y1="565" x2="1186" y2="565"/>
+    <text class="xlab" x="470" y="586">2016</text>
+    <text class="xlab" x="572.3" y="586">2018</text>
+    <text class="xlab" x="674.6" y="586">2020</text>
+    <text class="xlab" x="776.9" y="586">2022</text>
+    <text class="xlab f" x="879.1" y="586">2024F</text>
+    <text class="xlab f" x="981.4" y="586">2026F</text>
+    <text class="xlab f" x="1083.7" y="586">2028F</text>
+    <text class="xlab f" x="1186" y="586">2030F</text>
+
+    <!-- ACTUAL line 2016→2023 (points 0..7) -->
+    <polyline class="line-act" points="470,546.2 521.1,540.9 572.3,534.2 623.4,524.8 674.6,512.8 725.7,496.7 776.9,476.6 828,451.2"/>
+    <!-- FORECAST line 2023→2030F (points 7..14) -->
+    <polyline class="line-fc" points="828,451.2 879.1,433.7 930.3,413.7 981.4,389.6 1032.6,361.4 1083.7,329.3 1134.9,295.8 1186,259.6"/>
+    <circle class="mark-act" cx="828" cy="451.2" r="3.5"/>
+    <circle class="mark-fc" cx="1186" cy="259.6" r="4.5"/>
+
+    <!-- value labels: end-of-line + baseline only -->
+    <text class="vlab f" x="1186" y="236" text-anchor="end">$22.8B</text>
+    <text class="vsub" x="1186" y="252" text-anchor="end">2030F</text>
+    <text class="vlab" x="820" y="435" text-anchor="end">$8.5B</text>
+    <text class="vsub" x="820" y="451" text-anchor="end">2023</text>
+  </svg>
+
+  <div class="source">Source: vendor filings and EO procurement data (2016–2023); PwC Strategy& satellite-derived analytics market model, October 2023 calibration; CAGR computed on 2023 base.<sup>1</sup></div>
+  <div class="runhead">14 | MARKET FORECAST</div>
+</div>
+</body>
+</html>

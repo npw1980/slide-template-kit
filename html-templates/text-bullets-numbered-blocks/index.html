@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>text-bullets-numbered-blocks — numbered color blocks + chevron + single-bullet claim rail (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  text-bullets-numbered-blocks  ·  family text-bullets
+  Evidence: deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p10
+            (three numbered colored blocks, chevron arrows, one bullet each)
+            corroborated p11 (numbered-dot claim list, same grammar).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate with
+  the same numbers MANUAL.md quotes (1280x720 fixed stage, uniform scale).
+  Inside inline SVG the viewBox makes 1 user unit == 1 stage px.
+  ----------------------------------------------------------------------------
+  DATA MODEL: 3 repeatable ROWS. Each row = numbered block + chevron + one
+  bullet sentence. Only these numbers change per row:
+      row i: block-top y = 200 + i*140   (one number per row)
+      block fill = --c-1 | --c-2 | --c-3 (semantic THEME colors, not rank)
+      block label <= 3 lines (15px/1.3 inside 300x92 block)
+      bullet text <= 3 lines (16px/1.50)
+  A fourth row fits at pitch 108 / block height 76.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG (chevron path), system font stacks.
+  No images, no webfonts, no @import, no JavaScript. Nothing makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Block fills + chevron navy sampled from p10
+     pixels; brand green is Deloitte's 2015 house green, remappable. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #262626;    /* message line + body text */
+    --brand-green: #86BC45;    /* topic-title color (review: brand green) */
+    --navy:        #001340;    /* chevrons + number badges (sampled band) */
+    --c-1:         #107BA9;    /* block 1 — teal/blue theme (sampled) */
+    --c-2:         #595959;    /* block 2 — neutral theme (sampled) */
+    --c-3:         #2E6126;    /* block 3 — green theme (sampled) */
+    --gray-1:      #767676;    /* footer / secondary */
+    --gray-2:      #B9B9B9;   /* hairlines */
+    --rule:        #D9D9D9;
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  *{ padding:0; box-sizing:border-box; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+
+  /* ---------------- title zone ---------------- */
+  .title{                              /* slot 1: green topic title */
+    position:absolute; left:64rem; top:48rem; width:1152rem;
+    font-family:var(--font-display); font-size:32rem; line-height:1.15;
+    font-weight:700; color:var(--brand-green);
+  }
+  .claim{                              /* slot 2: message line (the claim) */
+    position:absolute; left:64rem; top:104rem; width:1000rem;
+    font-size:17rem; line-height:1.45; color:var(--ink);
+  }
+  .claim b{ font-weight:700; }
+
+  /* ---------------- rows ---------------- */
+  .row{ position:absolute; left:0; right:0; height:92rem; }           /* pitch 140 */
+  .row.r0{ top:200rem; }
+  .row.r1{ top:340rem; }
+  .row.r2{ top:480rem; }
+  .block{                              /* numbered colored block */
+    position:absolute; left:64rem; top:10rem; width:300rem; height:92rem;
+    border-radius:8rem; color:#FFFFFF;
+    display:flex; align-items:center;
+    padding-left:30rem; padding-right:14rem;
+  }
+  .block.b0{ background:var(--c-1); }
+  .block.b1{ background:var(--c-2); }
+  .block.b2{ background:var(--c-3); }
+  .block .blk-label{                   /* slot: block label, <=3 lines */
+    font-size:15rem; line-height:1.3; font-weight:700; text-align:left;
+  }
+  .badge{                              /* number badge, straddles block edge */
+    position:absolute; left:-16rem; top:30rem;
+    width:32rem; height:32rem; border-radius:50%;
+    background:var(--navy); color:#FFFFFF;
+    font-family:var(--font-display); font-size:16rem; font-weight:700;
+    display:grid; place-items:center;
+  }
+  .chev{ position:absolute; left:400rem; top:28rem; width:56rem; height:52rem; }
+  .chev svg{ width:100%; height:100%; display:block; }
+  .bullet{                             /* slot: one bullet sentence */
+    position:absolute; left:520rem; top:14rem; width:696rem;
+    font-size:16rem; line-height:1.5; color:var(--ink);
+  }
+  .bullet::before{                     /* middle-dot marker (Deloitte style) */
+    content:"\2022"; position:absolute; left:-24rem; top:0rem;
+    font-size:18rem; color:var(--ink);
+  }
+
+  /* ---------------- footer ---------------- */
+  .foot{
+    position:absolute; left:64rem; right:64rem; bottom:30rem;
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-top:1rem solid var(--rule); padding-top:8rem;
+    font-size:11rem; color:var(--gray-1);
+  }
+  .foot .src{ max-width:800rem; }
+  .foot .right{ display:flex; gap:14rem; align-items:baseline; white-space:nowrap; }
+  .foot .page{ font-weight:700; color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · topic title (green, sentence case, short) -->
+  <div class="title">Opportunities for improved access</div>
+
+  <!-- 2 · message line = the claim (<=15 words / 2 lines gate) -->
+  <div class="claim"><b>Twelve priority opportunities</b> span pathway, cross-cutting, and stage&#8209;targeted themes.</div>
+
+  <!-- 3 · three numbered blocks + chevrons + one bullet each -->
+  <div class="row r0">
+    <div class="block b0"><span class="badge">1</span><span class="blk-label">End&#8209;to&#8209;end access pathway opportunities</span></div>
+    <div class="chev"><svg viewBox="0 0 56 52" aria-hidden="true"><polygon points="0,2 56,26 0,50 12,26" fill="var(--navy)"/></svg></div>
+    <div class="bullet">Four opportunities that each address the patient access pathway for a specific set of innovative products.</div>
+  </div>
+
+  <div class="row r1">
+    <div class="block b1"><span class="badge">2</span><span class="blk-label">Cross-cutting opportunities</span></div>
+    <div class="chev"><svg viewBox="0 0 56 52" aria-hidden="true"><polygon points="0,2 56,26 0,50 12,26" fill="var(--navy)"/></svg></div>
+    <div class="bullet">Four opportunities that address each of the four identified cross-cutting challenges — 218 of 434 respondents named funding as decisive.</div>
+  </div>
+
+  <div class="row r2">
+    <div class="block b2"><span class="badge">3</span><span class="blk-label">Pathway stage&#8209;targeted opportunities</span></div>
+    <div class="chev"><svg viewBox="0 0 56 52" aria-hidden="true"><polygon points="0,2 56,26 0,50 12,26" fill="var(--navy)"/></svg></div>
+    <div class="bullet">Four opportunities that address specific parts of the pathway for specific products, where research indicated a particular challenge.</div>
+  </div>
+
+  <!-- 4 · footer: source bottom-left, page + rights bottom-right -->
+  <div class="foot">
+    <div class="src">Source: 37 stakeholder interviews, 4 workshops and Deloitte analysis</div>
+    <div class="right"><span class="page">12</span><span>© 2015 Deloitte MCP Limited. Private and confidential.</span></div>
+  </div>
+
+</div>
+</body>
+</html>

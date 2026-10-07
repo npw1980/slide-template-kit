@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>quote-pull-bubble-cluster — stakeholder-coloured speech-bubble cluster around a persona pair (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  quote-pull-bubble-cluster  ·  family quote-pull
+  Evidence: deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p25
+            ("Development: Illustrative Quotes" + 2-line message line + grey
+            panel holding ~10 stakeholder-coloured speech bubbles around two
+            human silhouettes + "Key:" identity legend inside the panel +
+            page/source/copyright footer). Same device on p30 and, per the
+            review, ~12 times across the deck.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. `html` maps 1rem == 1 STAGE PIXEL, so every length below
+  is a stage-pixel coordinate matching MANUAL.md. The panel is ONE inline SVG
+  whose viewBox is expressed in stage px, so bubble geometry is stated once.
+  ----------------------------------------------------------------------------
+  DATA MODEL: 1 title zone (title + 2-line message) + 1 SVG exhibit.
+    Inside the SVG: 8 bubbles, each = <rect rx=6> + tail <path> + <text> of
+    2-3 <tspan> lines at 11px. Bubble colour encodes WHO is speaking; the
+    legend inside the panel is what makes that readable. Colour is the data
+    dimension here, not decoration - this is the one template where the
+    "one accent + gray" rule is deliberately suspended (documented below).
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS + inline SVG, system font stacks, no images,
+  no webfonts, no @import, no JavaScript. Zero network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Deloitte 2015 (Monitor lineage) per DESIGN_PLAYBOOK roles. Green is the
+     brand/title colour; the four identity colours are SEMANTIC (speaker), so
+     they appear in the bubbles + legend and nowhere else. Everything else is
+     neutral on a white ground. */
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #1F2933;   /* message line, bubble text */
+    --panel:     #F4F4F4;   /* exhibit field (measured #F2F2F2) */
+    --panel-line:#D9D9D9;   /* panel edge / hairlines (measured #DC-#E5) */
+    --green:     #6F8F2A;   /* title green - brightened-safe; brand fill green #86BC90 */
+    --green-deep:#4E6620;   /* italic run-in / emphasis on green */
+    --navy:      #1F4E79;   /* identity: Industry */
+    --cyan:      #00A2D1;   /* identity: NHS (measured silhouette #72C6E8) */
+    --charity:   #84BD46;   /* identity: Charities */
+    --hmg:       #C9D24B;   /* identity: HMG / ALBs (yellow-green) */
+    --gray-1:    #707070;   /* captions, key labels, footer */
+    --gray-2:    #B8B8B8;   /* inactive chevrons */
+    --font-display: "Helvetica Neue", Arial, sans-serif;
+    --font-body:    Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  *{ padding:0; box-sizing:border-box; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+
+  /* ---------------- title zone ---------------- */
+  .title{                                /* slot 1: green topic title */
+    position:absolute; left:64rem; top:36rem; width:1060rem;
+    font-family:var(--font-display); font-size:30rem; font-weight:700;
+    letter-spacing:-.01em; color:var(--green);
+  }
+  .title i{ font-style:italic; font-weight:700; color:var(--green-deep); }
+  .message{                              /* slot 2: 2-line message line */
+    position:absolute; left:64rem; top:80rem; width:1000rem;
+    font-family:var(--font-body); font-size:15rem; line-height:1.45;
+    color:var(--ink);
+  }
+
+  /* ---------------- stage chevron strip (brand ornament) ---------------- */
+  .chevrons{ position:absolute; right:64rem; top:36rem; width:150rem; height:20rem; }
+
+  /* ---------------- exhibit ---------------- */
+  .exhibit{
+    position:absolute; left:64rem; top:134rem; width:1152rem; height:478rem;
+    overflow:hidden;
+  }
+  .exhibit svg{ display:block; width:100%; height:100%; }
+  .bubble{ fill:#FFFFFF; stroke-width:1.8; }
+  .btxt{ font-family:var(--font-body); font-size:11rem; fill:var(--ink); }
+  .btxt .lead{ font-weight:700; fill:#11181F; }
+  .panel-cap{ font-family:var(--font-display); font-size:10rem; font-weight:700;
+              letter-spacing:.08em; text-transform:uppercase; fill:var(--gray-1); }
+  .keytxt{ font-family:var(--font-body); font-size:10.5rem; fill:var(--gray-1); }
+  .keylab{ font-family:var(--font-display); font-size:10.5rem; font-weight:700; fill:#11181F; }
+  .figure{ fill:var(--cyan); opacity:.85; }
+
+  /* ---------------- footer ---------------- */
+  .foot-rule{
+    position:absolute; left:64rem; right:64rem; top:636rem; height:1px;
+    background:var(--panel-line);
+  }
+  .source{                               /* slot 5: source bottom-left */
+    position:absolute; left:64rem; top:648rem; width:860rem;
+    font-family:var(--font-body); font-size:9.5rem; line-height:1.5;
+    color:var(--gray-1);
+  }
+  .running{                              /* slot 6: page | SECTION bottom-right */
+    position:absolute; right:64rem; top:648rem; text-align:right;
+    font-family:var(--font-display); font-size:9.5rem; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--gray-1);
+  }
+  .running .page-num{ color:#11181F; }
+  .colophon{                             /* slot 7: copyright line */
+    position:absolute; right:64rem; top:666rem; text-align:right;
+    font-family:var(--font-body); font-size:8.5rem; color:var(--gray-1);
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · green topic title + 2 · italic run-in -->
+  <div class="title">Development: <i>Illustrative Quotes</i></div>
+
+  <!-- 2 · message line (the claim lives here, not in the title) -->
+  <div class="message">Quotes summarise some of the key challenges in the development stage for innovative medicines, across all four stakeholder groups.</div>
+
+  <!-- stage indicator: 4-segment chevron strip, stage 1 of 4 active -->
+  <svg class="chevrons" viewBox="0 0 150 20" aria-hidden="true">
+    <g stroke-width="1.2" fill="none">
+      <path d="M2 3 L20 3 L28 10 L20 17 L2 17 Z" fill="#7FD1E8" stroke="#00A2D1"/>
+      <path d="M24 3 L42 3 L50 10 L42 17 L24 17 Z" fill="#FFFFFF" stroke="#B8B8B8"/>
+      <path d="M46 3 L64 3 L72 10 L64 17 L46 17 Z" fill="#FFFFFF" stroke="#B8B8B8"/>
+      <path d="M68 3 L86 3 L94 10 L86 17 L68 17 Z" fill="#FFFFFF" stroke="#B8B8B8"/>
+    </g>
+    <text x="102" y="14" font-family="Arial, sans-serif" font-size="9" letter-spacing="0.08em" fill="#707070">1/4</text>
+  </svg>
+
+  <!-- ============ THE EXHIBIT ============ -->
+  <div class="exhibit">
+  <svg viewBox="64 134 1152 478" role="img" aria-label="Stakeholder speech-bubble cluster">
+
+    <!-- panel field -->
+    <rect x="64" y="134" width="1152" height="478" rx="4" fill="var(--panel)" stroke="var(--panel-line)" stroke-width="1"/>
+    <text class="panel-cap" x="88" y="160">Comments on development</text>
+
+    <!-- two silhouettes at the centre (speaker = the interviewed stakeholder) -->
+    <g class="figure">
+      <circle cx="700" cy="330" r="21"/>
+      <path d="M700 355 C 666 355 655 392 655 430 L 745 430 C 745 392 734 355 700 355 Z"/>
+      <circle cx="762" cy="342" r="17" opacity=".7"/>
+      <path d="M762 362 C 735 362 726 392 726 430 L 798 430 C 798 392 789 362 762 362 Z" opacity=".7"/>
+    </g>
+
+    <!-- BUBBLES: stroke colour = speaker identity, tail points to the figures. -->
+    <!-- 1 · INDUSTRY (navy), large, left -->
+    <g stroke="var(--navy)" fill="#FFFFFF">
+      <rect class="bubble" x="92" y="184" width="278" height="112" rx="6"/>
+      <path d="M370 236 L684 318 L370 262 Z" fill="#FFFFFF" stroke="var(--navy)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="106" y="206">
+      <tspan x="106">The UK has lost up to two thirds of its market</tspan>
+      <tspan x="106" dy="14">in clinical trials. A UK start takes 2 years to</tspan>
+      <tspan x="106" dy="14">pick up the phone, the US 1 year, and China</tspan>
+      <tspan x="106" dy="14">has 40,000 pre-screened patients a month.</tspan>
+    </text>
+
+    <!-- 2 · INDUSTRY (navy), mid -->
+    <g stroke="var(--navy)" fill="#FFFFFF">
+      <rect class="bubble" x="396" y="172" width="214" height="76" rx="6"/>
+      <path d="M610 216 L692 300 L610 238 Z" fill="#FFFFFF" stroke="var(--navy)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="410" y="194">
+      <tspan x="410">Rising cost and development time due to</tspan>
+      <tspan x="410" dy="14">NHS overheads, different contracts and</tspan>
+      <tspan x="410" dy="14">approvals.</tspan>
+    </text>
+
+    <!-- 3 · NHS (cyan), top centre -->
+    <g stroke="var(--cyan)" fill="#FFFFFF">
+      <rect class="bubble" x="640" y="164" width="196" height="70" rx="6"/>
+      <path d="M738 234 L744 314 L716 234 Z" fill="#FFFFFF" stroke="var(--cyan)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="654" y="186">
+      <tspan x="654">There are opportunities to use</tspan>
+      <tspan x="654" dy="14">data assets more wisely in</tspan>
+      <tspan x="654" dy="14">the NHS.</tspan>
+    </text>
+
+    <!-- 4 · HMG / ALBs (yellow-green), right upper -->
+    <g stroke="var(--hmg)" fill="#FFFFFF">
+      <rect class="bubble" x="900" y="196" width="250" height="64" rx="6"/>
+      <path d="M900 254 L786 332 L900 268 Z" fill="#FFFFFF" stroke="var(--hmg)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="914" y="218">
+      <tspan x="914">Technology is locked up inside</tspan>
+      <tspan x="914" dy="14">a company.</tspan>
+    </text>
+
+    <!-- 5 · NHS (cyan), right -->
+    <g stroke="var(--cyan)" fill="#FFFFFF">
+      <rect class="bubble" x="930" y="282" width="220" height="56" rx="6"/>
+      <path d="M930 314 L790 350 L930 332 Z" fill="#FFFFFF" stroke="var(--cyan)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="944" y="304">
+      <tspan x="944">Chief executives are not</tspan>
+      <tspan x="944" dy="14">interested in research.</tspan>
+    </text>
+
+    <!-- 6 · INDUSTRY (navy), right lower -->
+    <g stroke="var(--navy)" fill="#FFFFFF">
+      <rect class="bubble" x="936" y="364" width="214" height="76" rx="6"/>
+      <path d="M936 400 L796 386 L936 424 Z" fill="#FFFFFF" stroke="var(--navy)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="950" y="386">
+      <tspan x="950">The ability to conduct trials is</tspan>
+      <tspan x="950" dy="14">limited by not adopting the</tspan>
+      <tspan x="950" dy="14">latest medicines.</tspan>
+    </text>
+
+    <!-- 7 · CHARITIES (green), lower left -->
+    <g stroke="var(--charity)" fill="#FFFFFF">
+      <rect class="bubble" x="232" y="416" width="250" height="80" rx="6"/>
+      <path d="M482 448 L684 400 L482 476 Z" fill="#FFFFFF" stroke="var(--charity)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="246" y="438">
+      <tspan x="246">Are we more focused on targets</tspan>
+      <tspan x="246" dy="14">that are marketable and flavour-of-</tspan>
+      <tspan x="246" dy="14">the-year than on government?</tspan>
+    </text>
+
+    <!-- 8 · NHS (cyan), bottom centre -->
+    <g stroke="var(--cyan)" fill="#FFFFFF">
+      <rect class="bubble" x="596" y="512" width="228" height="66" rx="6"/>
+      <path d="M684 512 L706 460 L700 512 Z" fill="#FFFFFF" stroke="var(--cyan)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="610" y="534">
+      <tspan x="610">Trial patient recruitment is limited by</tspan>
+      <tspan x="610" dy="14">clinician capacity in the trusts.</tspan>
+    </text>
+
+    <!-- 9 · HMG (yellow), bottom right -->
+    <g stroke="var(--hmg)" fill="#FFFFFF">
+      <rect class="bubble" x="900" y="474" width="246" height="62" rx="6"/>
+      <path d="M900 500 L788 452 L900 520 Z" fill="#FFFFFF" stroke="var(--hmg)" stroke-width="1.8"/>
+    </g>
+    <text class="btxt" x="914" y="496">
+      <tspan x="914">Incentives are not proportional to the</tspan>
+      <tspan x="914" dy="14">work put into clinical research.</tspan>
+    </text>
+
+    <!-- KEY: identity legend inside the exhibit field -->
+    <g>
+      <text class="keylab" x="88" y="470">Key:</text>
+      <line x1="88" y1="486" x2="118" y2="486" stroke="var(--navy)" stroke-width="3"/>
+      <text class="keytxt" x="126" y="490">Industry</text>
+      <line x1="88" y1="504" x2="118" y2="504" stroke="var(--cyan)" stroke-width="3"/>
+      <text class="keytxt" x="126" y="508">NHS</text>
+      <line x1="88" y1="522" x2="118" y2="522" stroke="var(--charity)" stroke-width="3"/>
+      <text class="keytxt" x="126" y="526">Charities</text>
+      <line x1="88" y1="540" x2="118" y2="540" stroke="var(--hmg)" stroke-width="3"/>
+      <text class="keytxt" x="126" y="544">HMG / ALBs</text>
+    </g>
+  </svg>
+  </div>
+
+  <!-- footer anatomy: source left, page | SECTION right, colophon under -->
+  <div class="foot-rule"></div>
+  <div class="source">Source: Stakeholder interviews (n=42), workshops and Deloitte analysis, 2015. Quotes edited for length; wording unverified.</div>
+  <div class="running"><span class="page-num">25 | DEVELOPMENT</span></div>
+  <div class="colophon">&#169; 2015 Deloitte MCS Limited. Private and confidential.</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>data-table-status-matrix — grouped heat-cell matrix, players x value-pool dimensions (1280x720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  data-table-status-matrix  ·  family data-table
+  Evidence: accenture__accenture_2023_post_parcel_industry_trends_2023 p10
+            ("grouped heat-cell table matrix — players grouped under CAGR band
+            headers, red/green cells, legend strip"), sheet
+            sw_sheets/accenture__accenture_2023_post_parcel_industry_trends_2023_s00.jpg
+            (pages p1-p10 sheet; p10 is row 1 col 5).
+            Secondary: deloitte__deloitte_digital_transformation_2018 p7
+            (boxed 5-column matrix with coloured header chips);
+            ey__ey_ey_infrastructure_barometer_italy_2020 p8 (comparison
+            matrix with row labels + aligned verdict cells).
+  ----------------------------------------------------------------------------
+  COLOR DEVIATION (deliberate, stated): the source uses red/green traffic-light
+  cells. The kit allows ONE accent + gray ramp, so the three verdict states
+  are encoded as a SILENCE ramp on one hue — weakest cells take the full
+  accent (they are what you must look at), strong cells stay quiet, mid cells
+  sit on the gray ramp. Reorder the ramp (strong loudest) by flipping the
+  three fills; the legend flips with them. Never add red/green to this page.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS; html rule maps 1rem == 1 stage px (1280x720 fixed stage).
+  Inside the SVG, 1 user unit == 1 stage px. Never put <sup> inside SVG
+  <text> (chromium drops everything after it) — use ¹ ² ³.
+  ----------------------------------------------------------------------------
+  DATA ARRAY — THE slot. Per player row: four verdicts + one number.
+      groups = [
+        { name: "SCALE PLAYERS — combined volume CAGR > 5% 2019-23", rows: [
+            { p: "Global integrator A",  v: ["strong","strong","stable","strong"], cagr: "+4.8", hl: true },
+            { p: "Pan-European integrator B", v: ["strong","stable","stable","strong"], cagr: "+3.1" } ] },
+        { name: "MID-TIER — volume CAGR 0 to 5%", rows: [
+            { p: "Cross-border network C",  v: ["stable","weak","weak","stable"],  cagr: "+1.2" },
+            { p: "Regional carrier D",      v: ["stable","strong","stable","stable"], cagr: "+2.4" },
+            { p: "Parcel specialist E",     v: ["weak","weak","stable","ne"],      cagr: "+0.3" } ] },
+        { name: "CHALLENGERS — volume CAGR below 0%", rows: [
+            { p: "Domestic courier F",      v: ["weak","weak","weak","stable"],    cagr: "-1.9" },
+            { p: "PUDO challenger G",       v: ["stable","weak","strong","weak"],  cagr: "-0.4" } ] }
+      ];
+    verdict -> fill/glyph:  strong = #E7D9F8 fill + "Strong" (quiet)
+                           stable = #D9D9D9 fill + "Stable" (gray ramp)
+                           weak   = #6E00C9 fill + "Weak", white text (the accent)
+                           ne     = dashed outline + "n.e." (no evidence)
+    Geometry rules (only these numbers move per cell):
+      * verdict cells are 124x24px rects centred on column centres
+        x = 520 / 660 / 800 / 940; row groups are
+        <g transform="translate(0, centreY)"> — add a row = +36 on that
+        group and everything below it.
+      * the numeric column is right-anchored x=1160, signed one decimal;
+        a negative prints "-x.x" and takes bold when the row is hl.
+      * hl row: 4px accent bar at x64 + bold label; verdict fills unchanged.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks; zero JS, zero
+  network calls.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Purple hexes quoted from the Accenture
+     reviews as reused in this kit's hbar-ranked (review color section):
+     #8E24EA brand purple, #6E00C9 banded/deep, #E7D9F8 tint, grays per
+     playbook. Header band + weak cells share ONE accent value (#6E00C9)
+     with white text — contrast 6.7:1. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;
+    --accent:      #6E00C9;   /* deep purple: verdict-weak cells + header chips */
+    --accent-2:    #8E24EA;   /* brand purple: glyph accents only */
+    --accent-tint: #E7D9F8;   /* "strong" cell fill */
+    --accent-text: #FFFFFF;   /* text ON the deep purple */
+    --gray-1:      #7A7A7A;
+    --gray-2:      #B8B8B8;   /* "stable" fills use gray-3; gray-2 = n.e. outline */
+    --gray-3:      #D9D9D9;   /* "stable" cell fill */
+    --gray-4:      #F2F2F2;   /* group bands */
+    --rule:        #C9C9C9;
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Helvetica Neue", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#545454; display:flex; justify-content:center; align-items:center; min-height:100vh; }
+  .stage{ position:relative; width:1280rem; height:720rem; background:var(--bg);
+          overflow:hidden; font-family:var(--font-body); }
+
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem; font-size:14rem;
+           letter-spacing:.08em; text-transform:uppercase; color:var(--gray-1); }
+  .title { position:absolute; left:64rem; top:60rem; width:1080rem;
+           font-family:var(--font-display); font-size:28rem; font-weight:700;
+           line-height:36rem; letter-spacing:-.015em; color:var(--ink); }
+  .claim { position:absolute; left:64rem; top:104rem; width:1080rem; font-size:15rem;
+           line-height:21rem; color:var(--gray-1); }
+  .claim sup{ font-size:10rem; }
+
+  svg.matrix{ position:absolute; left:0; top:0; width:1280rem; height:720rem; }
+
+  .foot{ position:absolute; left:64rem; bottom:24rem; width:940rem; font-size:11rem; line-height:15rem;
+         line-height:14rem; color:var(--gray-1); }
+  .stamp{ position:absolute; right:64rem; bottom:24rem; font-size:11rem; color:var(--gray-1); }
+  .stamp b{ color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker">3 · Competitive economics · European integrators</div>
+  <div class="title">Two of seven players sit on double-weak economics before the 2024 price round</div>
+  <div class="claim">Players grouped by combined parcel-volume CAGR, assessed on four value-pool dimensions;
+    CAGR is revenue-based 2019 = 100<sup>1</sup> — cells state the verdict, not the score</div>
+
+  <svg class="matrix" viewBox="0 0 1280 720" role="img"
+       aria-label="Heat-cell matrix of European integrators by volume trajectory, margin, cost base and digital readiness">
+
+    <!-- ================= header chips: band 198..232 ================= -->
+    <g id="header">
+      <rect x="64" y="198" width="1126" height="34" fill="var(--accent)"/>
+      <text x="80"  y="220" font-size="12.5" font-weight="700" fill="var(--accent-text)">Player / archetype</text>
+      <text x="520" y="220" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">Volume trajectory</text>
+      <text x="660" y="220" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">Net margin</text>
+      <text x="800" y="220" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">Cost base</text>
+      <text x="940" y="220" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">Digital readiness</text>
+      <text x="1160" y="220" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="end">Revenue CAGR 19-23</text>
+    </g>
+
+    <!-- ================= group 1 band + rows ================= -->
+    <g id="g1">
+      <rect x="64" y="238" width="1126" height="26" fill="var(--gray-4)"/>
+      <text x="80" y="256" font-size="11.5" font-weight="700" letter-spacing=".06em" fill="var(--gray-1)">SCALE PLAYERS — COMBINED VOLUME CAGR &gt; 5%</text>
+
+      <g transform="translate(0,283)">
+        <rect x="64" y="-12" width="4" height="24" fill="var(--accent-2)"/>
+        <text x="92" y="5" font-size="13.5" font-weight="700" fill="var(--ink)">Global integrator A</text>
+        <rect x="458" y="-12" width="124" height="24" fill="var(--accent-tint)"/><text x="520" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">▲ Strong</text>
+        <rect x="598" y="-12" width="124" height="24" fill="var(--accent-tint)"/><text x="660" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">▲ Strong</text>
+        <rect x="738" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="800" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <rect x="878" y="-12" width="124" height="24" fill="var(--accent-tint)"/><text x="940" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">▲ Strong</text>
+        <text x="1160" y="5" font-size="13.5" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+4.8%</text>
+      </g>
+
+      <g transform="translate(0,317)">
+        <text x="92" y="5" font-size="13.5" fill="var(--ink)">Pan-European integrator B</text>
+        <rect x="458" y="-12" width="124" height="24" fill="var(--accent-tint)"/><text x="520" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">▲ Strong</text>
+        <rect x="598" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="660" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <rect x="738" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="800" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <rect x="878" y="-12" width="124" height="24" fill="var(--accent-tint)"/><text x="940" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">▲ Strong</text>
+        <text x="1160" y="5" font-size="13.5" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+3.1%</text>
+      </g>
+    </g>
+
+    <!-- ================= group 2 ================= -->
+    <g id="g2">
+      <rect x="64" y="355" width="1126" height="26" fill="var(--gray-4)"/>
+      <text x="80" y="373" font-size="11.5" font-weight="700" letter-spacing=".06em" fill="var(--gray-1)">MID-TIER — VOLUME CAGR 0 TO 5%</text>
+
+      <g transform="translate(0,400)">
+        <text x="92" y="5" font-size="13.5" fill="var(--ink)">Cross-border network C</text>
+        <rect x="458" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="520" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <rect x="598" y="-12" width="124" height="24" fill="var(--accent)"/><text x="660" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <rect x="738" y="-12" width="124" height="24" fill="var(--accent)"/><text x="800" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <rect x="878" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="940" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <text x="1160" y="5" font-size="13.5" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+1.2%</text>
+      </g>
+
+      <g transform="translate(0,434)">
+        <text x="92" y="5" font-size="13.5" fill="var(--ink)">Regional carrier D</text>
+        <rect x="458" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="520" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <rect x="598" y="-12" width="124" height="24" fill="var(--accent-tint)"/><text x="660" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">▲ Strong</text>
+        <rect x="738" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="800" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <rect x="878" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="940" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <text x="1160" y="5" font-size="13.5" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+2.4%</text>
+      </g>
+
+      <g transform="translate(0,468)">
+        <text x="92" y="5" font-size="13.5" fill="var(--ink)">Parcel specialist E</text>
+        <rect x="458" y="-12" width="124" height="24" fill="var(--accent)"/><text x="520" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <rect x="598" y="-12" width="124" height="24" fill="var(--accent)"/><text x="660" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <rect x="738" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="800" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <rect x="878" y="-12" width="124" height="24" fill="#FFFFFF" stroke="var(--gray-2)" stroke-dasharray="4 3" stroke-width="1"/><text x="940" y="5" font-size="12" fill="var(--gray-1)" text-anchor="middle">n.e.</text>
+        <text x="1160" y="5" font-size="13.5" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+0.3%</text>
+      </g>
+    </g>
+
+    <!-- ================= group 3 (highlighted row inside) ================= -->
+    <g id="g3">
+      <rect x="64" y="486" width="1126" height="26" fill="var(--gray-4)"/>
+      <text x="80" y="504" font-size="11.5" font-weight="700" letter-spacing=".06em" fill="var(--gray-1)">CHALLENGERS — VOLUME CAGR BELOW 0%</text>
+
+      <g transform="translate(0,531)">
+        <rect x="64" y="-12" width="4" height="24" fill="var(--accent)"/>
+        <text x="92" y="5" font-size="13.5" font-weight="700" fill="var(--ink)">Domestic courier F²</text>
+        <rect x="458" y="-12" width="124" height="24" fill="var(--accent)"/><text x="520" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <rect x="598" y="-12" width="124" height="24" fill="var(--accent)"/><text x="660" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <rect x="738" y="-12" width="124" height="24" fill="var(--accent)"/><text x="800" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <rect x="878" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="940" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <text x="1160" y="5" font-size="13.5" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">-1.9%</text>
+      </g>
+
+      <g transform="translate(0,565)">
+        <text x="92" y="5" font-size="13.5" fill="var(--ink)">PUDO challenger G</text>
+        <rect x="458" y="-12" width="124" height="24" fill="var(--gray-3)"/><text x="520" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">● Stable</text>
+        <rect x="598" y="-12" width="124" height="24" fill="var(--accent)"/><text x="660" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <rect x="738" y="-12" width="124" height="24" fill="var(--accent-tint)"/><text x="800" y="5" font-size="12.5" fill="var(--ink)" text-anchor="middle">▲ Strong</text>
+        <rect x="878" y="-12" width="124" height="24" fill="var(--accent)"/><text x="940" y="5" font-size="12.5" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+        <text x="1160" y="5" font-size="13.5" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">-0.4%</text>
+      </g>
+    </g>
+
+    <!-- legend strip: the whole semantic contract, one line -->
+    <g id="legend">
+      <rect x="818" y="608" width="70" height="20" fill="var(--accent-tint)"/><text x="853" y="622" font-size="11" fill="var(--ink)" text-anchor="middle">▲ Strong</text>
+      <rect x="896" y="608" width="70" height="20" fill="var(--gray-3)"/><text x="931" y="622" font-size="11" fill="var(--ink)" text-anchor="middle">● Stable</text>
+      <rect x="974" y="608" width="70" height="20" fill="var(--accent)"/><text x="1009" y="622" font-size="11" font-weight="700" fill="var(--accent-text)" text-anchor="middle">▼ Weak</text>
+      <rect x="1052" y="608" width="70" height="20" fill="#FFFFFF" stroke="var(--gray-2)" stroke-dasharray="4 3" stroke-width="1"/><text x="1087" y="622" font-size="11" fill="var(--gray-1)" text-anchor="middle">n.e.</text>
+      <text x="64" y="622" font-size="11" fill="var(--gray-1)">Verdict legend — fills carry the meaning; cells state the verdict, not a numeric score</text>
+    </g>
+
+    <!-- footnotes -->
+    <g id="footnotes">
+      <text x="80" y="652" font-size="10.5" fill="var(--gray-1)"><tspan font-weight="700">1</tspan> Volume CAGR is parcel-count-weighted across markets; revenue CAGR on 2019 = 100 for listed/segment operations, EY analysis.</text>
+      <text x="80" y="666" font-size="10.5" fill="var(--gray-1)"><tspan font-weight="700">2</tspan> Highlighted player: three-weak profile + contracting volume — carried into the 2024 pricing scenario as a risk case.</text>
+    </g>
+  </svg>
+
+  <div class="foot">Source: Accenture Global Experts analysis of company annual reports, national regulators' parcel
+    statistics (2019-23), and Accenture client engagements; players anonymised pending client release.</div>
+  <div class="stamp">COMPETITIVE LANDSCAPE &nbsp;·&nbsp; <b>1</b></div>
+</div>
+</body>
+</html>

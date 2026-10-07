@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>methodology-source-columns — purple claim band + four icon-circle source columns, Accenture violet (1280×720)</title>
+<!--
+  Evidence: accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o (2021),
+  methodology pages p30/p31, read in sw_sheets/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_s03.jpg
+  (row 1 cols 1-2: "Methodology: Data sources used for this report" — full-width violet title
+  band over four icon-circle columns, each with bold Source: / Information: blocks, plus a
+  lavender "detailed methodology" inset; page number bottom-right, chevron bottom-left).
+  Palette: reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md
+  §Color system — band purple #6E0A8F..#6E00C9 family, light lavender tints #E7D9F8/#D9C6F4,
+  greys #7D7D7D/#B8B8B8, near-black #1A1A1A body text, white field.
+  ---------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit,
+  so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+-->
+<style>
+  :root{
+    --bg:       #FFFFFF;
+    --ink:      #1A1A1A;   /* body text — deck's near-black */
+    --accent:   #6E0A8F;   /* title-band / icon violet — deep purple field */
+    --accent-2: #8E24EA;   /* mid-violet: column heads, hairline ticks */
+    --tint:     #E7D9F8;   /* lavender inset field */
+    --tint-2:   #F4EDFB;   /* lavender column wash */
+    --gray-1:   #5A5A61;   /* body copy inside columns */
+    --gray-2:   #7D7D7D;   /* footnotes, source line, page number */
+    --gray-3:   #B8B8B8;   /* hairline rules on white */
+    --rule:     #D9D2E2;   /* column separators */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:  Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#101216; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- title band: full-bleed violet, 2-line claim title ---------- */
+  header.band{
+    position:absolute; left:0; right:0; top:0; height:96rem;
+    background:var(--accent); color:#FFFFFF;
+    display:flex; align-items:center; padding:0 56rem; box-sizing:border-box;
+  }
+  header.band h1{
+    margin:0; font-family:var(--font-display); font-weight:600; font-size:28rem;
+    line-height:1.16; letter-spacing:-.004em; max-width:1090rem;
+  }
+  header.band h1 .label{ font-weight:700; }        /* "Methodology:" prefix */
+  header.band .pageno-band{                          /* running head, right end of band */
+    margin-left:auto; font-size:11rem; letter-spacing:.12em; text-transform:uppercase;
+    color:#E7D9F8; padding-left:24rem; white-space:nowrap;
+  }
+
+  /* ---------- four icon-circle source columns ---------- */
+  main.cols{
+    position:absolute; left:56rem; right:56rem; top:132rem; bottom:150rem;
+    display:grid; grid-template-columns:repeat(4, 1fr); column-gap:36rem;
+  }
+  section.src{ display:flex; flex-direction:column; }
+  .icon{ width:76rem; height:76rem; flex:none; }
+  section.src .caption{
+    margin:8rem 0 0; font-family:var(--font-display); font-size:12.5rem; font-weight:700;
+    color:var(--accent); letter-spacing:.01em; min-height:2.6em;   /* holds two lines, keeps columns aligned */
+  }
+  .divider{ height:1px; background:var(--rule); margin:10rem 0 10rem; }
+  section.src dt{
+    font-family:var(--font-display); font-size:10.5rem; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--accent-2); margin-top:10rem;
+  }
+  section.src .block p{
+    margin:4rem 0 0; font-size:11.5rem; line-height:1.4; color:var(--gray-1);
+  }
+  section.src ul{ margin:5rem 0 0; padding:0; list-style:none; }
+  section.src ul li{
+    position:relative; padding-left:12rem; margin:0 0 4rem;
+    font-size:11.5rem; line-height:1.4; color:var(--gray-1);
+  }
+  section.src ul li::before{
+    content:""; position:absolute; left:0; top:.55em; width:5rem; height:5rem; background:var(--gray-3);
+  }
+
+  /* ---------- lavender inset: pointer to detailed methodology ---------- */
+  aside.inset{
+    position:absolute; left:56rem; bottom:104rem; width:370rem;
+    background:var(--tint); padding:12rem 16rem; box-sizing:border-box;
+    font-size:11.5rem; line-height:1.45; color:var(--ink); font-style:italic;
+  }
+  aside.inset b{ font-style:normal; }
+
+  /* ---------- fieldwork strip (sample / mode / window / weighting) ---------- */
+  section.field{
+    position:absolute; left:444rem; right:56rem; bottom:110rem;
+    border-top:2px solid var(--accent); padding-top:9rem;
+    display:flex; flex-wrap:wrap; column-gap:30rem; row-gap:4rem;
+  }
+  section.field .f-item{ display:flex; flex-direction:column; }
+  section.field .f-label{
+    font-family:var(--font-display); font-size:10rem; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--accent-2);
+  }
+  section.field .f-value{ font-size:12.5rem; line-height:1.35; color:var(--ink); margin-top:2rem; }
+
+  /* ---------- footer anatomy ---------- */
+  footer{
+    position:absolute; left:56rem; right:56rem; bottom:26rem;
+    display:flex; align-items:flex-start;
+  }
+  .chevron{ width:14rem; height:14rem; flex:none; margin-right:14rem; margin-top:1rem; }
+  .source{
+    font-size:10.5rem; line-height:1.5; color:var(--gray-2); max-width:1090rem;
+  }
+  .source sup{ font-size:8rem; }
+  .pageno{
+    margin-left:auto; padding-left:24rem; font-size:11.5rem; color:var(--gray-2);
+    font-family:var(--font-display);
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · FULL-BLEED TITLE BAND -->
+  <header class="band">
+    <h1><span class="label">Methodology:</span> four evidence streams, each fielded to a different population in early 2021</h1>
+    <div class="pageno-band">1&nbsp;|&nbsp;Methodology</div>
+  </header>
+
+  <!-- 2 · FOUR ICON-CIRCLE SOURCE COLUMNS -->
+  <main class="cols">
+
+    <section class="src" aria-label="Source: DCE survey">
+      <svg class="icon" viewBox="0 0 76 76" role="img" aria-label="Survey icon">
+        <circle cx="38" cy="38" r="38" fill="var(--accent)"/>
+        <rect x="24" y="22" width="28" height="34" rx="2" fill="none" stroke="#fff" stroke-width="3"/>
+        <line x1="30" y1="31" x2="46" y2="31" stroke="#fff" stroke-width="2.4"/>
+        <line x1="30" y1="38" x2="46" y2="38" stroke="#fff" stroke-width="2.4"/>
+        <circle cx="36" cy="48" r="3.4" fill="#fff"/>
+      </svg>
+      <div class="caption">DCE survey</div>
+      <div class="divider"></div>
+      <div class="block">
+        <dt>Source</dt>
+        <p>Discrete Choice Experiment (DCE) fielded to current nbn&trade; users, with respondents choosing between hypothetical plan bundles.</p>
+        <dt>Information</dt>
+        <ul>
+          <li>Consumer surplus derived from the nbn&trade; network by nbn users</li>
+          <li>Sample size: 1,120 users; ten attributes per task</li>
+          <li>Field dates: 08 Mar – 02 Apr 2021</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="src" aria-label="Source: NBN Co">
+      <svg class="icon" viewBox="0 0 76 76" role="img" aria-label="Company data icon">
+        <circle cx="38" cy="38" r="38" fill="var(--accent)"/>
+        <rect x="22" y="30" width="12" height="26" fill="#fff"/>
+        <rect x="37" y="22" width="12" height="34" fill="#fff" opacity=".75"/>
+        <rect x="49" y="40" width="6" height="16" fill="#fff" opacity=".55"/>
+      </svg>
+      <div class="caption">NBN&nbsp;Co</div>
+      <div class="divider"></div>
+      <div class="block">
+        <dt>Source</dt>
+        <p>Commercially licensed network-usage extracts provided by NBN Co under data-sharing agreement dated January 2021.</p>
+        <dt>Information</dt>
+        <ul>
+          <li>Aggregate, de-identified usage, download/upload speeds, peak/off-peak mix, plan price</li>
+          <li>Coverage: 8.3M premises active over the window</li>
+          <li>nbn&trade; activations, month by month</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="src" aria-label="Source: Accenture survey">
+      <svg class="icon" viewBox="0 0 76 76" role="img" aria-label="Accenture survey icon">
+        <circle cx="38" cy="38" r="38" fill="var(--accent)"/>
+        <rect x="22" y="26" width="24" height="26" rx="2" fill="none" stroke="#fff" stroke-width="3"/>
+        <line x1="46" y1="52" x2="56" y2="62" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="28" y1="34" x2="40" y2="34" stroke="#fff" stroke-width="2.4"/>
+        <line x1="28" y1="41" x2="37" y2="41" stroke="#fff" stroke-width="2.4"/>
+      </svg>
+      <div class="caption">Accenture survey</div>
+      <div class="divider"></div>
+      <div class="block">
+        <dt>Source</dt>
+        <p>Survey of nbn&trade; users conducted by the Accenture Consumer Pulse panel in February 2021.</p>
+        <dt>Information</dt>
+        <ul>
+          <li>Importance of and time spent on online activities over the nbn&trade; network</li>
+          <li>Reliance on key online services during COVID-19</li>
+          <li>Sample: 2,115 responses; 94% response quality after cleaning</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="src" aria-label="Source: secondary research">
+      <svg class="icon" viewBox="0 0 76 76" role="img" aria-label="Secondary research icon">
+        <circle cx="38" cy="38" r="38" fill="var(--accent)"/>
+        <path d="M26 52V26h12c4 0 7 3 7 7s-3 7-7 7h-4v12z" fill="none" stroke="#fff" stroke-width="3"/>
+        <circle cx="49" cy="31" r="7" fill="none" stroke="#fff" stroke-width="3"/>
+        <line x1="54" y1="36" x2="60" y2="42" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <div class="caption">Secondary research</div>
+      <div class="divider"></div>
+      <div class="block">
+        <dt>Source</dt>
+        <p>Published data from national statistical agencies and open government sources on household connectivity and digital adoption.</p>
+        <dt>Information</dt>
+        <ul>
+          <li>Benchmarks used to weight both survey streams</li>
+          <li>Reference: ABS 8731.0 household connectivity, Mar 2021 release</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- 3 · LAVENDER POINTER INSET -->
+  <aside class="inset">
+    <b>Detailed methodology</b> — weighting, model specifications and error bands are described on the next two pages, pp. 34–35.¹
+  </aside>
+
+  <!-- 4 · FIELDWORK STRIP -->
+  <section class="field" aria-label="Fieldwork summary">
+    <div class="f-item"><span class="f-label">Fieldwork window</span><span class="f-value">08 Mar – 02 Apr 2021</span></div>
+    <div class="f-item"><span class="f-label">Mode</span><span class="f-value">Online consumer panel + operator records</span></div>
+    <div class="f-item"><span class="f-label">Total sample</span><span class="f-value">3,235 respondents, 1,120 DCE²</span></div>
+    <div class="f-item"><span class="f-label">Weighting</span><span class="f-value">Raking to ABS household benchmarks³</span></div>
+  </section>
+
+  <!-- 5 · FOOTER -->
+  <footer>
+    <svg class="chevron" viewBox="0 0 14 14" role="img" aria-label="Accenture chevron"><path d="M1 1 L8 7 L1 13 L4.5 13 L11 7 L4.5 1 Z" fill="var(--accent)"/></svg>
+    <p class="source">Source: Accenture analysis of NBN Co network data and the Accenture Consumer Pulse and DCE surveys, March 2021; ABS 8731.0 Household Use of Information Technology, March 2021 release. ¹See weighting notes, p. 34. ²DCE sample after data cleaning. ³Raking on region, tenure and household composition.</p>
+    <div class="pageno">31</div>
+  </footer>
+
+</div>
+</body>
+</html>

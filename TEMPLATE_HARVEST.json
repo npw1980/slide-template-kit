@@ -1,0 +1,2532 @@
+{
+ "process-flow": {
+  "count": 112,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p17",
+    "arch": "chevron journey pipeline",
+    "charts": "icon flow diagram"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p7",
+    "arch": "cross-cutting challenges matrix: 4-stage chevron strip + icon grid",
+    "charts": "chevron stage strip + icon matrix (no statistical chart)"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p8",
+    "arch": "cross-cutting challenges matrix: 4-stage chevron strip + icon grid",
+    "charts": "chevron stage strip + icon matrix (no statistical chart)"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p9",
+    "arch": "cross-cutting challenges matrix: 4-stage chevron strip + icon grid",
+    "charts": "chevron stage strip + icon matrix (no statistical chart)"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p15",
+    "arch": "high-level pathway summary swimlane + time ribbon",
+    "charts": "process map (swimlanes, nodes, arrows) + stage chevron band"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p16",
+    "arch": "high-level pathway summary swimlane + time ribbon",
+    "charts": "process map (swimlanes, nodes, arrows) + stage chevron band"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_digital_transformation_2018_slides.csv",
+    "slide": "deloitte__deloitte_digital_transformation_2018_p13",
+    "arch": "drivers-to-solution flow",
+    "charts": "green block-arrow list; blue/orange architecture diagram"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p7",
+    "arch": "chevron flow + columns",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_ey_infrastructure_barometer_italy_2020_slides.csv",
+    "slide": "ey__ey_ey_infrastructure_barometer_italy_2020_p9",
+    "arch": "vertical-to-metric flow map with ribbon connectors",
+    "charts": "flow/ribbon + % cells"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2023_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2023__p20",
+    "arch": "statement + icon flow",
+    "charts": "none"
+   }
+  ]
+ },
+ "matrix-2x2": {
+  "count": 64,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p12",
+    "arch": "2x2 message grid",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p26",
+    "arch": "2x2 stakeholder-view panel",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p31",
+    "arch": "2x2 stakeholder-view panel",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p36",
+    "arch": "2x2 stakeholder-view panel",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p41",
+    "arch": "2x2 stakeholder-view panel",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p50",
+    "arch": "2x2 stakeholder-view panel",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024__p24",
+    "arch": "inclusion & belonging framework",
+    "charts": "4-block diagram"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_boardroom_agenda_2022_slides.csv",
+    "slide": "pwc_strategy__pwc_boardroom_agenda_2022__p35",
+    "arch": "2x2 icon quad",
+    "charts": "quad with arrow pointers"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20_slides.csv",
+    "slide": "pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20__p12",
+    "arch": "scenario matrix",
+    "charts": "2x2 matrix"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_from_promise_to_reality_does_business_really_care_about__slides.csv",
+    "slide": "pwc_strategy__pwc_from_promise_to_reality_does_business_really_care_about___p18",
+    "arch": "image-essay (priorities into strategy)",
+    "charts": "none"
+   }
+  ]
+ },
+ "two-column-text": {
+  "count": 40,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p3",
+    "arch": "3-column body with bold leads",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p4",
+    "arch": "executive summary: navy nav-panel + bold lead-in text",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p107",
+    "arch": "glossary two-column table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p4",
+    "arch": "two-column boxed comparison table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p7",
+    "arch": "bold-lead-in bullet list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p9",
+    "arch": "bold-lead-in bullet list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_2024_u_s_ceo_outlook_pulse_survey_2024_slides.csv",
+    "slide": "kpmg__kpmg_2024_u_s_ceo_outlook_pulse_survey_2024__p05",
+    "arch": "two-column ranked list (14 numbered bar rows)",
+    "charts": "numbered progress bars (14; 7 per column); no axis, no legend"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2023_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2023__p07",
+    "arch": "narrative columns + icon grid",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2023_manufacturing_survey_executive_summary_2023_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2023_manufacturing_survey_executive_summary_2023__p03",
+    "arch": "Text-only exhibit with lead-in bullets",
+    "charts": "None"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_2024_transact_middle_east_2024_slides.csv",
+    "slide": "pwc_strategy__pwc_2024_transact_middle_east_2024__p20",
+    "arch": "3-column narrative + photo",
+    "charts": "none"
+   }
+  ]
+ },
+ "word-cloud": {
+  "count": 2,
+  "exemplars": [
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0007",
+    "arch": "word cloud definition",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0016",
+    "arch": "vision word cloud",
+    "charts": "none"
+   }
+  ]
+ },
+ "cover-standalone": {
+  "count": 57,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p4",
+    "arch": "boustrophedon timeline (2006-2021)",
+    "charts": "none (publication cover thumbnails)"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p65",
+    "arch": "coverage-ratio bars + table",
+    "charts": "horizontal bars + small table"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p22",
+    "arch": "coverage matrix table",
+    "charts": "matrix table"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p23",
+    "arch": "coverage matrix table",
+    "charts": "matrix table"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p24",
+    "arch": "coverage matrix table",
+    "charts": "matrix table"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p25",
+    "arch": "coverage matrix table",
+    "charts": "matrix table"
+   },
+   {
+    "file": "reviews/ey__ey_ey_ifrs_9_impairment_banking_survey_2018_slides.csv",
+    "slide": "ey__ey_ey_ifrs_9_impairment_banking_survey_2018_p24",
+    "arch": "Data|Commentary twin-panel",
+    "charts": "grouped vertical bars"
+   },
+   {
+    "file": "reviews/ey__ey_ey_study_initial_coin_offerings_icos_the_class_of_2017_on_slides.csv",
+    "slide": "ey__ey_ey_study_initial_coin_offerings_icos_the_class_of_2017_on_p11",
+    "arch": "Text-only takeaways and outlook",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_global_tech_report_2022_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_global_tech_report_2022_2022__p14",
+    "arch": "display-only title page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2023_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2023__p92",
+    "arch": "contacts / back cover",
+    "charts": "none"
+   }
+  ]
+ },
+ "quote-visual-humor": {
+  "count": 1,
+  "exemplars": [
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0009",
+    "arch": "humor text plus still",
+    "charts": "none"
+   }
+  ]
+ },
+ "framework-named": {
+  "count": 16,
+  "exemplars": [
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p15",
+    "arch": "option-comparison scorecard table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_annual_report_2018_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_annual_report_2018__p25",
+    "arch": "scorecard-table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_annual_report_2018_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_annual_report_2018__p26",
+    "arch": "scorecard-table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_annual_report_2018_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_annual_report_2018__p44",
+    "arch": "data-table",
+    "charts": "table"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0011",
+    "arch": "partial SWOT table",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_21-62.csv",
+    "slide": "S0277",
+    "arch": "strategy map hierarchy",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_umbrex.csv",
+    "slide": "S1765",
+    "arch": "Porter's Five Forces",
+    "charts": "none"
+   }
+  ]
+ },
+ "scatter-bubble": {
+  "count": 41,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p20",
+    "arch": "dumbbell scatter by industry",
+    "charts": "scatter dot plot"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p08",
+    "arch": "bubble-scatter",
+    "charts": "bubble-scatter (quadrant annotated)"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p12",
+    "arch": "scatter-pair",
+    "charts": "bubble-scatter + paired before/after with zoom"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p22",
+    "arch": "bubble-scatter",
+    "charts": "bubble-scatter quadrant"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p24",
+    "arch": "scatter-pair",
+    "charts": "bubble-scatter \u00d72 (before/after)"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p52",
+    "arch": "walkthrough + trend charts",
+    "charts": "line + bubble/dot charts"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_2021_ceo_outlook_2021_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_2021_ceo_outlook_2021__p14",
+    "arch": "stat + comparison bars",
+    "charts": "75% bubble, 2-bar comparison (31% vs 72%)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024__p48",
+    "arch": "route to net zero",
+    "charts": "flow diagram (Disassociation->Decarbonisation->Net-zero with 6 icon bubbles and 2530/2030 lever bands)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_pulse_of_fintech_h1_21_2021_slides.csv",
+    "slide": "kpmg__kpmg_pulse_of_fintech_h1_2021__p11",
+    "arch": "deal-list map",
+    "charts": "numbered map bubbles"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_venture_pulse_q3_2024_2024_slides.csv",
+    "slide": "kpmg__kpmg_venture_pulse_q3_2024_2024__p17",
+    "arch": "top-10 deal map (bubbles + violet list panel)",
+    "charts": "map with numbered callouts"
+   }
+  ]
+ },
+ "text-bullets": {
+  "count": 167,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p2",
+    "arch": "solid-text-page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p10",
+    "arch": "persona-text-page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p16",
+    "arch": "persona-text-page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p19",
+    "arch": "persona-text-page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p52",
+    "arch": "text-plus-photo",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p5",
+    "arch": "key-highlights text page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p15",
+    "arch": "5-column text matrix",
+    "charts": "none (icon row + bullet columns)"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p11",
+    "arch": "bullet/bar matrix by industry",
+    "charts": "bar paired 2021vs2022"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p10",
+    "arch": "three numbered colored boxes + right bullets",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_digital_transformation_2018_slides.csv",
+    "slide": "deloitte__deloitte_digital_transformation_2018_p8",
+    "arch": "icon-block grid",
+    "charts": "none"
+   }
+  ]
+ },
+ "stacked-share": {
+  "count": 181,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p24",
+    "arch": "chart-plus-table",
+    "charts": "3D stacked columns; long table"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p7",
+    "arch": "respondent profile grid",
+    "charts": "donut + stacked bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p8",
+    "arch": "profile by segment",
+    "charts": "stacked bars + donut"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p9",
+    "arch": "profile by segment",
+    "charts": "stacked bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p15",
+    "arch": "cross-tab stacked bars",
+    "charts": "stacked bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p42",
+    "arch": "dual-panel stacked columns",
+    "charts": "stacked columns"
+   },
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p11",
+    "arch": "stacked column trend + magnified inset",
+    "charts": "stacked segmented columns (2007/2014/2021) + zoom column"
+   },
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p4",
+    "arch": "split narrative / stacked message blocks",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p5",
+    "arch": "stacked spend bar + vertical icon row",
+    "charts": "stacked bar"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p07",
+    "arch": "stacked-chart",
+    "charts": "stacked-100 column + stacked bars"
+   }
+  ]
+ },
+ "journey": {
+  "count": 5,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p39",
+    "arch": "sample funnel",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_global_entertainment_media_outlook_2023_2027_hong_kong_s_slides.csv",
+    "slide": "pwc_strategy__pwc_global_entertainment_media_outlook_2023_2027_hong_kong_s__p28",
+    "arch": "diagram",
+    "charts": "horizontal-band + column diagram (domain x use cases)"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0018",
+    "arch": "funnel diagram",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_21-62.csv",
+    "slide": "S0257",
+    "arch": "layered funnel process",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_21-62.csv",
+    "slide": "S0266",
+    "arch": "funnel-to-target",
+    "charts": "none"
+   }
+  ]
+ },
+ "quote-pull": {
+  "count": 248,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p13",
+    "arch": "persona-text-page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p28",
+    "arch": "pull-quote-page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p32",
+    "arch": "text-plus-photo",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p34",
+    "arch": "matrix-table",
+    "charts": "colored matrix table"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p36",
+    "arch": "pull-quote-page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p43",
+    "arch": "text-page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p25",
+    "arch": "likert bars + emphasis box",
+    "charts": "stacked horizontal bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p13",
+    "arch": "case-study",
+    "charts": "stat-circles + pull quote"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p25",
+    "arch": "illustrative quotes speech-bubble cluster",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_slides.csv",
+    "slide": "ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_p9",
+    "arch": "timeline + donuts",
+    "charts": "ruler timeline bars + 3 donut rings"
+   }
+  ]
+ },
+ "photo-bleed": {
+  "count": 9,
+  "exemplars": [
+   {
+    "file": "reviews/kpmg__kpmg_the_14th_five_year_plan_sector_impact_outlook_2021_slides.csv",
+    "slide": "kpmg__kpmg_the_14th_five_year_plan_sector_impact_outlook_2021__p11",
+    "arch": "sector page (photo)",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2023_manufacturing_survey_executive_summary_2023_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2023_manufacturing_survey_executive_summary_2023__p01",
+    "arch": "Four challenge cards with stock photos and captions",
+    "charts": "None"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_global_top_100_companies_by_market_capitalisation_2023_slides.csv",
+    "slide": "pwc_strategy__pwc_global_top_100_companies_by_market_capitalisation_2023__p03",
+    "arch": "photo-interstitial",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_iab_podcast_ad_revenue_study_an_analysis_of_the_largest__slides.csv",
+    "slide": "pwc_strategy__pwc_iab_podcast_ad_revenue_study_an_analysis_of_the_largest___p04",
+    "arch": "narrative with photo",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_global_family_business_survey_2018_2018_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_global_family_business_survey_2018_2018__p23",
+    "arch": "case continuation",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_global_family_business_survey_2018_2018_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_global_family_business_survey_2018_2018__p36",
+    "arch": "narrative text",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_s_march_2021_global_consumer_insights_pulse_survey_2_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_s_march_2021_global_consumer_insights_pulse_survey_2__p01",
+    "arch": "text-intro",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0029",
+    "arch": "text plus stock photo",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_101-134.csv",
+    "slide": "S1098",
+    "arch": "isolated-product-photo",
+    "charts": "none"
+   }
+  ]
+ },
+ "three-horizons": {
+  "count": 2,
+  "exemplars": [
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0030",
+    "arch": "three-horizon circles",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_umbrex.csv",
+    "slide": "S1782",
+    "arch": "three horizons",
+    "charts": "curve"
+   }
+  ]
+ },
+ "map-geo": {
+  "count": 8,
+  "exemplars": [
+   {
+    "file": "reviews/ey__ey_ey_ifrs_9_impairment_banking_survey_2018_slides.csv",
+    "slide": "ey__ey_ey_ifrs_9_impairment_banking_survey_2018_p4",
+    "arch": "participants profile (map + bars)",
+    "charts": "world map; small bar groups"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_venture_pulse_q3_2024_2024_slides.csv",
+    "slide": "kpmg__kpmg_venture_pulse_q3_2024_2024__p91",
+    "arch": "network/contact page (world map + adviser rail)",
+    "charts": "world map with office dots"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health__p31",
+    "arch": "office map",
+    "charts": "world map"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p14",
+    "arch": "market data: big stat + charts",
+    "charts": "line, column, world map"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le_slides.csv",
+    "slide": "pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le__p07",
+    "arch": "dark-geographic-map",
+    "charts": "world-map-markers, ranked-list"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20_slides.csv",
+    "slide": "pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20__p11",
+    "arch": "geography + table",
+    "charts": "choropleth-lite map (one highlight) + 10-row state table"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_five_global_shifts_reshaping_the_world_we_live_in_2022_slides.csv",
+    "slide": "pwc_strategy__pwc_five_global_shifts_reshaping_the_world_we_live_in_2022__p20",
+    "arch": "evidence",
+    "charts": "multi-line (wages/houses/S&P500 index); balloon-marker world map (youth unemployment); country trust bar columns (Trust/Neutral/Distrust)"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0033",
+    "arch": "sketched map example",
+    "charts": "none"
+   }
+  ]
+ },
+ "pyramid-tiers": {
+  "count": 5,
+  "exemplars": [
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0034",
+    "arch": "three-tier pyramid",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_21-62.csv",
+    "slide": "S0259",
+    "arch": "levels pyramid",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_21-62.csv",
+    "slide": "S0260",
+    "arch": "levels pyramid",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_21-62.csv",
+    "slide": "S0264",
+    "arch": "levels pyramid",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_21-62.csv",
+    "slide": "S0269",
+    "arch": "levels pyramid",
+    "charts": "none"
+   }
+  ]
+ },
+ "persona": {
+  "count": 4,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p8",
+    "arch": "persona-intro-grid",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024__p32",
+    "arch": "personal story + portrait",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__strategy_ereadiness_2023_survey_report_2023_slides.csv",
+    "slide": "pwc_strategy__strategy_ereadiness_2023_survey_report_2023__p43",
+    "arch": "persona grid",
+    "charts": "icon/illustration matrix"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0036",
+    "arch": "persona narrative",
+    "charts": "none"
+   }
+  ]
+ },
+ "sketch-checklist": {
+  "count": 2,
+  "exemplars": [
+   {
+    "file": "reviews/pwc_strategy__pwc_merging_with_a_spac_preparing_for_life_as_a_public_compa_slides.csv",
+    "slide": "pwc_strategy__pwc_merging_with_a_spac_preparing_for_life_as_a_public_compa__p15",
+    "arch": "diagram",
+    "charts": "none (A + B = C figure)"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0042",
+    "arch": "sketch plus checklist",
+    "charts": "none"
+   }
+  ]
+ },
+ "appendix-backmatter": {
+  "count": 44,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p32",
+    "arch": "back-matter",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p10",
+    "arch": "taxonomy triangle diagram",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p21",
+    "arch": "definitions table",
+    "charts": "table (term/definition)"
+   },
+   {
+    "file": "reviews/ey__ey_european_banking_barometer_2015_2015_slides.csv",
+    "slide": "ey__ey_european_banking_barometer_2015_2015_p46",
+    "arch": "contacts directory roster",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/ey__ey_generative_ai_in_retail_and_commercial_banking_2023_slides.csv",
+    "slide": "ey__ey_generative_ai_in_retail_and_commercial_banking_2023_p25",
+    "arch": "contacts page",
+    "charts": " none"
+   },
+   {
+    "file": "reviews/ey__ey_generative_ai_in_wealth_and_asset_management_2024_slides.csv",
+    "slide": "ey__ey_generative_ai_in_wealth_and_asset_management_2024_p25",
+    "arch": "contacts page (headshot grid)",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_2024_u_s_ceo_outlook_pulse_survey_2024_slides.csv",
+    "slide": "kpmg__kpmg_2024_u_s_ceo_outlook_pulse_survey_2024__p10",
+    "arch": "back matter / about page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_2020_ceo_outlook_covid_19_special_edition_2020_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_2020_ceo_outlook_covid_19_special_edition_2020__p22",
+    "arch": "Back matter",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_global_tech_report_2022_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_global_tech_report_2022_2022__p25",
+    "arch": "contact/back matter",
+    "charts": "social icon row"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022__p51",
+    "arch": "contacts/closer",
+    "charts": "none"
+   }
+  ]
+ },
+ "why-it-matters": {
+  "count": 9,
+  "exemplars": [
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0056",
+    "arch": "why-it-matters opener",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0061",
+    "arch": "why-it-matters numbered",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0065",
+    "arch": "why-it-matters numbered",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0068",
+    "arch": "why-it-matters numbered",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0071",
+    "arch": "why-it-matters numbered",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0074",
+    "arch": "why-it-matters numbered",
+    "charts": "none"
+   }
+  ]
+ },
+ "recommendation": {
+  "count": 19,
+  "exemplars": [
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p11",
+    "arch": "12-item numbered circle list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p6",
+    "arch": "driver-to-finding mapping table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p8",
+    "arch": "driver-to-recommendation mapping table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p14",
+    "arch": "two-sided comparison cost table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/ey__ey_risk_management_in_a_time_of_transformation_2024_slides.csv",
+    "slide": "ey__ey_risk_management_in_a_time_of_transformation_2024__p38",
+    "arch": "conclusion checklist",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022__p22",
+    "arch": "framework diagram",
+    "charts": "none (icon diagram)"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0057",
+    "arch": "recommendation page",
+    "charts": "none"
+   }
+  ]
+ },
+ "hbar": {
+  "count": 298,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p14",
+    "arch": "question bar page",
+    "charts": "horizontal bars + donut"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p16",
+    "arch": "sidebar list + chart",
+    "charts": "horizontal bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p19",
+    "arch": "likert stacked bars",
+    "charts": "stacked horizontal bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p21",
+    "arch": "sidebar list + chart",
+    "charts": "stacked horizontal bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p28",
+    "arch": "likert bars + priority box",
+    "charts": "stacked horizontal bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p32",
+    "arch": "likert stacked bars",
+    "charts": "stacked horizontal bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p6",
+    "arch": "waterfall/bridge bar chart",
+    "charts": "waterfall bar (3x3 group with +/-$ delta chips)"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p10",
+    "arch": "regional bar chart",
+    "charts": "bar horizontal grouped"
+   },
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p10",
+    "arch": "isometric cube bar chart + stats table",
+    "charts": "bar (3D cube bars); table"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p09",
+    "arch": "ranking-bars",
+    "charts": "horizontal bars + icon row"
+   }
+  ]
+ },
+ "donut": {
+  "count": 120,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p10",
+    "arch": "donut-pair current vs optimal",
+    "charts": "donut (pair)"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p20",
+    "arch": "allocation donut + interpretation bridge",
+    "charts": "donut/pie"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p23",
+    "arch": "dual-donut contrast with gap label",
+    "charts": "donut (pair)"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p24",
+    "arch": "multi-segment donut with radial labels",
+    "charts": "donut/pie"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p16",
+    "arch": "table+donut",
+    "charts": "icon table + donut with center claim"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_digital_transformation_2018_slides.csv",
+    "slide": "deloitte__deloitte_digital_transformation_2018_p3",
+    "arch": "donut + two-column argument",
+    "charts": "3-segment donut ring"
+   },
+   {
+    "file": "reviews/ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_slides.csv",
+    "slide": "ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_p23",
+    "arch": "claim pair B + donut",
+    "charts": "donut ring"
+   },
+   {
+    "file": "reviews/ey__ey_european_banking_barometer_2015_2015_slides.csv",
+    "slide": "ey__ey_european_banking_barometer_2015_2015_p26",
+    "arch": "donut matrix + comments",
+    "charts": "donut"
+   },
+   {
+    "file": "reviews/ey__ey_ey_ifrs_9_impairment_banking_survey_2018_slides.csv",
+    "slide": "ey__ey_ey_ifrs_9_impairment_banking_survey_2018_p30",
+    "arch": "paired-donut page",
+    "charts": "2 donuts (corporate/SME)"
+   },
+   {
+    "file": "reviews/ey__ey_ey_infrastructure_barometer_italy_2020_slides.csv",
+    "slide": "ey__ey_ey_infrastructure_barometer_italy_2020_p11",
+    "arch": "bars + dual donut yes/no pairs",
+    "charts": "bar; donut"
+   }
+  ]
+ },
+ "before-after": {
+  "count": 14,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p14",
+    "arch": "icon-cards",
+    "charts": "4 icon cards each paired bars"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p12",
+    "arch": "before/after chart pair",
+    "charts": "column bars"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p13",
+    "arch": "before/after chart pair",
+    "charts": "column bars"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p14",
+    "arch": "before/after chart pair",
+    "charts": "column bars"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p15",
+    "arch": "before/after chart pair",
+    "charts": "column bars"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p16",
+    "arch": "before/after chart pair",
+    "charts": "column bars"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_namibia_budget_on_a_plate_2019_2020_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_namibia_budget_on_a_plate_2019_2020_2019__p03",
+    "arch": "2-number callout + trend",
+    "charts": "overlapping circles + arrow + ovals"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0077",
+    "arch": "before-after comparison",
+    "charts": "bar"
+   }
+  ]
+ },
+ "stat-callout-list": {
+  "count": 10,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p8",
+    "arch": "3-column with kicker callouts",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_digital_transformation_2018_slides.csv",
+    "slide": "deloitte__deloitte_digital_transformation_2018_p27",
+    "arch": "dark stat panel + photo",
+    "charts": "stats callouts; hexagon cluster"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022__p32",
+    "arch": "blue title + stat callouts",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024__p01",
+    "arch": "4-lens highlights digest",
+    "charts": "stat callouts (bold key figures in copy)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024__p27",
+    "arch": "wellbeing stats page",
+    "charts": "stat callouts (5 numbers)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_boardroom_agenda_2022_slides.csv",
+    "slide": "pwc_strategy__pwc_boardroom_agenda_2022__p24",
+    "arch": "stat callouts + photo",
+    "charts": "3 coloured callout boxes"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20_slides.csv",
+    "slide": "pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20__p03",
+    "arch": "market sizing",
+    "charts": "stat blocks + mini bars + band chart"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_indonesia_s_sustainable_transformation_2021_slides.csv",
+    "slide": "pwc_strategy__pwc_indonesia_s_sustainable_transformation_2021__p03",
+    "arch": "framework_page",
+    "charts": "17-icon SDG pictogram band; orange stat callouts"
+   },
+   {
+    "file": "reviews/pwc_strategy__strategy_digital_auto_report_2023_2023_slides.csv",
+    "slide": "pwc_strategy__strategy_digital_auto_report_2023_2023__p24",
+    "arch": "portfolio-grid",
+    "charts": "matrix grid;callout list"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0083",
+    "arch": "stats callout list",
+    "charts": "none"
+   }
+  ]
+ },
+ "timeline": {
+  "count": 41,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p3",
+    "arch": "numbered framework boxes (roadmap)",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p8",
+    "arch": "engagement timeline",
+    "charts": "week-range Gantt-style bars"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p32",
+    "arch": "opportunity matrix table",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p44",
+    "arch": "opportunity matrix table",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p57",
+    "arch": "opportunity matrix table",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p66",
+    "arch": "opportunity matrix table",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p11",
+    "arch": "gantt roadmap grid with callout boxes",
+    "charts": "bars/timeline grid"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p26",
+    "arch": "programme explainer",
+    "charts": "timeline + diagram"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20_slides.csv",
+    "slide": "pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20__p09",
+    "arch": "timeline",
+    "charts": "noded horizontal timeline (11 nodes)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_indonesia_s_sustainable_transformation_2021_slides.csv",
+    "slide": "pwc_strategy__pwc_indonesia_s_sustainable_transformation_2021__p15",
+    "arch": "sector_market",
+    "charts": "line (education budget 2016-22); small bars (regional access); timeline chips"
+   }
+  ]
+ },
+ "isometric-illustration": {
+  "count": 7,
+  "exemplars": [
+   {
+    "file": "reviews/pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le_slides.csv",
+    "slide": "pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le__p08",
+    "arch": "takeaway+infographic",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le_slides.csv",
+    "slide": "pwc_strategy__pwc_crisis_preparedness_as_the_next_competitive_advantage_le__p09",
+    "arch": "big-number+illustration",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_s_march_2021_global_consumer_insights_pulse_survey_2_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_s_march_2021_global_consumer_insights_pulse_survey_2__p06",
+    "arch": "insight-text",
+    "charts": "isometric scene illustration (home office)"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0093",
+    "arch": "text plus isometric",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0098",
+    "arch": "text plus stat callouts",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_101-134.csv",
+    "slide": "S1009",
+    "arch": "technical-isometric-diagram",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_135-167.csv",
+    "slide": "S1476",
+    "arch": "diagram-isometric",
+    "charts": "none"
+   }
+  ]
+ },
+ "line-trend": {
+  "count": 50,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p38",
+    "arch": "line-chart",
+    "charts": "multi-series line chart"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p18",
+    "arch": "response-curve line chart + annotation",
+    "charts": "line"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_the_14th_five_year_plan_sector_impact_outlook_2021_slides.csv",
+    "slide": "kpmg__kpmg_the_14th_five_year_plan_sector_impact_outlook_2021__p01",
+    "arch": "intro + timeline",
+    "charts": "timeline (Two Centennials band, 1921/1949/2021/2035/2050)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_venture_pulse_q3_2024_2024_slides.csv",
+    "slide": "kpmg__kpmg_venture_pulse_q3_2024_2024__p08",
+    "arch": "analysis page (line chart + commentary)",
+    "charts": "multi-series line (2-5 series)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_venture_pulse_q3_2024_2024_slides.csv",
+    "slide": "kpmg__kpmg_venture_pulse_q3_2024_2024__p09",
+    "arch": "analysis page (line chart + commentary)",
+    "charts": "multi-series line (2-5 series)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_venture_pulse_q3_2024_2024_slides.csv",
+    "slide": "kpmg__kpmg_venture_pulse_q3_2024_2024__p24",
+    "arch": "analysis page (line chart + commentary)",
+    "charts": "multi-series line (2-5 series)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_21st_ceo_survey_the_anxious_optimist_in_the_corner_offic_slides.csv",
+    "slide": "pwc_strategy__pwc_21st_ceo_survey_the_anxious_optimist_in_the_corner_offic__p03",
+    "arch": "chart",
+    "charts": "line, 3-series with circle-% markers"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_rising_tide_slides.csv",
+    "slide": "pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_rising_tide__p07",
+    "arch": "exhibit",
+    "charts": "multi-line time series (2012-2020"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p38",
+    "arch": "sector intro + trend",
+    "charts": "line (world population)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_dissecting_the_2021_22_annual_budget_speech_2021_slides.csv",
+    "slide": "pwc_strategy__pwc_dissecting_the_2021_22_annual_budget_speech_2021__p11",
+    "arch": "line chart with markers",
+    "charts": "line + markers"
+   }
+  ]
+ },
+ "waterfall-bridge": {
+  "count": 6,
+  "exemplars": [
+   {
+    "file": "reviews/ey__ey_generative_ai_in_retail_and_commercial_banking_2023_slides.csv",
+    "slide": "ey__ey_generative_ai_in_retail_and_commercial_banking_2023_p9",
+    "arch": "2-panel split",
+    "charts": " bar; waterfall-with-dashed-outline"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_21st_ceo_survey_the_anxious_optimist_in_the_corner_offic_slides.csv",
+    "slide": "pwc_strategy__pwc_21st_ceo_survey_the_anxious_optimist_in_the_corner_offic__p27",
+    "arch": "photo bridge",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_1-20.csv",
+    "slide": "S0114",
+    "arch": "failure-mode waterfall",
+    "charts": "waterfall"
+   },
+   {
+    "file": "catalog_101-134.csv",
+    "slide": "S1187",
+    "arch": "landscape-photo",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_101-134.csv",
+    "slide": "S1190",
+    "arch": "landscape-photo",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_101-134.csv",
+    "slide": "S1192",
+    "arch": "landscape-photo",
+    "charts": "none"
+   }
+  ]
+ },
+ "divider-section": {
+  "count": 152,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p3",
+    "arch": "purple claim panel",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p02",
+    "arch": "contents",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p95",
+    "arch": "framing page: text + two mini pathway maps",
+    "charts": "process map (two small swimlane maps)"
+   },
+   {
+    "file": "reviews/ey__ey_risk_management_in_a_time_of_transformation_2024_slides.csv",
+    "slide": "ey__ey_risk_management_in_a_time_of_transformation_2024__p02",
+    "arch": "toc",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_risk_management_in_a_time_of_transformation_2024_slides.csv",
+    "slide": "ey__ey_risk_management_in_a_time_of_transformation_2024__p09",
+    "arch": "chapter divider",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_risk_management_in_a_time_of_transformation_2024_slides.csv",
+    "slide": "ey__ey_risk_management_in_a_time_of_transformation_2024__p16",
+    "arch": "chapter divider",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_ai_in_financial_reporting_and_audit_navigating_the_new__slides.csv",
+    "slide": "kpmg__kpmg_ai_in_financial_reporting_and_audit_navigating_the_new___p20",
+    "arch": "section headline + photo",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_genai_survey_2024_key_insights_2024_slides.csv",
+    "slide": "kpmg__kpmg_genai_survey_2024_key_insights_2024_p12",
+    "arch": "disciplined 4-panel grid",
+    "charts": "stacked bar x1 + horizontal bars x6"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_2020_ceo_outlook_covid_19_special_edition_2020_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_2020_ceo_outlook_covid_19_special_edition_2020__p05",
+    "arch": "Section opener + stat claim",
+    "charts": "none (hairline stat line only)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_2021_ceo_outlook_2021_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_2021_ceo_outlook_2021__p03",
+    "arch": "section divider (Key findings)",
+    "charts": "none"
+   }
+  ]
+ },
+ "scenario-forecast": {
+  "count": 6,
+  "exemplars": [
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p24",
+    "arch": "trend + forecast chart",
+    "charts": "line forecast (Big Data market)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p86",
+    "arch": "sector intro + forecast",
+    "charts": "line (supply/demand to 2037)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p99",
+    "arch": "per-resource explainer",
+    "charts": "3-column table"
+   },
+   {
+    "file": "reviews/pwc_strategy__strategy_electric_vehicle_sales_review_q4_2022_2023_slides.csv",
+    "slide": "pwc_strategy__strategy_electric_vehicle_sales_review_q4_2022_2023__p16",
+    "arch": "forecast_chart",
+    "charts": "line/area (multi-series)"
+   },
+   {
+    "file": "reviews/pwc_strategy__strategy_nigeria_bi_monthly_economic_outlook_2023_slides.csv",
+    "slide": "pwc_strategy__strategy_nigeria_bi_monthly_economic_outlook_2023__p5",
+    "arch": "logic map (drivers vs impacts)",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_101-134.csv",
+    "slide": "S1022",
+    "arch": "photo-mockup",
+    "charts": "none"
+   }
+  ]
+ },
+ "kpi-numerals": {
+  "count": 56,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p4",
+    "arch": "key-highlights text page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p10",
+    "arch": "KPI profile page",
+    "charts": "donut + stacked bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p11",
+    "arch": "KPI profile page",
+    "charts": "donut + stacked bars"
+   },
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p3",
+    "arch": "KPI stat-numeral grid + world map",
+    "charts": "map (choropleth-style fill)"
+   },
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p16",
+    "arch": "KPI numerals + map + timeline",
+    "charts": "US dot map + facility timeline + delivery-wave mini-table"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p7",
+    "arch": "KPI band + columns",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p14",
+    "arch": "giant KPI numeral row",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p25",
+    "arch": "stacked+callouts",
+    "charts": "stacked bars \u00d72 + banner"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_digital_transformation_2018_slides.csv",
+    "slide": "deloitte__deloitte_digital_transformation_2018_p2",
+    "arch": "stat band + evidence wall",
+    "charts": "giant-numeral KPI band; dot world map; small trend scatter; logo wall"
+   },
+   {
+    "file": "reviews/ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_slides.csv",
+    "slide": "ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_p8",
+    "arch": "methodology + profile",
+    "charts": "table + KPI numeral circles"
+   }
+  ]
+ },
+ "org-hub-map": {
+  "count": 4,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p25",
+    "arch": "synthesis-diagram",
+    "charts": "radial network diagram"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_insurance_reimagined_spotlight_on_trust_convergence_and__slides.csv",
+    "slide": "pwc_strategy__pwc_insurance_reimagined_spotlight_on_trust_convergence_and___p18",
+    "arch": "diagram + checklist",
+    "charts": "hub/circle diagram"
+   },
+   {
+    "file": "catalog_21-62.csv",
+    "slide": "S0385",
+    "arch": "7S network diagram",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_63-100.csv",
+    "slide": "S00627",
+    "arch": "org_chart_exhibit",
+    "charts": "isometric org chart"
+   }
+  ]
+ },
+ "agenda-contents": {
+  "count": 45,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p2",
+    "arch": "2x2 numbered agenda grid",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p3",
+    "arch": "contents / section-progress list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p12",
+    "arch": "contents / section-progress list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p20",
+    "arch": "contents / section-progress list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p44",
+    "arch": "contents / section-progress list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p69",
+    "arch": "contents / section-progress list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_digital_transformation_2018_slides.csv",
+    "slide": "deloitte__deloitte_digital_transformation_2018_p5",
+    "arch": "agenda list",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p2",
+    "arch": "agenda/TOC",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p2",
+    "arch": "table of contents",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_european_banking_barometer_2015_2015_slides.csv",
+    "slide": "ey__ey_european_banking_barometer_2015_2015_p2",
+    "arch": "table of contents",
+    "charts": "none"
+   }
+  ]
+ },
+ "data-table": {
+  "count": 73,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p55",
+    "arch": "regional-tables",
+    "charts": "tables"
+   },
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p10",
+    "arch": "grouped heat-cell table matrix",
+    "charts": "table matrix with red/green/grey cells"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p37",
+    "arch": "numeric matrix table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p38",
+    "arch": "numeric matrix table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_digital_transformation_2018_slides.csv",
+    "slide": "deloitte__deloitte_digital_transformation_2018_p7",
+    "arch": "kicker + photos + boxed matrix table",
+    "charts": "colored-header 5-column table (strategy/people/process/data/technology)"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p33",
+    "arch": "opportunity matrix table (cont.)",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_european_banking_barometer_2015_2015_slides.csv",
+    "slide": "ey__ey_european_banking_barometer_2015_2015_p5",
+    "arch": "boxed crosstab matrix table",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/ey__ey_ey_ifrs_9_impairment_banking_survey_2018_slides.csv",
+    "slide": "ey__ey_ey_ifrs_9_impairment_banking_survey_2018_p12",
+    "arch": "bank-level data matrix",
+    "charts": "raw table; summary bars"
+   },
+   {
+    "file": "reviews/ey__ey_ey_infrastructure_barometer_italy_2020_slides.csv",
+    "slide": "ey__ey_ey_infrastructure_barometer_italy_2020_p8",
+    "arch": "three-way comparison matrix with row icons",
+    "charts": "matrix table"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2023_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2023__p23",
+    "arch": "data table",
+    "charts": "table"
+   }
+  ]
+ },
+ "venn-diagram": {
+  "count": 3,
+  "exemplars": [
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p10",
+    "arch": "3-circle Venn + title/bullets",
+    "charts": "venn"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_annual_report_2018_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_annual_report_2018__p103",
+    "arch": "venn-diagram",
+    "charts": "none"
+   },
+   {
+    "file": "catalog_63-100.csv",
+    "slide": "S00638",
+    "arch": "venn_diagram",
+    "charts": "2-circle venn"
+   }
+  ]
+ },
+ "issue-tree": {
+  "count": 2,
+  "exemplars": [
+   {
+    "file": "catalog_umbrex.csv",
+    "slide": "S1752",
+    "arch": "hypothesis tree",
+    "charts": "tree (branching)"
+   },
+   {
+    "file": "catalog_umbrex.csv",
+    "slide": "S1753",
+    "arch": "issue tree",
+    "charts": "tree (branching)"
+   }
+  ]
+ },
+ "small-multiples": {
+  "count": 32,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p11",
+    "arch": "persona-data-page",
+    "charts": "3D bar small-multiples; gauge arcs; trust table"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p14",
+    "arch": "persona-data-page",
+    "charts": "3D bar small-multiples; gauge arcs; trust table"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p17",
+    "arch": "persona-data-page",
+    "charts": "3D bar small-multiples; gauge arcs; trust table"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p20",
+    "arch": "persona-data-page",
+    "charts": "3D bar small-multiples; gauge arcs; trust table"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p21",
+    "arch": "donut-comparison",
+    "charts": "3D donut rings x6"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p25",
+    "arch": "3-column + small multiples",
+    "charts": "bar small multiples"
+   },
+   {
+    "file": "reviews/ey__ey_european_banking_barometer_2015_2015_slides.csv",
+    "slide": "ey__ey_european_banking_barometer_2015_2015_p18",
+    "arch": "country small-multiples grid",
+    "charts": "small multiples"
+   },
+   {
+    "file": "reviews/ey__ey_ey_study_initial_coin_offerings_icos_the_class_of_2017_on_slides.csv",
+    "slide": "ey__ey_ey_study_initial_coin_offerings_icos_the_class_of_2017_on_p8",
+    "arch": "Bubble map + small-multiple bar rail",
+    "charts": "bubble chart; small-multiple bars"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_pulse_of_fintech_h1_21_2021_slides.csv",
+    "slide": "kpmg__kpmg_pulse_of_fintech_h1_2021__p07",
+    "arch": "small-multiples chart suite",
+    "charts": "6 x bars+line dual-axis"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_rising_tide_slides.csv",
+    "slide": "pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_rising_tide__p17",
+    "arch": "exhibit",
+    "charts": "small multiples: ranked bars Global + ~10 regions"
+   }
+  ]
+ },
+ "survey-question-exhibit": {
+  "count": 4,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p27",
+    "arch": "icon-grid",
+    "charts": "icon-card grid 2x4"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p45",
+    "arch": "icon-row",
+    "charts": "icon-card row 1x4"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_navigating_the_payments_matrix_charting_a_course_amid_ev_slides.csv",
+    "slide": "pwc_strategy__pwc_navigating_the_payments_matrix_charting_a_course_amid_ev__p02",
+    "arch": "headline+chart",
+    "charts": "combo line+bar with growth callouts"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_navigating_the_payments_matrix_charting_a_course_amid_ev_slides.csv",
+    "slide": "pwc_strategy__pwc_navigating_the_payments_matrix_charting_a_course_amid_ev__p22",
+    "arch": "action-table-page",
+    "charts": "continuation of Figure 8 matrix (Terminals/Fintechs/Alternative methods)"
+   }
+  ]
+ },
+ "vbar": {
+  "count": 97,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p30",
+    "arch": "bars-page",
+    "charts": "3D grouped columns"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p40",
+    "arch": "bars-page",
+    "charts": "3D grouped columns x8"
+   },
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p47",
+    "arch": "trust-matrix",
+    "charts": "grouped bars / percent grid"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p17",
+    "arch": "clustered columns",
+    "charts": "grouped columns"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p18",
+    "arch": "clustered columns",
+    "charts": "grouped columns"
+   },
+   {
+    "file": "reviews/accenture__accenture_2021_p_c_underwriting_survey_2021_slides.csv",
+    "slide": "accenture__accenture_2021_p_c_underwriting_survey_2021_p20",
+    "arch": "grouped columns",
+    "charts": "grouped columns"
+   },
+   {
+    "file": "reviews/accenture__accenture_2023_post_parcel_industry_trends_2023_slides.csv",
+    "slide": "accenture__accenture_2023_post_parcel_industry_trends_2023_p12",
+    "arch": "chart + numbered recommendation panel",
+    "charts": "horizontal/vertical bar (mail volume change) + stat callouts"
+   },
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p5",
+    "arch": "column chart + ratio table",
+    "charts": "clustered column; table"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p11",
+    "arch": "grouped bars by segment + delta arrows",
+    "charts": "grouped bar"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p27",
+    "arch": "bar + donut combo",
+    "charts": "grouped vertical bars + donut by funding type"
+   }
+  ]
+ },
+ "financial-table": {
+  "count": 28,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p31",
+    "arch": "synthesis-text",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p2",
+    "arch": "financial table with highlighted step-up column",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p3",
+    "arch": "financial table with highlighted step-up column",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p11",
+    "arch": "financial table with highlighted rows/columns",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_slides.csv",
+    "slide": "deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd_p12",
+    "arch": "multi-year cost table + placeholder box",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/ey__ey_ey_academic_resource_center_mission_2019_slides.csv",
+    "slide": "ey__ey_ey_academic_resource_center_mission_2019_p50",
+    "arch": "walkthrough kicker + lead sheet",
+    "charts": "financial table"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2023_manufacturing_survey_executive_summary_2023_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2023_manufacturing_survey_executive_summary_2023__p09",
+    "arch": "Initiative catalog by priority (tabbed columns)",
+    "charts": "Tabbed multi-column list"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_2024_transact_middle_east_2024_slides.csv",
+    "slide": "pwc_strategy__pwc_2024_transact_middle_east_2024__p24",
+    "arch": "2-column sector detail (Energy/Utilities",
+    "charts": " Financial services)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_21st_ceo_survey_the_anxious_optimist_in_the_corner_offic_slides.csv",
+    "slide": "pwc_strategy__pwc_21st_ceo_survey_the_anxious_optimist_in_the_corner_offic__p23",
+    "arch": "chart",
+    "charts": "diverging paired bars by region (8 rows)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_crossing_the_lines_how_fintech_is_propelling_fs_and_tmt__slides.csv",
+    "slide": "pwc_strategy__pwc_crossing_the_lines_how_fintech_is_propelling_fs_and_tmt___p28",
+    "arch": "back matter",
+    "charts": "none"
+   }
+  ]
+ },
+ "methodology": {
+  "count": 34,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_2019_accenture_global_financial_services_consumer__slides.csv",
+    "slide": "accenture__accenture_2019_accenture_global_financial_services_consumer__p54",
+    "arch": "methodology",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p34",
+    "arch": "methodology columns",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p36",
+    "arch": "methodology columns",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p30",
+    "arch": "methodology-iconrow",
+    "charts": "icon circles \u00d74 + text columns"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p31",
+    "arch": "text-methodology",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p194",
+    "arch": "formulas/methodology page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_european_banking_barometer_2015_2015_slides.csv",
+    "slide": "ey__ey_european_banking_barometer_2015_2015_p3",
+    "arch": "narrative intro page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_ey_infrastructure_barometer_italy_2020_slides.csv",
+    "slide": "ey__ey_ey_infrastructure_barometer_italy_2020_p3",
+    "arch": "two-column descriptive/methodology text",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_ey_study_initial_coin_offerings_icos_the_class_of_2017_on_slides.csv",
+    "slide": "ey__ey_ey_study_initial_coin_offerings_icos_the_class_of_2017_on_p12",
+    "arch": "Methodology: highlighted limitation line + approach bullets + source-link columns",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_generative_ai_in_retail_and_commercial_banking_2023_slides.csv",
+    "slide": "ey__ey_generative_ai_in_retail_and_commercial_banking_2023_p3",
+    "arch": "methodology / callout+columns",
+    "charts": "none"
+   }
+  ]
+ },
+ "case-study": {
+  "count": 60,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p26",
+    "arch": "case-study card grid",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p15",
+    "arch": "case-study",
+    "charts": "stat-circles"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p26",
+    "arch": "case-study",
+    "charts": "stat-circles"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p43",
+    "arch": "3-column case study (Background / Issues / Challenges)",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p67",
+    "arch": "3-column case study (Background / Issues / Challenges)",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_slides.csv",
+    "slide": "deloitte__deloitte_accelerated_access_review_uk_mapping_2015_p68",
+    "arch": "3-column case study (Background / Issues / Challenges)",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022__p18",
+    "arch": "case-study cards (blue)",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2023_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2023__p25",
+    "arch": "case study",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024__p14",
+    "arch": "ESG assurance + case sidebars",
+    "charts": "case-study boxes"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p46",
+    "arch": "case study",
+    "charts": "map grid + photo"
+   }
+  ]
+ },
+ "icon-column": {
+  "count": 13,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p28",
+    "arch": "3-pillar capability map",
+    "charts": "icon row"
+   },
+   {
+    "file": "reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_slides.csv",
+    "slide": "accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_p30",
+    "arch": "3-column maturity spectrum",
+    "charts": "icon column headers"
+   },
+   {
+    "file": "reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o_slides.csv",
+    "slide": "accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o__p03",
+    "arch": "stat-wall",
+    "charts": "big-number tiles, icon row"
+   },
+   {
+    "file": "reviews/deloitte__deloitte_digital_transformation_2018_slides.csv",
+    "slide": "deloitte__deloitte_digital_transformation_2018_p28",
+    "arch": "12-box feature grid",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_2021_ceo_outlook_2021_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_2021_ceo_outlook_2021__p22",
+    "arch": "contact / back page",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_2022_ceo_outlook_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_2022_ceo_outlook_2022__p03",
+    "arch": "theme-map-icons",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022__p37",
+    "arch": "icon medallion row",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_dissecting_the_2023_24_annual_budget_speech_2023_slides.csv",
+    "slide": "pwc_strategy__pwc_dissecting_the_2023_24_annual_budget_speech_2023__p02",
+    "arch": "key-message-cards",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_namibia_budget_on_a_plate_2019_2020_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_namibia_budget_on_a_plate_2019_2020_2019__p32",
+    "arch": "2\u00d75 numbered card grid",
+    "charts": "none (card grid)"
+   },
+   {
+    "file": "reviews/pwc_strategy__strategy_ereadiness_2023_survey_report_2023_slides.csv",
+    "slide": "pwc_strategy__strategy_ereadiness_2023_survey_report_2023__p07",
+    "arch": "framework/segmentation",
+    "charts": "small bars; numbered chips"
+   }
+  ]
+ },
+ "risk-opportunity": {
+  "count": 12,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_accenture_investor_analyst_conference_2022_slides.csv",
+    "slide": "accenture__accenture_accenture_investor_analyst_conference_2022_p9",
+    "arch": "world map with value callouts + industry list",
+    "charts": "map; text table"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_genai_survey_2024_key_insights_2024_slides.csv",
+    "slide": "kpmg__kpmg_genai_survey_2024_key_insights_2024_p9",
+    "arch": "risk ranking pill bars",
+    "charts": "horizontal rounded bars x3"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_2020_ceo_outlook_covid_19_special_edition_2020_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_2020_ceo_outlook_covid_19_special_edition_2020__p03",
+    "arch": "Key-findings summary",
+    "charts": "none (3 themed text blocks)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_2022_ceo_outlook_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_2022_ceo_outlook_2022__p05",
+    "arch": "stat-pair-plus-risk-list",
+    "charts": "big-stat, numbered list"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_boardroom_agenda_2022_slides.csv",
+    "slide": "pwc_strategy__pwc_boardroom_agenda_2022__p25",
+    "arch": "radial emblem + bracketed argument",
+    "charts": "ring emblem + dotted bracket"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p62",
+    "arch": "planning/risk explainer",
+    "charts": "table"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_pwc_annual_report_2018_slides.csv",
+    "slide": "pwc_strategy__pwc_pwc_annual_report_2018__p49",
+    "arch": "text-body",
+    "charts": "none"
+   }
+  ]
+ },
+ "dual-axis-combo": {
+  "count": 34,
+  "exemplars": [
+   {
+    "file": "reviews/accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_slides.csv",
+    "slide": "accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019_p19",
+    "arch": "chart + numbered key-insights column",
+    "charts": "line (response curves)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_slides.csv",
+    "slide": "kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022__p13",
+    "arch": "chart + table exhibit",
+    "charts": "column + dual-axis line (FY19-21) + full data table"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_the_14th_five_year_plan_sector_impact_outlook_2021_slides.csv",
+    "slide": "kpmg__kpmg_the_14th_five_year_plan_sector_impact_outlook_2021__p09",
+    "arch": "sector page (2 figures)",
+    "charts": "column + orange growth line x2 (Figs 14,15 size & growth)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_venture_pulse_q3_2024_2024_slides.csv",
+    "slide": "kpmg__kpmg_venture_pulse_q3_2024_2024__p12",
+    "arch": "analysis page (2 charts + commentary)",
+    "charts": "dual-axis column+line x2"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_venture_pulse_q3_2024_2024_slides.csv",
+    "slide": "kpmg__kpmg_venture_pulse_q3_2024_2024__p13",
+    "arch": "analysis page (1 chart + commentary)",
+    "charts": "dual-axis column+line"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_venture_pulse_q3_2024_2024_slides.csv",
+    "slide": "kpmg__kpmg_venture_pulse_q3_2024_2024__p15",
+    "arch": "analysis page (1 chart + commentary)",
+    "charts": "dual-axis column+line"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20_slides.csv",
+    "slide": "pwc_strategy__pwc_e_mobility_in_india_market_paradigms_and_ways_to_play_20__p22",
+    "arch": "market + table",
+    "charts": "dual-axis line/bar (deals & value) + funding table"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_merging_with_a_spac_preparing_for_life_as_a_public_compa_slides.csv",
+    "slide": "pwc_strategy__pwc_merging_with_a_spac_preparing_for_life_as_a_public_compa__p05",
+    "arch": "data-chart+table",
+    "charts": "combo column+line; 2 data tables"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_namibia_national_budget_2024_25_for_our_humanity_now_s_t_slides.csv",
+    "slide": "pwc_strategy__pwc_namibia_national_budget_2024_25_for_our_humanity_now_s_t__p05",
+    "arch": "bars + line dual axis",
+    "charts": "crimson columns with % labels (9-15%) + black line interest payments"
+   },
+   {
+    "file": "reviews/pwc_strategy__strategy_6_th_ico_sto_report_a_strategic_perspective_2020_slides.csv",
+    "slide": "pwc_strategy__strategy_6_th_ico_sto_report_a_strategic_perspective_2020__p09",
+    "arch": "line-and-area-chart",
+    "charts": "combo-line-chart + area-chart"
+   }
+  ]
+ },
+ "waffle-heat": {
+  "count": 8,
+  "exemplars": [
+   {
+    "file": "reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_slides.csv",
+    "slide": "deloitte__deloitte_new_mexico_state_university_staffing_study_opportun_p13",
+    "arch": "heatmap matrix",
+    "charts": "colored numeric cell matrix"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_ai_in_financial_reporting_and_audit_navigating_the_new__slides.csv",
+    "slide": "kpmg__kpmg_ai_in_financial_reporting_and_audit_navigating_the_new___p11",
+    "arch": "waffle-grid figure",
+    "charts": "dot-matrix waffle grids (Figure 5, 12 grids)"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2022_manufacturing_survey_executive_summary_2022_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2022_manufacturing_survey_executive_summary_2022__p06",
+    "arch": "rank matrix / icon heat grid",
+    "charts": "none (icon matrix)"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health__p10",
+    "arch": "heat matrix",
+    "charts": "10 departments x 7 geographies with in-cell % bars + status arrows"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2023_apac_hospital_insights_survey_findings_for_health__p24",
+    "arch": "heat matrix",
+    "charts": "ranked value matrix x countries + delta arrows"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2023_manufacturing_survey_executive_summary_2023_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2023_manufacturing_survey_executive_summary_2023__p08",
+    "arch": "Icon-cell heat matrix by end market",
+    "charts": "Icon matrix / categorical heat grid"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p120",
+    "arch": "case study",
+    "charts": "heatmap + photos"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_global_workforce_hopes_and_fears_survey_2022_2022_slides.csv",
+    "slide": "pwc_strategy__pwc_global_workforce_hopes_and_fears_survey_2022_2022__p13",
+    "arch": "Title + waffle grid + cohort x statement bar matrix",
+    "charts": "waffle grid, matrix bars"
+   }
+  ]
+ },
+ "exec-summary-ataglance": {
+  "count": 15,
+  "exemplars": [
+   {
+    "file": "reviews/ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_slides.csv",
+    "slide": "ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_p3",
+    "arch": "exec summary text",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_slides.csv",
+    "slide": "ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_p4",
+    "arch": "exec summary + pull quote",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_slides.csv",
+    "slide": "ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_p5",
+    "arch": "exec summary + photo",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_slides.csv",
+    "slide": "ey__ey_can_resilience_shape_a_shifting_landscape_2022_global_alt_p6",
+    "arch": "exec summary text + photo",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_ey_study_initial_coin_offerings_icos_the_class_of_2017_on_slides.csv",
+    "slide": "ey__ey_ey_study_initial_coin_offerings_icos_the_class_of_2017_on_p2",
+    "arch": "Exec-summary front matter: photo title block + 4 number-led finding bullets",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/ey__ey_risk_management_in_a_time_of_transformation_2024_slides.csv",
+    "slide": "ey__ey_risk_management_in_a_time_of_transformation_2024__p04",
+    "arch": "key-takeaway page",
+    "charts": "stat-callout"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_ai_in_financial_reporting_and_audit_navigating_the_new__slides.csv",
+    "slide": "kpmg__kpmg_ai_in_financial_reporting_and_audit_navigating_the_new___p03",
+    "arch": "key-findings stat summary",
+    "charts": "donut gauge grid (11 rings)"
+   },
+   {
+    "file": "reviews/kpmg__kpmg_genai_survey_2024_key_insights_2024_slides.csv",
+    "slide": "kpmg__kpmg_genai_survey_2024_key_insights_2024_p2",
+    "arch": "exec-summary bullets + methodology box",
+    "charts": "none"
+   },
+   {
+    "file": "reviews/l-e-k-consulting__l_e_k_2018_manufacturing_priorities_survey_2018_slides.csv",
+    "slide": "l-e-k-consulting__l_e_k_2018_manufacturing_priorities_survey_2018__p01",
+    "arch": "key findings, 3 icon columns",
+    "charts": "none (icon+bullets only)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_global_consumer_insights_survey_2023_middle_east_finding_slides.csv",
+    "slide": "pwc_strategy__pwc_global_consumer_insights_survey_2023_middle_east_finding__p02",
+    "arch": "key findings list",
+    "charts": "none"
+   }
+  ]
+ },
+ "model-diagram": {
+  "count": 1,
+  "exemplars": [
+   {
+    "file": "reviews/pwc_strategy__pwc_2019_global_treasury_benchmarking_survey_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_2019_global_treasury_benchmarking_survey_2019__p10",
+    "arch": "target operating model diagram",
+    "charts": "none (box tree + callout leaders)"
+   }
+  ]
+ },
+ "value-chain": {
+  "count": 11,
+  "exemplars": [
+   {
+    "file": "reviews/pwc_strategy__pwc_boardroom_agenda_2022_slides.csv",
+    "slide": "pwc_strategy__pwc_boardroom_agenda_2022__p27",
+    "arch": "question tile matrix",
+    "charts": "6-7 coloured tiles"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p41",
+    "arch": "value chain 3-box",
+    "charts": "photo grid (4)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p53",
+    "arch": "value chain 3-box",
+    "charts": "photo strip (3)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p64",
+    "arch": "value chain 3-box",
+    "charts": "photos (2)"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p76",
+    "arch": "value chain 3-box",
+    "charts": "photos (2) + callouts"
+   },
+   {
+    "file": "reviews/pwc_strategy__pwc_copernicus_market_report_2019_slides.csv",
+    "slide": "pwc_strategy__pwc_copernicus_market_report_2019__p89",
+    "arch": "value chain 3-box",
+    "charts": "table + callouts"
+   }
+  ]
+ }
+}

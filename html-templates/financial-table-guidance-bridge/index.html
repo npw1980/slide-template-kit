@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>financial-table-guidance-bridge — prior vs. current guidance table with delta pills (1280x720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  financial-table-guidance-bridge  ·  family financial-table
+  Evidence (primary): accenture__accenture_accenture_investor_analyst_conf
+            erence_2022 — p11 "Continued Strong Momentum": two guidance
+            columns (Original FY22 Guidance (September) vs Current FY22
+            Guidance (March)), the CURRENT column sitting inside one tall
+            lavender panel, sub-line detail under the values ("+10 bps",
+            "21% to 23% adjusted YoY growth") and "At least" qualifiers on
+            the cash line. Sheet:
+            sw_sheets/accenture__accenture_accenture_investor_analyst_conference_2022_s01.jpg
+            (pages p11-p20; p11 = row 2 col 2). Same device repeats on p17 of
+            the deck (review line 21 counts 4 pages).
+            Secondary: p3 of the deck (same right-hand "Illustrative
+            Cumulative" boxed-column pattern) ..._s00.jpg p3.
+  Palette provenance: same deck and same sampling as financial-table-step-up
+            (review line 18: purple = own figures, gray = comparator,
+            magenta/purple box = the number to remember). The lavender panel
+            here is the "violet tint" variant of that device, not magenta,
+            because the panel encloses a whole COLUMN of the company's own
+            forward figures (violet = Accenture's own numbers per the review).
+            Sampled violet ~rgb(147,116,192); tint deepened/kept for white
+            stage (see token comments).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL at the viewport fit, so
+    coordinates here equal the px values quoted in MANUAL.md 1:1, and the SVG
+    viewBox makes 1 user unit == 1 stage px (SVG font sizes match 1:1).
+    NOTE: never put HTML <sup> inside SVG <text> (chromium truncates);
+    footnote markers print as unicode ¹ ² ³ via <tspan baseline-shift>.
+  ----------------------------------------------------------------------------
+  DATA ARRAY — this is THE slot. Swap the numbers; nothing else moves.
+    rows = [                        // 5 rows, pitch 60, first baseline 240
+      { label:"Revenue growth (local currency)¹",
+        prior:"12% to 15%",  now:"16% to 19%",   detail:"",
+        delta:{dir:"up",   txt:"+4 pts"} },
+      { label:"Operating margin",
+        prior:"15.2% to 15.4%", now:"15.6% to 15.8%", detail:"+10 bps vs. run-rate",
+        delta:{dir:"up",   txt:"+20 bps"} },
+      { label:"Adjusted earnings per share",
+        prior:"$9.90 to $10.18", now:"$10.61 to $10.81", detail:"21% to 23% adj. YoY growth",
+        delta:{dir:"up",   txt:"+6.7%"} },
+      { label:"Free cash flow (YoY)",
+        prior:"-11% to -5%", now:"-11% to -5%", detail:"",
+        delta:{dir:"flat", txt:"unchanged"} },     // <- gray pill, not accent
+      { label:"Cash returned to shareholders",
+        prior:"At least $16.3B", now:"At least $17.1B", detail:"",
+        delta:{dir:"up", txt:"+$0.8B"} }
+    ];
+    GEOMETRY RULES (the only numbers that change per cell):
+      * label: anchor=start x=190 (left-aligned, as in p11); 15px; the metric
+        the delta commentary names gets font-weight 700 + --ink (ONE row only).
+      * prior column values: anchor=end at x=792 (inside group A, x520..816).
+      * current column values: anchor=end at x=1030, INSIDE the violet panel
+        (rect x=832 w=240 y=140 h=386) — the panel is the whole point: the
+        column, not the cells, is highlighted.
+      * detail sub-line: anchor=end, same x as its column, baseline = value
+        baseline + 18, 11px --gray-1. Appears ONLY where a qualifier is needed
+        (3 of 5 rows max); a detail on every row is a wall of text.
+      * delta pills: rect x=1112 w=84 h=24 rx=12 at baseline-17; text centered
+        x=1158, 12px. dir "up"  -> fill --accent-tint, stroke --accent-mid,
+        text --accent bold, prefix glyph ▲. dir "down" -> same shape, glyph ▼,
+        text --ink. dir "flat" -> fill --gray-3, stroke --gray-2, text
+        --gray-1, NO arrow glyph.
+      * rows sit in one <g transform="translate(0, 60*i)">, content baseline
+        240 inside. Panel and header captions live OUTSIDE the row groups so
+        adding a row never moves them.
+      * header captions: two lines, y=166 / y=184, centered over their column
+        (group A center x=666; panel center x=952; pill center x=1158);
+        neutral hairline under group A only, x520->x816 at y=200.
+      * ranges print "x to y" in words (NOT an en-dash "x–y") because a
+        guidance range read as a subtraction is the classic misread.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+    webfonts, no @import, no JavaScript, no <script>. No network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. The panel is the emphasis device here, so the
+     accent appears as: panel fill (8% violet), panel stroke, pill text/stroke.
+     Every non-emphasis number is gray ramp. No third hue. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #16202E;   /* current-column numerals + emphasis label */
+    --ink-soft:    #3C4553;   /* prior-column numerals (one step lighter) */
+    --accent:      #6E2C95;   /* violet, deepened from sampled #9370C0 (8.6:1 on white) */
+    --accent-mid:  #8A5CB8;   /* panel stroke */
+    --accent-tint: #F0E9F8;   /* panel fill (violet ~8%) and "up" pill fill */
+    --highlight:   #A34E98;   /* reserved: magenta if a single figure must be boxed instead of a column */
+    --gray-1:      #7C8797;   /* sub-lines, footnotes, source, flat pill text */
+    --gray-2:      #B8BFC9;   /* flat pill stroke */
+    --gray-3:      #EDEFF2;   /* flat pill fill */
+    --rule:        #D2D6DC;   /* neutral hairlines */
+    --font-display:"Helvetica Neue", Arial, sans-serif;  /* stands in for Accenture House grotesque */
+    --font-body:   Arial, "Helvetica Neue", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#545454; display:flex; justify-content:center; align-items:center;
+        min-height:100vh; }
+  .stage{ position:relative; width:1280rem; height:720rem; background:var(--bg);
+          overflow:hidden; font-family:var(--font-body); }
+
+  .title{ position:absolute; left:64rem; top:48rem; width:1152rem;
+          font-family:var(--font-display); font-size:30rem; font-weight:400;
+          line-height:38rem; letter-spacing:-.012em; color:var(--accent); }
+  .claim{ position:absolute; left:64rem; top:118rem; width:1152rem; font-size:16rem;
+          line-height:22rem; color:var(--gray-1); }
+  .claim sup{ font-size:11rem; }
+
+  svg.table{ position:absolute; left:0; top:0; width:1280rem; height:720rem; }
+
+  .notes{ position:absolute; left:64rem; bottom:56rem; width:1050rem;
+          font-size:10.5rem; line-height:15rem; color:var(--gray-1); }
+  .notes sup{ font-size:8rem; }
+  .foot{ position:absolute; left:64rem; bottom:24rem; width:900rem; font-size:11rem;
+         line-height:14rem; color:var(--gray-1); }
+  .stamp{ position:absolute; right:64rem; bottom:24rem; font-size:11rem; color:var(--gray-1); }
+  .stamp b{ color:var(--ink); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="title">FY26 guidance raised on four of five measures; cash generation is held</div>
+  <div class="claim">March 2026 guidance against the September 2025 plan, with the change on each
+    measure<sup>1,2</sup></div>
+
+  <!-- ==================== GUIDANCE BRIDGE TABLE ==================== -->
+  <svg class="table" viewBox="0 0 1280 720" role="img"
+       aria-label="Table comparing prior and current fiscal-2026 guidance across five financial measures, the current column inside a violet panel, with change pills">
+
+    <!-- ---------- the emphasized column: one panel, not per-cell boxes ---------- -->
+    <rect x="832" y="140" width="240" height="386" rx="4"
+          fill="var(--accent-tint)" stroke="var(--accent-mid)" stroke-width="1"/>
+
+    <!-- ---------- header captions ---------- -->
+    <g font-family="Arial, Helvetica Neue, sans-serif" font-size="12" fill="var(--gray-1)">
+      <text x="666" y="166" text-anchor="middle">Original FY26 guidance</text>
+      <text x="666" y="184" text-anchor="middle">(September 2025)</text>
+      <text x="952" y="166" text-anchor="middle" font-weight="700" fill="var(--accent)">Current FY26 guidance</text>
+      <text x="952" y="184" text-anchor="middle" fill="var(--accent)">(March 2026)</text>
+      <text x="1158" y="184" text-anchor="middle" font-size="11">Change</text>
+    </g>
+    <!-- neutral hairline under the prior column only (the panel already frames its own side) -->
+    <line x1="520" y1="200" x2="816" y2="200" stroke="var(--rule)" stroke-width="1"/>
+
+    <!-- ---------- data rows: one <g> per row, translate(0, 60*i) ---------- -->
+    <!-- ROW 1 — Revenue growth -->
+    <g transform="translate(0,0)">
+      <text x="190" y="240" font-size="15" fill="var(--ink-soft)">Revenue growth (local currency)<tspan font-size="7" baseline-shift="super">1</tspan></text>
+      <text x="792" y="240" text-anchor="end" font-size="15.5" fill="var(--ink-soft)">12% to 15%</text>
+      <text x="1030" y="240" text-anchor="end" font-size="15.5" font-weight="700" fill="var(--ink)">16% to 19%</text>
+      <rect x="1112" y="223" width="84" height="24" rx="12" fill="var(--accent-tint)" stroke="var(--accent-mid)" stroke-width="0.8"/>
+      <text x="1158" y="239" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent)">&#9650; +4 pts</text>
+    </g>
+
+    <!-- ROW 2 — Operating margin (detail sub-line present) -->
+    <g transform="translate(0,60)">
+      <text x="190" y="240" font-size="15" font-weight="700" fill="var(--ink)">Operating margin</text>
+      <text x="792" y="240" text-anchor="end" font-size="15.5" fill="var(--ink-soft)">15.2% to 15.4%</text>
+      <text x="1030" y="240" text-anchor="end" font-size="15.5" font-weight="700" fill="var(--ink)">15.6% to 15.8%</text>
+      <text x="1030" y="258" text-anchor="end" font-size="11" fill="var(--gray-1)">+10 bps vs. Q1 run-rate</text>
+      <rect x="1112" y="223" width="84" height="24" rx="12" fill="var(--accent-tint)" stroke="var(--accent-mid)" stroke-width="0.8"/>
+      <text x="1158" y="239" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent)">&#9650; +20 bps</text>
+    </g>
+
+    <!-- ROW 3 — Adjusted EPS (the guidance range detail) -->
+    <g transform="translate(0,120)">
+      <text x="190" y="240" font-size="15" fill="var(--ink-soft)">Adjusted earnings per share</text>
+      <text x="792" y="240" text-anchor="end" font-size="15.5" fill="var(--ink-soft)">$9.90 to $10.18</text>
+      <text x="1030" y="240" text-anchor="end" font-size="15.5" font-weight="700" fill="var(--ink)">$10.61 to $10.81</text>
+      <text x="1030" y="258" text-anchor="end" font-size="11" fill="var(--gray-1)">21% to 23% adjusted YoY growth</text>
+      <rect x="1112" y="223" width="84" height="24" rx="12" fill="var(--accent-tint)" stroke="var(--accent-mid)" stroke-width="0.8"/>
+      <text x="1158" y="239" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent)">&#9650; +6.7%</text>
+    </g>
+
+    <!-- ROW 4 — Free cash flow: UNCHANGED — the gray, not-accent, pill case -->
+    <g transform="translate(0,180)">
+      <text x="190" y="240" font-size="15" fill="var(--ink-soft)">Free cash flow (YoY)</text>
+      <text x="792" y="240" text-anchor="end" font-size="15.5" fill="var(--ink-soft)">&#8722;11% to &#8722;5%</text>
+      <text x="1030" y="240" text-anchor="end" font-size="15.5" fill="var(--ink-soft)">&#8722;11% to &#8722;5%</text>
+      <rect x="1112" y="223" width="84" height="24" rx="12" fill="var(--gray-3)" stroke="var(--gray-2)" stroke-width="0.8"/>
+      <text x="1158" y="239" text-anchor="middle" font-size="11.5" fill="var(--gray-1)">unchanged</text>
+    </g>
+
+    <!-- ROW 5 — Cash returned to shareholders ("At least" qualifier) -->
+    <g transform="translate(0,240)">
+      <text x="190" y="240" font-size="15" fill="var(--ink-soft)">Cash returned to shareholders</text>
+      <text x="792" y="240" text-anchor="end" font-size="15.5" fill="var(--ink-soft)">At least $16.3B</text>
+      <text x="1030" y="240" text-anchor="end" font-size="15.5" font-weight="700" fill="var(--ink)">At least $17.1B</text>
+      <text x="1030" y="258" text-anchor="end" font-size="11" fill="var(--gray-1)">$9.1B returned year to date</text>
+      <rect x="1112" y="223" width="84" height="24" rx="12" fill="var(--accent-tint)" stroke="var(--accent-mid)" stroke-width="0.8"/>
+      <text x="1158" y="239" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent)">&#9650; +$0.8B</text>
+    </g>
+  </svg>
+
+  <!-- ==================== bottom band ==================== -->
+  <div class="notes">
+    <div><sup>1</sup> Guidance ranges are full-year, local-currency, and exclude the FY25 divestiture. Both columns are company guidance; the change column is the difference between the mid-points of the two ranges.</div>
+    <div><sup>2</sup> Non-GAAP measures are defined in the FY25 10-K, p.41&ndash;44. "At least" figures are minimums, not mid-points; do not subtract them as ranges.</div>
+  </div>
+  <div class="foot">Source: investor update call, March 2026 (guidance slides 4&ndash;6); FY25 Annual Report, p.38&ndash;41; change analysis, company data and team calculations.</div>
+  <div class="stamp">Financial framework&nbsp;&nbsp;<b>11</b></div>
+
+</div>
+</body>
+</html>

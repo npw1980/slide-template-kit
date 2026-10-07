@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>timeline-gantt-roadmap — year × workstream roadmap grid with state-coded bars (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  timeline-gantt-roadmap  ·  family timeline (planned-schedule grid)
+  Evidence: Deloitte *Town of Tillsonburg IT Strategy Review — Council Update*
+            p11 "5 year roadmap", read on
+            sw_pages/deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd/pg-11.png
+            (sheet sw_sheets/..._s01.jpg row 1 first frame). Review lines 18/21:
+            year × workstream grid, numbered callout boxes anchored to rows,
+            three-register colour (navy band / semantic bars), 3-part footer.
+            Second evidence: Deloitte NMSU staffing study p8 "engagement
+            timeline — week-range Gantt-style bars" (same grid device, weeks).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280,100vh/720)} maps 1rem == 1
+  STAGE PIXEL; the SVG (viewBox 0 0 1280 720) uses plain numbers == px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY — 16 tasks in 7 workstream rows over Jan 2014 – Dec 2018.
+    SCALE: month m from Jan 2014 (m=0 … m=60)  →  x(m) = 254 + m × 13.3333
+           (year = m/12 × 160.0 px; half = 80.0 px)
+           m :  0   3   6   9  12  15  18  24  30  36  42  54  60
+           x : 254 294 334 374 414 454 494 574 654 734 814 974 1054
+           TODAY = m 19 (Aug 2015) → x = 507.
+    ROWS (row band y = 224 + 56×r, r = 0..6; bar y = rowTop+24, h 14;
+          tag above bar baseline rowTop+17; row-mid = rowTop+31):
+      1 Governance      | 1.1 m0–6   DONE      + milestone diamond at m6
+      2 Network         | 2.1 m3–9   DONE      | 2.2 m9–60  ONGOING (tag BELOW)
+      3 Servers         | 3.1 m0–6   DONE      | 3.2 m12–30 ACTIVE (accent) + diamond m30
+                        | 3.3 m36–60 PLANNED
+      4 End-user comp.  | 4.1 m12–18 DONE      | 4.2 m18–36 PLANNED
+      5 Applications    | 5.1 m0–9   DONE      | 5.2 m18–30 PLANNED | 5.3 m36–54 PLANNED
+      6 Systems mgmt    | 6.1 m6–18  DONE      | 6.2 m18–36 PLANNED | 6.3 m42–60 PLANNED
+      7 Organisation    | 7.1 m6–12  DONE      | 7.2 m24–36 PLANNED
+    STATE → FILL (the only encoding rule):
+      DONE      fill #E4E9ED, stroke #CBD3DA   (grey-4: what is already paid for)
+      ONGOING   fill #AEB6BF solid             (grey-2: steady-state running)
+      ACTIVE    fill var(--accent) solid       (THE ONE ACCENT: current initiative)
+      PLANNED   fill white, stroke grey-2 dash 4 2.5   (white + dashed = unfunded)
+    BAR LABELS: every bar carries ONE value tag above it:
+      "code  Mon YYYY → Mon YYYY · N mo" (9.5px; bold code, grey rest).
+      Long bars (≥150px) also carry the initiative name inside; if two tags
+      collide, the right tag drops BELOW the bar (see task 2.2).
+    MILESTONES = grey diamond on bar end + legend entry (dates live in tags).
+    CALLOUTS = numbered circle on a bar + right-margin grey box (no diagonals:
+      leaders run horizontally inside the row band).
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================ */
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #1A1A1A;
+    --accent:    #1F69AD;   /* one hue: current initiative (stands in for Deloitte navy band) */
+    --gray-1:    #3D4752;   /* header band, row numbers, diamonds */
+    --gray-2:    #AEB6BF;   /* ongoing bars, planned strokes, today rule */
+    --gray-3:    #CBD3DA;   /* done-bar stroke, callout borders */
+    --gray-4:    #E4E9ED;   /* done bars */
+    --gray-5:    #FAFBFC;   /* zebra row band */
+    --rule:      #E3E6E9;   /* grid hairlines */
+  }
+  html{ font-size:min(100vw / 1280, 100vh / 720); }
+  body{ margin:0; background:var(--bg); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          font-family:"Helvetica Neue", Arial, sans-serif; }
+  .kicker{ position:absolute; left:64rem; top:30rem; font-size:12.5rem; color:var(--gray-1); letter-spacing:.03em; }
+  .kicker b{ color:var(--accent); }
+  .title{ position:absolute; left:64rem; top:48rem; width:1152rem; font-size:28rem;
+          line-height:35rem; color:var(--ink); font-weight:700; letter-spacing:-.01em; }
+  .lead{ position:absolute; left:64rem; top:126rem; width:980rem; font-size:12rem;
+         color:var(--gray-1); line-height:17rem; }
+  .lead sup{ font-size:8.5rem; }
+  .source{ position:absolute; left:64rem; bottom:24rem; width:980rem; font-size:11rem;
+           color:var(--gray-1); line-height:15rem; }
+  .source sup{ font-size:8.5rem; }
+  .runhead{ position:absolute; right:64rem; bottom:26rem; font-size:11.5rem; font-weight:700;
+            color:var(--gray-1); letter-spacing:.04em; }
+  svg{ position:absolute; inset:0; width:1280rem; height:720rem; }
+  .rlab { font:bold 11px Arial, sans-serif; fill:var(--gray-1); }
+  .year { font:bold 12px Arial, sans-serif; fill:#FFFFFF; }
+  .half { font:8.5px Arial, sans-serif; fill:var(--gray-1); }
+  .tag  { font:9.5px Arial, sans-serif; fill:var(--gray-1); }
+  .tag b{ font-weight:700; }
+  .binn { font:10px Arial, sans-serif; fill:#333B43; }
+  .binw { font:bold 10px Arial, sans-serif; fill:#FFFFFF; }
+  .note { font:9px Arial, sans-serif; fill:var(--gray-1); }
+  .leg  { font:10px Arial, sans-serif; fill:var(--gray-1); }
+  .colead{ font:bold 10.5px Arial, sans-serif; fill:var(--ink); }
+  .cob  { font:10px Arial, sans-serif; fill:var(--gray-1); }
+  .chip { font:bold 9px Arial, sans-serif; fill:#FFFFFF; letter-spacing:.07em; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>5-year IT roadmap, 2014–2018:</b> initiative sequencing by workstream — council update<sup>1</sup></div>
+  <div class="title">Council should front-load governance and stabilisation;<br>strategic build-out follows from mid-2015</div>
+  <div class="lead">Effort and spend are deliberately weighted to years one and two, retiring the highest-risk systems before the long-running maintenance ramp and the strategic enhancements begin.<sup>1</sup></div>
+
+  <svg viewBox="0 0 1280 720" role="img" aria-label="Gantt roadmap grid: seven workstream rows against a 2014-2018 year axis, bars state-coded done, ongoing, active and planned, with a today marker at August 2015 and two numbered callouts">
+    <!-- ================= header bands ================= -->
+    <rect x="64"  y="176" width="190" height="48" fill="var(--gray-1)"/>
+    <text class="year" x="76" y="197" font-size="10.5" fill="#FFFFFF">Initiative</text>
+    <text class="year" x="76" y="212" font-size="9"   fill="#C7CED6" font-weight="normal">Year →</text>
+    <rect x="254" y="176" width="800" height="28" fill="var(--gray-1)"/>
+    <text class="year" x="334"  y="195" text-anchor="middle">2014</text>
+    <text class="year" x="494"  y="195" text-anchor="middle">2015</text>
+    <text class="year" x="654"  y="195" text-anchor="middle">2016</text>
+    <text class="year" x="814"  y="195" text-anchor="middle">2017</text>
+    <text class="year" x="974"  y="195" text-anchor="middle">2018</text>
+    <rect x="254" y="204" width="800" height="20" fill="var(--gray-4)"/>
+    <!-- half-year cells: 2 per year, centres every 80px -->
+    <text class="half" x="294"  y="218" text-anchor="middle">Jan–Jun</text><text class="half" x="374"  y="218" text-anchor="middle">Jul–Dec</text>
+    <text class="half" x="454"  y="218" text-anchor="middle">Jan–Jun</text><text class="half" x="534"  y="218" text-anchor="middle">Jul–Dec</text>
+    <text class="half" x="614"  y="218" text-anchor="middle">Jan–Jun</text><text class="half" x="694"  y="218" text-anchor="middle">Jul–Dec</text>
+    <text class="half" x="774"  y="218" text-anchor="middle">Jan–Jun</text><text class="half" x="854"  y="218" text-anchor="middle">Jul–Dec</text>
+    <text class="half" x="934"  y="218" text-anchor="middle">Jan–Jun</text><text class="half" x="1014" y="218" text-anchor="middle">Jul–Dec</text>
+
+    <!-- ================= zebra row bands + row rules ================= -->
+    <rect x="64" y="224" width="1152" height="56" fill="var(--gray-5)"/>
+    <rect x="64" y="336" width="1152" height="56" fill="var(--gray-5)"/>
+    <rect x="64" y="448" width="1152" height="56" fill="var(--gray-5)"/>
+    <rect x="64" y="560" width="1152" height="56" fill="var(--gray-5)"/>
+    <line x1="64" y1="280" x2="1216" y2="280" stroke="var(--rule)"/>
+    <line x1="64" y1="336" x2="1216" y2="336" stroke="var(--rule)"/>
+    <line x1="64" y1="392" x2="1216" y2="392" stroke="var(--rule)"/>
+    <line x1="64" y1="448" x2="1216" y2="448" stroke="var(--rule)"/>
+    <line x1="64" y1="504" x2="1216" y2="504" stroke="var(--rule)"/>
+    <line x1="64" y1="560" x2="1216" y2="560" stroke="var(--rule)"/>
+    <line x1="64" y1="616" x2="1216" y2="616" stroke="var(--gray-2)"/>
+
+    <!-- half-year hairlines (light) -->
+    <g stroke="var(--rule)" stroke-width="0.7">
+      <line x1="334" y1="224" x2="334" y2="616"/><line x1="454" y1="224" x2="454" y2="616"/>
+      <line x1="574" y1="224" x2="574" y2="616"/><line x1="694" y1="224" x2="694" y2="616"/>
+      <line x1="814" y1="224" x2="814" y2="616"/><line x1="934" y1="224" x2="934" y2="616"/>
+      <line x1="1054" y1="224" x2="1054" y2="616"/>
+    </g>
+    <!-- year boundary rules (heavier) -->
+    <g stroke="var(--gray-2)" stroke-width="1.2">
+      <line x1="414" y1="176" x2="414" y2="616"/><line x1="574" y1="176" x2="574" y2="616"/>
+      <line x1="734" y1="176" x2="734" y2="616"/><line x1="894" y1="176" x2="894" y2="616"/>
+    </g>
+    <line x1="254" y1="176" x2="254" y2="616" stroke="var(--gray-2)" stroke-width="1.2"/>
+
+    <!-- row labels (codes bold) -->
+    <text class="rlab" x="76" y="259">1.0 Governance</text>
+    <text class="rlab" x="76" y="315">2.0 Network</text>
+    <text class="rlab" x="76" y="371">3.0 Servers</text>
+    <text class="rlab" x="76" y="427">4.0 End-user computing</text>
+    <text class="rlab" x="76" y="483">5.0 Applications</text>
+    <text class="rlab" x="76" y="539">6.0 Systems management</text>
+    <text class="rlab" x="76" y="595">7.0 Organisation</text>
+
+    <!-- ================= TODAY marker (single accent) ================= -->
+    <line x1="507" y1="156" x2="507" y2="616" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <path d="M507 174 l6 -8 h-12 z" fill="var(--accent)"/>
+    <rect x="481" y="154" width="52" height="18" rx="9" fill="var(--accent)"/>
+    <text class="chip" x="507" y="166" text-anchor="middle">TODAY</text>
+
+    <!-- ================= BARS ================= -->
+    <!-- ROW 1 · Governance -->
+    <rect x="254" y="248" width="80"  height="14" rx="7" fill="var(--gray-4)" stroke="var(--gray-3)" stroke-width="0.8"/>
+    <text class="binw" x="262" y="259" fill="#333B43" font-weight="bold">1.1</text>
+    <text class="tag" x="254" y="241"><tspan font-weight="700">1.1</tspan> Jan 2014 → Jun 2014 · 6 mo</text>
+    <polygon points="328,255 334,249 340,255 334,261" fill="var(--gray-1)"/>
+
+    <!-- ROW 2 · Network -->
+    <rect x="294" y="304" width="80"  height="14" rx="7" fill="var(--gray-4)" stroke="var(--gray-3)" stroke-width="0.8"/>
+    <text class="tag" x="294" y="297"><tspan font-weight="700">2.1</tspan> Apr → Jun 2014 · 3 mo</text>
+    <rect x="374" y="304" width="680" height="14" rx="7" fill="var(--gray-2)"/>
+    <text class="binn" x="382" y="315">2.2 Upgrades, replacements and maintenance (continuing)</text>
+    <text class="tag" x="1054" y="346" text-anchor="end"><tspan font-weight="700">2.2</tspan> Jul 2014 → Dec 2018 · 54 mo</text>
+
+    <!-- ROW 3 · Servers (the ACTIVE initiative — one accent) -->
+    <rect x="254" y="360" width="80"  height="14" rx="7" fill="var(--gray-4)" stroke="var(--gray-3)" stroke-width="0.8"/>
+    <text class="binw" x="262" y="371" fill="#333B43" font-weight="bold">3.1</text>
+    <text class="tag" x="254" y="353"><tspan font-weight="700">3.1</tspan> Jan → Jun 2014 · 6 mo</text>
+    <rect x="414" y="360" width="240" height="14" rx="7" fill="var(--accent)"/>
+    <text class="binw" x="422" y="371">3.2 Architecture migration</text>
+    <text class="tag" x="414" y="353"><tspan font-weight="700">3.2</tspan> Jan 2015 → Jul 2016 · 18 mo</text>
+    <polygon points="648,367 654,361 660,367 654,373" fill="var(--gray-1)"/>
+    <rect x="734" y="360" width="320" height="14" rx="7" fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.1" stroke-dasharray="4 2.5"/>
+    <text class="binn" x="742" y="371">3.3 Maintenance and refresh</text>
+    <text class="tag" x="742" y="382"><tspan font-weight="700">3.3</tspan> Jul 2016 → Dec 2018 · 30 mo</text>
+
+    <!-- ROW 4 · End-user computing -->
+    <rect x="414" y="416" width="80"  height="14" rx="7" fill="var(--gray-4)" stroke="var(--gray-3)" stroke-width="0.8"/>
+    <text class="binw" x="422" y="427" fill="#333B43" font-weight="bold">4.1</text>
+    <text class="tag" x="414" y="409"><tspan font-weight="700">4.1</tspan> Jan 2015 → Jul 2015 · 6 mo</text>
+    <rect x="494" y="416" width="240" height="14" rx="7" fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.1" stroke-dasharray="4 2.5"/>
+    <text class="binn" x="502" y="427">4.2 Mobility updates (rolling)</text>
+    <text class="tag" x="502" y="438"><tspan font-weight="700">4.2</tspan> Jul 2015 → Jan 2017 · 18 mo</text>
+
+    <!-- ROW 5 · Applications -->
+    <rect x="254" y="472" width="120" height="14" rx="7" fill="var(--gray-4)" stroke="var(--gray-3)" stroke-width="0.8"/>
+    <text class="binw" x="262" y="483" fill="#333B43" font-weight="bold">5.1</text>
+    <text class="tag" x="254" y="465"><tspan font-weight="700">5.1</tspan> Jan 2014 → Jul 2014 · 6 mo</text>
+    <rect x="494" y="472" width="160" height="14" rx="7" fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.1" stroke-dasharray="4 2.5"/>
+    <text class="binn" x="502" y="483">5.2 Enhancement, rationalisation</text>
+    <text class="tag" x="494" y="465"><tspan font-weight="700">5.2</tspan> Jul 2015 → Jul 2016 · 12 mo</text>
+    <rect x="734" y="472" width="240" height="14" rx="7" fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.1" stroke-dasharray="4 2.5"/>
+    <text class="binn" x="742" y="483">5.3 Strategic enhancements</text>
+    <text class="tag" x="734" y="465"><tspan font-weight="700">5.3</tspan> Jul 2016 → Jul 2018 · 24 mo</text>
+
+    <!-- ROW 6 · Systems management -->
+    <rect x="334" y="528" width="160" height="14" rx="7" fill="var(--gray-4)" stroke="var(--gray-3)" stroke-width="0.8"/>
+    <text class="binw" x="342" y="539" fill="#333B43" font-weight="bold">6.1</text>
+    <text class="tag" x="334" y="521"><tspan font-weight="700">6.1</tspan> Jun 2014 → Jul 2015 · 12 mo</text>
+    <rect x="494" y="528" width="240" height="14" rx="7" fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.1" stroke-dasharray="4 2.5"/>
+    <text class="binn" x="502" y="539">6.2 Business impact analysis &amp; DRP</text>
+    <text class="tag" x="494" y="521"><tspan font-weight="700">6.2</tspan> Jul 2015 → Jan 2017 · 18 mo</text>
+    <rect x="814" y="528" width="240" height="14" rx="7" fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.1" stroke-dasharray="4 2.5"/>
+    <text class="binn" x="822" y="539">6.3 Ongoing capacity management</text>
+    <text class="tag" x="814" y="521"><tspan font-weight="700">6.3</tspan> Jul 2017 → Dec 2018 · 18 mo</text>
+
+    <!-- ROW 7 · Organisation -->
+    <rect x="334" y="584" width="80"  height="14" rx="7" fill="var(--gray-4)" stroke="var(--gray-3)" stroke-width="0.8"/>
+    <text class="binw" x="342" y="595" fill="#333B43" font-weight="bold">7.1</text>
+    <text class="tag" x="334" y="577"><tspan font-weight="700">7.1</tspan> Jun 2014 → Jan 2015 · 6 mo</text>
+    <rect x="574" y="584" width="160" height="14" rx="7" fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.1" stroke-dasharray="4 2.5"/>
+    <text class="binn" x="582" y="595">7.2 Staff and power-user training</text>
+    <text class="tag" x="574" y="577"><tspan font-weight="700">7.2</tspan> Jan 2016 → Jan 2017 · 12 mo</text>
+
+    <!-- ================= right callout column ================= -->
+    <line x1="1060" y1="224" x2="1060" y2="616" stroke="var(--gray-3)" stroke-width="1"/>
+    <circle cx="1040" cy="311" r="8" fill="var(--gray-1)"/>
+    <text class="binw" x="1040" y="315" text-anchor="middle" font-size="9">1</text>
+    <line x1="1048" y1="311" x2="1066" y2="311" stroke="var(--gray-2)" stroke-width="1" stroke-dasharray="3 2"/>
+    <rect x="1066" y="272" width="150" height="80" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="colead" x="1076" y="291">Sign-off gate</text>
+    <text class="cob" x="1076" y="308">Council budget decision<tspan x="1076" dy="13">by Jun 2014 unlocks the</tspan><tspan x="1076" dy="13">2.2 maintenance ramp.</tspan></text>
+
+    <circle cx="1010" cy="479" r="8" fill="var(--gray-1)"/>
+    <text class="binw" x="1010" y="483" text-anchor="middle" font-size="9">2</text>
+    <line x1="1018" y1="479" x2="1066" y2="489" stroke="var(--gray-2)" stroke-width="1" stroke-dasharray="3 2"/>
+    <rect x="1066" y="452" width="150" height="64" rx="8" fill="var(--gray-5)" stroke="var(--gray-3)"/>
+    <text class="colead" x="1076" y="471">Decision gate</text>
+    <text class="cob" x="1076" y="488">Freeze 5.3 scope six<tspan x="1076" dy="13">months before start.</tspan></text>
+
+    <!-- ================= legend row ================= -->
+    <rect x="72"  y="632" width="16" height="10" rx="3" fill="var(--gray-4)" stroke="var(--gray-3)" stroke-width="0.8"/>
+    <text class="leg" x="93"  y="641">Completed</text>
+    <rect x="162" y="632" width="16" height="10" rx="3" fill="var(--gray-2)"/>
+    <text class="leg" x="183" y="641">Ongoing</text>
+    <rect x="234" y="632" width="16" height="10" rx="3" fill="#FFFFFF" stroke="var(--gray-2)" stroke-width="1.1" stroke-dasharray="3 2"/>
+    <text class="leg" x="255" y="641">Planned (unfunded)</text>
+    <rect x="360" y="632" width="16" height="10" rx="3" fill="var(--accent)"/>
+    <text class="leg" x="381" y="641">Current initiative</text>
+    <polygon points="474,637 480,631 486,637 480,643" fill="var(--gray-1)"/>
+    <text class="leg" x="491" y="641">Milestone (sign-off / go-live)</text>
+    <line x1="628" y1="637" x2="644" y2="637" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <text class="leg" x="649" y="641">Today (Aug 2015)</text>
+
+    <!-- axis discipline note -->
+    <text class="note" x="64" y="650">Bars are calendar-scaled (1 month = 13.33 px; 1 year = 160 px); tags carry start, end and duration. Bar state = funding status, not effort.</text>
+  </svg>
+
+  <div class="source">Source: Town IT asset register and FY14 budget placeholders; Deloitte analysis of council service levels and vendor contracts (n = 7 workstreams, 16 initiatives).<sup>1</sup> Dates indicate planned start, not contractual commitment.</div>
+  <div class="runhead">11 | ROADMAP</div>
+</div>
+</body>
+</html>

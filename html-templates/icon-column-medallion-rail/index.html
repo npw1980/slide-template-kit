@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>icon-column-medallion-rail — five gradient medallions with captions over a dash-bullet commitment block (1280×720)</title>
+<!--
+  Evidence: kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022 p37 "Our commitments" — read in
+  sw_sheets/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022_s03.jpg (row 2, frame 2: blue title with
+  thin magenta rule, two dash-bullet blocks, oversized 66 quote figure with attribution, and a row of
+  five gradient circular medallions carrying white pictograms and captions: Solutions / Talent /
+  Supporting developing nations / Collaboration and alliances / Investing and taking action).
+  Corroborating medallion device: p38 (three violet→blue discs on "Purposeful business") and p39
+  (three blue discs on the ESG tree) in the same sheet, row 2 frames 3-4.
+  Palette: reviews/kpmg__kpmg_kpmg_our_impact_plan_2022_update_2022.md §Color system —
+  brand blue #1565F0 / print blue #0049C0 (headlines on white), magenta accent #E6007E used sparingly
+  (thin rule under titles, small emphasis), blue-grey rule #DCE6F5, body grey #333B44, white ground.
+  ---------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit,
+  so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+-->
+<style>
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #0049C0;   /* print blue — titles, stat numeral */
+    --accent:    #1565F0;   /* brand blue — medallion ramp base */
+    --accent-d:  #0049C0;   /* deepest blue — caption text on tint, emphasis disc */
+    --accent-2:  #4A86F5;   /* mid tint */
+    --accent-3:  #A9C8FC;   /* light tint */
+    --accent-4:  #DCE6F5;   /* palest tint / rules */
+    --magenta:   #E6007E;   /* the deck's only accent: title rule, one emphasis line */
+    --gray-1:    #333B44;   /* body copy */
+    --gray-2:    #6B7480;   /* secondary + footnotes */
+    --rule:      #DCE6F5;   /* hairlines */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:  Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  html, body{ margin:0; }
+  body{
+    background:#101216; font-family:var(--font-body);
+    min-height:100%; display:flex; align-items:center; justify-content:center;
+  }
+  .stage{
+    position:relative; flex:none; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--gray-1);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- header: blue title + magenta rule (the deck's title habit) ---------- */
+  header{ position:absolute; left:56rem; right:56rem; top:38rem; }
+  .kicker{
+    margin:0; font-family:var(--font-display); font-size:11rem; font-weight:700;
+    letter-spacing:.13em; text-transform:uppercase; color:var(--gray-2);
+  }
+  h1{
+    margin:8rem 0 0; font-family:var(--font-display); font-weight:700; font-size:28rem;
+    line-height:1.19; letter-spacing:-.006em; color:var(--ink); max-width:1120rem;
+  }
+  .head .rule{ height:2rem; background:var(--magenta); margin-top:11rem; width:100%; }
+  .lead{
+    margin:15rem 0 0; font-size:12.5rem; line-height:1.5; color:var(--gray-1); max-width:900rem;
+  }
+  .lead b{ color:var(--ink); font-weight:700; }
+
+  /* ---------- commitment blocks: dash bullets left, statement right ---------- */
+  .blocks{ position:absolute; left:56rem; right:56rem; top:214rem; height:210rem; }
+  .blk{ position:absolute; top:0; width:560rem; }
+  .blk.b2{ left:608rem; }
+  .blk h2{
+    margin:0; font-family:var(--font-display); font-size:14rem; font-weight:700;
+    letter-spacing:.01em; color:var(--ink);
+  }
+  .blk ul{ margin:11rem 0 0; padding:0; list-style:none; }
+  .blk li{
+    position:relative; font-size:11.5rem; line-height:1.48; color:var(--gray-1);
+    margin-bottom:9rem; padding-left:19rem;
+  }
+  .blk li:before{
+    content:""; position:absolute; left:0; top:.62em; width:10rem; height:2rem; background:var(--accent);
+  }
+  .blk li b{ color:var(--ink); font-weight:700; }
+  .blk li em{ font-style:italic; color:var(--gray-2); }
+
+  /* ---------- medallion rail ---------- */
+  .rail-rule{
+    position:absolute; left:56rem; right:56rem; top:410rem; height:1px; background:var(--rule);
+  }
+  .rail-label{
+    position:absolute; left:56rem; top:432rem; margin:0;
+    font-family:var(--font-display); font-size:11rem; font-weight:700; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .rail-label b{ color:var(--magenta); font-weight:700; }
+  .rail{
+    position:absolute; left:56rem; right:56rem; top:456rem; height:188rem;
+    display:flex; align-items:flex-start;
+  }
+  .item{ flex:1 1 0; position:relative; text-align:center; }
+  .item svg{ width:96rem; height:96rem; display:block; margin:0 auto; }
+  .item .cap{
+    margin:12rem auto 0; max-width:186rem; font-family:var(--font-display); font-size:12rem;
+    font-weight:700; line-height:1.3; color:var(--accent-d);
+  }
+  .item .sub{ margin:5rem auto 0; max-width:186rem; font-size:10.5rem; line-height:1.35; color:var(--gray-2); }
+  .item.emph .cap{ color:var(--magenta); }
+  .glyph{ fill:none; stroke:#FFFFFF; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+  .glyph .d{ fill:#FFFFFF; stroke:none; }
+
+  /* ---------- footer anatomy ---------- */
+  footer{ position:absolute; left:56rem; right:56rem; bottom:26rem; }
+  .src{ font-size:10.5rem; line-height:1.45; color:var(--gray-2); max-width:1010rem; }
+  .src sup{ font-size:8rem; }
+  .stamp{
+    position:absolute; right:0; bottom:0; text-align:right;
+    font-size:10.5rem; letter-spacing:.03em; color:var(--gray-2);
+  }
+  .stamp b{ color:var(--ink); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <header>
+    <p class="kicker" id="slot-kicker">Our commitments — People</p>
+    <h1 id="slot-title">Five commitments carry the plan, and each is published with a date and a measure</h1>
+    <div class="rule"></div>
+    <p class="lead" id="slot-lead">The commitments are grouped under <b>two themes</b>, each with a
+      named owner and a reporting line into the annual review. Where a target depends on a third party
+      — a supplier, a government, a standards body — that dependency is stated rather than absorbed
+      into the target.<sup>a</sup></p>
+  </header>
+
+  <div class="blocks">
+    <section class="blk b1" aria-label="Theme 1">
+      <h2 id="slot-h2-1">Purposeful business</h2>
+      <ul>
+        <li id="slot-b1-1">Always start with a clear purpose — <em>leadership principle, not a slogan</em></li>
+        <li id="slot-b1-2">Lead the profession in audit quality, with FY22 investment of <b>US$1.0bn</b></li>
+        <li id="slot-b1-3">Advance inclusion across the workforce, measured by representation at every grade</li>
+        <li id="slot-b1-4">Fund 23,000 hours of pro bono against the 2025 target, reported quarterly<sup>b</sup></li>
+      </ul>
+    </section>
+    <section class="blk b2" aria-label="Theme 2">
+      <h2 id="slot-h2-2">Education and communities</h2>
+      <ul>
+        <li id="slot-b2-1">Support education and training, reaching <b>2.4m young people</b> by 2030</li>
+        <li id="slot-b2-2">Provide resources to the Global Education Coalition through 2026</li>
+        <li id="slot-b2-3">Aim 10% of philanthropy toward communities where we operate</li>
+        <li id="slot-b2-4">Track every commitment against the published measure, or retire it</li>
+      </ul>
+    </section>
+  </div>
+
+  <div class="rail-rule" role="separator" aria-hidden="true"></div>
+  <p class="rail-label" id="slot-rail-label">How we get there — <b>five programmes, one plan</b></p>
+
+  <div class="rail">
+    <div class="item">
+      <svg viewBox="0 0 96 96" role="img" aria-label="Medallion: Solutions">
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#4A86F5"/><stop offset="1" stop-color="#0049C0"/>
+        </linearGradient></defs>
+        <circle cx="48" cy="48" r="47" fill="url(#g1)"/>
+        <g class="glyph" transform="translate(28,26)">
+          <path d="M20 0a14 14 0 0 1 8 25c-2 1.6-3 3.4-3 5.6H15c0-2.2-1-4-3-5.6A14 14 0 0 1 20 0Z"/>
+          <path d="M15 36h10"/>
+          <path d="M17 40h6"/>
+        </g>
+      </svg>
+      <p class="cap" id="slot-cap-1">Solutions</p>
+      <p class="sub" id="slot-sub-1">Programme-level targets and owners</p>
+    </div>
+
+    <div class="item">
+      <svg viewBox="0 0 96 96" role="img" aria-label="Medallion: Talent">
+        <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#4A86F5"/><stop offset="1" stop-color="#1565F0"/>
+        </linearGradient></defs>
+        <circle cx="48" cy="48" r="47" fill="url(#g2)"/>
+        <g class="glyph" transform="translate(28,26)">
+          <circle cx="20" cy="7" r="7"/>
+          <path d="M4 40c1.5-9.5 8-15 16-15s14.5 5.5 16 15"/>
+        </g>
+      </svg>
+      <p class="cap" id="slot-cap-2">Talent</p>
+      <p class="sub" id="slot-sub-2">Learning, inclusion, well-being</p>
+    </div>
+
+    <div class="item">
+      <svg viewBox="0 0 96 96" role="img" aria-label="Medallion: Supporting developing nations">
+        <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#1565F0"/><stop offset="1" stop-color="#0049C0"/>
+        </linearGradient></defs>
+        <circle cx="48" cy="48" r="47" fill="url(#g3)"/>
+        <g class="glyph" transform="translate(28,26)">
+          <circle cx="20" cy="20" r="18"/>
+          <path d="M2 20h36"/>
+          <path d="M20 2c-6 6-9 11.5-9 18s3 12 9 18c6-6 9-11.5 9-18s-3-12-9-18Z"/>
+        </g>
+      </svg>
+      <p class="cap" id="slot-cap-3">Supporting developing nations</p>
+      <p class="sub" id="slot-sub-3">Local capability, not aid transfer</p>
+    </div>
+
+    <div class="item">
+      <svg viewBox="0 0 96 96" role="img" aria-label="Medallion: Collaboration and alliances">
+        <defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#8FB6FA"/><stop offset="1" stop-color="#1565F0"/>
+        </linearGradient></defs>
+        <circle cx="48" cy="48" r="47" fill="url(#g4)"/>
+        <g class="glyph" transform="translate(28,26)">
+          <circle cx="13" cy="20" r="11"/>
+          <circle cx="27" cy="20" r="11"/>
+        </g>
+      </svg>
+      <p class="cap" id="slot-cap-4">Collaboration and alliances</p>
+      <p class="sub" id="slot-sub-4">Standards bodies, government, peers</p>
+    </div>
+
+    <div class="item emph">
+      <svg viewBox="0 0 96 96" role="img" aria-label="Medallion: Investing and taking action">
+        <defs><linearGradient id="g5" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#1565F0"/><stop offset="1" stop-color="#0049C0"/>
+        </linearGradient></defs>
+        <circle cx="48" cy="48" r="47" fill="url(#g5)"/>
+        <g class="glyph" transform="translate(28,26)">
+          <path d="M2 40h36"/>
+          <path d="M8 34V22"/>
+          <path d="M18 34V14"/>
+          <path d="M28 34V25"/>
+          <path d="M6 12 18 2l12 10"/>
+        </g>
+      </svg>
+      <p class="cap" id="slot-cap-5">Investing and taking action</p>
+      <p class="sub" id="slot-sub-5">The one line with capital behind it</p>
+    </div>
+  </div>
+
+  <footer>
+    <p class="src">Source: Firm impact plan reporting, FY22 actuals, with FY19–FY21 comparatives restated
+      for the 2022 boundary change<sup>a,b</sup>. Third-party dependencies are stated in the underlying
+      commitment register; unaudited figures are marked in the online disclosures.</p>
+    <p class="stamp"><b>p. 37</b> | OUR IMPACT PLAN</p>
+  </footer>
+
+</div>
+</body>
+</html>

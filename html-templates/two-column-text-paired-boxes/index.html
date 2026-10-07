@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>two-column-text-paired-boxes — navy header-banded panels, prose | bullets (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  two-column-text-paired-boxes  ·  family two-column-text
+  Evidence: deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd
+            p4 ("Project overview" = two navy-header-banded panels side by
+            side: Project Background = prose, Objectives = bold-lead bullets)
+            and p6/p8 (same device as a banded mapping table: Driver | Findings).
+            Review p21 calls this the deck's device #2: "Boxed two-column
+            mapping table with navy header band + gray alternation".
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size} maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate and
+  matches the px coords quoted in MANUAL.md (1280x720 fixed stage, uniform
+  scale, centered). Inline SVG uses viewBox 0 0 1280 720 => 1 unit == 1 px.
+  ----------------------------------------------------------------------------
+  DATA MODEL: TWO panels, pitch 548 + 32 gap on a 1128px content width.
+  Panel geometry is fixed: A x=76..624, B x=656..1204, both y=150..584.
+  Panel A = prose (3 paragraphs max, ~5 lines each); Panel B = 4 bullets max
+  (bold lead + <= 2 wrapped lines). Slot discipline is the whole point of this
+  template: the Deloitte p4 failure mode is 9-item objective lists that make
+  the band read as a wall — cap B at 4 items and cut, don't shrink, the type.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG (footer rule), system font stacks
+  (Times/Georgia stand in for Deloitte's serif display; Arial for body).
+  No images, no webfonts, no @import, no JavaScript. Nothing makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: navy is the dominant tone (Deloitte navy is
+     named in the review but never hexed; 051C2C is the playbook's approved
+     deep-navy anchor). ONE emphasis colour only; every non-accent series and
+     the "rest" of the page rides the gray ramp. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;    /* body text */
+    --accent:      #051C2C;    /* emphasis + every header band (single hue) */
+    --accent-soft: #E8EDF1;    /* one lightness step of accent: alt rows */
+    --panel-head:  #051C2C;    /* header band fill (white knock-out text) */
+    --gray-1:      #6E6E73;    /* kicker, captions, footnotes */
+    --gray-2:      #B9B9BD;    /* hairlines */
+    --rule:        #D9D9D9;    /* panel border / zebra rules */
+    --font-display:Georgia, "Times New Roman", serif;   /* stands in for Deloitte's serif display on dividers; content titles stay sans */
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  *{ padding:0; box-sizing:border-box; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+
+  /* ---------------- title zone (slots 1-2) ---------------- */
+  .eyebrow{                            /* slot 2: section eyebrow */
+    position:absolute; left:76rem; top:46rem;
+    font-size:11rem; font-weight:700; letter-spacing:2.4rem;
+    color:var(--gray-1); text-transform:uppercase;
+  }
+  .title{                              /* slot 1: claim title, <=15 words / <=2 lines */
+    position:absolute; left:76rem; top:70rem; width:1000rem;
+    font-family:var(--font-body); font-size:27rem; font-weight:700;
+    line-height:1.18; letter-spacing:-.2rem; color:var(--ink);
+  }
+  .title-rule{                         /* hairline under the claim */
+    position:absolute; left:76rem; top:138rem; width:1128rem; height:1rem;
+    background:var(--rule);
+  }
+
+  /* ---------------- panels (slots 3-7) ---------------- */
+  .panel{ position:absolute; top:150rem; height:434rem; }
+  .panel.left  { left:76rem;  width:548rem; }
+  .panel.right { left:656rem; width:548rem; }
+  .phead{                              /* navy header band */
+    height:34rem; background:var(--panel-head); color:#FFFFFF;
+    font-family:var(--font-body); font-size:13rem; font-weight:700;
+    letter-spacing:.7rem; text-transform:uppercase;
+    display:flex; align-items:center; padding:0 16rem;
+  }
+  .pbody{                              /* panel body: 16px inner gutter */
+    border:1px solid var(--rule); border-top:none; padding:16rem;
+    height:calc(434rem - 34rem); overflow:hidden; background:var(--bg);
+  }
+  .pbody p{
+    font-size:13.5rem; line-height:1.6; color:var(--ink);
+    text-align:justify; margin-bottom:12rem;
+  }
+  .pbody p:last-child{ margin-bottom:0; }
+  .pbody p.lead-note{                  /* the one accent paragraph in the prose panel */
+    color:var(--accent); font-weight:700; text-align:left; margin-bottom:12rem;
+  }
+  ol.asks{ list-style:none; counter-reset:n; }
+  ol.asks li{
+    counter-increment:n; position:relative; padding-left:22rem;
+    font-size:13.5rem; line-height:1.55; margin-bottom:14rem;
+  }
+  ol.asks li:last-child{ margin-bottom:0; }
+  ol.asks li::before{                  /* accent numerals: the only colour event */
+    content:counter(n) "."; position:absolute; left:0; top:0;
+    font-size:13rem; font-weight:700; color:var(--accent);
+  }
+  ol.asks li b{                        /* bold run-in lead-in (the Deloitte device) */
+    font-weight:700; color:var(--ink);
+  }
+  .zebra{                              /* optional alternating tint per review note */
+    background:var(--accent-soft); padding:6rem 10rem; margin:0 -10rem 13rem;
+  }
+
+  /* ---------------- footer anatomy (slots 8-9) ---------------- */
+  .source{                             /* slot 8: source line, bottom-left */
+    position:absolute; left:76rem; bottom:26rem; width:900rem;
+    font-size:8.5rem; line-height:1.45; color:var(--gray-1);
+  }
+  .source sup{ font-size:6.5rem; vertical-align:super; }
+  .runninghead{                        /* slot 9: page | section, bottom-right */
+    position:absolute; right:76rem; bottom:26rem; text-align:right;
+    font-size:10.5rem; color:var(--gray-1); letter-spacing:.3rem;
+  }
+  .runninghead b{ color:var(--ink); font-weight:700; }
+  .foot-rule{ position:absolute; left:76rem; right:76rem; bottom:50rem; height:1rem; background:var(--gray-2); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="eyebrow">Engagement · Phase 1 baseline</div>
+
+  <!-- slot 1 — claim title: 14 words, 2 lines. Replace the text, never the size. -->
+  <h1 class="title">The review isolated five drivers; resolving the first two releases most of the deferred benefit.</h1>
+
+  <div class="title-rule"></div>
+
+  <!-- LEFT PANEL — slot 3 label + slots 4-6 prose -->
+  <section class="panel left" aria-label="Background">
+    <div class="phead">Background &amp; mandate</div>
+    <div class="pbody">
+      <!-- slot 4: the one-sentence "why we are here", rendered in accent bold -->
+      <p class="lead-note">The Town has been negotiating with the County for shared services since 2019 without a documented service-level basis.</p>
+      <p>Deloitte was engaged to assess the Town&rsquo;s technology controls, processes, policies and underlying infrastructure against comparable municipalities, and to state whether the current IT operating model meets business needs. At present 71% of the Town&rsquo;s IT operations are outsourced to the County of Oxford, and management is seeking direction on a future model.<sup>1</sup></p>
+      <p>The assessment covered five areas: applications and infrastructure, governance and strategy, information security, and disaster recovery. Fieldwork ran 14 working days across two sites and included 21 interviews, network testing with QualysGuard, and licence reconciliation against the 2014 audit.<sup>2</sup></p>
+    </div>
+  </section>
+
+  <!-- RIGHT PANEL — slot 7: numbered objectives, 4 items max -->
+  <section class="panel right" aria-label="Objectives">
+    <div class="phead">What this phase had to answer</div>
+    <div class="pbody">
+      <ol class="asks">
+        <li><b>Future-state IT operating structure and governance model</b> — who owns service, licence and change decisions, and against which SLA.</li>
+        <li><b>Directional hardware and software requirements</b> — the refresh envelope, sized to a 3-year cycle rather than last year&rsquo;s budget.</li>
+        <li><b>Sustainable IT funding model</b> — capital versus operating split, with the Town&rsquo;s reserve position stated as a range.</li>
+        <li><b>Disaster recovery and business-continuity plan</b> — including the redundancy gap left open by the 2014 audit.</li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="foot-rule"></div>
+
+  <!-- slot 8 -->
+  <div class="source">Source: <sup>1</sup> Town of Tillsonburg, IT Strategy Review — Council Update, Deloitte LLP (Jan 2014), pp. 9&ndash;11. <sup>2</sup> Fieldwork log 06/12&ndash;06/27/2014; interview index Appendix C; licence counts per Microsoft audit letter of 2014-06-20.</div>
+
+  <!-- slot 9 -->
+  <div class="runninghead"><b>4</b> | Project overview</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>framework-named-five-forces — Porter's Five Forces (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  framework-named-five-forces  ·  family framework-named
+  Evidence (see MANUAL.md -> SOURCE):
+    catalog_umbrex.csv S1765 "Template — Porter's Five Forces" — four corner
+      panels + central competition-intensity disc, "Low/moderate/high" prompt
+      lines, read in corpus/sheets/sheet_177.jpg (ceil(1765/10)=177, cell
+      row 1 col 5). Device rule in reviews/umbrex_patterns.md §9.
+    reviews/umbrex_patterns.md palette: navy ink (~#1F2A65/#1F2A4F), gray
+      fills, one highlight hue. Normalized to house tokens below.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL, so every length
+  below is a 1:1 stage-pixel coordinate with the numbers MANUAL.md quotes.
+  ----------------------------------------------------------------------------
+  DIAGRAM: one inline SVG overlay covers the whole stage. The four force
+  panels are <g id="force-1".."force-4"> groups placed by transform; all
+  panel internals are in local (0,0)-(516,196) coords, so a corner can be
+  moved by editing ONE translate. The center disc is <g id="center">.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     House ruling: navy ink + ONE accent + gray ramp. The accent is NOT
+     decorative — it marks only the forces that bind margins.
+     Measured contrast on this ground:
+       --ink #051C2C on white                 = 16.0:1
+       #2251FF on white (13px bold labels)    =  6.3:1
+       --gray-2 #464646 (notes, body)         =  8.6:1
+       --gray-3 #7D7D7D (source line only)    =  3.8:1  -> >=18px or footnotes
+     ================================================================= */
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #051C2C;   /* navy: title, force names, ring        */
+    --accent:  #2251FF;   /* THE emphasis color — binds only       */
+    --gray-1:  #2D2D2D;
+    --gray-2:  #464646;   /* secondary text, non-binding ratings   */
+    --gray-3:  #7D7D7D;   /* source line                           */
+    --gray-4:  #F1F3F5;   /* panel fill                            */
+    --gray-5:  #DEDEDE;   /* dimmed panel fill (unused here)       */
+    --rule:    #C9CFD4;   /* panel hairlines                       */
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#3A3F44; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; margin:auto;
+    background:var(--bg); overflow:hidden;
+    font-family:"Helvetica Neue", Arial, Calibri, sans-serif;
+  }
+
+  /* ---------------- text frame (HTML layer) ---------------- */
+  .kicker{
+    position:absolute; left:64rem; top:36rem; width:1152rem;
+    font-size:12rem; font-weight:700; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  h1.title{
+    position:absolute; left:64rem; top:58rem; width:1152rem;
+    font-size:30rem; line-height:38rem; font-weight:700; color:var(--ink);
+    letter-spacing:-.01em;
+  }
+  .lead{
+    position:absolute; left:64rem; top:143rem; width:1152rem;
+    font-size:13rem; line-height:18rem; font-weight:700; color:var(--gray-1);
+  }
+  .lead sup{ font-size:9rem; color:var(--gray-2); }
+
+  /* ---------------- diagram layer (full-stage SVG) ---------------- */
+  svg.fig{ position:absolute; left:0; top:0; width:1280rem; height:720rem; display:block; }
+  .panel{ fill:var(--gray-4); stroke:var(--rule); stroke-width:1; }
+  .fhead{ font:700 15.5rem/1.2 "Helvetica Neue", Arial, sans-serif; fill:var(--ink); }
+  .frate{ font:700 13rem "Helvetica Neue", Arial, sans-serif; letter-spacing:.08em; fill:var(--gray-2); }
+  .frate.bind{ fill:var(--accent); }
+  .fnote{ font:400 11.5rem/1.35 "Helvetica Neue", Arial, sans-serif; fill:var(--gray-2); }
+  .chead{ font:700 13rem "Helvetica Neue", Arial, sans-serif; fill:var(--ink); }
+  .crate{ font:700 16rem "Helvetica Neue", Arial, sans-serif; letter-spacing:.06em; fill:var(--accent); }
+  .cnote{ font:400 10.5rem "Helvetica Neue", Arial, sans-serif; fill:var(--gray-2); }
+
+  /* ---------------- footer ---------------- */
+  .foot{
+    position:absolute; left:0; bottom:0; width:1280rem; height:56rem;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 64rem; border-top:1rem solid var(--rule);
+  }
+  .foot .src{ font-size:9.5rem; color:var(--gray-3); max-width:980rem; }
+  .foot .src sup{ font-size:7.5rem; }
+  .foot .page{ font-size:10rem; font-weight:700; letter-spacing:.08em; color:var(--gray-2); white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="stage" role="group" aria-label="Porter's Five Forces assessment: two forces bind margins, three sit below threshold">
+
+  <p class="kicker"><b>12</b> | Market structure — Porter</p>
+
+  <h1 class="title">Buyer power and rivalry squeeze margins; entry and substitutes stay contained</h1>
+
+  <p class="lead">Five forces assessed from 14 buyer/competitor interviews + category data<sup>1</sup> — two forces bind, three sit below the threshold.</p>
+
+  <!-- ================= FIGURE: 4 corners + center disc ================= -->
+  <svg class="fig" viewBox="0 0 1280 720" role="img"
+       aria-label="Four force panels around a central competition-intensity disc">
+
+    <!-- force-1 · top-left · x64 y168 w516 h196 -->
+    <g id="force-1" transform="translate(64,168)">
+      <rect class="panel" x="0" y="0" width="516" height="196" rx="3"/>
+      <text class="fhead" x="24" y="34">Threat of new entrants</text>
+      <text class="frate" x="24" y="66">MODERATE</text>
+      <text class="fnote" x="24" y="94">Capital-heavy incumbents deter scale players,</text>
+      <text class="fnote" x="24" y="110">but D2C brands enter at ~1/10th the capex.</text>
+    </g>
+
+    <!-- force-2 · top-right · x700 y168 — BINDING (accent rating) -->
+    <g id="force-2" transform="translate(700,168)">
+      <rect class="panel" x="0" y="0" width="516" height="196" rx="3"/>
+      <text class="fhead" x="24" y="34">Bargaining power of buyers</text>
+      <text class="frate bind" x="24" y="66">HIGH</text>
+      <text class="fnote" x="24" y="94">Three chains hold 61% of volume and run</text>
+      <text class="fnote" x="24" y="110">annual RFQs — list price is a ceiling, not an anchor.</text>
+    </g>
+
+    <!-- force-3 · bottom-left · x64 y404 -->
+    <g id="force-3" transform="translate(64,404)">
+      <rect class="panel" x="0" y="0" width="516" height="196" rx="3"/>
+      <text class="fhead" x="24" y="34">Bargaining power of suppliers</text>
+      <text class="frate" x="24" y="66">LOW</text>
+      <text class="fnote" x="24" y="94">Interchangeable resin and packaging suppliers;</text>
+      <text class="fnote" x="24" y="110">no switching cost on any single input.</text>
+    </g>
+
+    <!-- force-4 · bottom-right · x700 y404. This panel's inner (top-left)
+         corner sits under the center disc, so all text is set at local x=150
+         — a 130px clearance gutter from the disc ring — the disc overlaps
+         only blank gray, as in the source figure. -->
+    <g id="force-4" transform="translate(700,404)">
+      <rect class="panel" x="0" y="0" width="516" height="196" rx="3"/>
+      <text class="fhead" x="150" y="34">Threat of substitutes</text>
+      <text class="frate" x="150" y="66">MODERATE</text>
+      <text class="fnote" x="150" y="94">Home-use refills are price-elastic above $9 per</text>
+      <text class="fnote" x="150" y="110">unit — subscription models bear watching.</text>
+    </g>
+
+    <!-- center disc · cx640 cy387 · sits ON TOP of the four panels -->
+    <g id="center" transform="translate(640,387)">
+      <circle r="112" fill="#FFFFFF" stroke="var(--rule)" stroke-width="1.5"/>
+      <circle r="104" fill="#FFFFFF" stroke="var(--ink)" stroke-width="3"/>
+      <text class="chead" text-anchor="middle" y="-38">Intensity of competition</text>
+      <text class="chead" text-anchor="middle" y="-18">among existing competitors</text>
+      <text class="crate"  text-anchor="middle" y="18">HIGH</text>
+      <text class="cnote"  text-anchor="middle" y="46">Four players, one over-capacity —</text>
+      <text class="cnote"  text-anchor="middle" y="60">price-led share defence.</text>
+    </g>
+
+  </svg>
+  <!-- ================= /FIGURE ================= -->
+
+  <footer class="foot">
+    <p class="src">Source: desk research (IBISWorld, Euromonitor 2025); 14 buyer / competitor interviews, Aug–Sep 2026; category panel FY18–FY20.<sup>1</sup></p>
+    <p class="page">12 | STRATEGY</p>
+  </footer>
+</div>
+</body>
+</html>

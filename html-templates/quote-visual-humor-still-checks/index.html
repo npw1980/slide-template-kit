@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>quote-visual-humor-still-checks — film still left + blue check takeaways right (1280×720)</title>
+<style>
+  /* ============================================================
+     TEMPLATE  quote-visual-humor-still-checks  ·  family quote-visual-humor
+     The "movie-still joke page": a reference tag as kicker, a witty
+     claim title, one photograph bleeding down the LEFT, and the whole
+     argument carried by three check-marked takeaways in the right
+     column. No chart, no legend, no boxes — the humour is the pairing.
+     Source evidence: corpus S0009 (catalog_1-20.csv "humor text plus
+     still" / "movie still joke slide"), page 9 of a Firms Mazars deck.
+     ============================================================ */
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  body{ margin:0; background:#fff; }
+
+  :root{
+    --bg:       #FFFFFF;
+    --ink:      #1A1D21;   /* titles + all body text                           */
+    --accent:   #1F7CCE;   /* the blue of the check callouts — read off the
+                              frame (mean RGB 31,124,206). Single emphasis hue */
+    --accent-soft:#D7E7F7; /* light accent, used once (check glyph counter-plate) */
+    --gray-1:   #2A2E33;   /* strong body text                                 */
+    --gray-2:   #63686E;   /* kicker, captions                                 */
+    --gray-3:   #9AA0A6;   /* source line, placeholder stamps                  */
+    --gray-4:   #E4E7EA;   /* neutral fills                                    */
+    --rule:     #C9CED2;   /* hairlines                                        */
+    /* photograph placeholder tones — deliberately a GRAY ramp so the
+       single accent stays with the type. Swap all three when the real
+       still lands (they are only used inside .still svg).              */
+    --photo-1:  #6E7378;   /* placeholder: highlight band                       */
+    --photo-2:  #3B4045;   /* placeholder: midtone                              */
+    --photo-3:  #14181C;   /* placeholder: shadow                               */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          margin:0 auto; background:var(--bg); }
+  .stage > *{ position:absolute; }
+
+  /* ---- text slots ---------------------------------------------------- */
+  .kicker{ left:64rem; top:44rem;  font-family:var(--font-display); font-size:13px;
+           font-weight:700; letter-spacing:1.1px; text-transform:uppercase;
+           color:var(--gray-2); margin:0; white-space:nowrap; }
+  .title{ left:64rem; top:66rem;  width:700rem; margin:0;
+          font-family:var(--font-display); font-size:31px; line-height:1.16;
+          font-weight:700; letter-spacing:-.35px; color:var(--ink); }
+  .title .l{ display:block; }
+
+  /* ---- the still (left bleed) ---------------------------------------- */
+  .still{ left:0; top:176rem; width:756rem; height:452rem; margin:0;
+          border-bottom:1px solid var(--rule); }
+  .still svg{ display:block; width:756rem; height:452rem; }
+  .still .stamp{ position:absolute; left:auto; right:12rem; bottom:10rem; font-family:var(--font-body);
+                 font-size:9.5px; letter-spacing:.4px; color:#fff;
+                 background:rgba(20,24,28,.62); padding:.3rem .5rem; }
+  .still .credit{ position:absolute; left:12rem; bottom:12rem; font-family:var(--font-body);
+                  font-size:11px; font-weight:700; letter-spacing:.3px;
+                  color:#fff; background:rgba(20,24,28,.62); padding:.25rem .5rem; }
+
+  /* ---- the check column ---------------------------------------------- */
+  /* One <g class="check"> per takeaway. Item geometry lives in the SVG,
+     so adding/removing items means changing the translate() only.      */
+  .checks{ left:0; top:0; width:1280rem; height:720rem; }
+  .check .tick{ fill:none; stroke:var(--accent); stroke-width:3.6px;
+                stroke-linecap:round; stroke-linejoin:round; }
+  .check .plate{ fill:var(--accent-soft); }
+  .check .lead{ font-family:var(--font-display); font-size:21.5px; font-weight:700;
+                fill:var(--accent); letter-spacing:-.1px; }
+  .check .sub{ font-family:var(--font-body); font-size:13.5px; fill:var(--gray-2); }
+
+  /* ---- footer --------------------------------------------------------- */
+  .source{ left:64rem; bottom:26rem; font-family:var(--font-body); font-size:9.5px;
+           color:var(--gray-3); letter-spacing:.2px; margin:0; }
+  .pagestamp{ right:64rem; bottom:26rem; font-family:var(--font-body); font-size:9.5px;
+              color:var(--gray-3); letter-spacing:1.1px; margin:0; }
+  .mark{ right:64rem; bottom:46rem; font-family:var(--font-display); font-size:12px;
+         font-weight:700; letter-spacing:1.6px; text-transform:uppercase;
+         color:var(--gray-3); margin:0; }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Slide: film still with three check-marked takeaways">
+
+  <!-- 1 · kicker — the reference that makes the joke land -->
+  <p class="kicker">The Departed · 2006</p>
+
+  <!-- 2 · claim title (≤15 words, ≤2 lines) -->
+  <h1 class="title"><span class="l">Organized crime is strategic because it runs</span><span class="l">better than most listed competitors</span></h1>
+
+  <!-- 3 · the photograph — PLACEHOLDER: replace the svg contents with the still -->
+  <figure class="still" aria-label="Film still placeholder: two men seated together, warm interior light (replace with the actual still)">
+    <svg viewBox="0 0 756 452" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Neutral grayscale placeholder for the film still">
+      <defs>
+        <linearGradient id="ph" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0"  stop-color="var(--photo-1)"/>
+          <stop offset=".55" stop-color="var(--photo-2)"/>
+          <stop offset="1"  stop-color="var(--photo-3)"/>
+        </linearGradient>
+        <radialGradient id="bokeh1" cx=".3" cy=".35" r=".5">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".30"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="bokeh2" cx=".78" cy=".62" r=".42">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".16"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--photo-3)" stop-opacity="0"/>
+          <stop offset="1" stop-color="var(--photo-3)" stop-opacity=".75"/>
+        </linearGradient>
+      </defs>
+      <rect width="756" height="452" fill="url(#ph)"/>
+      <!-- bokeh / depth stand-in -->
+      <circle cx="150" cy="130" r="118" fill="url(#bokeh1)"/>
+      <circle cx="600" cy="300" r="150" fill="url(#bokeh2)"/>
+      <circle cx="690" cy="70"  r="46" fill="#ffffff" fill-opacity=".10"/>
+      <circle cx="70"  cy="380" r="60" fill="#ffffff" fill-opacity=".05"/>
+      <!-- horizon + subject mass: the minimum to read "a photograph" -->
+      <rect y="250" width="756" height="202" fill="url(#floor)"/>
+      <ellipse cx="300" cy="352" rx="230" ry="86" fill="var(--photo-3)" fill-opacity=".5"/>
+      <ellipse cx="560" cy="372" rx="150" ry="70" fill="var(--photo-3)" fill-opacity=".38"/>
+    </svg>
+    <span class="credit">Still: two men, warm interior — swap in the frame</span>
+    <span class="stamp">Photo placeholder · no external image</span>
+  </figure>
+
+  <!-- 4 · three check takeaways (right column) -->
+  <svg class="checks" viewBox="0 0 1280 720" role="list" aria-label="Three check-marked takeaways">
+    <g class="check" role="listitem" transform="translate(836,206)">
+      <circle class="plate" cx="16" cy="14" r="17"/>
+      <polyline class="tick" points="6,14 14,22 27,3"/>
+      <text class="lead" x="46" y="21">Counterintuitive</text>
+      <text class="sub"  x="46" y="47">the conclusion the room will not expect</text>
+    </g>
+
+    <g class="check" role="listitem" transform="translate(836,306)">
+      <circle class="plate" cx="16" cy="14" r="17"/>
+      <polyline class="tick" points="6,14 14,22 27,3"/>
+      <text class="lead" x="46" y="21">Looks outside the</text>
+      <text class="lead" x="46" y="49">organization</text>
+      <text class="sub"  x="46" y="75">no incumbency, no permission slip</text>
+    </g>
+
+    <g class="check" role="listitem" transform="translate(836,426)">
+      <circle class="plate" cx="16" cy="14" r="17"/>
+      <polyline class="tick" points="6,14 14,22 27,3"/>
+      <text class="lead" x="46" y="21">Long-term advantage</text>
+      <text class="sub"  x="46" y="47">compounding, not a quarterly trade</text>
+    </g>
+  </svg>
+
+  <!-- 5 · footer anatomy -->
+  <p class="mark">Firm mark here</p>
+  <p class="source">Source: studio publicity still; firm analysis. Footnotes: none on this page.</p>
+  <p class="pagestamp">9 | STRATEGY</p>
+</main>
+</body>
+</html>

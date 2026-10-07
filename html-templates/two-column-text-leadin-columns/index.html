@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>two-column-text-leadin-columns — two text columns with bold run-in leads + accent kicker (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  two-column-text-leadin-columns  ·  family two-column-text
+  Evidence: accenture__accenture_accelerating_global_companies_toward_net_zero_by_2
+            p3 / p5 / p8 — review p12: "body zone — 2–4 columns of ~8–9pt
+            text", review p9: "Kicker/so-what devices appear as purple bold
+            lead-ins within columns rather than separate banner boxes (p3, p5,
+            p8)". Same grammar, single-column variant, in
+            deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd
+            p7/p9 ("plain bold-lead-in bullet slides").
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size} maps 1rem == 1 STAGE PIXEL, so every
+  length below is a 1:1 stage-pixel coordinate matching MANUAL.md
+  (1280x720 fixed stage, uniform scale, centered).
+  ----------------------------------------------------------------------------
+  DATA MODEL: 2 columns, 548px wide, 32px gutter, y=146..578. Column A carries
+  2 paragraphs with bold run-in leads; column B opens with ONE accent-bold
+  kicker sentence (the deck's signature device) then 2 more lead-in paragraphs.
+  Cap: 6 paragraphs / ~13.5 lines per column at 12.5rem/1.5. Overflow is
+  structural, not cosmetic: 3 paragraphs of the same length already read as a
+  wall in the source deck (review "Ignore" list) — cut copy before touching
+  type size. A 3-column variant is provided as .cols.tri below; it needs the
+  same total character count, so it is a re-pitch, not an extra slot.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG (hairline ticks in the note band),
+  system font stacks. No images, no webfonts, no @import, no JavaScript.
+  Nothing makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Single-hue emphasis system per the source deck's strength (review p18:
+     "effectively a single-hue system ... + black/gray/white neutrals"). The
+     accent is the deep playbook navy — the firm's real value is purple, which
+     the matching review names but never hexes, so it is remapped here rather
+     than invented; swap --accent and the whole page follows. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;    /* body text */
+    --accent:      #051C2C;    /* emphasis: kicker sentence, bold leads, note label */
+    --accent-tint: #EDF1F4;    /* one lightness step: note band fill */
+    --gray-1:      #6E6E73;    /* eyebrow, footnotes, source */
+    --gray-2:      #B9B9BD;    /* hairlines */
+    --rule:        #D9D9D9;
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  *{ padding:0; box-sizing:border-box; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+
+  /* ---------------- title zone (slots 1-2) ---------------- */
+  .eyebrow{                            /* slot 2: eyebrow / deck register */
+    position:absolute; left:76rem; top:44rem;
+    font-size:11rem; font-weight:700; letter-spacing:2.4rem;
+    color:var(--gray-1); text-transform:uppercase;
+  }
+  .title{                              /* slot 1: claim title, <=15 words / <=2 lines */
+    position:absolute; left:76rem; top:66rem; width:1040rem;
+    font-family:var(--font-display); font-size:29rem; font-weight:700;
+    line-height:1.15; letter-spacing:-.35rem; color:var(--ink);
+  }
+
+  /* ---------------- two-column body (slots 3-6) ---------------- */
+  .cols{
+    position:absolute; left:76rem; top:146rem; width:1128rem; height:432rem;
+    display:flex; gap:32rem;
+  }
+  .col{ width:548rem; }
+  .cols.tri .col{ width:354rem; }      /* documented 3-column variant, same content */
+  .col p{
+    font-size:13.5rem; line-height:1.62; text-align:justify;
+    color:var(--ink); margin-bottom:15rem;
+  }
+  .col p b, .col p strong{ font-weight:700; color:var(--accent); }  /* bold run-in lead */
+  .col p.kicker{                       /* slot 5: the one accent sentence */
+    color:var(--accent); font-weight:700; text-align:left; font-size:14rem;
+    line-height:1.45; border-left:3rem solid var(--accent); padding-left:12rem;
+    margin:2rem 0 18rem;
+  }
+  .col p.sub{                          /* slot: optional indented sub-para (<=2 lines) */
+    margin-left:16rem; font-size:13rem; text-align:left;
+  }
+  sup{ font-size:7rem; vertical-align:super; color:var(--gray-1); }
+
+  /* ---------------- note band (slot 7) ---------------- */
+  .note{
+    position:absolute; left:76rem; right:76rem; top:596rem;
+    background:var(--accent-tint); border-top:1rem solid var(--gray-2);
+    padding:12rem 16rem; display:flex; gap:16rem; align-items:flex-start;
+  }
+  .note .lab{                          /* slot 7a: methodology label */
+    flex:0 0 168rem; font-size:9.5rem; font-weight:700; letter-spacing:1.6rem;
+    text-transform:uppercase; color:var(--accent); line-height:1.5;
+  }
+  .note .txt{ flex:1 1 auto; font-size:9.5rem; line-height:1.5; color:var(--ink); text-align:left; }
+  .note .txt sup{ color:var(--gray-1); }
+
+  /* ---------------- footer anatomy (slots 8-9) ---------------- */
+  .foot-rule{ position:absolute; left:76rem; right:76rem; bottom:50rem; height:1rem; background:var(--gray-2); }
+  .source{                             /* slot 8: source line, bottom-left */
+    position:absolute; left:76rem; bottom:26rem; width:940rem;
+    font-size:8.5rem; line-height:1.45; color:var(--gray-1);
+  }
+  .source sup{ font-size:6.5rem; }
+  .runninghead{                        /* slot 9: page | section, bottom-right */
+    position:absolute; right:76rem; bottom:26rem; text-align:right;
+    font-size:10.5rem; color:var(--gray-1); letter-spacing:.3rem;
+  }
+  .runninghead b{ color:var(--ink); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="eyebrow">Findings 02 &middot; Target-setting</div>
+
+  <!-- slot 1 — 13 words, 2 lines at this size. Gate: <=15 words / <=2 lines. -->
+  <h1 class="title">Companies holding two targets cut emissions three times faster than single-target peers.</h1>
+
+  <div class="cols">
+    <!-- COLUMN A -->
+    <div class="col">
+      <p><b>More net zero targets are proliferating.</b> A third of the world&rsquo;s largest companies listed in the 2022 analysis now have a net zero target in place, up from 17% a year earlier, and 62% have set an interim 2030 milestone alongside it.<sup>1</sup> The pace is not uniform: firms in Europe set targets 1.4&times; more often than firms in the same revenue band elsewhere, and disclosed a median of two decarbonisation levers per company.</p>
+      <p><b>Targets with a plan beat targets without one.</b> Companies that published a transition plan alongside the target reduced emissions 9.8% per year against 3.1% for target-only peers over the same period.<sup>2</sup> The gap is wider in heavy industry, where a plan is the difference between a capex commitment and a statement of intent.</p>
+      <p><b>The cost of delay is now priced.</b> Firms that deferred capital decisions past 2023 carry a median 11% higher abatement cost per tonne than peers of the same size that committed early, and 29% of that premium is locked into supply contracts that run past the interim milestone.<sup>2</sup></p>
+    </div>
+
+    <!-- COLUMN B: accent kicker opens the column (the deck's signature device) -->
+    <div class="col">
+      <p class="kicker">But on current trends, only 8% of companies with a net zero target reach it by 2050, and the shortfall is concentrated in exactly the sectors that matter most.</p>
+      <p><b>Where the gap sits.</b> Electricity, transport and heavy industry account for 71% of covered emissions yet hold only 38% of the transition plans. Renewables and efficiency carry 84% of the committed investment, and almost none of the plan capital is directed at process change.<sup>3</sup></p>
+      <p class="sub"><b>What separates the fast movers:</b> a named owner per lever, an internal carbon price above USD&nbsp;50/tCO<sub>2</sub>e, and compensation linked to the interim milestone rather than to the 2050 date.</p>
+      <p><b>Late movers buy optionality, not progress.</b> Where capital is still uncommitted, 63% of the gap is closed with purchased offsets and renewable certificates rather than with process change — accounting treatments that move the target date by less than four months on a science-based basis.<sup>3</sup></p>
+    </div>
+  </div>
+
+  <!-- slot 7 -->
+  <div class="note">
+    <div class="lab">Method</div>
+    <div class="txt">Sample: 2,100 companies&thinsp;&ge;&thinsp;USD&nbsp;1bn revenue across 24 markets and 11 sectors, screened for a public net zero or carbon-neutral commitment. Targets and plans captured from corporate disclosures and CDP responses between 2021-04-01 and 2022-12-31; emissions on a market-based scope 1&ndash;2 basis, restated for divestments.<sup>1</sup> Sector mapping is per GHG&nbsp;Protocol, not by SIC code, so 4% of the population differs from the 2021 edition.<sup>2</sup></div>
+  </div>
+
+  <div class="foot-rule"></div>
+
+  <!-- slot 8 -->
+  <div class="source">Sources: <sup>1</sup> Accenture analysis of 2022 corporate climate disclosures and CDP Climate Change responses (unpublished, Nov 2022); <sup>2</sup> UN Sustainable Development Goals 2022 progress report, net zero target index, table 3; <sup>3</sup> IEA Net Zero by 2050 roadmap, emissions-by-sector view and clean-energy investment series 2016&ndash;2022.</div>
+
+  <!-- slot 9 -->
+  <div class="runninghead"><b>3</b> | Setting targets</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>methodology-fieldwork-rail — kicker/label title + azure callout band + N-figure and fieldwork table, EY-style (1280×720)</title>
+<!--
+  Evidence: ey__ey_generative_ai_in_retail_and_commercial_banking_2023, "Background and
+  methodology" p3 — read in sw_sheets/ey__ey_generative_ai_in_retail_and_commercial_banking_2023_s00.jpg
+  (row 2, frame 3: kicker "Methodology of survey" + label title, azure intro band, giant blue
+  "N=151", four approach bullet columns, bordered "Conducted in July 2023" pill, EY|Parthenon
+  lockup bottom-right, source line bottom-left).
+  Fieldwork-table discipline (window / mode / response rate / weighting rows with footnoted
+  claims) cross-read with the highlighted limitation line on ey__ey_study_initial_coin_offerings_icos
+  p12. Palette: reviews/ey__ey_generative_ai_in_retail_and_commercial_banking_2023.md §palette —
+  bright azure (deepened here to clear 4.5:1 with white), grays, dark navy text, yellow inside
+  the logo only.
+  ---------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit,
+  so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+-->
+<style>
+  :root{
+    --bg:       #FFFFFF;
+    --ink:      #14284B;   /* body text — dark navy */
+    --accent:   #0A74C4;   /* azure family (deepened for contrast); figures, callout, bullets */
+    --accent-dk:#095FA4;   /* callout fill, title-rule */
+    --tint:     #EAF4FC;   /* callout-lite / limitation wash */
+    --gray-1:   #4A4A52;   /* body copy */
+    --gray-2:   #7A7A82;   /* captions, source line, page number */
+    --gray-3:   #B9B9BF;   /* table hairlines */
+    --rule:     #D7DBE2;
+    --yellow:   #FFDE00;   /* EY yellow — logo lockup only */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:  Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#101216; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- title block: kicker / label title / hairline ---------- */
+  header.head{ position:absolute; left:56rem; right:56rem; top:40rem; }
+  .kicker{
+    margin:0; font-family:var(--font-display); font-size:12rem; font-weight:700;
+    letter-spacing:.10em; text-transform:uppercase; color:var(--accent);
+  }
+  h1{
+    margin:8rem 0 0; font-family:var(--font-display); font-weight:500; font-size:32rem;
+    line-height:1.15; letter-spacing:-.003em; color:var(--ink); max-width:1080rem;
+  }
+  .head .rule{ height:2px; background:var(--accent-dk); margin-top:14rem; width:100%; }
+
+  /* ---------- azure callout band ---------- */
+  aside.callout{
+    position:absolute; left:56rem; right:56rem; top:160rem; height:92rem;
+    background:var(--accent-dk); color:#FFFFFF; box-sizing:border-box;
+    padding:14rem 22rem; display:flex; align-items:center;
+    font-family:var(--font-body); font-size:16rem; line-height:1.4;
+  }
+  aside.callout b{ font-weight:700; }
+
+  /* ---------- left rail: giant N + fieldwork table + fieldwork pill ---------- */
+  section.rail{ position:absolute; left:56rem; top:286rem; width:300rem; }
+  .n-figure{
+    margin:0; font-family:var(--font-display); font-weight:600; font-size:52rem;
+    line-height:1; color:var(--accent); letter-spacing:-.01em;
+  }
+  .n-caption{ margin:5rem 0 0; font-size:12.5rem; line-height:1.4; color:var(--gray-1); }
+  table.field{ margin-top:14rem; border-collapse:collapse; width:100%; }
+  table.field tr{ border-bottom:1px solid var(--gray-3); }
+  table.field th{
+    text-align:left; font-family:var(--font-display); font-size:9.5rem; font-weight:700;
+    letter-spacing:.07em; text-transform:uppercase; color:var(--gray-2);
+    padding:6rem 10rem 6rem 0; vertical-align:baseline; width:104rem;
+  }
+  table.field td{ font-size:12.5rem; line-height:1.35; color:var(--ink); padding:6rem 0; }
+  sup{ font-size:8.5rem; color:var(--gray-1); }
+  .pill{
+    display:inline-block; margin-top:16rem; padding:6rem 16rem; border:1.5px solid var(--accent);
+    border-radius:999rem; font-family:var(--font-display); font-size:12rem; font-weight:700;
+    color:var(--accent-dk); background:#FFFFFF;
+  }
+
+  /* ---------- right zone: approach columns ---------- */
+  main.approach{
+    position:absolute; left:414rem; right:56rem; top:286rem; bottom:170rem;
+    display:grid; grid-template-columns:repeat(3, 1fr); column-gap:30rem;
+  }
+  main.approach section h2{
+    margin:0; font-family:var(--font-display); font-size:12.5rem; font-weight:700;
+    color:var(--ink); letter-spacing:.005em; padding-bottom:7rem;
+    border-bottom:1.5px solid var(--accent);
+  }
+  main.approach section ul{ margin:10rem 0 0; padding:0; list-style:none; }
+  main.approach section li{
+    position:relative; padding-left:14rem; margin:0 0 9rem;
+    font-size:12.5rem; line-height:1.42; color:var(--gray-1);
+  }
+  main.approach section li::before{
+    content:""; position:absolute; left:2rem; top:.48em; width:6rem; height:6rem;
+    background:var(--accent);
+  }
+
+  /* ---------- highlighted limitation line ---------- */
+  aside.limit{
+    position:absolute; left:414rem; right:56rem; bottom:120rem; height:auto;
+    background:var(--tint); border-left:4px solid var(--accent);
+    padding:11rem 18rem; box-sizing:border-box;
+    font-size:12.5rem; line-height:1.5; color:var(--ink);
+  }
+  aside.limit b{ color:var(--accent-dk); letter-spacing:.03em; text-transform:uppercase; font-size:11.5rem; }
+
+  /* ---------- footer anatomy ---------- */
+  footer{
+    position:absolute; left:56rem; right:56rem; bottom:28rem; display:flex; align-items:flex-end;
+  }
+  .source{ margin:0; font-size:10.5rem; line-height:1.5; color:var(--gray-2); max-width:860rem; }
+  .pageblock{ margin-left:auto; display:flex; align-items:center; column-gap:16rem; }
+  .lockup{ display:flex; align-items:center; column-gap:7rem; }
+  .lockup .ey{
+    background:var(--yellow); color:#000; font-family:var(--font-display); font-weight:700;
+    font-size:13rem; padding:2rem 5rem; line-height:1;
+  }
+  .lockup .firm{ font-family:var(--font-display); font-size:12rem; font-weight:600; color:var(--ink); letter-spacing:.01em; }
+  .pageno{ font-family:var(--font-display); font-size:11.5rem; color:var(--gray-2); white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · KICKER + LABEL TITLE + RULE -->
+  <header class="head">
+    <p class="kicker">Methodology of survey</p>
+    <h1>Background and methodology</h1>
+    <div class="rule"></div>
+  </header>
+
+  <!-- 2 · AZURE INTRO CALLOUT BAND -->
+  <aside class="callout">
+    To understand how global retail and commercial banks are exploring and implementing GenAI
+    applications, EY-Parthenon teams surveyed <b>151 banking organizations</b> across 14 markets
+    in July 2023 — a single-field census, reported exactly as collected.<sup>a</sup>
+  </aside>
+
+  <!-- 3 · LEFT RAIL: N FIGURE, FIELDWORK TABLE, DATE PILL -->
+  <section class="rail" aria-label="Sample and fieldwork">
+    <p class="n-figure">N=151</p>
+    <p class="n-caption">banking organizations across retail, commercial and SMB segments<sup>b</sup></p>
+    <table class="field">
+      <tr><th scope="row">Fieldwork</th><td>01 Jul – 28 Jul 2023</td></tr>
+      <tr><th scope="row">Mode</th><td>Online self-completion, executive panel<sup>c</sup></td></tr>
+      <tr><th scope="row">Geography</th><td>14 markets, 60% domestic, 40% cross-border</td></tr>
+      <tr><th scope="row">Response</th><td>31.4% of invitations; 2.9% screened out</td></tr>
+      <tr><th scope="row">Weighting</th><td>None — raw counts reported<sup>d</sup></td></tr>
+    </table>
+    <span class="pill">Conducted in July 2023</span>
+  </section>
+
+  <!-- 4 · APPROACH COLUMNS -->
+  <main class="approach">
+    <section>
+      <h2>Population &amp; recruiting</h2>
+      <ul>
+        <li>Respondents included global, regional and municipal banks within the retail, commercial and SMB segments</li>
+        <li>Regional managers focused on client servicing, marketing, onboarding and technology investment were invited<sup>1</sup></li>
+        <li>Screen: decision-making input on GenAI initiatives required</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Instrument &amp; calibration</h2>
+      <ul>
+        <li>Instrument covered strategy, operating model, use cases and budget allocation</li>
+        <li>Question set piloted with three banks before fieldwork opened</li>
+        <li>Free-text responses coded post-field, not during</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Analysis &amp; reporting</h2>
+      <ul>
+        <li>Decision-maker tiers reported, but not restricted to C-suite (heads of product, digital and risk included)</li>
+        <li>Segments cut by deposit base (&gt;$1.0Bn, $500M–1.0Bn, &lt;$500M)<sup>2</sup></li>
+        <li>Sub-group cells under n=30 shown as directional only</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- 5 · LIMITATION LINE (highlighted) -->
+  <aside class="limit">
+    <b>Limitations —</b> results are not weighted to the population of listed banks and are not
+    projectable to the global market; responses were self-reported against a fixed list of use
+    cases.<sup>e</sup>
+  </aside>
+
+  <!-- 6 · FOOTER -->
+  <footer>
+    <p class="source">Source: EY-Parthenon Retail and Commercial Banking GenAI Survey, July 2023
+      (n=151; n=251 at the pre-screen stage; n=761 invitations issued). ¹Regional managers below
+      C-suite eligible. ²Deposit tiers per EY client database as of May 2023. a,b,c,d,e — see notes
+      page 24.</p>
+    <div class="pageblock">
+      <div class="lockup" aria-label="Firm lockup">
+        <span class="ey">EY</span><span class="firm">|&nbsp;Parthenon</span>
+      </div>
+      <div class="pageno">Page 3</div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

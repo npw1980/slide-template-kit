@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dual-axis-combo-column-line — columns (left $ axis) + count line (right axis), commentary rail (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  dual-axis-combo-column-line  ·  family dual-axis-combo
+  Evidence: kpmg__kpmg_venture_pulse_q3_2024_2024 p12/p13/p15 (sw_sheets/
+            ..._s01.jpg rows 2-5) + review §5: "quarterly column + line on two
+            axes — columns = $ value (left), line = deal count (right), with
+            value labels printed on every bar" and the fixed series palette
+            (cyan #00B8F6 primary chart fill, navy field #0A1F3A, blue #1E49E3);
+            partial years flagged "2024*". Review §71: chart block left/centre,
+            ~28–30% commentary column right, legend row under the chart. The
+            review's own weakness — "value-label-everywhere is decoration over
+            data" — is trimmed here: bars label the LATEST bar only, line labels
+            its LATEST point only; emphasis goes to the current quarter.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280, 100vh/720)} maps 1rem == 1
+  STAGE PIXEL, so every length below is a 1:1 stage-pixel coordinate and the
+  inline SVG (viewBox 0 0 1280 720) uses plain numbers == px.
+  ----------------------------------------------------------------------------
+  DATA ARRAYS (8 x-points = years 2017..2023 + 2024*; swap NUMBERS, not
+  geometry — keep 8 points and both scales stay valid):
+      years = [2017,2018,2019,2020,2021,2022,2023,2024*];
+      bars  = [9.6, 12.8, 14.9, 16.4, 13.1, 11.2, 13.9, 15.1];   // US$ bn — LEFT axis, cyan
+      line  = [520, 610, 680, 720, 690, 640, 710, 742];          // deals   — RIGHT axis, ink
+    Geometry (bars in US$bn, line in deal count, both linear & zero-based):
+      bar centres: cx(k) = 145 + k × 95          (k = 0..7 → 145 .. 810)
+      bar top:     y = 565 − value × 15          (left axis 0→$24bn)
+      line points: (cx(k), 565 − count × 0.36)   (right axis 0→1,000 deals)
+      the LAST point is the partial/forecast year — flagged by the * x-label;
+      its connecting leg is NOT dashed (KPMG keeps one solid leg; the * is the
+      only forecast flag — do not add shading as well).
+    One bar may be EMPHASISED (here: the current year 2024*) by printing its
+    value bold-ink above the bar; all other bars get grey labels only if the
+    audience needs them — default is label-latest-only.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts. No images, no
+  webfonts, no @import, no JavaScript. Nothing here makes a network request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     KPMG-review measured hexes: cyan #00B8F6 = data workhorse (THE ONE ACCENT
+     — it IS the bars); navy #0A1F3A = structure (kicker head, running head,
+     the line's end label stays ink/navy because it is an axis, not a hue);
+     blue #1E49E3 reserved for nav/annotation. Greys = context + gridlines.
+     Two-axis colour rule: bar labels pick up cyan tint = "read me on the LEFT
+     axis"; line labels ink = "read me on the RIGHT axis". */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;    /* line series, value text */
+    --accent:      #00B8F6;    /* KPMG cyan — the bars, the one hue */
+    --accent-deep: #00749B;    /* darker cyan: emphasised bar + axis-1 labels */
+    --navy:        #0A1F3A;    /* kicker head, running head, line colour */
+    --blue:        #1E49E3;    /* nav chips / annotation accent (structure) */
+    --gray-1:      #6B7280;    /* secondary text, axis labels, source */
+    --gray-2:      #9AA3AD;    /* lightest text tier */
+    --rule:        #E3E6EA;    /* gridlines, hairlines */
+    --axis:        #9AA1A9;    /* baseline / y-axis lines */
+    --plate:       #F5F7FA;    /* annotation / callout fill */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#10141c; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+
+  /* ---- title zone (same spine as the KPMG analysis page) ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:860rem; font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--navy); font-weight:700; }
+  .kicker sup{ font-size:10.5rem; color:var(--blue); }
+  .title{ position:absolute; left:64rem; top:64rem; width:1000rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700; line-height:36rem;
+          letter-spacing:-.6rem; max-height:72rem; overflow:hidden; }   /* 2-line slot = MBB gate */
+  .title em{ font-style:normal; color:var(--accent-deep); }             /* operative clause */
+
+  /* ---- region nav strip (KPMG device from the same deck) ---- */
+  .nav{ position:absolute; right:64rem; top:34rem; display:flex; align-items:center;
+        height:26rem; border:1px solid var(--rule); border-radius:3rem; overflow:hidden;
+        font-size:12rem; font-weight:700; }
+  .nav span{ padding:0 11rem; line-height:26rem; color:var(--gray-1); border-left:1px solid var(--rule); }
+  .nav span:first-child{ border-left:none; }
+  .nav .active{ background:var(--blue); color:#fff; }
+
+  .rule-top{ position:absolute; left:64rem; top:138rem; width:1152rem; height:1rem; background:var(--rule); }
+
+  /* ---- commentary rail (review §71: ~28-30% column, numbered reads) ---- */
+  .rail{ position:absolute; left:930rem; top:168rem; width:286rem; }
+  .rail h4{ font-size:11rem; letter-spacing:.8rem; color:var(--gray-2); font-weight:700; margin-bottom:14rem; }
+  .obs{ display:flex; gap:10rem; margin-bottom:18rem; }
+  .obs b{ flex:0 0 26rem; font-size:17rem; font-weight:700; color:var(--navy); line-height:17rem;
+          text-align:center; padding-top:1rem; }
+  .obs p{ font-size:13rem; line-height:17rem; color:#303841; }
+  .obs p i{ font-style:normal; color:var(--accent-deep); font-weight:700; }
+
+  /* ---- exhibit: ONE inline SVG over the stage, 1 unit = 1 px ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .grid{ stroke:var(--rule); stroke-width:1; }
+  .axis{ stroke:var(--axis); stroke-width:1.4; }
+  .axlab{ font-size:12rem; fill:var(--gray-1); }
+  .axlab.l2{ fill:var(--gray-2); }
+  .xlab{ font-size:13rem; fill:var(--gray-1); text-anchor:middle; }
+  .xlab.f{ fill:var(--gray-1); font-style:italic; }
+  .bar{ fill:var(--accent); }
+  .bar.last{ fill:var(--accent-deep); }                 /* emphasised current bar */
+  .barlab{ font-size:11.5rem; fill:var(--gray-2); text-anchor:middle; }
+  .barlab.now{ font-size:13.5rem; font-weight:700; fill:var(--ink); }
+  .line{ stroke:var(--navy); stroke-width:2.6; fill:none; }
+  .dot{ fill:#fff; stroke:var(--navy); stroke-width:2; }
+  .dot.now{ stroke-width:2.8; }
+  .vlab{ font-size:15rem; font-weight:700; fill:var(--navy); }   /* line-series label = ink */
+  .nlab{ font-size:11rem; fill:var(--gray-1); }
+  .leg{ font-size:12.5rem; fill:var(--gray-1); }
+  .callout{ font-size:12.5rem; fill:#4A5568; }
+  .lead{ stroke:var(--blue); stroke-width:1.2; stroke-dasharray:3 3; }
+
+  /* ---- footer anatomy ---- */
+  .source{ position:absolute; left:64rem; bottom:26rem; width:1010rem; font-size:11.5rem; color:var(--gray-1); line-height:16rem; }
+  .source sup{ font-size:8.5rem; }
+  .runhead{ position:absolute; right:64rem; bottom:26rem; font-size:12rem; font-weight:700;
+            color:var(--navy); letter-spacing:.3rem; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>Global venture funding, 2017–2024*:</b> announced deal value (US$bn, left axis) and deal count (right axis), all rounds, restated<sup>1</sup></div>
+  <div class="title">Funding value recovered in 2024, but only by fewer, bigger deals —<br><em>count is still 35% below the 2021 peak</em></div>
+
+  <div class="nav"><span class="active">Global</span><span>Americas</span><span>EMEA</span><span>APAC</span></div>
+  <div class="rule-top"></div>
+
+  <svg class="chart" viewBox="0 0 1280 720" role="img" aria-label="Dual-axis combo: columns for US$ deal value on the left axis, line for deal count on the right axis, 2017 to 2024">
+    <!-- horizontal gridlines every $4bn (left axis y = 565 − v×15; coincides with 111 deals on right axis) -->
+    <line class="grid" x1="110" y1="505" x2="830" y2="505"/>
+    <line class="grid" x1="110" y1="445" x2="830" y2="445"/>
+    <line class="grid" x1="110" y1="385" x2="830" y2="385"/>
+    <line class="grid" x1="110" y1="325" x2="830" y2="325"/>
+    <line class="grid" x1="110" y1="265" x2="830" y2="265"/>
+    <line class="grid" x1="110" y1="205" x2="830" y2="205"/>
+
+    <!-- LEFT axis: US$bn. axis line + labels right-aligned to x=98 -->
+    <line class="axis" x1="110" y1="205" x2="110" y2="565"/>
+    <line class="axis" x1="110" y1="565" x2="830" y2="565"/>
+    <text class="axlab" x="98" y="569" text-anchor="end">0</text>
+    <text class="axlab" x="98" y="509" text-anchor="end">4</text>
+    <text class="axlab" x="98" y="449" text-anchor="end">8</text>
+    <text class="axlab" x="98" y="389" text-anchor="end">12</text>
+    <text class="axlab" x="98" y="329" text-anchor="end">16</text>
+    <text class="axlab" x="98" y="269" text-anchor="end">20</text>
+    <text class="axlab" x="98" y="209" text-anchor="end">24</text>
+    <text class="axlab" x="60"  y="192" fill="var(--gray-2)" font-size="11">US$bn</text>
+
+    <!-- RIGHT axis: deal count. unit appears once (axis head) + in legend -->
+    <line class="axis" x1="830" y1="205" x2="830" y2="565"/>
+    <text class="axlab l2" x="842" y="569">0</text>
+    <text class="axlab l2" x="842" y="479">250</text>
+    <text class="axlab l2" x="842" y="389">500</text>
+    <text class="axlab l2" x="842" y="299">750</text>
+    <text class="axlab l2" x="842" y="209">1,000</text>
+    <text class="axlab l2" x="868" y="192" font-size="11">deals</text>
+
+    <!-- x labels: years 2017..2023, partial year 2024* italic-flagged -->
+    <text class="xlab" x="145" y="594">2017</text>
+    <text class="xlab" x="240" y="594">2018</text>
+    <text class="xlab" x="335" y="594">2019</text>
+    <text class="xlab" x="430" y="594">2020</text>
+    <text class="xlab" x="525" y="594">2021</text>
+    <text class="xlab" x="620" y="594">2022</text>
+    <text class="xlab" x="715" y="594">2023</text>
+    <text class="xlab f" x="810" y="594">2024*</text>
+
+    <!-- COLUMNS: bars US$bn, cyan, w=46 centred on cx(k)=145+k×95.
+         y = 565 − v×15; last bar darkened to cyan-deep = current (emphasis). -->
+    <rect class="bar"     x="122" y="421.0" width="46" height="144.0"/>
+    <rect class="bar"     x="217" y="373.0" width="46" height="192.0"/>
+    <rect class="bar"     x="312" y="341.5" width="46" height="223.5"/>
+    <rect class="bar"     x="407" y="319.0" width="46" height="246.0"/>
+    <rect class="bar"     x="502" y="368.5" width="46" height="196.5"/>
+    <rect class="bar"     x="597" y="397.0" width="46" height="168.0"/>
+    <rect class="bar"     x="692" y="356.5" width="46" height="208.5"/>
+    <rect class="bar last" x="787" y="338.5" width="46" height="226.5"/>
+
+    <!-- value labels: GREY small over context bars, BOLD INK over the current
+         bar only (the review-trimmed version of KPMG's label-every-bar habit) -->
+    <text class="barlab" x="145" y="413">9.6</text>
+    <text class="barlab" x="240" y="365">12.8</text>
+    <text class="barlab" x="335" y="333.5">14.9</text>
+    <text class="barlab" x="430" y="311">16.4</text>
+    <text class="barlab" x="525" y="360.5">13.1</text>
+    <text class="barlab" x="620" y="389">11.2</text>
+    <text class="barlab" x="715" y="348.5">13.9</text>
+    <text class="barlab now" x="810" y="330">15.1</text>
+
+    <!-- LINE: deal count, ink/navy (axis-not-hue), same cx positions, y = 565 − n×0.36 -->
+    <polyline class="line" points="145,377.8 240,345.4 335,320.2 430,305.8 525,316.6 620,334.6 715,309.4 810,298.9"/>
+    <circle class="dot"     cx="145" cy="377.8" r="3.5"/>
+    <circle class="dot"     cx="240" cy="345.4" r="3.5"/>
+    <circle class="dot"     cx="335" cy="320.2" r="3.5"/>
+    <circle class="dot"     cx="430" cy="305.8" r="3.5"/>
+    <circle class="dot"     cx="525" cy="316.6" r="3.5"/>
+    <circle class="dot"     cx="620" cy="334.6" r="3.5"/>
+    <circle class="dot"     cx="715" cy="309.4" r="3.5"/>
+    <circle class="dot now" cx="810" cy="298.9" r="4.5"/>
+
+    <!-- line value label: latest point only, ink = "read me on the RIGHT axis" -->
+    <text class="vlab" x="820" y="284">742</text>
+    <text class="nlab" x="820" y="268">deals</text>
+
+    <!-- ONE annotation: 2021 peak — dashed leader + claim text, blue leader
+         (structure colour) so it never reads as a third series -->
+    <line class="lead" x1="525" y1="317" x2="467" y2="235"/>
+    <circle cx="525" cy="316.6" r="3" fill="var(--blue)"/>
+    <text class="callout" x="352" y="226">2021 peak: both curves turn down</text>
+    <text class="callout" x="352" y="243">two quarters before value does</text>
+
+    <!-- legend row UNDER the chart (review §71): colour = the axis it reads -->
+    <rect x="110" y="628" width="13" height="13" fill="var(--accent)"/>
+    <text class="leg" x="130" y="639">Deal value, US$bn (left axis)</text>
+    <line x1="310" y1="634" x2="336" y2="634" stroke="var(--navy)" stroke-width="2.6"/>
+    <circle cx="323" cy="634" r="3.5" fill="#fff" stroke="var(--navy)" stroke-width="2"/>
+    <text class="leg" x="343" y="639">Deal count (right axis)</text>
+    <text class="leg" x="487" y="639" fill="var(--gray-2)">* 2024 = year to 30 Sep (partial)</text>
+  </svg>
+
+  <!-- commentary rail: three numbered reads, ~29% of canvas, right column -->
+  <div class="rail">
+    <h4>WHAT THE CURVES SAY</h4>
+    <div class="obs"><b>1</b><p>Value and count have <i>decoupled</i>: 2024 value is back near the 2019 level, yet deals run 26% below 2019.</p></div>
+    <div class="obs"><b>2</b><p>Round size is doing the work — median ticket is <i>$24.9M</i>, the highest in the series, and late-stage mega-rounds explain half of it.</p></div>
+    <div class="obs"><b>3</b><p>Every prior recovery was count-led. No country page in this series shows value recovering on <i>falling</i> deal count before.</p></div>
+  </div>
+
+  <div class="source">Source: KPMG Venture Pulse, Q3 2024 dataset; deals with announced value &gt; $100k, all rounds, restated for deal reclassification. *2024 = year to 30 September (partial year, not comparable to full-year values). Deal reclassification applied to 2017–2023 comparatives.<sup>1</sup> Excludes debt rounds and IPO-related capital raises.</div>
+  <div class="runhead">12 | DEAL FLOW</div>
+
+</div>
+</body>
+</html>

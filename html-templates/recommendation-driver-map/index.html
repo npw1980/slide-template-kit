@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>recommendation-driver-map — driver-to-recommendation mapping table (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  recommendation-driver-map  ·  family recommendation
+  Evidence: deloitte__deloitte_town_of_tillsonburg_it_strategic_review_council_upd
+            p8 "drivers -> recommendations" boxed mapping table (navy header
+            band, gray alternating rows, mirrored driver rows against p6
+            "drivers -> findings"); p15 option-comparison table supplies the
+            semantic rating-cell discipline; p14 gives the cost-table totals.
+            Review verdict: mine TABLES and structure from this deck, import
+            your own ACTION titles (every title there is a topic label — the
+            deck's biggest weakness; that is why the title slot below is a
+            claim and the MANUAL forbids copying the source titles).
+  Corroborated: catalog_1-20.csv S0057 "recommendation page" (single page,
+            same findings->actions spine, no chart).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length is a 1:1 stage coordinate that MANUAL.md
+  quotes (1280x720 fixed stage, uniform scale).
+  ----------------------------------------------------------------------------
+  DATA MODEL: 4 REPEATABLE ROWS (add rows at height 104 each, same column
+  widths). Per row the editable cells are:
+      driver (14.5px bold + 14px gray metric line)
+      finding (3 lines max @ 12.5px/1.5 in 286px — carries the evidence)
+      recommendation (2 lines max @ 13px/1.5 in 366px — verb-first action)
+      owner (role name, 1 line) + start quarter (chip) + impact dot
+  Row emphasis is SEMANTIC only: the 4px left bar and the impact dot carry a
+  3-step status scale (green = act now, amber = plan this cycle, red =
+  decision needed), never decoration. Everything else is navy + gray.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, semantic <table> with fixed colgroup widths,
+  no images, no webfonts, no @import, no JavaScript. Nothing makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Navy = the deck's dominant register (all
+     table header bands); green accent is semantic status, not decoration. */
+  :root{
+    --bg:          #FFFFFF;
+    --navy:        #0B2C4A;    /* header band + driver labels + total rule */
+    --ink:         #1B1B1B;    /* body text */
+    --accent:      #6FBE44;    /* status "act now" green */
+    --gray-1:      #6E6E6E;    /* secondary text, footnotes */
+    --gray-2:      #C6CCD1;    /* cell rules + column dividers */
+    --gray-3:      #EFF2F4;    /* zebra row wash */
+    --rule:        #D9DCDC;    /* footer rule */
+    --sev-now:     #6FBE44;    /* semantic: act now */
+    --sev-plan:    #E6A700;    /* semantic: plan this cycle */
+    --sev-decide:  #C13B2E;    /* semantic: decision needed */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  *{ padding:0; box-sizing:border-box; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+
+  /* ---------------- title zone ---------------- */
+  .kicker{                             /* slot 1: eyebrow / running section */
+    position:absolute; left:64rem; top:46rem; width:760rem;
+    font-size:12rem; letter-spacing:.14em; text-transform:uppercase;
+    font-weight:700; color:var(--gray-1);
+  }
+  .title{                              /* slot 2: ACTION title (<=15 words / 2 lines) */
+    position:absolute; left:64rem; top:68rem; width:1152rem;
+    font-family:var(--font-display); font-size:30rem; line-height:1.12;
+    font-weight:700; color:var(--navy);
+  }
+  .lead{                               /* slot 3: one-line method note */
+    position:absolute; left:64rem; top:134rem; width:1080rem;
+    font-size:15rem; line-height:1.4; color:var(--gray-1);
+  }
+
+  /* ---------------- mapping table ---------------- */
+  table.map{                           /* slots 4-9 */
+    position:absolute; left:64rem; top:176rem; width:1152rem;
+    border-collapse:separate; border-spacing:0;
+    table-layout:fixed;
+    border-bottom:3rem solid var(--navy);
+    font-family:var(--font-body);
+  }
+  col.c-idx{ width:46rem; }
+  col.c-driver{ width:232rem; }
+  col.c-find{ width:286rem; }
+  col.c-rec{ width:366rem; }
+  col.c-owner{ width:122rem; }
+  col.c-hor{ width:100rem; }
+  thead th{
+    background:var(--navy); color:#FFFFFF; text-align:left;
+    font-size:10.5rem; letter-spacing:.08em; text-transform:uppercase;
+    font-weight:700; padding:0 12rem; height:40rem; vertical-align:middle;
+  }
+  tbody td{
+    border-right:1rem solid var(--gray-2);
+    border-bottom:1rem solid var(--gray-2);
+    padding:0 12rem; height:100rem; vertical-align:middle;
+  }
+  tbody tr:nth-child(even) td{ background:var(--gray-3); }
+  tbody td:last-child{ border-right:0; }
+  tbody td:first-child{ border-right:1rem solid var(--gray-2); }
+
+  /* driver cell: label + metric line */
+  .driver{ font-size:14.5rem; font-weight:700; color:var(--navy); line-height:1.2; }
+  .driver .sub{
+    display:block; margin-top:4rem; font-size:11.5rem; font-weight:400;
+    color:var(--gray-1); line-height:1.35;
+  }
+  /* finding cell: evidence, carries the numbers */
+  .find{ font-size:12.5rem; line-height:1.5; color:var(--ink); }
+  .find b{ font-weight:700; }
+  /* recommendation cell: verb-first action + semantic left bar */
+  .rec{ font-size:13rem; line-height:1.5; color:var(--ink); }
+  .rec b{ font-weight:700; }
+  /* status bar lives on the 4th cell (the recommendation column) */
+  tbody tr.now    td:nth-child(4){ border-left:4rem solid var(--sev-now);    padding-left:10rem; }
+  tbody tr.plan   td:nth-child(4){ border-left:4rem solid var(--sev-plan);   padding-left:10rem; }
+  tbody tr.decide td:nth-child(4){ border-left:4rem solid var(--sev-decide); padding-left:10rem; }
+  /* owner + start/impact */
+  .owner{ font-size:12rem; font-weight:700; line-height:1.3; color:var(--ink); }
+  .owner .dep{ display:block; font-weight:400; color:var(--gray-1); font-size:11rem; margin-top:3rem; }
+  .when{ font-size:11.5rem; font-weight:700; color:var(--ink); }
+  .chip{
+    display:inline-block; margin-top:5rem; padding:2rem 7rem;
+    border:1rem solid var(--gray-2); border-radius:2rem;
+    font-size:10rem; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--gray-1);
+  }
+  tbody tr.now    .chip{ border-color:var(--sev-now);    color:#2E5C1A; }
+  tbody tr.plan   .chip{ border-color:var(--sev-plan);   color:#6B4E00; }
+  tbody tr.decide .chip{ border-color:var(--sev-decide); color:#8E2B20; }
+  .idot{
+    display:inline-block; width:9rem; height:9rem; border-radius:50%;
+    margin-right:4rem; vertical-align:baseline;
+  }
+  tbody tr.now  .idot{ background:var(--sev-now); }
+  tbody tr.plan .idot{ background:var(--sev-plan); }
+  tbody tr.decide .idot{ background:var(--sev-decide); }
+  sup{ font-size:8rem; line-height:0; color:var(--gray-1); }
+
+  /* ---------------- legend + footer ---------------- */
+  .key span{ display:flex; align-items:center; gap:6rem; }
+  .keyline i.dot,.keyline .idot{ vertical-align:middle; }
+  .footnote{                           /* slot 11: status key + methodology footnotes */
+    position:absolute; left:64rem; right:64rem; bottom:34rem;
+    display:flex; flex-direction:column; gap:2rem;
+    font-size:10.5rem; line-height:1.3; color:var(--gray-1);
+  }
+  .foot{                               /* slot 12: source left, page+rights right */
+    position:absolute; left:64rem; right:64rem; bottom:10rem;
+    display:flex; justify-content:space-between; align-items:baseline;
+    border-top:1rem solid var(--rule); padding-top:6rem;
+    font-size:11rem; color:var(--gray-1);
+  }
+  .foot .src{ max-width:760rem; }
+  .foot .right{ display:flex; gap:14rem; align-items:baseline; white-space:nowrap; }
+  .foot .page{ font-weight:700; color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · eyebrow -->
+  <div class="kicker">Findings summary &nbsp;&middot;&nbsp; drivers to recommendations</div>
+
+  <!-- 2 · action title (14 words / 1-2 lines) -->
+  <div class="title">Four drivers set the IT strategy; each has one owner and one start date</div>
+
+  <!-- 3 · method note -->
+  <div class="lead">Each recommendation below traces to a named driver and one measured finding; drivers keep the same row order as the findings table on p6.</div>
+
+  <!-- 4-9 · the mapping table -->
+  <table class="map">
+    <colgroup>
+      <col class="c-idx"><col class="c-driver"><col class="c-find">
+      <col class="c-rec"><col class="c-owner"><col class="c-hor">
+    </colgroup>
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Driver</th>
+        <th scope="col">What we found</th>
+        <th scope="col">Recommendation</th>
+        <th scope="col">Owner</th>
+        <th scope="col">Start</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="plan">
+        <td><span class="when">1</span></td>
+        <td>
+          <div class="driver">Infrastructure<span class="sub">37 physical servers · 6 past end-of-support</span></div>
+        </td>
+        <td><div class="find">Both WAN links terminate on <b>one</b> physical path; 9 of 37 servers run an OS unsupported since 2015.<sup>1</sup></div></td>
+        <td><div class="rec"><b>Split the WAN path and replace the estate in 3 waves</b> — wave 1 covers the 6 unsupported boxes.</div></td>
+        <td><div class="owner">Chief Administrative Officer<span class="dep">IT Manager</span></div></td>
+        <td><div class="when">Q1 2024<span class="chip">Plan</span></div></td>
+      </tr>
+      <tr class="decide">
+        <td><span class="when">2</span></td>
+        <td>
+          <div class="driver">Applications<span class="sub">11 business apps · 4 without a named owner</span></div>
+        </td>
+        <td><div class="find">ERP sits on a <b>2003</b> build; 218 manual workarounds exist across 3 departments, 118 of them in finance.<sup>2</sup></div></td>
+        <td><div class="rec"><b>Retire 4 apps, then re-host payroll before the ERP upgrade</b> — sequencing decision needed by March.</div></td>
+        <td><div class="owner">Director of Corporate Services<span class="dep">Finance Manager</span></div></td>
+        <td><div class="when">Q2 2024<span class="chip">Decide</span></div></td>
+      </tr>
+      <tr class="now">
+        <td><span class="when">3</span></td>
+        <td>
+          <div class="driver">Data &amp; reporting<span class="sub">No report inventory · 60% ad-hoc</span></div>
+        </td>
+        <td><div class="find"><b>60%</b> of council reporting is produced from uncontrolled spreadsheets; no owner for the 14 statutory returns.</div></td>
+        <td><div class="rec"><b>Publish one report catalogue with owners by 30 June</b>, covering all 14 statutory returns.</div></td>
+        <td><div class="owner">Deputy CAO<span class="dep">Clerk / Records</span></div></td>
+        <td><div class="when">Q1 2024<span class="chip">Now</span></div></td>
+      </tr>
+      <tr class="plan">
+        <td><span class="when">4</span></td>
+        <td>
+          <div class="driver">Governance &amp; operating model<span class="sub">14 FTE across 3 departments · 2 vacant posts</span></div>
+        </td>
+        <td><div class="find">No IT steering charter; decisions land in <b>5</b> overlapping committees, and 2 of 14 posts have been vacant for 9+ months.</div></td>
+        <td><div class="rec"><b>Charter a 5-seat IT steering committee</b> on a quarterly cadence with a written decision log.</div></td>
+        <td><div class="owner">Mayor / Council<span class="dep">CAO secretariat</span></div></td>
+        <td><div class="when">Q1 2024<span class="chip">Plan</span></div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 10 · semantic key -->
+  <!-- 11 · footnotes -->
+  <div class="footnote">
+    <span class="keyline"><i class="idot" style="background:var(--sev-now)"></i>&nbsp;Act now&nbsp;&nbsp;<i class="idot" style="background:var(--sev-plan)"></i>&nbsp;Plan this cycle&nbsp;&nbsp;<i class="idot" style="background:var(--sev-decide)"></i>&nbsp;Decision required &mdash; status is semantic, not decoration</span>
+    <span><sup>1</sup>&nbsp;Hardware counts from the March 2023 asset inventory; licence positions verified 6 January 2024.</span>
+    <span><sup>2</sup>&nbsp;Workaround count from 14 stakeholder interviews; labour cost estimated at 60&nbsp;FTE&nbsp;@&nbsp;$90/hr.</span>
+  </div>
+
+  <!-- 12 · footer -->
+  <div class="foot">
+    <div class="src">Source: 14 stakeholder interviews, Town of Tillsonburg IT inventory (Mar 2023) and Deloitte analysis</div>
+    <div class="right"><span class="page">8 | FINDINGS SUMMARY</span><span>&copy; 2014 Deloitte LLP and affiliated entities</span></div>
+  </div>
+
+</div>
+</body>
+</html>

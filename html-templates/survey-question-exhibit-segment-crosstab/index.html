@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>survey-question-exhibit-segment-crosstab — one survey question, grouped bars by respondent segment (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  survey-question-exhibit-segment-crosstab  ·  family survey-question-exhibit
+  Evidence: accenture__accenture_2019_accenture_global_financial_services_consumer
+            p23 + p29 (read on sw_sheets/..._s02.jpg) — the deck's survey device is
+            "question as kicker / claim title / assertive blue lead line, then small
+            unframed label-heavy series bars coloured by respondent persona, with an
+            always-present persona legend". Reviews of that deck (line 31, 37, 60)
+            record the 4-colour persona system and "Persona color legend fixed on
+            every chart".
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate with the
+  same numbers MANUAL.md quotes (1280x720 fixed stage, uniform scale). Inside the
+  inline SVG the viewBox makes 1 user unit equal 1 stage px.
+  ----------------------------------------------------------------------------
+  DATA ARRAYS — this is the whole figure. 4 answer options x 3 respondent
+  segments. seg[k] is one segment's share; every seg array MUST sum to 100.
+
+    segments = [ {name:"Engaged", n:214}, {name:"Mainstream", n:631}, {name:"Rest", n:997} ]
+    n_total  = 1842
+    options  = [
+      { label:"Full bundle: one bill, all services",
+        seg:[34, 24, 13], all:19 },
+      { label:"Insurance + payments only",
+        seg:[29, 26, 15], all:20 },
+      { label:"Loyalty-linked, pay as you use",
+        seg:[22, 21, 17], all:19 },
+      { label:"No bundle: keep providers separate",
+        seg:[15, 29, 55], all:41 }
+    ];
+
+  GEOMETRY RULES (recompute these, don't re-guess):
+    scale        : 1 percentage point = 3 px of bar height; baseline y = 532
+    bar k in group i : x = 136 + 260*i + 74*k, width 60, height = seg[k]*3,
+                       y = 532 - seg[k]*3, centre x = x + 30
+    group centre : 240 + 260*i           (used for the option label)
+    value label  : centre x, y = bar y - 7  (render only when seg >= 3)
+    all-respondents marker: dotted line at y = 532 - 3*options[i].all
+                       from x = 136 + 260*i - 10 to + 216, and the same value
+                       repeated in grey (class grp-sub) under the option label
+                       at y = 588 — labels sit under the axis because a line
+                       crossing the bars has no safe place to carry text.
+    delta chip   : value = seg[0] - all ; here 34 - 19 = +15pp on option 1
+    "all" is NOT a fifth series — it is the weighted mean of seg over n:
+      all[i] = round( (seg[i][0]*214 + seg[i][1]*631 + seg[i][2]*997) / 1842 )
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per TEMPLATE_SPEC: --accent = the ONE emphasis colour, --ink text,
+     --gray-* secondary series and all chrome, --rule hairlines, --bg ground.
+     The violet anchor follows the Accenture house violet used in the sibling
+     template hbar-likert (#7B1FF0 family); the deck's real system is a 4-colour
+     persona code (violet / cyan / charcoal / blue) that the kit deliberately
+     reduces to one accent + grey ramp. See MANUAL FILL for the swap. */
+  :root{
+    --bg:         #FFFFFF;
+    --ink:        #1A1A1A;
+    --accent:     #7B1FF0;   /* focus segment fill, chip */
+    --accent-ink: #5A0FB0;   /* accent text on white (contrast-checked) */
+    --gray-1:     #6E6E6E;   /* 2nd series + secondary text */
+    --gray-2:     #B4B4B4;   /* 3rd series */
+    --gray-3:     #D9D9D9;   /* scale rules, dotted markers */
+    --rule:       #E3E3E3;
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#111214; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+
+  /* ---- title zone: kicker 36, title 62 (2-line cap), rule 146, lead 158 ---- */
+  .kicker{ position:absolute; left:64rem; top:34rem; width:1152rem; font-size:15rem;
+           color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-ink); font-weight:700; }
+  .kicker sup{ font-size:11rem; color:var(--accent-ink); }
+  .title{ position:absolute; left:64rem; top:62rem; width:1152rem; max-height:68rem; overflow:hidden;
+          font-family:var(--font-display); font-size:28rem; font-weight:700; line-height:34rem;
+          letter-spacing:-.6rem; }
+  .title em{ font-style:normal; color:var(--accent-ink); }
+  .rule-top{ position:absolute; left:64rem; top:146rem; width:1152rem; height:1rem; background:var(--rule); }
+  /* the assertive lead line — Accenture's "what does this mean" device */
+  .lead{ position:absolute; left:64rem; top:158rem; width:1152rem; font-size:17rem; font-weight:700;
+         color:var(--accent-ink); line-height:22rem; }
+  .figure-cap{ position:absolute; left:64rem; top:184rem; width:700rem; font-size:11rem; color:var(--gray-1); }
+  .figure-cap b{ color:var(--ink); font-weight:700; }
+
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .bar-a{ fill:var(--accent); }
+  .bar-b{ fill:var(--gray-1); }
+  .bar-c{ fill:var(--gray-2); }
+  .val-a{ font-size:12px; font-weight:700; fill:var(--accent-ink); }
+  .val-b{ font-size:12px; font-weight:700; fill:var(--gray-1); }
+  .grp{ font-size:12px; fill:var(--ink); }
+  .grp-sub{ font-size:11px; fill:var(--gray-1); }   /* the all-respondent value, under the option label */
+  .grp-num{ font-weight:700; fill:var(--accent-ink); }
+  .base{ stroke:var(--gray-1); stroke-width:1; }
+  .scale{ stroke:var(--gray-3); stroke-width:1; stroke-dasharray:2 3; }
+  .scale-tx{ font-size:10px; fill:var(--gray-1); }
+  .ref{ stroke:var(--gray-1); stroke-width:1; stroke-dasharray:1 3; }
+  .ref-tx{ font-size:10px; fill:var(--gray-1); }
+  .chip{ fill:var(--accent); }
+  .chip-tx{ font-size:11px; font-weight:700; fill:#FFFFFF; }
+  .chip-leader{ stroke:var(--accent); stroke-width:1; }
+  .legend{ position:absolute; right:64rem; top:184rem; font-size:11rem; color:var(--gray-1); }
+  .legend span.sw{ display:inline-block; width:10rem; height:10rem; margin:0 5rem 0 16rem; vertical-align:-1px; }
+  .legend span.sw:first-child{ margin-left:0; }
+  .legend span.key{ display:inline-block; width:14rem; height:0; border-top:1px dotted var(--gray-1);
+                    margin:0 5rem 0 16rem; vertical-align:4px; }
+
+  .note{ position:absolute; left:64rem; right:64rem; top:610rem; font-size:11rem; color:var(--gray-1); line-height:16rem; }
+  .note sup{ color:var(--accent-ink); }
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:16rem; display:flex;
+           justify-content:space-between; align-items:baseline; font-size:10rem; color:var(--gray-1); }
+  .footer sup{ font-size:8rem; color:var(--accent-ink); }
+  .footer .runhead{ margin-left:22rem; }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="Grouped vertical bars of interest in a bundled provider offer by answer option, with three respondent segments per option, an all-respondents marker and an engagement gap callout">
+
+  <!-- slot 1 · the survey question itself, verbatim, in the kicker -->
+  <div class="kicker">Q11: <b>How interested would you be</b> in a single monthly bill that bundles insurance, banking and home services from one provider?<sup>1</sup></div>
+
+  <!-- slot 2 · claim title (≤15 words / 2 lines — the MBB gate) -->
+  <div class="title">The <em>63%</em> who want a bundle are already engaged — the rest mostly are not</div>
+
+  <div class="rule-top"></div>
+
+  <!-- slot 3 · assertive lead (the page's recommendation, not a topic) -->
+  <div class="lead">Lead with the bundle to the engaged; reprice before it reaches the mainstream.</div>
+
+  <!-- slot 4 · figure caption above the figure (firm convention: captioned, unframed) -->
+  <div class="figure-cap"><b>Figure 3.</b> Q11 responses by attitude segment, single choice</div>
+
+  <!-- ===================== CHART (inline SVG, 1 group = 1 <g>) =====================
+       Data arrays + every geometry rule are in the file header. Groups:
+       4 answer options at pitch 260 (first group left edge 136), 3 bars per
+       group (74px step, 60px wide), baseline y=532, 1pp = 3px. -->
+  <svg class="chart" viewBox="0 0 1280 720">
+
+    <!-- scale: baseline + one dashed 50% rule. No gridlines between. -->
+    <line class="scale" x1="110" y1="382" x2="1150" y2="382"/>
+    <text class="scale-tx" x="102" y="386" text-anchor="end">50%</text>
+    <line class="base" x1="110" y1="532" x2="1150" y2="532"/>
+    <text class="scale-tx" x="102" y="536" text-anchor="end">0</text>
+    <text class="scale-tx" transform="translate(76,462) rotate(-90)" text-anchor="middle">% of respondents (single choice)</text>
+
+    <!-- group 0 · options[0] seg [34 24 13] all 19 -->
+    <g>
+      <line class="ref" x1="126" y1="475" x2="352" y2="475"/>
+      <rect class="bar-a" x="136" y="430" width="60" height="102"/>
+      <rect class="bar-b" x="210" y="460" width="60" height="72"/>
+      <rect class="bar-c" x="284" y="493" width="60" height="39"/>
+      <text class="val-a" x="166" y="423" text-anchor="middle">34%</text>
+      <text class="val-b" x="240" y="453" text-anchor="middle">24%</text>
+      <text class="val-b" x="314" y="486" text-anchor="middle">13%</text>
+      <!-- delta chip: seg[0] 34 - all 19 = +15pp. Sits clear of the 50% rule (382). -->
+      <rect class="chip" x="136" y="314" width="176" height="24" rx="12"/>
+      <text class="chip-tx" x="150" y="330">+15 pp vs. all respondents</text>
+      <line class="chip-leader" x1="176" y1="338" x2="176" y2="430"/>
+      <text class="grp" x="240" y="552" text-anchor="middle"><tspan class="grp-num">1 · </tspan>Full bundle: one bill,</text>
+      <text class="grp" x="240" y="570" text-anchor="middle">all services</text>
+      <text class="grp-sub" x="240" y="588" text-anchor="middle">all respondents 19%</text>
+    </g>
+
+    <!-- group 1 · options[1] seg [29 26 15] all 20 -->
+    <g>
+      <line class="ref" x1="386" y1="472" x2="612" y2="472"/>
+      <rect class="bar-a" x="396" y="445" width="60" height="87"/>
+      <rect class="bar-b" x="470" y="454" width="60" height="78"/>
+      <rect class="bar-c" x="544" y="487" width="60" height="45"/>
+      <text class="val-a" x="426" y="438" text-anchor="middle">29%</text>
+      <text class="val-b" x="500" y="447" text-anchor="middle">26%</text>
+      <text class="val-b" x="574" y="480" text-anchor="middle">15%</text>
+      <text class="grp" x="500" y="552" text-anchor="middle"><tspan class="grp-num">2 · </tspan>Insurance + payments</text>
+      <text class="grp" x="500" y="570" text-anchor="middle">only</text>
+      <text class="grp-sub" x="500" y="588" text-anchor="middle">all respondents 20%</text>
+    </g>
+
+    <!-- group 2 · options[2] seg [22 21 17] all 19 -->
+    <g>
+      <line class="ref" x1="646" y1="475" x2="872" y2="475"/>
+      <rect class="bar-a" x="656" y="466" width="60" height="66"/>
+      <rect class="bar-b" x="730" y="469" width="60" height="63"/>
+      <rect class="bar-c" x="804" y="481" width="60" height="51"/>
+      <text class="val-a" x="686" y="459" text-anchor="middle">22%</text>
+      <text class="val-b" x="760" y="462" text-anchor="middle">21%</text>
+      <text class="val-b" x="834" y="474" text-anchor="middle">17%</text>
+      <text class="grp" x="760" y="552" text-anchor="middle"><tspan class="grp-num">3 · </tspan>Loyalty-linked, pay</text>
+      <text class="grp" x="760" y="570" text-anchor="middle">as you use</text>
+      <text class="grp-sub" x="760" y="588" text-anchor="middle">all respondents 19%</text>
+    </g>
+
+    <!-- group 3 · options[3] seg [15 29 55] all 41 -->
+    <g>
+      <line class="ref" x1="906" y1="409" x2="1132" y2="409"/>
+      <rect class="bar-a" x="916" y="487" width="60" height="45"/>
+      <rect class="bar-b" x="990" y="445" width="60" height="87"/>
+      <rect class="bar-c" x="1064" y="367" width="60" height="165"/>
+      <text class="val-a" x="946" y="480" text-anchor="middle">15%</text>
+      <text class="val-b" x="1020" y="438" text-anchor="middle">29%</text>
+      <text class="val-b" x="1094" y="360" text-anchor="middle">55%</text>
+      <text class="grp" x="1020" y="552" text-anchor="middle"><tspan class="grp-num">4 · </tspan>No bundle: keep</text>
+      <text class="grp" x="1020" y="570" text-anchor="middle">providers separate</text>
+      <text class="grp-sub" x="1020" y="588" text-anchor="middle">all respondents 41%</text>
+    </g>
+  </svg>
+
+  <!-- slot 5 · legend with base sizes (the n row lives here, not under the axis) -->
+  <div class="legend">
+    <span class="sw" style="background:var(--accent)"></span>Engaged (focus, n=214)
+    <span class="sw" style="background:var(--gray-1)"></span>Mainstream (n=631)
+    <span class="sw" style="background:var(--gray-2)"></span>Rest (n=997)
+    <span class="key"></span>all respondents
+  </div>
+
+  <!-- slot 6 · methodology note carrying sup 1 -->
+  <div class="note"><sup>1</sup> Single choice, base = all respondents (n=1,842). The dotted line and the figure under each
+  option are the n-weighted mean of the three segments — all = Σ(seg<sub>k</sub> × n<sub>k</sub>)/1842 — so they can sit one
+  point off the bars for rounding. Each segment sums to 100; options within a segment sum to 100 by construction.</div>
+
+  <!-- slot 7 · footer: source bottom-left, running head + page bottom-right -->
+  <div class="footer">
+    <div>Source: Consumer Integrated Services Study 2019 — Q11, all respondents<sup>1</sup></div>
+    <div>Number of responses = 1,842<span class="runhead">1 | Customer attitudes and preferences</span><span class="pagenum">41</span></div>
+  </div>
+
+</div>
+</body>
+</html>

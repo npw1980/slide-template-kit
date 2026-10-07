@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>quote-pull-claim-rail — violet pull-quote rail + evidence column with footnote markers (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  quote-pull-claim-rail  ·  family quote-pull
+  Evidence: accenture__accenture_2019_accenture_global_financial_services_consumer
+            p28 (violet pull quote in a narrow left rail framed by two short
+            violet bars + two justified body paragraphs with superscript
+            footnotes, kicker caps top-left, "#FSConsumerStudy" hashtag
+            top-right, page+study footer). Same grammar recurs p31/p35/p41/p48
+            (review: "two-column synthesis text page with colored lead + pull
+            quote", "pull quotes in oversized purple type").
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The `html` rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate with the
+  numbers quoted in MANUAL.md.
+  ----------------------------------------------------------------------------
+  DATA MODEL: 4 independent text zones + footer.
+    kicker (2 caps lines) -> claim line (2 lines max, the gate) ->
+    quote rail: bar / 26px claim-quote (5-6 lines) / bar / attribution ->
+    evidence column: 2 justified paragraphs, footnote superscripts inline.
+    Nothing scales with content: overflow means the slot was filled past its
+    documented budget, and MANUAL.md gives the trim order.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, system font stacks, no images, no webfonts, no
+  @import, no JavaScript. Zero network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Accenture house system per DESIGN_PLAYBOOK roles. Violet is the deck's
+     purple (sampled from p28 glyph cores #6917A4/#6F08AF; the family anchor
+     in reviews/accenture__accenture_the_nbn_effect... .md is #6E00C9-#7B1FF0
+     with deep field #4B0E8F). Azure is the deck's second colour (kicker,
+     claim line, 3D-chart series), sampled #378ED5/#297FBF. Grey carries all
+     secondary text and hairlines and never competes with the violet. */
+  :root{
+    --bg:           #FFFFFF;
+    --ink:          #1A1A1A;   /* body text */
+    --accent:       #6E00C9;   /* brand violet: pull quote + framing bars */
+    --accent-deep:  #4B0E8F;   /* deeper violet: quote mark, emphasis runs */
+    --azure:        #1B7FC4;   /* second brand colour: kicker + claim line */
+    --gray-1:       #7D7D7D;   /* captions, kicker second line, footer */
+    --gray-2:       #B8B8B8;   /* faint rules */
+    --rule:         #D9D9D9;   /* footer hairline */
+    --font-display: "Helvetica Neue", Arial, sans-serif;
+    --font-body:    Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  *{ padding:0; box-sizing:border-box; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+
+  /* ---------------- nav band ---------------- */
+  .kicker{                               /* slot 1: section + finding label */
+    position:absolute; left:64rem; top:38rem; width:660rem;
+    font-family:var(--font-display); font-size:11rem; font-weight:700;
+    letter-spacing:.07em; text-transform:uppercase; line-height:1.5;
+    color:var(--azure);
+  }
+  .kicker .l2{ color:var(--gray-1); }
+  .hashtag{                              /* slot 2: deck hashtag */
+    position:absolute; right:64rem; top:38rem;
+    font-family:var(--font-display); font-size:12rem; font-weight:700;
+    letter-spacing:-.01em; color:#1A1A1A;
+  }
+
+  /* ---------------- claim line (the gate) ---------------- */
+  .claim-rule{                           /* 64px azure tick above the claim */
+    position:absolute; left:64rem; top:76rem; width:64rem; height:3rem;
+    background:var(--azure);
+  }
+  .claim{                                /* slot 3: action-title equivalent */
+    position:absolute; left:64rem; top:92rem; width:600rem;
+    font-family:var(--font-display); font-size:19rem; font-weight:700;
+    line-height:1.3; letter-spacing:-.005em; color:var(--azure);
+  }
+
+  /* ---------------- pull-quote rail (left ~25% of canvas) ---------------- */
+  .rail{                                 /* slots 4-6: framed pull quote */
+    position:absolute; left:128rem; top:180rem; width:300rem;
+  }
+  .rail .bar{ width:56rem; height:4rem; background:var(--accent); }
+  .rail .bar.b2{ margin-top:14rem; }
+  .quote{
+    margin:12rem 0 0 0; font-family:var(--font-display);
+    font-size:25rem; font-weight:700; line-height:1.25;
+    letter-spacing:-.012em; color:var(--accent);
+  }
+  .quote .qm{ color:var(--accent-deep); }
+  .attribution{
+    margin-top:10rem; font-family:var(--font-body); font-size:11rem;
+    line-height:1.45; color:var(--gray-1);
+  }
+  .attribution .who{ font-weight:700; color:#1A1A1A; }
+  .attribution .role{ display:block; }
+
+  /* ---------------- evidence column (right ~48%) ---------------- */
+  .evidence{                             /* slot 7: 2 justified paragraphs */
+    position:absolute; left:504rem; top:180rem; width:600rem;
+    font-family:var(--font-body); font-size:13rem; line-height:1.58;
+    color:var(--ink);
+  }
+  .evidence p{ margin:0 0 14rem 0; text-align:justify; hyphens:auto; }
+  .evidence p:last-child{ margin-bottom:0; }
+  .evidence b{ font-weight:700; }
+  .evidence sup{ font-size:8.5rem; color:var(--accent); line-height:0; }
+
+  /* ---------------- figure tag + footer ---------------- */
+  .figure-tag{                           /* slot 8: Figure-N label under rail */
+    position:absolute; left:128rem; top:580rem; width:300rem;
+    font-family:var(--font-body); font-size:9.5rem; line-height:1.5;
+    color:var(--gray-1);
+  }
+  .figure-tag .fig{ font-weight:700; color:#1A1A1A; }
+  .foot-rule{
+    position:absolute; left:64rem; right:64rem; top:648rem; height:1px;
+    background:var(--rule);
+  }
+  .source{                               /* slot 9: source line, bottom-left */
+    position:absolute; left:64rem; top:660rem; width:820rem;
+    font-family:var(--font-body); font-size:9.5rem; line-height:1.5;
+    color:var(--gray-1);
+  }
+  .source sup{ font-size:8rem; }
+  .running{                              /* slot 10: page | SECTION, bottom-right */
+    position:absolute; right:64rem; top:660rem; text-align:right;
+    font-family:var(--font-display); font-size:9.5rem; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--gray-1);
+  }
+  .running .page-num{ color:#1A1A1A; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · kicker: SECTION: + numbered finding (two caps lines, measured p28) -->
+  <div class="kicker">Customer attitudes and preferences:<br><span class="l2">1. Appetite for integrated propositions addressing core needs</span></div>
+
+  <!-- 2 · deck hashtag, pinned top-right on every content page -->
+  <div class="hashtag">#FSConsumerStudy</div>
+
+  <!-- 3 · claim line — the ≤15 word / 2 line gate (deck's coloured-lead device) -->
+  <div class="claim-rule"></div>
+  <div class="claim">Five of ten findings land on the same gap: providers sell products, not outcomes.</div>
+
+  <!-- 4-6 · pull-quote rail: violet bar / oversized quote / violet bar / attribution -->
+  <div class="rail">
+    <div class="bar"></div>
+    <div class="quote"><span class="qm">&#8220;</span>Customers do not want another app; they want the outcome our app promises, delivered without&nbsp;paperwork.</div>
+    <div class="bar b2"></div>
+    <div class="attribution"><span class="who">Chief Digital Officer</span><span class="role">top-ten European retail bank, interview 12 Sep 2019</span></div>
+  </div>
+
+  <!-- 7 · evidence column: two justified paragraphs, footnote markers inline -->
+  <div class="evidence">
+    <p>An example of a strong insurance ecosystem is ERGO Safe Home (ERGO Group AG), a virtual product bundle of home contents insurance, an emergency service and smart-home technology, which cares for customers&#8217; homes when they cannot react to an emergency.<sup>2</sup> USAA, which delivers a wide range of services through its associated firms, is a second example of an ecosystem that drives solid engagement with clients.<sup>3</sup></p>
+    <p>Building ecosystems is a vital part of becoming an adaptive &#8220;living&#8221; business. Doing it effectively relies on application programming interfaces, artificial intelligence and robotic process automation, and on a mindset shift for firms used to working independently. Providers that make the shift are ~10% more likely to upgrade their innovation capability and to develop services that inspire higher customer loyalty.<sup>4</sup></p>
+  </div>
+
+  <!-- 8 · figure tag under the rail (deck's Figure-N convention) -->
+  <div class="figure-tag"><span class="fig">Figure 2.</span> Eight non-exclusive key plays of an orchestrator of ecosystems. Source: Accenture 2019 Global Financial Services Consumer Study.</div>
+
+  <!-- 9-10 · footer: source bottom-left, page | SECTION bottom-right -->
+  <div class="foot-rule"></div>
+  <div class="source">Source: Accenture 2019 Global Financial Services Consumer Study, n=23,576, 41 markets, fielded Q2 2019; expert interviews n=18.<sup>1</sup></div>
+  <div class="running"><span class="page-num">28 | APPETITE 1</span></div>
+
+</div>
+</body>
+</html>

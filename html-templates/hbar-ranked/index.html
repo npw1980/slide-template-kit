@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hbar-ranked — ranked horizontal bars, question-kicker survey page (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  hbar-ranked  ·  family hbar (horizontal-bar chart page)
+  Evidence: accenture__accenture_2021_p_c_underwriting_survey_2021 p16
+            (ranked purple bars, value labels at bar ends, Q2 question-kicker,
+            bottom REMARKS bar + n-breakdown)
+            accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o p10
+            (ranking bars + right-hand annotation column)
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate with
+  the same numbers MANUAL.md quotes (1280x720 fixed stage, uniform scale).
+  To own the transform yourself, drop the html rule and use
+  .stage { width:1280px; height:720px; transform:scale(var(--fit,1)) },
+  reading every rem below as px. Inside the inline SVG, lengths are user
+  units — the viewBox makes 1 user unit equal 1 stage px, so SVG font sizes
+  are written as plain numbers and match the px values in MANUAL.md 1:1.
+  ----------------------------------------------------------------------------
+  DATA ARRAY (single series; swap numbers into the SVG rows below):
+      rows = [
+        { label: "Ineffective systems or redundant manual processes",     value: 71, highlight: true },
+        { label: "Outdated / inflexible systems",                          value: 43 },
+        { label: "Lack of information / analytics at the point of need",   value: 39 },
+        { label: "Poor access or organization of underwriting information",value: 32 },
+        { label: "Insufficient focus on training / talent development",    value: 30 },
+        { label: "Lack of product options to meet client needs",           value: 24 },
+        { label: "Decreased underwriting authority at the point of sale",  value: 22 },
+        { label: "Inefficient referral processes",                         value: 21 }
+      ];
+    Geometry rule (linear scale, baseline hairline only): bar width px =
+    value x 5.5; each row is <g transform="translate(0, row*41)"> so one
+    number (the value -> width + its end label) is the only thing that
+    changes per row. Keep rows sorted descending.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles follow DESIGN_PLAYBOOK: --accent emphasis, --ink text,
+     --gray-* secondary + "the rest", --rule hairlines, --bg ground.
+     Monochrome-purple system; hexes quoted from the Accenture reviews'
+     color sections, not invented. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;   /* body text */
+    --accent:      #8E24EA;   /* brand purple: default bar fill */
+    --accent-ink:  #6E00C9;   /* banded purple: highlight bar + kicker "Q:" */
+    --accent-mid:  #7B1FF0;   /* emphasis marks */
+    --tint:        #E7D9F8;   /* lavender tint: legend/cap text on purple */
+    --gray-1:      #7D7D7D;   /* secondary text (question line, notes) */
+    --gray-2:      #B8B8B8;   /* reference-series fill — grey RESERVED for non-focus comparisons */
+    --gray-3:      #D9D9D9;   /* baseline hairline */
+    --rule:        #E3E3E3;   /* hairlines */
+    --callout-bg:  rgba(255,230,0,.14);   /* signature yellow callout (dashed) */
+    --callout-st:  #E0AA00;
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#141019; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink);
+  }
+  /* ---- title zone ---- */
+  .kicker{ position:absolute; left:64rem;  top:36rem;  width:1152rem; font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-ink); font-weight:700; }      /* the "Q2:" device + highlighted keyword */
+  .kicker sup{ font-size:11rem; color:var(--accent-ink); }
+  .title{ position:absolute; left:64rem; top:64rem; width:1152rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700; line-height:36rem;
+          letter-spacing:-.6rem; max-height:72rem; overflow:hidden; }  /* 2-line slot = the MBB gate */
+  .title em{ font-style:normal; color:var(--accent-ink); }
+  .rule-top{ position:absolute; left:64rem; top:150rem; width:1152rem; height:1rem; background:var(--rule); }
+  /* ---- chart (one inline SVG over the stage) ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .bar{ fill:var(--accent); }
+  .bar.hi{ fill:var(--accent-ink); }        /* the ONE highlighted bar */
+  .bar.ref{ fill:var(--gray-2); }           /* reference series — grey ramp, not a new hue */
+  .cat{ font-size:11px; fill:var(--ink); }  /* px inside SVG == user units == stage px */
+  .val{ font-size:11px; font-weight:700; fill:var(--ink); }
+  .note-rt{ font-size:11px; fill:var(--gray-1); }
+  .callout-box{ fill:var(--callout-bg); stroke:var(--callout-st); stroke-width:1.4; stroke-dasharray:4 2.6; }
+  .callout-tx{ font-size:10px; fill:var(--ink); }
+  .baseline{ stroke:var(--gray-3); stroke-width:1; }
+  /* ---- legend + remarks bar + footer ---- */
+  .legend{ position:absolute; left:64rem; top:556rem; font-size:11rem; color:var(--gray-1); }
+  .legend .sw{ display:inline-block; width:10rem; height:10rem; background:var(--accent); margin-right:6rem; vertical-align:-1px; }
+  .remarks{ position:absolute; left:64rem; top:596rem; width:1152rem; height:66rem;
+            background:var(--accent-ink); border-radius:4rem; }
+  .remarks .cap{ position:absolute; left:18rem; top:9rem; font-size:10rem; font-weight:700;
+                 letter-spacing:1.5rem; color:var(--tint); }
+  .remarks ol{ position:absolute; left:150rem; top:12rem; width:680rem; list-style:none; counter-reset:listing; }
+  .remarks li{ font-size:11.5rem; color:#fff; line-height:15rem; margin-bottom:2rem; }
+  .remarks li::before{ content:counter(listing)". "; font-weight:700; color:var(--tint); counter-increment:listing; }
+  .remarks .n{ position:absolute; right:18rem; top:11rem; width:290rem; text-align:right;
+               font-size:9.5rem; color:var(--tint); line-height:14rem; }
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:16rem; display:flex; justify-content:space-between; font-size:10rem; color:var(--gray-1); }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+  .footer sup{ font-size:8rem; color:var(--accent-ink); }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="Ranked horizontal bar chart of underwriting challenges, one bar per challenge with percentage labels">
+
+  <!-- slot 1 · question kicker (the deck's "Q2:" device) -->
+  <div class="kicker">Q2: What are the <b>main challenges</b> within your underwriting function that impact your ability to achieve your business objectives? Please select top 3<sup>1</sup></div>
+
+  <!-- slot 2 · claim title (≤15 words, 2-line slot) -->
+  <div class="title">Systems and Analytics Gaps Dominate — <em>71%</em> Rank Them as the Top Constraint</div>
+
+  <div class="rule-top"></div>
+
+  <!-- ===================== CHART (inline SVG, 1 row = 1 <g>) =====================
+       DATA ARRAY lives in the file header. Geometry per row:
+         translate y = row*41, bar x=298, width = value*5.5, height 26,
+         value label at bar_end+10. Row 0 is the ONE highlight bar (darker fill).
+       A reference series, if added, renders as .bar.ref grey bars — see MANUAL. -->
+  <svg class="chart" viewBox="0 0 1280 720">
+    <line class="baseline" x1="298" y1="186" x2="298" y2="516"/>
+
+    <!-- row 0 · value 71 · highlight -->
+    <g transform="translate(0,0)">
+      <text class="cat" x="288" y="195" text-anchor="end" dominant-baseline="central">Ineffective systems or redundant manual processes</text>
+      <rect class="bar hi" x="298" y="182" width="390" height="26"/>
+      <text class="val" x="698" y="195" dominant-baseline="central">71%</text>
+    </g>
+    <!-- row 1 · value 43 -->
+    <g transform="translate(0,41)">
+      <text class="cat" x="288" y="195" text-anchor="end" dominant-baseline="central">Outdated / inflexible systems</text>
+      <rect class="bar" x="298" y="182" width="237" height="26"/>
+      <text class="val" x="545" y="195" dominant-baseline="central">43%</text>
+    </g>
+    <!-- row 2 · value 39 -->
+    <g transform="translate(0,82)">
+      <text class="cat" x="288" y="195" text-anchor="end" dominant-baseline="central">Lack of information / analytics at the point of need</text>
+      <rect class="bar" x="298" y="182" width="215" height="26"/>
+      <text class="val" x="523" y="195" dominant-baseline="central">39%</text>
+    </g>
+    <!-- row 3 · value 32 -->
+    <g transform="translate(0,123)">
+      <text class="cat" x="288" y="195" text-anchor="end" dominant-baseline="central">Poor access or organization of underwriting information</text>
+      <rect class="bar" x="298" y="182" width="176" height="26"/>
+      <text class="val" x="484" y="195" dominant-baseline="central">32%</text>
+    </g>
+    <!-- row 4 · value 30 -->
+    <g transform="translate(0,164)">
+      <text class="cat" x="288" y="195" text-anchor="end" dominant-baseline="central">Insufficient focus on training / talent development</text>
+      <rect class="bar" x="298" y="182" width="165" height="26"/>
+      <text class="val" x="473" y="195" dominant-baseline="central">30%</text>
+    </g>
+    <!-- row 5 · value 24 -->
+    <g transform="translate(0,205)">
+      <text class="cat" x="288" y="195" text-anchor="end" dominant-baseline="central">Lack of product options to meet client needs</text>
+      <rect class="bar" x="298" y="182" width="132" height="26"/>
+      <text class="val" x="440" y="195" dominant-baseline="central">24%</text>
+    </g>
+    <!-- row 6 · value 22 -->
+    <g transform="translate(0,246)">
+      <text class="cat" x="288" y="195" text-anchor="end" dominant-baseline="central">Decreased underwriting authority at the point of sale</text>
+      <rect class="bar" x="298" y="182" width="121" height="26"/>
+      <text class="val" x="429" y="195" dominant-baseline="central">22%</text>
+    </g>
+    <!-- row 7 · value 21 -->
+    <g transform="translate(0,287)">
+      <text class="cat" x="288" y="195" text-anchor="end" dominant-baseline="central">Inefficient referral processes</text>
+      <rect class="bar" x="298" y="182" width="116" height="26"/>
+      <text class="val" x="424" y="195" dominant-baseline="central">21%</text>
+    </g>
+
+    <!-- slot 4 · single-figure callout: dashed yellow box + leader to the highlight bar -->
+    <path d="M716 195 L740 182" stroke="var(--callout-st)" stroke-width="1.2" stroke-dasharray="3 3"/>
+    <rect class="callout-box" x="740" y="152" width="210" height="32" rx="5"/>
+    <text class="callout-tx" x="750" y="169" dominant-baseline="central">1.7x the rate of the next-ranked factor</text>
+
+    <!-- slot 5 · right annotation rail: three one-liner notes -->
+    <line x1="1030" y1="196" x2="1030" y2="430" stroke="var(--rule)" stroke-width="1"/>
+    <text class="note-rt" x="1042" y="200" dominant-baseline="central">Most cited by specialty lines (78%)</text>
+    <text class="note-rt" x="1042" y="282" dominant-baseline="central">Analytics gaps concentrate on accounts &lt;$10M</text>
+    <text class="note-rt" x="1042" y="364" dominant-baseline="central">Training gaps cluster in under-10-year cohorts</text>
+  </svg>
+
+  <!-- slot 6 · legend / response-type line -->
+  <div class="legend"><span class="sw"></span>Share of respondents selecting the item · multiple response — shares do not sum to 100</div>
+
+  <!-- slot 7 · REMARKS bar (the deck's takeaway device) -->
+  <div class="remarks">
+    <div class="cap">REMARKS</div>
+    <ol>
+      <li>Systems inefficiencies and manual processes are the binding constraint — cited by 71% of underwriters, nearly double the next factor.</li>
+      <li>Analytics and access gaps cluster in commercial lines; specialty lines swap them for training as the second constraint.</li>
+    </ol>
+    <div class="n">Total responses = 434<br>Personal lines = 76 · Commercial lines = 295<br>Specialty = 50 · Reinsurance = 13</div>
+  </div>
+
+  <!-- slot 8 · footer: source + n + page -->
+  <div class="footer">
+    <div>Source: 2021 P&amp;C Underwriting Survey — Q2, multiple response<sup>1</sup></div>
+    <div>Number of responses = 434&nbsp;&nbsp;<span class="pagenum">16</span></div>
+  </div>
+
+</div>
+</body>
+</html>

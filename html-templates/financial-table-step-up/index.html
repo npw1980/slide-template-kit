@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>financial-table-step-up — fiscal-year table with one derived step-up column boxed (1280x720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  financial-table-step-up  ·  family financial-table
+  Evidence (primary): accenture__accenture_accenture_investor_analyst_conf
+            erence_2022 — p2 ("delivering shareholder value at scale": FY20
+            / Illustrative FY22 / Illustrative Step Up columns, the step-up
+            cells printed white-on-magenta) and p3 (same device, third column
+            = "Illustrative Cumulative"). Sheet:
+            sw_sheets/accenture__accenture_accenture_investor_analyst_conference_2022_s00.jpg
+            (pages p1-p10; p2 = row 1 col 2, p3 = row 1 col 3).
+            Secondary: p11/p17 of the same deck (highlighted column variant)
+            via ..._s01.jpg, and the p2-of-s01 sibling "Significant step up
+            in P&L investments" table (8 rows, last column boxed).
+  Palette provenance: review
+            accenture__accenture_accenture_investor_analyst_conference_2022.md
+            lines 15-21: "two hues + neutrals — purple = own figures, gray =
+            comparator, magenta box = the number to remember; table figures
+            right-aligned with superscript footnote markers." The review lists
+            no hexes, so the values below are SAMPLED from the p2 crop of
+            ..._s00.jpg: violet text ~rgb(147,116,192), magenta box
+            ~rgb(180,115,181), numerals ~rgb(16,22,38). Violet and magenta
+            were DEEPENED for a white stage so white-on-fill clears 4.5:1
+            (documented deviation, MANUAL "FILL" step 6). The source deck's
+            silver-gradient ground is replaced by plain white — also a
+            documented deviation (the gradient is brand scenery, not rules).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+    viewport fit, so every length is a 1:1 stage-pixel coordinate with the
+    same numbers MANUAL.md quotes (1280x720 fixed stage, uniform scale).
+    Inside the inline SVG the viewBox makes 1 user unit == 1 stage px, so SVG
+    font sizes match the MANUAL's px values 1:1.
+    NOTE: never put HTML elements (<sup>) inside SVG <text> — chromium drops
+    everything after the first one. Footnote markers are printed as the
+    unicode glyphs ¹ ² ³ in a smaller <tspan>.
+  ----------------------------------------------------------------------------
+  DATA ARRAY — this is THE slot. Swap the numbers; nothing else moves.
+    rows = [                       // 6 rows, pitch 44, first baseline 240
+      { label:"Revenue", unit:"$B",            a:"$58.1", b:"$72.4", c:"$108.9",
+        box:"+$36.5B", sub:false, bold:false },
+      { label:"Revenue growth (local currency)", unit:"", a:"4.2%", b:"11.0%",
+        c:"15.8%", box:"+4.8 pts", sup:"1", sub:false, bold:false },
+      { label:"Key operating investments", unit:"$B²", a:"$2.3", b:"$2.7",
+        c:"$3.6", box:"+$0.9B", sub:false, bold:true },   // <- the claimed metric
+      { label:"of which: training", unit:"$B",  a:"$0.9", b:"$1.1", c:"$1.4",
+        box:"+$0.3B", sub:true,  bold:false },
+      { label:"of which: R&D", unit:"$B",       a:"$1.6", b:"$1.9", c:"$2.6",
+        box:"+$0.7B", sub:true,  bold:false },
+      { label:"Operating margin expansion", unit:"bps³", a:"+40", b:"+95",
+        c:"+150", box:"+55 bps", sub:false, bold:false }
+    ];
+    GEOMETRY RULES (the only numbers that change per cell):
+      * label: text-anchor=end at x=606 (row labels HUG the numbers, as in p2);
+        sub-rows indent the label to x=606 with an em-dash-free "of which:"
+        prefix and 13px gray, never a smaller number.
+      * numbers: text-anchor=end, right edges fixed — FY24 x=780, FY25 x=926,
+        Illustrative FY27 x=1072. Print precision per column is FIXED
+        (currency 1 decimal + B, percent 1 decimal, bps integer) so decimals
+        line up on the anchor; that is the whole axis discipline.
+      * box column: cell box x=1100 w=116 h=30, y = baseline-23, rx=2, fill
+        --highlight; value text centered x=1158 anchor=middle, white bold 17px.
+        The box value is DERIVED, never hand-typed: box = c - b (illustrative
+        minus last actual), sign forced "+", unit follows the row's unit.
+        Every row in the column is boxed — the treatment is a column, not a
+        per-cell choice. Emphasis on ONE row = bold text (bold:true), not a
+        second fill.
+      * each row is one <g transform="translate(0, 44*i)">, content baseline
+        y=240 inside. Add a row = add one <g> and shift nothing else.
+      * header: single-line captions baseline y=196; two-line captions use
+        y=172 / y=188; the accent rule runs x580→x1216 at y=198 (2.0px).
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+    webfonts, no @import, no JavaScript, no <script>. Nothing here makes a
+    request of any kind.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: --accent emphasis hue (structure: title,
+     header rule, footnote markers), --highlight = the deck's "number to
+     remember" magenta box, --gray-* secondary + the rest, --rule hairlines,
+     --bg ground. The deck's semantic split (review line 18) is preserved:
+     violet = Accenture's own figures/structure, gray = every non-emphasis
+     number, magenta = ONLY the step-up column. Two marks of one warm hue
+     family, no third hue. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #16202E;   /* numerals + emphasis labels (sampled rgb(16,22,38)) */
+    --ink-soft:    #3C4553;   /* plain numerals, one step lighter than ink */
+    --accent:      #6E2C95;   /* violet: title, rules, markers (deepened from sampled #9370C0 → 8.6:1 on white) */
+    --accent-mid:  #8A5CB8;   /* violet mid-tone: header rule, pill strokes */
+    --accent-tint: #EFE7F6;   /* violet 8% — used nowhere here, reserved for the guidance-panel sibling */
+    --highlight:   #A34E98;   /* magenta box fill (deepened from sampled #B473B5 so white text = 6.0:1) */
+    --gray-1:      #7C8797;   /* secondary text: footnotes, source, sub-row labels */
+    --gray-2:      #B8BFC9;   /* hairline-adjacent grays, dimmed rules */
+    --gray-3:      #E4E7EB;   /* optional row separators (unused: p2 uses none) */
+    --rule:        #C9CED6;   /* neutral hairlines */
+    --font-display:"Helvetica Neue", Arial, sans-serif;  /* stands in for Accenture House grotesque (see MANUAL) */
+    --font-body:   Arial, "Helvetica Neue", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#545454; display:flex; justify-content:center; align-items:center;
+        min-height:100vh; }
+  .stage{ position:relative; width:1280rem; height:720rem; background:var(--bg);
+          overflow:hidden; font-family:var(--font-body); }
+
+  /* no kicker on this system (review line 12: "claim title … no kicker line") */
+  .title{ position:absolute; left:64rem; top:56rem; width:430rem;
+          font-family:var(--font-display); font-size:30rem; font-weight:400;
+          line-height:38rem; letter-spacing:-.012em; color:var(--accent); }
+
+  svg.table{ position:absolute; left:0; top:0; width:1280rem; height:720rem; }
+
+  .notes{ position:absolute; left:64rem; bottom:56rem; width:1050rem;
+          font-size:10.5rem; line-height:15rem; color:var(--gray-1); }
+  .notes sup{ font-size:8rem; }
+  .foot{ position:absolute; left:64rem; bottom:24rem; width:900rem; font-size:11rem;
+         line-height:14rem; color:var(--gray-1); }
+  .stamp{ position:absolute; right:64rem; bottom:24rem; font-size:11rem; color:var(--gray-1); }
+  .stamp b{ color:var(--ink); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="title">Stepping up investment by $0.9B adds 4.8 pts of revenue growth</div>
+
+  <!-- ==================== TABLE (inline SVG, viewBox = stage) ==================== -->
+  <svg class="table" viewBox="0 0 1280 720" role="img"
+       aria-label="Financial table: FY24 and FY25 actuals, illustrative FY27, and a derived step-up column boxed in magenta">
+
+    <!-- ---------- header row ---------- -->
+    <g font-family="Arial, Helvetica Neue, sans-serif" fill="var(--ink-soft)">
+      <!-- row-label cell carries no caption (labels hug the numbers) -->
+      <text x="780"  y="196" text-anchor="end" font-size="13.5" font-weight="700" fill="var(--ink)">FY24</text>
+      <text x="926"  y="196" text-anchor="end" font-size="13.5" font-weight="700" fill="var(--ink)">FY25</text>
+      <text x="1072" y="172" text-anchor="end" font-size="11">Illustrative</text>
+      <text x="1072" y="188" text-anchor="end" font-size="11">FY27<tspan font-size="7" baseline-shift="super">1</tspan></text>
+      <text x="1158" y="172" text-anchor="middle" font-size="11">Imag.</text>
+      <text x="1158" y="188" text-anchor="middle" font-size="11">step-up<tspan font-size="7" baseline-shift="super">2</tspan></text>
+    </g>
+    <!-- accent rule under the headers: x580 -> x1216 -->
+    <line x1="580" y1="198" x2="1216" y2="198" stroke="var(--accent-mid)" stroke-width="2"/>
+
+    <!-- ---------- data rows: one <g> per row, translate(0, 44*i) ---------- -->
+    <!-- ROW 1 — Revenue -->
+    <g transform="translate(0,0)">
+      <text x="606" y="240" text-anchor="end" font-size="15" fill="var(--ink-soft)">Revenue <tspan font-size="11" fill="var(--gray-1)">($B)</tspan></text>
+      <text x="780" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">$58.1</text>
+      <text x="926" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">$72.4</text>
+      <text x="1072" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">$108.9</text>
+      <rect x="1100" y="217" width="116" height="30" rx="2" fill="var(--highlight)"/>
+      <text x="1158" y="240" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">+$36.5B</text>
+    </g>
+
+    <!-- ROW 2 — Revenue growth (local currency) -->
+    <g transform="translate(0,44)">
+      <text x="606" y="240" text-anchor="end" font-size="15" fill="var(--ink-soft)">Revenue growth (local currency)<tspan font-size="7" baseline-shift="super">1</tspan></text>
+      <text x="780" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">4.2%</text>
+      <text x="926" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">11.0%</text>
+      <text x="1072" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">15.8%</text>
+      <rect x="1100" y="217" width="116" height="30" rx="2" fill="var(--highlight)"/>
+      <text x="1158" y="240" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">+4.8 pts</text>
+    </g>
+
+    <!-- ROW 3 — KEY OPERATING INVESTMENTS: the claimed metric, bold labels + values -->
+    <g transform="translate(0,88)">
+      <text x="606" y="240" text-anchor="end" font-size="15.5" font-weight="700" fill="var(--ink)">Key operating investments<tspan font-size="7" baseline-shift="super">2</tspan></text>
+      <text x="780" y="240" text-anchor="end" font-size="17" font-weight="700" fill="var(--ink)">$2.3</text>
+      <text x="926" y="240" text-anchor="end" font-size="17" font-weight="700" fill="var(--ink)">$2.7</text>
+      <text x="1072" y="240" text-anchor="end" font-size="17" font-weight="700" fill="var(--ink)">$3.6</text>
+      <rect x="1100" y="217" width="116" height="30" rx="2" fill="var(--highlight)"/>
+      <text x="1158" y="240" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">+$0.9B</text>
+    </g>
+
+    <!-- ROW 4 — sub-row: training (gray label, lighter numerals) -->
+    <g transform="translate(0,132)">
+      <text x="606" y="240" text-anchor="end" font-size="13" fill="var(--gray-1)">of which: training</text>
+      <text x="780" y="240" text-anchor="end" font-size="15" fill="var(--gray-1)">$0.9</text>
+      <text x="926" y="240" text-anchor="end" font-size="15" fill="var(--gray-1)">$1.1</text>
+      <text x="1072" y="240" text-anchor="end" font-size="15" fill="var(--gray-1)">$1.4</text>
+      <rect x="1100" y="217" width="116" height="30" rx="2" fill="var(--highlight)"/>
+      <text x="1158" y="240" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">+$0.3B</text>
+    </g>
+
+    <!-- ROW 5 — sub-row: R&D -->
+    <g transform="translate(0,176)">
+      <text x="606" y="240" text-anchor="end" font-size="13" fill="var(--gray-1)">of which: R&amp;D</text>
+      <text x="780" y="240" text-anchor="end" font-size="15" fill="var(--gray-1)">$1.6</text>
+      <text x="926" y="240" text-anchor="end" font-size="15" fill="var(--gray-1)">$1.9</text>
+      <text x="1072" y="240" text-anchor="end" font-size="15" fill="var(--gray-1)">$2.6</text>
+      <rect x="1100" y="217" width="116" height="30" rx="2" fill="var(--highlight)"/>
+      <text x="1158" y="240" text-anchor="middle" font-size="16" font-weight="700" fill="#FFFFFF">+$0.7B</text>
+    </g>
+
+    <!-- ROW 6 — Operating margin expansion (bps, integer precision) -->
+    <g transform="translate(0,220)">
+      <text x="606" y="240" text-anchor="end" font-size="15" fill="var(--ink-soft)">Operating margin expansion<tspan font-size="7" baseline-shift="super">3</tspan></text>
+      <text x="780" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">+40</text>
+      <text x="926" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">+95</text>
+      <text x="1072" y="240" text-anchor="end" font-size="16" fill="var(--ink-soft)">+150</text>
+      <rect x="1100" y="217" width="116" height="30" rx="2" fill="var(--highlight)"/>
+      <text x="1158" y="240" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">+55 bps</text>
+    </g>
+
+    <!-- optional closing hairline under the block (drawn, not a fill band) -->
+    <line x1="580" y1="504" x2="1216" y2="504" stroke="var(--rule)" stroke-width="1"/>
+  </svg>
+
+  <!-- ==================== bottom band ==================== -->
+  <div class="notes">
+    <div><sup>1</sup> Illustrative based on mid-point of the FY27 plan approved in March 2026; results could be higher or lower. Local-currency growth excludes the FY25 divestiture.</div>
+    <div><sup>2</sup> Key operating investments = training, R&amp;D and third-party platform spend; the step-up column is the difference between the illustrative FY27 and FY25 actual figures, not an independent guidance line.</div>
+    <div><sup>3</sup> Operating margin expansion is non-GAAP and reconciles to statutory margin in the FY25 10-K, p.41.</div>
+  </div>
+  <div class="foot">Source: FY25 Annual Report (10-K), p.38&ndash;41; FY27 operating plan, Finance, March 2026; step-up analysis, company data and team calculations.</div>
+  <div class="stamp">Financial framework&nbsp;&nbsp;<b>7</b></div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>case-study-example-grid — action title + 2×3 named example-card grid (violet name kicker + underline) (1280×720)</title>
+<!--
+  Evidence: accenture__accenture_accelerating_global_companies_toward_net_zero_by_2 p26
+  "Examples of leading company decarbonization initiatives" — 2 rows × 3 columns of company
+  cards; each card = company name in violet bold with a short violet underline rule, then a
+  dense 8-9pt prose block with violet bold emphases. sw_sheets/
+  accenture__accenture_accelerating_global_companies_toward_net_zero_by_2_s02.jpg
+  (row 2 frame 1 of that sheet). Count variant, same family: KPMG "our_impact_plan_2022" p19
+  (two side-by-side "Case study" panels on navy, sw_sheets/kpmg__kpmg_kpmg_our_impact_plan_
+  2022_update_2022_s01.jpg row 2 frame 5) — the grid slots down to 2 wide/1 tall.
+  Palette: reviews/accenture__accenture_accelerating_global_companies_toward_net_zero_by_2.md
+  §Color system — effectively single-hue: Accenture purple in ~3-4 values (deep violet fills,
+  mid-purple, light purple tints) + black/gray/white neutrals. Values below stand in for the
+  brand ramp; the deck's real display face is a heavy humanist sans (Avenir/Freight-style),
+  body the same family — Arial stack stands in.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit;
+  every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+  ----------------------------------------------------------------------------
+-->
+<style>
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;   /* action title + body */
+    --gray-1:      #4D4D4D;   /* card body text */
+    --gray-2:       #8C8C8C;  /* intro line, footnotes, page number */
+    --rule:        #D9D9D9;   /* hairlines */
+    --accent:      #A100FF;   /* Accenture violet — name kickers, underlines, bold emphases */
+    --accent-deep: #660099;   /* deeper violet for figures/emphasis on white */
+    --accent-tint: #F3EBFC;   /* light purple tint (hover fields, lead band) */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- header ---------- */
+  .head{ position:absolute; left:56rem; right:56rem; top:44rem; }
+  .eyebrow{
+    margin:0 0 10rem; font-size:12.5rem; font-weight:700;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--accent);
+  }
+  h1.claim{
+    margin:0; font-family:var(--font-display); font-weight:700; font-size:30rem; line-height:1.15;
+    letter-spacing:-.01em; color:var(--ink); max-width:1120rem;   /* gate: ≤15 words / ≤2 lines */
+  }
+  .lede{
+    margin:12rem 0 0; font-size:13.5rem; line-height:1.45; color:var(--gray-1);
+    max-width:1060rem;
+  }
+
+  /* ---------- card grid: 3 cols × 2 rows, hairline column rules ---------- */
+  .grid{
+    position:absolute; left:56rem; right:56rem; top:236rem;
+    display:grid; grid-template-columns:1fr 1fr 1fr;
+    grid-auto-rows:1fr; row-gap:26rem;
+  }
+  .card{ box-sizing:border-box; padding:0 30rem; border-left:1px solid var(--rule); }
+  .card:first-child{ border-left:none; padding-left:0; }
+  .card .name{
+    margin:0 0 9rem; font-size:15rem; font-weight:700; color:var(--accent);
+    padding-bottom:7rem; border-bottom:2rem solid var(--accent);   /* deck's name+underline device */
+    max-width:max-content;
+  }
+  .card p{ margin:0; font-size:10.5rem; line-height:1.47; color:var(--gray-1); }
+  .card p b{ color:var(--accent-deep); font-weight:700; }           /* purple bold, the deck's emphasis */
+  .card p .num{ font-weight:700; color:var(--ink); }
+
+  /* ---------- footer ---------- */
+  .footer{ position:absolute; left:56rem; right:56rem; bottom:26rem;
+           display:flex; justify-content:space-between; align-items:baseline; }
+  .footer .src{ font-size:8.5rem; color:var(--gray-2); }
+  .footer .sup{ font-size:6.5rem; color:var(--gray-2); vertical-align:super; }
+  .footer .run{ font-size:9.5rem; color:var(--gray-2); letter-spacing:.04em; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="head">
+    <p class="eyebrow">Case studies — who is already moving</p>
+    <h1 class="claim">Companies that embed decarbonisation in core decisions, not just targets, cut emissions fastest</h1>
+    <p class="lede">Across the 109 leading-company sample, the firms outperforming the median had one trait in common: carbon choices sat inside capital, procurement and product decisions&mdash;<span class="sup">a</span> not in a standalone sustainability plan.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <p class="name">Natura</p>
+      <p>SBTi-validated goal of <span class="num">90%</span> absolute reduction across its supply chain (2019&ndash;2026), enforced through supplier scorecards and science-based procurement standards. Grid emissions intensity fell <b>19%</b> vs 2020, with <span class="num">15%</span> of scope&nbsp;1&ndash;2 already abated via internal carbon pricing.</p>
+    </div>
+    <div class="card">
+      <p class="name">Siemens</p>
+      <p>Targets <span class="num">50%</span> absolute cut by 2030, validated by SBTi and aligned to TCFD. <b>76%</b> of scope&nbsp;1&ndash;2 energy now renewable; the fleet electrification programme and an internal CO<sub>2</sub> price anchor the remaining gap to 2030.</p>
+    </div>
+    <div class="card">
+      <p class="name">CVS Health</p>
+      <p>Reweighted capital towards respiratory and cardiovascular care, cutting environmental impact <span class="num">50%</span> vs 2019 after closing coal-fired plants and shifting <b>78%</b> of energy spend to renewables plus on-site generation.</p>
+    </div>
+    <div class="card">
+      <p class="name">HP</p>
+      <p>SBTi 1.5&deg;C goal: <span class="num">89%</span> absolute reduction in scope&nbsp;1&ndash;3 vs 2019, achieved largely through supplier engagement&mdash;<span class="num">87,000&nbsp;tCO<sub>2</sub></span> avoided in the product supply chain, with a 1.5&deg;-aligned product take-back programme.</p>
+    </div>
+    <div class="card">
+      <p class="name">Suntory</p>
+      <p>Energy-saving measures cut scope&nbsp;1&ndash;2 emissions <span class="num">28%</span> vs 2018 while production grew; <b>78%</b> renewable electricity across plants, and heat-recovery retrofits hold unit emissions flat as volumes rise.</p>
+    </div>
+    <div class="card">
+      <p class="name">Mahindra &amp; Mahindra</p>
+      <p>A carbon-neutral goal by 2040, validated as near-term SBTi: <span class="num">55%</span> renewable energy by 2025, <b>19%</b> efficiency gain per unit output, and supplier decarbonisation embedded in the new-vehicle development gate.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="src">Source: Accenture analysis; SBTi registry and company sustainability disclosures, 2023.<span class="sup">a</span> Leading-company sample, n=109; internal carbon pricing counted where disclosed.</span>
+    <span class="run">36 | CASE STUDIES</span>
+  </div>
+
+</div>
+</body>
+</html>

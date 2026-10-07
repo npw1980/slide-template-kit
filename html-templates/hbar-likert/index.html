@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>hbar-likert — 100% stacked Likert bars, ordinal purple tint scale (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  hbar-likert  ·  family hbar (horizontal-bar chart page)
+  Evidence: accenture__accenture_2021_p_c_underwriting_survey_2021 p19 / p28
+            (100% stacked Likert bars: purple 5-step ordinal tint scale,
+            GREY reserved for Don't know / n.a., circled "Important + Very
+            important" aggregate callouts on the right, legend under chart;
+            same device repeats on p40/45/46/49/52/54 of that deck)
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate with
+  the same numbers MANUAL.md quotes (1280x720 fixed stage, uniform scale).
+  To own the transform yourself, drop the html rule and use
+  .stage { width:1280px; height:720px; transform:scale(var(--fit,1)) },
+  reading every rem below as px. Inside the inline SVG, lengths are user
+  units — the viewBox makes 1 user unit equal 1 stage px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY (one row per statement; seg = [Very important, Important,
+  Neither, Not important, Not important at all, Don't know] summing to 100):
+      rows = [
+        { label: "Improving underwriting quality (risk / pricing outcomes)",
+          seg: [46, 50, 3, 1, 0, 0], topline: 96 },
+        { label: "Ease of doing business for customers / producers",
+          seg: [35, 58, 5, 1, 0, 1], topline: 93 },
+        { label: "Reducing underwriting expense",
+          seg: [30, 55, 11, 3, 0, 1], topline: 85 },
+        { label: "Investing in underwriting talent development",
+          seg: [27, 51, 16, 4, 0, 2], topline: 78 },
+        { label: "Rolling out new products / services",
+          seg: [20, 56, 20, 4, 0, 0], topline: 76 }
+      ];
+    Geometry rule: stack spans x 356 -> 996 (100% = 640px), so each segment
+    width px = value x 6.4, laid left-to-right at x = 356 + 6.4 x cumulative.
+    One <g> per row at translate(0, row*58); bar height 30. The
+    "Important + Very important" topline renders as the circled pill column.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Monochrome-purple ordinal system. The 5-step tint scale encodes the
+     Likert levels (dark -> pale); GREY means "Don't know / not applicable"
+     and nothing else — the deck's semantic rule. Hexes from the Accenture
+     reviews' color sections, not invented. */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;
+    --accent:      #7B1FF0;   /* emphasis, pill stroke */
+    --accent-ink:  #6E00C9;   /* kicker Q:, pill numbers */
+    --s1:          #4B0E8F;   /* Very important      (darkest tint) */
+    --s2:          #8E24EA;   /* Important           (mid violet)   */
+    --s3:          #C9A2F4;   /* Neither             (pale violet)  */
+    --s4:          #E7D9F8;   /* Not important       (lavender)     */
+    --s5:          #F4EEFC;   /* Not important at all (near-white)  */
+    --gray-dk:     #B8B8B8;   /* Don't know / n.a. — grey is RESERVED for this */
+    --gray-1:      #7D7D7D;   /* secondary text */
+    --gray-3:      #D9D9D9;   /* segment outlines on pale fills, axis */
+    --rule:        #E3E3E3;
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#141019; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink);
+  }
+  /* ---- title zone (identical zone to hbar-ranked — the family spine) ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem; font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-ink); font-weight:700; }
+  .kicker sup{ font-size:11rem; color:var(--accent-ink); }
+  .title{ position:absolute; left:64rem; top:64rem; width:1152rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700; line-height:36rem;
+          letter-spacing:-.6rem; max-height:72rem; overflow:hidden; }  /* 2-line slot = the MBB gate */
+  .title em{ font-style:normal; color:var(--accent-ink); }
+  .rule-top{ position:absolute; left:64rem; top:150rem; width:1152rem; height:1rem; background:var(--rule); }
+  /* ---- chart ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .seg-a{ fill:var(--s1); stroke:#FFFFFF; stroke-width:.75; }   /* very important */
+  .seg-b{ fill:var(--s2); stroke:#FFFFFF; stroke-width:.75; }   /* important      */
+  .seg-c{ fill:var(--s3); stroke:var(--gray-3); stroke-width:.5; }
+  .seg-d{ fill:var(--s4); stroke:var(--gray-3); stroke-width:.5; }
+  .seg-e{ fill:var(--s5); stroke:var(--gray-3); stroke-width:.5; }
+  .seg-x{ fill:var(--gray-dk); stroke:var(--gray-3); stroke-width:.5; }  /* don't know */
+  .seg-lb{ font-size:11px; font-weight:700; fill:#fff; }        /* label on dark fills */
+  .seg-lt{ font-size:11px; font-weight:700; fill:var(--ink); }  /* label on pale fills */
+  .cat{ font-size:12px; fill:var(--ink); }
+  .pill{ fill:none; stroke:var(--accent); stroke-width:1.8; }
+  .pill-tx{ font-size:14px; font-weight:700; fill:var(--accent-ink); }
+  .pill-cap{ font-size:11px; fill:var(--gray-1); letter-spacing:.5px; }
+  .axis{ stroke:var(--gray-3); stroke-width:1; }
+  .axis-tx{ font-size:11px; fill:var(--gray-1); }
+  /* ---- legend + notes + footer ---- */
+  .legend{ position:absolute; left:64rem; top:528rem; font-size:11rem; color:var(--gray-1); }
+  .legend span.sw{ display:inline-block; width:10rem; height:10rem; margin:0 5rem 0 18rem; vertical-align:-1px; }
+  .legend span.sw:first-child{ margin-left:0; }
+  .note{ position:absolute; left:64rem; right:180rem; top:566rem; font-size:11rem; color:var(--gray-1); line-height:16rem; }
+  .note sup{ color:var(--accent-ink); }
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:16rem; display:flex; justify-content:space-between; font-size:10rem; color:var(--gray-1); }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+  .footer sup{ font-size:8rem; color:var(--accent-ink); }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="100 percent stacked Likert bars of importance by factor, with top-two-box aggregates in circles on the right">
+
+  <!-- slot 1 · question kicker -->
+  <div class="kicker">Q3: How <b>important</b> are the following factors in driving your company&rsquo;s investment in underwriting capabilities?<sup>1</sup></div>
+
+  <!-- slot 2 · claim title (≤15 words, 2-line cap) -->
+  <div class="title">Quality and Service Speed Lead the Investment Agenda for <em>96%</em> of Underwriters</div>
+
+  <div class="rule-top"></div>
+
+  <!-- ===================== CHART (inline SVG, 1 row = 1 <g>) =====================
+       DATA ARRAY lives in the file header. Geometry per row:
+         bar y = 196 + row*58, height 30, stack x 356 -> 996,
+         segment width px = value x 6.4 (left-to-right), segment label when ≥8%
+         (bar width ≥ 51px). Right pills = seg[0]+seg[1] (Important + Very
+       important aggregate). -->
+  <svg class="chart" viewBox="0 0 1280 720">
+
+    <!-- aggregate column header -->
+    <text class="pill-cap" x="1140" y="176" text-anchor="middle">Important + Very important</text>
+
+    <!-- row 0 · seg [46 50 3 1 0 0] · topline 96 -->
+    <g transform="translate(0,0)">
+      <text class="cat" x="346" y="211" text-anchor="end" dominant-baseline="central">Improving underwriting quality<tspan x="346" dy="15"> (risk / pricing outcomes)</tspan></text>
+      <rect class="seg-a" x="356"   y="196" width="294.4" height="30"/>
+      <rect class="seg-b" x="650.4" y="196" width="320"   height="30"/>
+      <rect class="seg-c" x="970.4" y="196" width="19.2"  height="30"/>
+      <rect class="seg-d" x="989.6" y="196" width="6.4"   height="30"/>
+      <text class="seg-lb" x="503.2" y="212" text-anchor="middle" dominant-baseline="central">46%</text>
+      <text class="seg-lb" x="810.4" y="212" text-anchor="middle" dominant-baseline="central">50%</text>
+      <rect class="pill" x="1107" y="197" width="66" height="28" rx="14"/>
+      <text class="pill-tx" x="1140" y="212" text-anchor="middle" dominant-baseline="central">96%</text>
+    </g>
+    <!-- row 1 · seg [35 58 5 1 0 1] · topline 93 -->
+    <g transform="translate(0,58)">
+      <text class="cat" x="346" y="211" text-anchor="end" dominant-baseline="central">Ease of doing business for customers / producers</text>
+      <rect class="seg-a" x="356"   y="196" width="224"   height="30"/>
+      <rect class="seg-b" x="580"   y="196" width="371.2" height="30"/>
+      <rect class="seg-c" x="951.2" y="196" width="32"    height="30"/>
+      <rect class="seg-d" x="983.2" y="196" width="6.4"   height="30"/>
+      <rect class="seg-x" x="989.6" y="196" width="6.4"   height="30"/>
+      <text class="seg-lb" x="468"   y="212" text-anchor="middle" dominant-baseline="central">35%</text>
+      <text class="seg-lb" x="765.6" y="212" text-anchor="middle" dominant-baseline="central">58%</text>
+      <rect class="pill" x="1107" y="197" width="66" height="28" rx="14"/>
+      <text class="pill-tx" x="1140" y="212" text-anchor="middle" dominant-baseline="central">93%</text>
+    </g>
+    <!-- row 2 · seg [30 55 11 3 0 1] · topline 85 -->
+    <g transform="translate(0,116)">
+      <text class="cat" x="346" y="211" text-anchor="end" dominant-baseline="central">Reducing underwriting expense</text>
+      <rect class="seg-a" x="356"   y="196" width="192"   height="30"/>
+      <rect class="seg-b" x="548"   y="196" width="352"   height="30"/>
+      <rect class="seg-c" x="900"   y="196" width="70.4"  height="30"/>
+      <rect class="seg-d" x="970.4" y="196" width="19.2"  height="30"/>
+      <rect class="seg-x" x="989.6" y="196" width="6.4"   height="30"/>
+      <text class="seg-lb" x="452"   y="212" text-anchor="middle" dominant-baseline="central">30%</text>
+      <text class="seg-lb" x="724"   y="212" text-anchor="middle" dominant-baseline="central">55%</text>
+      <text class="seg-lt" x="935.2" y="212" text-anchor="middle" dominant-baseline="central">11%</text>
+      <rect class="pill" x="1107" y="197" width="66" height="28" rx="14"/>
+      <text class="pill-tx" x="1140" y="212" text-anchor="middle" dominant-baseline="central">85%</text>
+    </g>
+    <!-- row 3 · seg [27 51 16 4 0 2] · topline 78 -->
+    <g transform="translate(0,174)">
+      <text class="cat" x="346" y="211" text-anchor="end" dominant-baseline="central">Investing in underwriting talent development</text>
+      <rect class="seg-a" x="356"   y="196" width="172.8" height="30"/>
+      <rect class="seg-b" x="528.8" y="196" width="326.4" height="30"/>
+      <rect class="seg-c" x="855.2" y="196" width="102.4" height="30"/>
+      <rect class="seg-d" x="957.6" y="196" width="25.6"  height="30"/>
+      <rect class="seg-x" x="983.2" y="196" width="12.8"  height="30"/>
+      <text class="seg-lb" x="442.4" y="212" text-anchor="middle" dominant-baseline="central">27%</text>
+      <text class="seg-lb" x="692"   y="212" text-anchor="middle" dominant-baseline="central">51%</text>
+      <text class="seg-lt" x="906.4" y="212" text-anchor="middle" dominant-baseline="central">16%</text>
+      <rect class="pill" x="1107" y="197" width="66" height="28" rx="14"/>
+      <text class="pill-tx" x="1140" y="212" text-anchor="middle" dominant-baseline="central">78%</text>
+    </g>
+    <!-- row 4 · seg [20 56 20 4 0 0] · topline 76 -->
+    <g transform="translate(0,232)">
+      <text class="cat" x="346" y="211" text-anchor="end" dominant-baseline="central">Rolling out new products / services</text>
+      <rect class="seg-a" x="356"   y="196" width="128"   height="30"/>
+      <rect class="seg-b" x="484"   y="196" width="358.4" height="30"/>
+      <rect class="seg-c" x="842.4" y="196" width="128"   height="30"/>
+      <rect class="seg-d" x="970.4" y="196" width="25.6"  height="30"/>
+      <text class="seg-lb" x="420"   y="212" text-anchor="middle" dominant-baseline="central">20%</text>
+      <text class="seg-lb" x="663.2" y="212" text-anchor="middle" dominant-baseline="central">56%</text>
+      <text class="seg-lt" x="906.4" y="212" text-anchor="middle" dominant-baseline="central">20%</text>
+      <rect class="pill" x="1107" y="197" width="66" height="28" rx="14"/>
+      <text class="pill-tx" x="1140" y="212" text-anchor="middle" dominant-baseline="central">76%</text>
+    </g>
+
+    <!-- scale axis: one hairline, three ticks, no gridlines -->
+    <line class="axis" x1="356" y1="470" x2="996" y2="470"/>
+    <line class="axis" x1="356" y1="465" x2="356" y2="475"/>
+    <line class="axis" x1="676" y1="465" x2="676" y2="475"/>
+    <line class="axis" x1="996" y1="465" x2="996" y2="475"/>
+    <text class="axis-tx" x="356" y="488" text-anchor="middle">0</text>
+    <text class="axis-tx" x="676" y="488" text-anchor="middle">50</text>
+    <text class="axis-tx" x="996" y="488" text-anchor="middle">100%</text>
+    <text class="axis-tx" x="676" y="504" text-anchor="middle" font-style="italic">share of respondents</text>
+  </svg>
+
+  <!-- slot 4 · legend (the only place the ordinal scale is spelled out) -->
+  <div class="legend">
+    <span class="sw" style="background:var(--s1)"></span>Very important
+    <span class="sw" style="background:var(--s2)"></span>Important
+    <span class="sw" style="background:var(--s3)"></span>Neither
+    <span class="sw" style="background:var(--s4)"></span>Not important
+    <span class="sw" style="background:var(--s5);outline:1px solid var(--gray-3)"></span>Not important at all
+    <span class="sw" style="background:var(--gray-dk)"></span>Don&rsquo;t know / not applicable
+  </div>
+
+  <!-- slot 5 · methodology note carrying sup 1 -->
+  <div class="note"><sup>1</sup> Five-point ordinal scale; "Important + Very important" aggregates the two darkest tints
+  (top-two box). Grey segments render Don&rsquo;t know / not applicable only. Shares may not sum to 100 due to rounding.</div>
+
+  <!-- slot 6 · footer: source + n + page -->
+  <div class="footer">
+    <div>Source: 2021 P&amp;C Underwriting Survey — Q3, rated by all respondents<sup>1</sup></div>
+    <div>Number of responses = 434&nbsp;&nbsp;<span class="pagenum">19</span></div>
+  </div>
+
+</div>
+</body>
+</html>

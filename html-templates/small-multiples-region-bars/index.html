@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>small-multiples-region-bars — ranked horizontal-bar panels, Global + regions (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  small-multiples-region-bars  ·  family small-multiples
+  Evidence: pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_
+            rising_tide p15/p17 (sheet sw_sheets/
+            pwc_strategy__pwc_23rd_annual_global_ceo_survey_navigating_the_
+            rising_tide_s01.jpg). Exhibit 6 "Uncertain economic growth is a
+            top ten threat around the world": small-multiples grid = Global
+            panel + 7 regional panels, each an independently ranked list of
+            horizontal bars, percentage value labels printed on the bar ends
+            (negative-space when the bar is long), no printed axis ticks —
+            ranking carries the argument. Right-hand "Question" sidebar
+            quotes the exact survey question (review §forms: "the single
+            best convention to copy").
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280, 100vh/720)} maps 1rem == 1
+  STAGE PIXEL; the overlay SVG is positioned at 0,0 with viewBox 0 0 1280 720,
+  so every SVG number below is also a stage-pixel coordinate.
+  ----------------------------------------------------------------------------
+  DATA ARRAYS — SWAP NUMBERS, NOT GEOMETRY:
+    regions = ["Global","North America","Western Europe","Asia-Pacific",
+               "CEE","Latin America","Middle East","Africa"];   // 4 cols x 2 rows
+    FOCUS category (the claim in the title) = "Uncertain economic growth"
+      → its bar renders in --accent in EVERY panel; every other bar in gray.
+
+    Panel values (% "extremely concerned"; rows are rendered SORTED DESC
+    by value inside each panel — after editing, keep descending order):
+      Global            : UEG 33, Trade conflicts 31, Cyber 29, Policy 27, Geopol. 26, Skills 24
+      North America     : UEG 31, Cyber 30, Trade 29, Skills 25, Policy 24, Geopol. 22
+      Western Europe    : UEG 32, Policy 29, Cyber 27, Trade 26, Geopol. 25, Skills 22
+      Asia-Pacific      : UEG 35, Trade 33, Cyber 28, Skills 26, Policy 25, Geopol. 23
+      CEE               : Policy 31, UEG 30, Trade 27, Geopol. 25, Cyber 21, Skills 20
+      Latin America     : UEG 34, Geopol. 27, Trade 25, Cyber 24, Policy 23, Skills 21
+      Middle East       : UEG 33, Cyber 31, Trade 28, Geopol. 24, Policy 22, Skills 19
+      Africa            : UEG 36, Geopol. 30, Policy 26, Trade 24, Skills 23, Cyber 22
+
+    Bar-geometry rule (SHARED ABSOLUTE SCALE across all panels):
+      value v in %, panel bar origin = (panelX+6, rowY+13), bar height 9.
+      width(v) = round(v × 3.36)            // 50% -> 168px, panel max bar 168
+      If width >= 110: value label sits INSIDE the bar's right end
+      (x = barX+width-6, anchor end, white fill). Otherwise OUTSIDE
+      (x = barX+width+5, anchor start, ink fill). Either way ONE label per bar.
+    Row rhythm inside a panel (panel-local coords):
+      region title y 13 | first row y 30 | rows step 31px | category label
+      baseline = row+9, bar rect = row+13 h9, value label baseline = row+21.
+    One hue + gray: --accent #ED8B28 (PwC orange, sampled review hexes
+    #F08300/#ED8B28/#D93F00) on the focus bars; context bars single gray
+    #C9CED3; labels ink/gray. No second hue anywhere.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts, zero network calls.
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;   /* titles, value labels outside bars */
+    --accent:      #ED8B28;   /* PwC orange — ONE accent: the focus-category bar */
+    --accent-deep: #D93F00;   /* darker orange: kicker head, running head, bold values */
+    --gray-ink:    #6B7280;   /* category labels, source, footnotes */
+    --bar-gray:    #C9CED3;   /* context bars ("the rest") — single gray, no ramp needed */
+    --rule:        #E6E8EB;   /* panel dividers, footer hairline */
+    --panel-bg:    #F7F8F9;   /* question-sidebar fill */
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#10141c; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); color:var(--ink); }
+  .stage > svg{ position:absolute; left:0; top:0; width:1280rem; height:720rem; }
+
+  .kicker{ position:absolute; left:64rem; top:38rem; width:860rem;
+           font-size:14rem; line-height:19rem; color:var(--gray-ink); }
+  .kicker b{ color:var(--accent-deep); font-weight:700; }
+  .kicker sup{ font-size:10rem; color:var(--accent-deep); }
+  .title{ position:absolute; left:64rem; top:63rem; width:900rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700;
+          line-height:35rem; letter-spacing:-.6rem; max-height:71rem; overflow:hidden; }
+  .title em{ font-style:normal; color:var(--accent-deep); }   /* operative clause */
+
+  /* question sidebar (PwC convention) */
+  .qbox{ position:absolute; left:976rem; top:150rem; width:240rem;
+         background:var(--panel-bg); border:1px solid var(--rule); border-radius:4rem;
+         padding:14rem 16rem; }
+  .qbox .qlabel{ font-size:10.5rem; font-weight:700; letter-spacing:.9rem;
+                 text-transform:uppercase; color:var(--accent-deep); margin-bottom:7rem; }
+  .qbox .qtext{ font-size:13.5rem; line-height:19rem; color:var(--ink); }
+  .qbox .qbase{ margin-top:11rem; padding-top:9rem; border-top:1px solid var(--rule);
+                font-size:11.5rem; line-height:16rem; color:var(--gray-ink); }
+  .qbox .qbase sup{ font-size:8.5rem; }
+
+  .foot-rule{ position:absolute; left:64rem; right:64rem; top:672rem; height:0;
+              border-top:1px solid var(--rule); }
+  .source{ position:absolute; left:64rem; top:681rem; width:1020rem;
+           font-size:10.5rem; line-height:14rem; color:var(--gray-ink); }
+  .source sup{ font-size:8rem; }
+  .pageno{ position:absolute; right:64rem; top:681rem; font-size:10.5rem;
+           color:var(--gray-ink); letter-spacing:.4rem; }
+  .pageno b{ color:var(--accent-deep); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>Question: how concerned are you about each of these potential threats to your growth prospects?</b><sup>1</sup> — share answering “extremely concerned”</div>
+  <div class="title">Uncertain economic growth is a <em>top-ten threat in every region</em> of the world</div>
+
+  <!-- ======================================================================
+       CHART LAYER — 8 panels (4 cols x 2 rows), stage coords.
+       Panel origins X: 64, 286, 508, 730 · Panel origins Y: 150, 406.
+       Row Y inside panel (absolute): 180, 211, 242, 273, 304, 335 (row1)
+                                     436, 467, 498, 529, 560, 591 (row2)
+       Bar w = value × 3.36 (shared scale). Class: bar = gray, barf = focus.
+       ====================================================================== -->
+  <svg viewBox="0 0 1280 720" aria-label="Small-multiples ranked threat bars: Global plus seven regions">
+    <defs>
+      <style>
+        .rt  { font-family:Arial, sans-serif; font-size:11.5px; font-weight:700; fill:var(--ink); letter-spacing:.2px; }
+        .rtf { font-family:Arial, sans-serif; font-size:11.5px; font-weight:700; fill:var(--accent-deep); }
+        .cat { font-family:Arial, sans-serif; font-size:9.5px; fill:var(--gray-ink); }
+        .catf{ font-family:Arial, sans-serif; font-size:9.5px; font-weight:700; fill:var(--ink); }
+        .bar { fill:var(--bar-gray); }
+        .barf{ fill:var(--accent); }
+        .val { font-family:Arial, sans-serif; font-size:10px; fill:var(--ink); }
+        .valf{ font-family:Arial, sans-serif; font-size:10px; font-weight:700; fill:var(--accent-deep); }
+        .valin{ font-family:Arial, sans-serif; font-size:10px; font-weight:700; fill:var(--ink); }
+        .div { stroke:var(--rule); stroke-width:1; }
+      </style>
+    </defs>
+
+    <!-- panel dividers (hairlines, not boxes — panel title + whitespace carry structure) -->
+    <line class="div" x1="286" y1="150" x2="286" y2="646"/>
+    <line class="div" x1="508" y1="150" x2="508" y2="646"/>
+    <line class="div" x1="730" y1="150" x2="730" y2="646"/>
+    <line class="div" x1="64"  y1="400" x2="730" y2="400"/>
+
+    <!-- panel: Global -->
+    <text class="rt" x="64" y="163">Global</text>
+    <g>
+      <text class="catf" x="70" y="189">Uncertain economic growth</text><rect class="barf" x="70" y="193" width="111" height="9"/><text class="valin" x="175" y="201" text-anchor="end">33%</text>
+      <text class="cat"  x="70" y="220">Trade conflicts</text><rect class="bar" x="70" y="224" width="104" height="9"/><text class="val" x="179" y="232">31%</text>
+      <text class="cat"  x="70" y="251">Cyber threats</text><rect class="bar" x="70" y="255" width="97" height="9"/><text class="val" x="172" y="263">29%</text>
+      <text class="cat"  x="70" y="282">Policy uncertainty</text><rect class="bar" x="70" y="286" width="91" height="9"/><text class="val" x="166" y="294">27%</text>
+      <text class="cat"  x="70" y="313">Geopolitical uncertainty</text><rect class="bar" x="70" y="317" width="87" height="9"/><text class="val" x="162" y="325">26%</text>
+      <text class="cat"  x="70" y="344">Availability of key skills</text><rect class="bar" x="70" y="348" width="81" height="9"/><text class="val" x="156" y="356">24%</text>
+    </g>
+
+    <!-- panel: North America -->
+    <text class="rt" x="286" y="163">North America</text>
+    <g>
+      <text class="catf" x="292" y="189">Uncertain economic growth</text><rect class="barf" x="292" y="193" width="104" height="9"/><text class="valf" x="401" y="201">31%</text>
+      <text class="cat"  x="292" y="220">Cyber threats</text><rect class="bar" x="292" y="224" width="101" height="9"/><text class="val" x="398" y="232">30%</text>
+      <text class="cat"  x="292" y="251">Trade conflicts</text><rect class="bar" x="292" y="255" width="97" height="9"/><text class="val" x="394" y="263">29%</text>
+      <text class="cat"  x="292" y="282">Availability of key skills</text><rect class="bar" x="292" y="286" width="84" height="9"/><text class="val" x="381" y="294">25%</text>
+      <text class="cat"  x="292" y="313">Policy uncertainty</text><rect class="bar" x="292" y="317" width="81" height="9"/><text class="val" x="378" y="325">24%</text>
+      <text class="cat"  x="292" y="344">Geopolitical uncertainty</text><rect class="bar" x="292" y="348" width="74" height="9"/><text class="val" x="371" y="356">22%</text>
+    </g>
+
+    <!-- panel: Western Europe -->
+    <text class="rt" x="508" y="163">Western Europe</text>
+    <g>
+      <text class="catf" x="514" y="189">Uncertain economic growth</text><rect class="barf" x="514" y="193" width="108" height="9"/><text class="valf" x="627" y="201">32%</text>
+      <text class="cat"  x="514" y="220">Policy uncertainty</text><rect class="bar" x="514" y="224" width="97" height="9"/><text class="val" x="616" y="232">29%</text>
+      <text class="cat"  x="514" y="251">Cyber threats</text><rect class="bar" x="514" y="255" width="91" height="9"/><text class="val" x="610" y="263">27%</text>
+      <text class="cat"  x="514" y="282">Trade conflicts</text><rect class="bar" x="514" y="286" width="87" height="9"/><text class="val" x="606" y="294">26%</text>
+      <text class="cat"  x="514" y="313">Geopolitical uncertainty</text><rect class="bar" x="514" y="317" width="84" height="9"/><text class="val" x="603" y="325">25%</text>
+      <text class="cat"  x="514" y="344">Availability of key skills</text><rect class="bar" x="514" y="348" width="74" height="9"/><text class="val" x="593" y="356">22%</text>
+    </g>
+
+    <!-- panel: Asia-Pacific -->
+    <text class="rt" x="730" y="163">Asia-Pacific</text>
+    <g>
+      <text class="catf" x="736" y="189">Uncertain economic growth</text><rect class="barf" x="736" y="193" width="118" height="9"/><text class="valin" x="848" y="201" text-anchor="end">35%</text>
+      <text class="cat"  x="736" y="220">Trade conflicts</text><rect class="bar" x="736" y="224" width="111" height="9"/><text class="valin" x="841" y="232" text-anchor="end">33%</text>
+      <text class="cat"  x="736" y="251">Cyber threats</text><rect class="bar" x="736" y="255" width="94" height="9"/><text class="val" x="835" y="263">28%</text>
+      <text class="cat"  x="736" y="282">Availability of key skills</text><rect class="bar" x="736" y="286" width="87" height="9"/><text class="val" x="828" y="294">26%</text>
+      <text class="cat"  x="736" y="313">Policy uncertainty</text><rect class="bar" x="736" y="317" width="84" height="9"/><text class="val" x="825" y="325">25%</text>
+      <text class="cat"  x="736" y="344">Geopolitical uncertainty</text><rect class="bar" x="736" y="348" width="77" height="9"/><text class="val" x="818" y="356">23%</text>
+    </g>
+
+    <!-- panel: CEE -->
+    <text class="rt" x="64" y="419">CEE</text>
+    <g>
+      <text class="cat"  x="70" y="445">Policy uncertainty</text><rect class="bar" x="70" y="449" width="104" height="9"/><text class="val" x="179" y="457">31%</text>
+      <text class="catf" x="70" y="476">Uncertain economic growth</text><rect class="barf" x="70" y="480" width="101" height="9"/><text class="valf" x="176" y="488">30%</text>
+      <text class="cat"  x="70" y="507">Trade conflicts</text><rect class="bar" x="70" y="511" width="91" height="9"/><text class="val" x="166" y="519">27%</text>
+      <text class="cat"  x="70" y="538">Geopolitical uncertainty</text><rect class="bar" x="70" y="542" width="84" height="9"/><text class="val" x="159" y="550">25%</text>
+      <text class="cat"  x="70" y="569">Cyber threats</text><rect class="bar" x="70" y="573" width="71" height="9"/><text class="val" x="146" y="581">21%</text>
+      <text class="cat"  x="70" y="600">Availability of key skills</text><rect class="bar" x="70" y="604" width="67" height="9"/><text class="val" x="142" y="612">20%</text>
+    </g>
+
+    <!-- panel: Latin America -->
+    <text class="rt" x="286" y="419">Latin America</text>
+    <g>
+      <text class="catf" x="292" y="445">Uncertain economic growth</text><rect class="barf" x="292" y="449" width="114" height="9"/><text class="valin" x="400" y="457" text-anchor="end">34%</text>
+      <text class="cat"  x="292" y="476">Geopolitical uncertainty</text><rect class="bar" x="292" y="480" width="91" height="9"/><text class="val" x="388" y="488">27%</text>
+      <text class="cat"  x="292" y="507">Trade conflicts</text><rect class="bar" x="292" y="511" width="84" height="9"/><text class="val" x="381" y="519">25%</text>
+      <text class="cat"  x="292" y="538">Cyber threats</text><rect class="bar" x="292" y="542" width="81" height="9"/><text class="val" x="378" y="550">24%</text>
+      <text class="cat"  x="292" y="569">Policy uncertainty</text><rect class="bar" x="292" y="573" width="77" height="9"/><text class="val" x="374" y="581">23%</text>
+      <text class="cat"  x="292" y="600">Availability of key skills</text><rect class="bar" x="292" y="604" width="71" height="9"/><text class="val" x="368" y="612">21%</text>
+    </g>
+
+    <!-- panel: Middle East -->
+    <text class="rt" x="508" y="419">Middle East</text>
+    <g>
+      <text class="catf" x="514" y="445">Uncertain economic growth</text><rect class="barf" x="514" y="449" width="111" height="9"/><text class="valin" x="619" y="457" text-anchor="end">33%</text>
+      <text class="cat"  x="514" y="476">Cyber threats</text><rect class="bar" x="514" y="480" width="104" height="9"/><text class="val" x="623" y="488">31%</text>
+      <text class="cat"  x="514" y="507">Trade conflicts</text><rect class="bar" x="514" y="511" width="94" height="9"/><text class="val" x="613" y="519">28%</text>
+      <text class="cat"  x="514" y="538">Geopolitical uncertainty</text><rect class="bar" x="514" y="542" width="81" height="9"/><text class="val" x="600" y="550">24%</text>
+      <text class="cat"  x="514" y="569">Policy uncertainty</text><rect class="bar" x="514" y="573" width="74" height="9"/><text class="val" x="593" y="581">22%</text>
+      <text class="cat"  x="514" y="600">Availability of key skills</text><rect class="bar" x="514" y="604" width="64" height="9"/><text class="val" x="583" y="612">19%</text>
+    </g>
+
+    <!-- panel: Africa -->
+    <text class="rt" x="730" y="419">Africa</text>
+    <g>
+      <text class="catf" x="736" y="445">Uncertain economic growth</text><rect class="barf" x="736" y="449" width="121" height="9"/><text class="valin" x="851" y="457" text-anchor="end">36%</text>
+      <text class="cat"  x="736" y="476">Geopolitical uncertainty</text><rect class="bar" x="736" y="480" width="101" height="9"/><text class="val" x="842" y="488">30%</text>
+      <text class="cat"  x="736" y="507">Policy uncertainty</text><rect class="bar" x="736" y="511" width="87" height="9"/><text class="val" x="828" y="519">26%</text>
+      <text class="cat"  x="736" y="538">Trade conflicts</text><rect class="bar" x="736" y="542" width="81" height="9"/><text class="val" x="822" y="550">24%</text>
+      <text class="cat"  x="736" y="569">Availability of key skills</text><rect class="bar" x="736" y="573" width="77" height="9"/><text class="val" x="818" y="581">23%</text>
+      <text class="cat"  x="736" y="600">Cyber threats</text><rect class="bar" x="736" y="604" width="74" height="9"/><text class="val" x="815" y="612">22%</text>
+    </g>
+  </svg>
+
+  <!-- question sidebar -->
+  <div class="qbox">
+    <div class="qlabel">Question</div>
+    <div class="qtext">Now, how concerned are you, if at all, about each of these potential threats to your organization’s growth prospects over the next 12 months?</div>
+    <div class="qbase">Showing only “extremely concerned” responses. Base: all responding CEOs<sup>1</sup></div>
+  </div>
+
+  <div class="foot-rule"></div>
+  <div class="source">Source: PwC, 23rd Annual Global CEO Survey (question: threats to growth prospects, single-response “extremely concerned”). Base: n = 1,053 responding CEOs, fieldwork Sep–Oct 2019<sup>1</sup></div>
+  <div class="pageno"><b>12</b> | CEO SURVEY</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>value-chain-analysis — Value Chain Stages + Segment x Dimension Analysis Matrix (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  value-chain-analysis  ·  family value-chain
+  Evidence (see MANUAL.md -> SOURCE):
+    pwc_strategy__pwc_copernicus_market_report_2019, page ~p40 (sheet
+      sw_sheets/pwc_strategy__pwc_copernicus_market_report_2019_s03.jpg, row 1
+      col 4): three sector-stage columns with descriptive text, over a bottom
+      matrix whose ROWS are the value-chain segments and COLUMNS are the fixed
+      analysis dimensions (APPLICATIONS / BENEFITS / END USERS), row labels in
+      navy chips. Harvest entry: "value chain 3-box ... table + callouts"
+      (p89). Review: reviews/pwc_strategy__pwc_copernicus_market_report_2019.md
+      §5, §36-44.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS, 1rem == 1 stage px; stage grid lives in ONE full-stage
+  inline SVG under an HTML header band + footer.
+  ----------------------------------------------------------------------------
+  GRID LOGIC: stage columns (top) and matrix rows (bottom) share x semantics:
+  rows are the SAME segments as the columns, read left-to-right down the
+  chain. Column headers (APPLICATIONS/BENEFITS/END USERS) are fixed analysis
+  dimensions and sit on the 3 matrix column lines 256 / 576 / 896 / 1216.
+  Adding a segment = one matrix row + one stage column (MANUAL.md FILL §4).
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Same house rule as value-chain-3box (family signature): ONE accent +
+     ink navy + gray ramp; pale accent only as fill behind dark text.
+     Measured contrast on white: ink #1F3864 11.6:1 · accent #1E5A90 7.2:1
+     gray-2 #464646 9.4:1 · gray-3 #7D7D7D 4.1:1 (source lines only) ·
+     white on --ink chip 11.6:1.
+     ================================================================= */
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #1F3864;
+    --accent:  #1E5A90;
+    --accent-1:#D8E6F5;   /* pale accent, fill only */
+    --gray-1:  #2D2D2D;
+    --gray-2:  #464646;
+    --gray-3:  #7D7D7D;
+    --gray-4:  #F1F4F8;   /* header band fill */
+    --gray-5:  #B9C4CE;   /* dim fills, rules' sibling */
+    --rule:    #C9CFD4;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#3A3F44; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; margin:auto;
+    background:var(--bg); overflow:hidden;
+    font-family:"Helvetica Neue", Arial, Calibri, sans-serif;
+  }
+
+  /* ---------------- header band (same grammar as the family) ---------------- */
+  .band{
+    position:absolute; left:64rem; top:36rem; width:1152rem; height:106rem;
+    background:var(--gray-4);
+  }
+  .band .title{
+    position:absolute; left:28rem; top:14rem; width:1020rem;
+    font-size:25rem; line-height:31rem; font-weight:700; color:var(--ink);
+    letter-spacing:-.01em;
+  }
+  .band .sub{
+    position:absolute; left:28rem; top:80rem; width:1020rem;
+    font-size:12rem; line-height:14rem; font-weight:700; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--accent);
+  }
+  .band .icon{ position:absolute; right:22rem; top:26rem; }
+
+  /* ---------------- footer ---------------- */
+  .foot{
+    position:absolute; left:0; bottom:0; width:1280rem; height:56rem;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 64rem; border-top:1px solid var(--rule);
+  }
+  .foot .src{ font-size:9.5rem; color:var(--gray-3); }
+  .foot .pg{ font-size:10rem; font-weight:700; color:var(--gray-2); letter-spacing:.06em; }
+
+  svg.fig{ position:absolute; left:0; top:0; width:1280rem; height:720rem; display:block; }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- ================= HEADER BAND ================= -->
+  <div class="band">
+    <h1 class="title">Who does what, who pays: applications, benefits and end users across all three data stages</h1>
+    <div class="sub">End users decide adoption &mdash; and price the whole chain</div>
+    <svg class="icon" width="56rem" height="56rem" viewBox="0 0 56 56" aria-hidden="true">
+      <!-- 3-segment chain mark, drawn: nodes + connectors -->
+      <circle cx="28" cy="28" r="26" fill="#FFFFFF" stroke="var(--rule)" stroke-width="1.4"/>
+      <rect x="12" y="26" width="10" height="5" rx="1.5" fill="var(--gray-5)"/>
+      <rect x="23" y="26" width="10" height="5" rx="1.5" fill="var(--gray-3)"/>
+      <rect x="34" y="26" width="10" height="5" rx="1.5" fill="var(--accent)"/>
+      <path d="M17 20 v11 M28 20 v11 M39 20 v11" stroke="var(--gray-5)" stroke-width="1.2"/>
+    </svg>
+  </div>
+
+  <!-- ================= DIAGRAM LAYER ================= -->
+  <svg class="fig" viewBox="0 0 1280 720" font-family="'Helvetica Neue', Arial, sans-serif">
+
+    <!-- ---- stage columns (one group per segment, one translate each) ---- -->
+    <g id="stage-col-1" transform="translate(64,160)">
+      <text x="0" y="14" font-size="11" font-weight="700" fill="var(--gray-3)">1</text>
+      <text x="14" y="14" font-size="14" font-weight="700" letter-spacing=".06em" fill="var(--ink)">DATA ACQUISITION</text>
+      <rect x="14" y="22" width="34" height="3" fill="var(--gray-5)"/>
+      <g font-size="11" fill="var(--gray-2)">
+        <rect x="0" y="34" width="5" height="5" fill="var(--gray-5)"/>
+        <text x="14" y="40">Open-licence raw feeds; national missions</text>
+        <rect x="0" y="56" width="5" height="5" fill="var(--gray-5)"/>
+        <text x="14" y="62">No client relationship, thin margins</text>
+        <rect x="0" y="78" width="5" height="5" fill="var(--gray-5)"/>
+        <text x="14" y="84">Policy sets entry prices, not buyers</text>
+        <rect x="0" y="100" width="5" height="5" fill="var(--gray-5)"/>
+        <text x="14" y="106">Quality risk enters here if unchecked</text>
+      </g>
+    </g>
+    <g id="stage-col-2" transform="translate(461,160)">
+      <text x="0" y="14" font-size="11" font-weight="700" fill="var(--gray-3)">2</text>
+      <text x="14" y="14" font-size="14" font-weight="700" letter-spacing=".06em" fill="var(--ink)">DATA PROCESSING</text>
+      <rect x="14" y="22" width="34" height="3" fill="var(--gray-5)"/>
+      <g font-size="11" fill="var(--gray-2)">
+        <rect x="0" y="34" width="5" height="5" fill="var(--gray-5)"/>
+        <text x="14" y="40">Few integrators; accuracy is the product</text>
+        <rect x="0" y="56" width="5" height="5" fill="var(--gray-5)"/>
+        <text x="14" y="62">Cloud compute + domain SMEs required</text>
+        <rect x="0" y="78" width="5" height="5" fill="var(--gray-5)"/>
+        <text x="14" y="84">Funding is project-led, rarely retained</text>
+        <rect x="0" y="100" width="5" height="5" fill="var(--gray-5)"/>
+        <text x="14" y="106">Hand-off errors here propagate downstream</text>
+      </g>
+    </g>
+    <g id="stage-col-3" transform="translate(857,160)">
+      <text x="0" y="14" font-size="11" font-weight="700" fill="var(--accent)">3</text>
+      <text x="14" y="14" font-size="14" font-weight="700" letter-spacing=".06em" fill="var(--ink)">USER SERVICES</text>
+      <rect x="14" y="22" width="34" height="3" fill="var(--accent)"/>
+      <g font-size="11" fill="var(--gray-2)">
+        <rect x="0" y="34" width="5" height="5" fill="var(--accent)"/>
+        <text x="14" y="40">Advisory, monitoring, index insurance</text>
+        <rect x="0" y="56" width="5" height="5" fill="var(--accent)"/>
+        <text x="14" y="62">Recurring contracts, strongest lock-in</text>
+        <rect x="0" y="78" width="5" height="5" fill="var(--accent)"/>
+        <text x="14" y="84">Budget sits with agencies, banks, farms</text>
+        <rect x="0" y="100" width="5" height="5" fill="var(--accent)"/>
+        <text x="14" y="106">Interpretation holds price, not data</text>
+      </g>
+    </g>
+
+    <line x1="64" y1="330" x2="1216" y2="330" stroke="var(--rule)" stroke-width="1"/>
+
+    <!-- ---- analysis matrix: rows = segments, cols = fixed dimensions ---- -->
+    <g id="matrix">
+      <!-- column headers (fixed analysis dimensions) -->
+      <g id="matrix-head" font-size="11.5" font-weight="700" letter-spacing=".07em" fill="var(--ink)">
+        <text x="270" y="366">APPLICATIONS</text>
+        <text x="590" y="366">BENEFITS</text>
+        <text x="910" y="366">END USERS<tspan baseline-shift="super" font-size="8">1</tspan></text>
+      </g>
+      <line x1="64" y1="376" x2="1216" y2="376" stroke="var(--ink)" stroke-width="1.4"/>
+
+      <!-- column guide lines -->
+      <g stroke="var(--rule)" stroke-width="1">
+        <line x1="256" y1="384" x2="256" y2="616"/>
+        <line x1="576" y1="384" x2="576" y2="616"/>
+        <line x1="896" y1="384" x2="896" y2="616"/>
+      </g>
+
+      <!-- row bands: label chip (ink) + 3 content cells; row height 76 -->
+      <g id="row-1">
+        <rect x="64" y="386" width="192" height="76" fill="var(--ink)"/>
+        <text x="160" y="418" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing=".05em" fill="#FFFFFF">DATA</text>
+        <text x="160" y="436" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing=".05em" fill="#FFFFFF">ACQUISITION</text>
+        <g font-size="11" fill="var(--gray-2)">
+          <text x="270" y="414">Yield maps, soil-moisture grids, subsidy plots</text>
+          <text x="270" y="432">for national agencies</text>
+          <text x="590" y="414">Free raw coverage no single member</text>
+          <text x="590" y="432">state could commission alone</text>
+          <text x="910" y="414">Public agencies, research</text>
+          <text x="910" y="432">institutes, space programmes</text>
+        </g>
+      </g>
+      <line x1="64" y1="464" x2="1216" y2="464" stroke="var(--rule)" stroke-width="1"/>
+      <g id="row-2">
+        <rect x="64" y="466" width="192" height="76" fill="var(--ink)"/>
+        <text x="160" y="498" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing=".05em" fill="#FFFFFF">DATA</text>
+        <text x="160" y="516" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing=".05em" fill="#FFFFFF">PROCESSING</text>
+        <g font-size="11" fill="var(--gray-2)">
+          <text x="270" y="494">Crop classification, drought nowcasts,</text>
+          <text x="270" y="512">field-level yield forecasts for ministries</text>
+          <text x="590" y="494">Audit-ready reporting and seasonal</text>
+          <text x="590" y="512">early-warning lead times of weeks</text>
+          <text x="910" y="494">Integrators, ministries of</text>
+          <text x="910" y="512">agriculture, aid agencies</text>
+        </g>
+      </g>
+      <line x1="64" y1="544" x2="1216" y2="544" stroke="var(--rule)" stroke-width="1"/>
+      <g id="row-3">
+        <rect x="64" y="546" width="192" height="76" fill="var(--accent)"/>
+        <text x="160" y="578" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing=".05em" fill="#FFFFFF">USER</text>
+        <text x="160" y="596" text-anchor="middle" font-size="11.5" font-weight="700" letter-spacing=".05em" fill="#FFFFFF">SERVICES</text>
+        <g font-size="11" fill="var(--gray-2)">
+          <text x="270" y="574">Advisory apps, index-based insurance,</text>
+          <text x="270" y="592">irrigation scheduling for co-ops</text>
+          <text x="590" y="574">Decision-grade answers without</text>
+          <text x="590" y="592">in-house data teams</text>
+          <text x="910" y="574">Farmers, banks, farm</text>
+          <text x="910" y="592">cooperatives, insurers</text>
+        </g>
+      </g>
+
+      <line x1="64" y1="624" x2="1216" y2="624" stroke="var(--ink)" stroke-width="1.4"/>
+      <text x="64" y="646" font-size="9.5" fill="var(--gray-3)"><tspan font-weight="700">1</tspan> End-user classification from chapter service taxonomy and national rural-directories, cross-checked against ESA user surveys; the three dimensions are fixed across all chain pages.</text>
+    </g>
+
+  </svg>
+
+  <!-- ================= FOOTER ================= -->
+  <div class="foot">
+    <div class="src">Copernicus Market Report&thinsp;|&thinsp;Issue 2, February 2019&thinsp;|&thinsp;Prepared by PwC</div>
+    <div class="pg">1&thinsp;|&thinsp;VALUE CHAIN</div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>venn-diagram-scope-rings — coverage rings per component (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  venn-diagram-scope-rings  ·  family venn-diagram
+  Evidence (see MANUAL.md -> SOURCE):
+    PwC — PwC Annual Report 2017-2018 (pwc_strategy__pwc_pwc_annual_report_2018)
+      p103: "For clarification purposes we hereby show our scope" — the page
+      draws three red coverage rings (Group Audit divided into revenue /
+      assets / result), each ring a thick donut: solid red arc = audit, short
+      darker segment = review, rest gray. Red editorial rules + Georgia-class
+      serif, charcoal body. NOTE: the harvest files this page under
+      "venn-diagram" and the catalog row says "overlapping circles"; the page
+      actually renders three NON-overlapping scope rings — reproduced as-is,
+      honestly, as the rings variant of the family.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS; 1rem == 1 stage px via the html rule, coords 1:1 with
+  MANUAL.md.  SELF-CONTAINED: inline CSS + inline SVG, system font stacks,
+  no images, no webfonts, no @import, no JS, no requests.
+  ----------------------------------------------------------------------------
+  GEOMETRY: each ring is three concentric-stroke circles on a radius r = 74
+  with stroke-width 26, using pathLength="100" so stroke-dasharray values ARE
+  percentages — coverage edits are one number, no arc math, no d= strings.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Palette hexes cite
+     reviews/pwc_strategy__pwc_pwc_annual_report_2018.md: PwC brand red as
+     measured range #D60A2C-#E1123C (taken as #D60A2C), charcoal body/text
+     #58595B, light grays #E6E6E6, red tints #F3C6CD/#F8E9EB, white ground.
+     Contrast (measured):
+       #58595B on #FFFFFF        = 7.0:1
+       #757575 on #FFFFFF        = 4.7:1  (notes; body stays charcoal)
+       #D60A2C on #FFFFFF        = 4.6:1  (red used at >=14px bold / rings)
+       #FFFFFF on #D60A2C        = 4.6:1  (if a chip is ever inverted)
+     ================================================================= */
+  :root{
+    --bg:      #FFFFFF;   /* paper white ground */
+    --ink:     #1F1F1F;   /* title + lead, near-black serif */
+    --accent:  #D60A2C;   /* PwC red: the single emphasis hue */
+    --accent-tint:#F8E9EB;/* one lightness of accent: not-scope wash */
+    --gray-1:  #58595B;   /* body charcoal        */
+    --gray-2:  #757575;   /* secondary, legends   */
+    --gray-3:  #9AA0A6;   /* captions, source     */
+    --gray-4:  #E6E6E6;   /* neutral fill, ring track, review segment */
+    --rule:    #D9D9D9;   /* hairlines            */
+
+    --font-serif:   Georgia, "Times New Roman", "Liberation Serif", serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#0E1A22;                    /* studio backdrop, not the slide */
+    font-family:var(--font-serif);
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink);
+  }
+
+  /* ------------------------------ header ------------------------------ */
+  .kicker{
+    position:absolute; left:64rem; top:38rem; right:64rem;
+    display:flex; align-items:center; gap:10rem;
+    font:700 11.5rem/13rem var(--font-body); letter-spacing:1.8px;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .kicker .tick{ width:20rem; height:3rem; background:var(--accent); border-radius:2rem; }
+
+  h1.title{                              /* slot gate: <=15 words / 2 lines */
+    position:absolute; left:64rem; right:64rem; top:58rem;
+    max-height:86rem;
+    font:700 30rem/43rem var(--font-serif); letter-spacing:-0.2px;
+    color:var(--ink);
+  }
+  h1.title sup{ font-size:.55em; line-height:0; color:var(--accent); }
+
+  .caption{                              /* the figure's own lead line */
+    position:absolute; left:64rem; right:64rem; top:130rem;
+    font:italic 400 13.5rem/17rem var(--font-serif); color:var(--gray-1);
+  }
+
+  /* ------------------------------- rings ------------------------------- */
+  .ringfield{
+    position:absolute; left:64rem; top:156rem; width:1152rem; height:264rem;
+  }
+  .ringfield svg{ display:block; }
+  .ringfield text{ font-family:var(--font-body); }
+  .ring-label{ font:700 13rem/16rem var(--font-serif); fill:var(--accent); }
+  .ring-pct  { font:700 21rem/21rem var(--font-body); fill:var(--ink); }
+  .ring-sub  { font:400 9.5rem/12rem var(--font-body); fill:var(--gray-2); }
+  .ring-note { font:400 10rem/13rem var(--font-body); fill:var(--gray-3); }
+
+  .legend{
+    position:absolute; left:64rem; right:64rem; top:426rem;
+    display:flex; justify-content:center; gap:34rem;
+    font:400 11rem/14rem var(--font-body); color:var(--gray-2);
+  }
+  .legend .key{ display:flex; align-items:center; gap:7rem; }
+  .legend .sw{ width:9rem; height:9rem; border-radius:1rem; }
+
+  /* ---------------------------- so-what band ---------------------------- */
+  .band-rule{
+    position:absolute; left:64rem; right:64rem; top:462rem; height:2px;
+    background:var(--accent);
+  }
+  .band{
+    position:absolute; left:64rem; right:64rem; top:478rem;
+    display:grid; grid-template-columns:1fr 1fr; gap:54rem;
+  }
+  .band h3{
+    font:700 14.5rem/18rem var(--font-serif); color:var(--accent);
+    margin-bottom:7rem;
+  }
+  .band p{
+    font:400 11.5rem/16.5rem var(--font-serif); color:var(--gray-1);
+    margin-bottom:5rem;
+  }
+
+  /* ------------------------------- footer ------------------------------- */
+  .foot{
+    position:absolute; left:64rem; right:64rem; bottom:20rem;
+    display:flex; align-items:baseline; justify-content:space-between;
+    font:400 10rem/13rem var(--font-body); color:var(--gray-3);
+  }
+  .foot .src{ max-width:760rem; }
+  .foot .runhead{ white-space:nowrap; }
+  .foot .pg{ font-weight:700; color:var(--gray-1); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker">
+    <span class="tick" aria-hidden="true"></span>
+    <span data-slot="kicker">Assurance — scope of work, FY2017-18</span>
+  </div>
+
+  <h1 class="title" data-slot="title">Component-level coverage now reaches <span style="color:var(--accent)">71%</span> of consolidated revenue, six points above FY17<sup>1</sup></h1>
+
+  <div class="caption" data-slot="caption">For clarification purposes we show our scope component by component — audit coverage, review coverage, everything else out of scope:</div>
+
+  <!-- ============================ the exhibit ============================
+       One <g class="ring"> per component; add/remove groups freely.
+       Inside a group everything is local to translate(cx,140):
+       label y-92, ring centred (0,0), note y+112. cx = pitch*(i+.5) with
+       pitch = 1152/N. Arc percentages: stroke-dasharray on a pathLength=100
+       circle — the dash numbers ARE the percentages. -->
+  <div class="ringfield">
+  <svg width="1152" height="264" viewBox="0 0 1152 264" aria-label="Three coverage rings: revenue, assets, result">
+
+    <g class="ring" data-slot="ring-1" transform="translate(192,140)">
+      <text class="ring-label" y="-92" text-anchor="middle" data-slot="ring-1-label">Group Audit — divided into revenue</text>
+      <circle r="74" fill="none" stroke="var(--gray-4)" stroke-width="26"/>
+      <circle r="74" fill="none" stroke="var(--gray-2)" stroke-width="26"
+              pathLength="100" stroke-dasharray="17 100" stroke-dashoffset="-71"
+              transform="rotate(-90)"/>
+      <circle r="74" fill="none" stroke="var(--accent)" stroke-width="26"
+              pathLength="100" stroke-dasharray="71 100" stroke-dashoffset="0"
+              transform="rotate(-90)"/>
+      <text class="ring-pct" y="1" text-anchor="middle"><tspan data-slot="ring-1-pct">71%</tspan></text>
+      <text class="ring-sub" y="19" text-anchor="middle" data-slot="ring-1-sub">of component scope</text>
+      <text class="ring-note" y="112" text-anchor="middle" data-slot="ring-1-note">16 of 22 statutory components</text>
+    </g>
+
+    <g class="ring" data-slot="ring-2" transform="translate(576,140)">
+      <text class="ring-label" y="-92" text-anchor="middle" data-slot="ring-2-label">Group Audit — divided into assets</text>
+      <circle r="74" fill="none" stroke="var(--gray-4)" stroke-width="26"/>
+      <circle r="74" fill="none" stroke="var(--gray-2)" stroke-width="26"
+              pathLength="100" stroke-dasharray="11 100" stroke-dashoffset="-63"
+              transform="rotate(-90)"/>
+      <circle r="74" fill="none" stroke="var(--accent)" stroke-width="26"
+              pathLength="100" stroke-dasharray="63 100" stroke-dashoffset="0"
+              transform="rotate(-90)"/>
+      <text class="ring-pct" y="1" text-anchor="middle"><tspan data-slot="ring-2-pct">63%</tspan></text>
+      <text class="ring-sub" y="19" text-anchor="middle" data-slot="ring-2-sub">of component scope</text>
+      <text class="ring-note" y="112" text-anchor="middle" data-slot="ring-2-note">13 of 22 statutory components</text>
+    </g>
+
+    <g class="ring" data-slot="ring-3" transform="translate(960,140)">
+      <text class="ring-label" y="-92" text-anchor="middle" data-slot="ring-3-label">Group Audit — divided into result</text>
+      <circle r="74" fill="none" stroke="var(--gray-4)" stroke-width="26"/>
+      <circle r="74" fill="none" stroke="var(--gray-2)" stroke-width="26"
+              pathLength="100" stroke-dasharray="9 100" stroke-dashoffset="-55"
+              transform="rotate(-90)"/>
+      <circle r="74" fill="none" stroke="var(--accent)" stroke-width="26"
+              pathLength="100" stroke-dasharray="55 100" stroke-dashoffset="0"
+              transform="rotate(-90)"/>
+      <text class="ring-pct" y="1" text-anchor="middle"><tspan data-slot="ring-3-pct">55%</tspan></text>
+      <text class="ring-sub" y="19" text-anchor="middle" data-slot="ring-3-sub">of component scope</text>
+      <text class="ring-note" y="112" text-anchor="middle" data-slot="ring-3-note">11 of 22 statutory components</text>
+    </g>
+  </svg>
+  </div>
+
+  <div class="legend">
+    <span class="key"><span class="sw" style="background:var(--accent)"></span><span data-slot="leg-audit">Audit procedures</span></span>
+    <span class="key"><span class="sw" style="background:var(--gray-4)"></span><span data-slot="leg-rest">Not in scope</span></span>
+  </div>
+
+  <div class="band-rule"></div>
+  <div class="band">
+    <div>
+      <h3 data-slot="band-title">Coverage of the audit is stated as coverage, not judgement</h3>
+      <p data-slot="band-p1">Coverage at the component level is audited directly in 16 of 22 statutory components; the remainder rely on group-level procedures and analytic review, which we show in grey rather than fold into the red.</p>
+      <p data-slot="band-p2">Where a component moved between last year and this year, the ring is redrawn — not annotated — so scope drift reads as a changed shape.</p>
+    </div>
+    <div>
+      <h3 data-slot="band-title2">Reading these rings against last year</h3>
+      <p data-slot="band-p3">Revenue coverage moved 65% to 71% after the two acquired trading units entered full-scope testing; assets and result coverage moved by two points each and stay inside their prior-year band.</p>
+      <p data-slot="band-p4">The residual slices are review-only: controls testing and analytical procedures, no substantive detail testing, and no separate opinion on them.¹</p>
+    </div>
+  </div>
+
+  <!-- ============================== footer ============================== -->
+  <div class="foot">
+    <span class="src" data-slot="source">Source: internal scope mapping, audit and assurance plan 2017/18; 22 statutory components, consolidated revenue as reported.</span>
+    <span class="runhead"><span class="pg" data-slot="page">103</span>&nbsp;|&nbsp;PwC Annual Report 2017-18</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>three-horizons-curves — three-horizon growth curves on a value/time stage (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  three-horizons-curves  ·  family three-horizons
+  Evidence (see MANUAL.md -> SOURCE): Umbrex "Template — Three Horizons",
+    corpus slide S1782 — read on corpus/sheets/sheet_179.jpg frame 2
+    (S1771..S1780 row-major 5col×2row, S1782 = frame 2, row 1 col 2). Observed:
+    a Value (y) × Time (x) stage, three column bands NOW / NEW / NEXT along the
+    top with dashed separators, three rising curves each captioned inside the
+    plot (Horizon 1 "Maintain and defend core business / 1-3 years", Horizon 2
+    "Foster emerging / 3-5 years", Horizon 3 "Seed future business(es) / >5
+    years"), "Your logo here | Source: ___" furniture in the footer.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html font-size maps 1rem == 1 STAGE PIXEL, so every length
+  is a 1:1 stage-pixel coordinate with the same numbers MANUAL.md quotes.
+  ----------------------------------------------------------------------------
+  GEOMETRY (stage px; one full-stage SVG, viewBox 0 0 1280 720):
+    Axes: y-axis x=112 (y520 up to y186, arrow), x-axis y=520 (x112 to x1206).
+    Time scale: x = 155 + (FY − 24) × 145      -> FY24 155 … FY31 1170
+    Value scale: y = 520 − 51.667 × value_bn   -> 0 bn at 520, 6 bn at 210
+    Band separators (vertical, dashed) x=590 (≈FY27) and x=880 (≈FY29).
+    Curve series live in #h1 / #h2 / #h3: 1 <g> per horizon holding
+    path + point dots + end value label + on-curve caps label.
+    H1 accent (EMPHASIS), H2 one lightness of accent, H3 gray ramp dashed —
+    the kit's "one accent + greys" rule for a 3-series chart.
+    Readout table: 3 equal columns x110 / x474 / x838, width 348, rows y592…y654.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+      Roles per DESIGN_PLAYBOOK (one accent + grey ramp; the corpus page is
+      dark-navy-only, the kit keeps that discipline):
+        --accent #155C99      6.0:1 on white, #FFF on accent 6.0:1  (H1 curve)
+        --accent-mid #5F98C7  lightness step of accent              (H2 curve)
+        --ink #1A1A1A 16.9:1 · --gray-1 #404040 9.8:1 (axes + labels)
+        --gray-2 #8C8C8C 3.8:1 (large/bold + H3 curve) · --gray-3 #D9D9D9
+        --gray-note #666666 5.9:1 (footnotes). Text never sits on a fill.
+     ================================================================= */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;
+    --gray-1:      #404040;
+    --gray-2:      #8C8C8C;
+    --gray-3:      #D9D9D9;
+    --gray-note:   #666666;
+    --rule:        #D9D9D9;
+    --accent:      #155C99;
+    --accent-mid:  #5F98C7;
+    --accent-soft: #E9F1F8;
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, Calibri, "Helvetica Neue", "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{ background:#4A4A50; display:grid; place-items:center; min-height:100vh; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink); overflow:hidden;
+  }
+  /* ---------- header band: kicker / claim title / lead ---------- */
+  .kicker{
+    position:absolute; left:64rem; top:34rem; font-size:11rem; line-height:1;
+    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    font-family:var(--font-display); color:var(--gray-1);
+  }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  h1.title{
+    position:absolute; left:64rem; top:56rem; width:1152rem;
+    font-family:var(--font-display); font-size:30rem; line-height:36rem;
+    font-weight:700; letter-spacing:-.015em; color:var(--ink);
+    max-height:72rem; overflow:hidden;   /* 2-line gate: a 3rd line clips */
+  }
+  p.lead{
+    position:absolute; left:64rem; top:150rem; width:1152rem;
+    font-size:14rem; line-height:20rem; color:var(--gray-1); font-weight:400;
+  }
+  p.lead .em{ color:var(--accent); font-weight:700; }
+  /* ------------------------------ diagram ------------------------------ */
+  svg.diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+  .axis      { stroke:var(--gray-1); stroke-width:1.4; fill:none; }
+  .arrow     { fill:var(--gray-1); }
+  .grid      { stroke:var(--gray-3); stroke-width:1; stroke-dasharray:3 3; fill:none; }
+  .sep       { stroke:var(--gray-3); stroke-width:1; stroke-dasharray:4 4; fill:none; }
+  .bandline  { stroke:var(--gray-3); stroke-width:1.2; fill:none; }
+  .bandarrow { fill:var(--gray-3); }
+  .band-cap  { font:700 11px var(--font-display); fill:var(--gray-2); letter-spacing:.2em; }
+  .band-cap.now{ fill:var(--gray-1); }
+  .ax-lab    { font:10px var(--font-body); fill:var(--gray-2); }
+  .ax-lab.now{ font-weight:700; fill:var(--ink); }
+  .ax-title  { font:700 10.5px var(--font-body); fill:var(--gray-2); letter-spacing:.16em; }
+  .tick      { stroke:var(--gray-2); stroke-width:1; }
+  .nowmark   { fill:var(--gray-1); }
+  /* curve series */
+  .curve     { fill:none; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; }
+  .c1        { stroke:var(--accent); }
+  .c2        { stroke:var(--accent-mid); }
+  .c3        { stroke:var(--gray-2); stroke-dasharray:6 4; }
+  .dot1      { fill:var(--accent); }
+  .dot2      { fill:var(--accent-mid); }
+  .dot3      { fill:var(--gray-2); }
+  .lab1      { font:700 10.5px var(--font-display); fill:var(--accent); letter-spacing:.16em; }
+  .lab2      { font:700 10.5px var(--font-display); fill:var(--accent-mid); letter-spacing:.16em; }
+  .lab3      { font:700 10.5px var(--font-display); fill:var(--gray-2); letter-spacing:.16em; }
+  .val       { font:700 11px var(--font-body); fill:var(--ink); }
+  .cross-ring{ fill:var(--bg); stroke:var(--ink); stroke-width:1.6; }
+  .cross-lab { font:700 11px var(--font-body); fill:var(--ink); }
+  .cross-note{ font:10px var(--font-body); fill:var(--gray-note); }
+  .leader    { stroke:var(--gray-2); stroke-width:1; fill:none; }
+  /* readout table under the stage */
+  .rd-rule   { fill:var(--gray-1); }
+  .rd-rule.c2{ fill:var(--accent-mid); }
+  .rd-rule.c3{ fill:var(--gray-2); }
+  .rd-caps   { font:700 10px var(--font-display); letter-spacing:.16em; }
+  .rd-caps.c1{ fill:var(--accent); } .rd-caps.c2{ fill:var(--accent-mid); } .rd-caps.c3{ fill:var(--gray-1); }
+  .rd-name   { font:700 13px var(--font-body); fill:var(--ink); }
+  .rd-k      { font:11px var(--font-body); fill:var(--gray-note); }
+  .rd-v      { font:700 11px var(--font-body); fill:var(--ink); }
+  /* ------------------------------ footer ------------------------------ */
+  .source{
+    position:absolute; left:64rem; bottom:20rem; width:1000rem;
+    font-size:10rem; line-height:13rem; color:var(--gray-note);
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:20rem; font-size:10rem; color:var(--gray-note); }
+  .pageno b{ color:var(--ink); font-weight:700; }
+  .hairline{ position:absolute; left:64rem; right:64rem; bottom:38rem; border-top:1px solid var(--rule); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. KICKER · 2. CLAIM TITLE · 3. LEAD -->
+  <div class="kicker" data-slot="kicker"><b>4 |</b> Growth Strategy</div>
+  <h1 class="title" data-slot="title">Horizon 2 overtakes the core in FY29, but only if Horizon 1 funds it now</h1>
+  <p class="lead" data-slot="lead">Incremental revenue by horizon, EUR bn — <span class="em">Horizon 2 must reach 3.9 by FY30</span>, which only Horizon 1's declining cash flow can pay for.¹</p>
+
+  <!-- 4. THE STAGE: value × time, three horizon curves -->
+  <svg class="diagram" viewBox="0 0 1280 720" aria-label="Three growth horizons plotted as rising curves against time">
+
+    <!-- time-flow band arrow + NOW / NEW / NEXT column headers -->
+    <g id="bandflow">
+      <line class="bandline" x1="190" y1="171" x2="1200" y2="171"/>
+      <polygon class="bandarrow" points="1206,171 1194,166 1194,176"/>
+      <text class="band-cap now" x="350"  y="190" text-anchor="middle">NOW</text>
+      <text class="band-cap"     x="735"  y="190" text-anchor="middle">NEW</text>
+      <text class="band-cap"     x="1043" y="190" text-anchor="middle">NEXT</text>
+    </g>
+
+    <!-- band separators (vertical) — reflow these with the columns -->
+    <line class="sep" x1="590" y1="206" x2="590" y2="520"/>
+    <line class="sep" x1="880" y1="206" x2="880" y2="520"/>
+
+    <!-- gridlines + value axis labels (scale y = 520 − 51.667·bn) -->
+    <g id="grid">
+      <line class="grid" x1="112" y1="417" x2="1206" y2="417"/>
+      <line class="grid" x1="112" y1="315" x2="1206" y2="315"/>
+      <line class="grid" x1="112" y1="210" x2="1206" y2="210"/>
+      <text class="ax-lab" x="104" y="524" text-anchor="end">0</text>
+      <text class="ax-lab" x="104" y="421" text-anchor="end">2</text>
+      <text class="ax-lab" x="104" y="319" text-anchor="end">4</text>
+      <text class="ax-lab" x="104" y="214" text-anchor="end">6</text>
+      <text class="ax-title" x="76" y="353" transform="rotate(-90 76 353)" text-anchor="middle">INCREMENTAL REVENUE, EUR BN</text>
+    </g>
+
+    <!-- axes + time ticks -->
+    <g id="axes">
+      <line class="axis" x1="112" y1="520" x2="112" y2="186"/>
+      <polygon class="arrow" points="112,178 107,190 117,190"/>
+      <line class="axis" x1="112" y1="520" x2="1206" y2="520"/>
+      <polygon class="arrow" points="1214,520 1202,515 1202,525"/>
+      <!-- ticks: x = 155 + (FY−24)·145 ; FY26 is today (bold + caret) -->
+      <line class="tick" x1="155"  y1="520" x2="155"  y2="524"/>
+      <line class="tick" x1="300"  y1="520" x2="300"  y2="524"/>
+      <line class="tick" x1="445"  y1="520" x2="445"  y2="526"/>
+      <line class="tick" x1="590"  y1="520" x2="590"  y2="524"/>
+      <line class="tick" x1="735"  y1="520" x2="735"  y2="524"/>
+      <line class="tick" x1="880"  y1="520" x2="880"  y2="524"/>
+      <line class="tick" x1="1025" y1="520" x2="1025" y2="524"/>
+      <line class="tick" x1="1170" y1="520" x2="1170" y2="524"/>
+      <polygon class="nowmark" points="445,506 439,514 451,514"/>
+      <text class="ax-lab"     x="155"  y="538" text-anchor="middle">FY24</text>
+      <text class="ax-lab"     x="300"  y="538" text-anchor="middle">FY25</text>
+      <text class="ax-lab now" x="445"  y="538" text-anchor="middle">FY26</text>
+      <text class="ax-lab"     x="590"  y="538" text-anchor="middle">FY27</text>
+      <text class="ax-lab"     x="735"  y="538" text-anchor="middle">FY28</text>
+      <text class="ax-lab"     x="880"  y="538" text-anchor="middle">FY29</text>
+      <text class="ax-lab"     x="1025" y="538" text-anchor="middle">FY30</text>
+      <text class="ax-lab"     x="1170" y="538" text-anchor="middle">FY31</text>
+      <text class="ax-title" x="112"  y="558">TIME</text>
+      <text class="cross-note" x="1206" y="558" text-anchor="end">FY24–FY25 actual · FY26 = today · plan base case</text>
+    </g>
+
+    <!-- SERIES 1 · HORIZON 1 — the EMPHASIS curve (solid accent) -->
+    <g id="h1" data-slot="series-h1">
+      <path class="curve c1" d="M155,359 C213,359 242,344 300,344 C358,344 387,334 445,334 C503,334 532,344 590,344 C648,344 677,359 735,359 C793,359 822,386 880,386"/>
+      <circle class="dot1" cx="155"  cy="359" r="3.2"/>
+      <circle class="dot1" cx="300"  cy="344" r="3.2"/>
+      <circle class="dot1" cx="445"  cy="334" r="3.2"/>
+      <circle class="dot1" cx="590"  cy="344" r="3.2"/>
+      <circle class="dot1" cx="735"  cy="359" r="3.2"/>
+      <circle class="dot1" cx="880"  cy="386" r="3.2"/>
+      <text class="lab1" x="250" y="386">HORIZON 1</text>
+      <text class="val"  x="884" y="404">2.6</text>
+    </g>
+
+    <!-- SERIES 2 · HORIZON 2 — one lightness of accent (the overtaking curve) -->
+    <g id="h2" data-slot="series-h2">
+      <path class="curve c2" d="M155,499 C213,499 242,484 300,484 C358,484 387,463 445,463 C503,463 532,437 590,437 C648,437 677,406 735,406 C793,406 822,370 880,370 C938,370 981,318 1030,318 C1088,318 1133,292 1170,292"/>
+      <circle class="dot2" cx="155"  cy="499" r="3.2"/>
+      <circle class="dot2" cx="300"  cy="484" r="3.2"/>
+      <circle class="dot2" cx="445"  cy="463" r="3.2"/>
+      <circle class="dot2" cx="590"  cy="437" r="3.2"/>
+      <circle class="dot2" cx="735"  cy="406" r="3.2"/>
+      <circle class="dot2" cx="880"  cy="370" r="3.2"/>
+      <circle class="dot2" cx="1030" cy="318" r="3.2"/>
+      <circle class="dot2" cx="1170" cy="292" r="3.2"/>
+      <text class="lab2" x="600"  y="458">HORIZON 2</text>
+      <text class="val"  x="1174" y="286">4.4</text>
+    </g>
+
+    <!-- SERIES 3 · HORIZON 3 — grey ramp, dashed (seed stage) -->
+    <g id="h3" data-slot="series-h3">
+      <path class="curve c3" d="M445,515 C503,515 532,504 590,504 C648,504 677,489 735,489 C793,489 822,463 880,463 C938,463 981,422 1025,422 C1083,422 1128,355 1170,355"/>
+      <circle class="dot3" cx="445"  cy="515" r="3.2"/>
+      <circle class="dot3" cx="590"  cy="504" r="3.2"/>
+      <circle class="dot3" cx="735"  cy="489" r="3.2"/>
+      <circle class="dot3" cx="880"  cy="463" r="3.2"/>
+      <circle class="dot3" cx="1025" cy="422" r="3.2"/>
+      <circle class="dot3" cx="1170" cy="355" r="3.2"/>
+      <text class="lab3" x="1060" y="497">HORIZON 3</text>
+      <text class="val"  x="1166" y="347" text-anchor="end">3.2</text>
+    </g>
+
+    <!-- CROSS-OVER ANNOTATION: the claim the title makes -->
+    <g id="crossover">
+      <circle class="cross-ring" cx="893" cy="366" r="13"/>
+      <path class="leader" d="M906,358 C925,336 930,306 950,290"/>
+      <text class="cross-lab" x="956" y="286">The crossover is the plan</text>
+      <text class="cross-note" x="956" y="300">H2 passes H1 in FY29 on plan</text>
+    </g>
+
+    <!-- READOUT TABLE: one column per horizon, aligned under the stage -->
+    <g id="readout" data-slot="readout">
+      <!-- column 1 -->
+      <g class="col c1">
+        <rect class="rd-rule"     x="110" y="576" width="348" height="3"/>
+        <text class="rd-caps c1"  x="110" y="598">HORIZON 1 — NOW · 1–3 YEARS</text>
+        <text class="rd-name"     x="110" y="616">Maintain and defend the core</text>
+        <text class="rd-k" x="110" y="634">Funding share of group cash</text>
+        <text class="rd-v" x="458" y="634" text-anchor="end">45%</text>
+        <text class="rd-k" x="110" y="648">Accountable owner</text>
+        <text class="rd-v" x="458" y="648" text-anchor="end">COO + 6 GMs</text>
+        <text class="rd-k" x="110" y="662">Exit rule if it breaks</text>
+        <text class="rd-v" x="458" y="662" text-anchor="end">&lt; 5.0 $bn</text>
+      </g>
+      <!-- column 2 -->
+      <g class="col c2">
+        <rect class="rd-rule c2"  x="474" y="576" width="348" height="3"/>
+        <text class="rd-caps c2"  x="474" y="598">HORIZON 2 — NEW · 3–5 YEARS</text>
+        <text class="rd-name"     x="474" y="616">Foster emerging businesses</text>
+        <text class="rd-k" x="474" y="634">Funding share of group cash</text>
+        <text class="rd-v" x="822" y="634" text-anchor="end">38%</text>
+        <text class="rd-k" x="474" y="648">Accountable owner</text>
+        <text class="rd-v" x="822" y="648" text-anchor="end">Growth board</text>
+        <text class="rd-k" x="474" y="662">Exit rule if it breaks</text>
+        <text class="rd-v" x="822" y="662" text-anchor="end">IRR &lt; 9%</text>
+      </g>
+      <!-- column 3 -->
+      <g class="col c3">
+        <rect class="rd-rule c3"  x="838" y="576" width="348" height="3"/>
+        <text class="rd-caps c3"  x="838" y="598">HORIZON 3 — NEXT · 5+ YEARS</text>
+        <text class="rd-name"     x="838" y="616">Seed future business cases</text>
+        <text class="rd-k" x="838" y="634">Funding share of group cash</text>
+        <text class="rd-v" x="1186" y="634" text-anchor="end">17%</text>
+        <text class="rd-k" x="838" y="648">Accountable owner</text>
+        <text class="rd-v" x="1186" y="648" text-anchor="end">Ventures + CFO</text>
+        <text class="rd-k" x="838" y="662">Exit rule if it breaks</text>
+        <text class="rd-v" x="1186" y="662" text-anchor="end">No gate at 18m</text>
+      </g>
+    </g>
+  </svg>
+
+  <!-- 5. FOOTER -->
+  <div class="hairline"></div>
+  <div class="source" data-slot="source-line">Source: management accounts FY24–FY25 actual, corporate plan FY26–FY31 base case · incremental revenue by horizon, n = 6 business units<sup>1</sup> · funding shares are FY26 cash allocations, not net debt<sup>2</sup></div>
+  <div class="pageno"><b>14</b> | Growth Strategy</div>
+</div>
+</body>
+</html>

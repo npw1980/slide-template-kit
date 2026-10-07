@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>why-it-matters-opener — giant gradient interrogative title + duotone photo + numbered blocks (1280×720)</title>
+<!--
+  Evidence: "be TMT Predictions 2025" (Deloitte Belgium), deck slug
+  content_dam_assets_zone2_be_e (tmt/2025/be_tmt_predictions_2025).
+  Pages: 8 (S0056), 17 (S0065), 20 (S0068), 23 (S0071) in
+  corpus/sheets/sheet_006.jpg (S0056 = row 2, col 1) and sheet_007.jpg
+  (S0065 row 1 col 5; S0068 row 2 col 3). Catalog archetype:
+  "why-it-matters opener / numbered" with device "gradient interrogative title".
+  Palette sampled from corpus/pdfpages/_content_dam_assets_zone2_be_e_-08.png /
+  _-13.png: teal #36e0df, magenta ramp #d5379a / #b94b9f, paper #f2f2f2, black ink.
+  No review file exists for this deck; hexes are pixel-sampled, not guessed.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport
+  fit, so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+  ----------------------------------------------------------------------------
+-->
+<style>
+  :root{
+    --bg:       #F6F7F8;   /* paper — sampled dominant page field #f2f2f2 */
+    --ink:      #101214;   /* black text — the deck's title/lead colour */
+    --gray-1:   #3E4245;   /* body copy */
+    --gray-2:   #78797C;   /* kicker, footnotes, captions */
+    --rule:     #DADBDD;   /* hairlines */
+    --grad-a:   #D5379A;   /* gradient start — sampled magenta end */
+    --grad-b:   #36E0DF;   /* gradient end   — sampled teal end */
+    --block:    #B94B9F;   /* numbered-block fill — sampled purple end */
+    --duo-hi:   #36E0DF;   /* duotone photo highlight */
+    --duo-lo:   #16323B;   /* duotone photo shadow */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#101216; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    font-family:var(--font-display); -webkit-font-smoothing:antialiased;
+  }
+
+  /* 1 kicker ---------------------------------------------------------------- */
+  .kicker{
+    position:absolute; left:64rem; top:52rem; width:640rem;
+    font-size:11.5rem; font-weight:700; letter-spacing:.18rem; text-transform:uppercase;
+    color:var(--gray-2); font-family:var(--font-body);
+  }
+  /* 2 interrogative device title — gradient, fixed wording ------------------ */
+  .why{
+    position:absolute; left:64rem; top:78rem; width:600rem; height:190rem;
+    font-family:var(--font-display); font-weight:800; font-size:82rem; line-height:1.06;
+    letter-spacing:-0.75rem; text-transform:uppercase;
+    background:linear-gradient(90deg, var(--grad-a) 0%, #A76FC4 52%, var(--grad-b) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  /* 3 photo slot — duotone placeholder, bottom-left -------------------------- */
+  .photo{ position:absolute; left:64rem; top:300rem; width:560rem; height:344rem; overflow:hidden; }
+  .photo svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .photo .cap{
+    position:absolute; left:12rem; bottom:10rem; font-family:var(--font-body);
+    font-size:11rem; color:#E8FDFC; letter-spacing:.06rem; text-shadow:0 0 6px rgba(0,0,0,.55);
+  }
+  /* right column ------------------------------------------------------------- */
+  /* 4 lead — bold black claim, 2-3 lines */
+  .lead{
+    position:absolute; left:680rem; top:96rem; width:536rem;
+    font-size:19.5rem; font-weight:700; line-height:1.32; color:var(--ink);
+  }
+  /* 5 sub — gray support paragraph */
+  .sub{
+    position:absolute; left:680rem; top:204rem; width:536rem;
+    font-size:13.5rem; line-height:1.45; color:var(--gray-1); font-family:var(--font-body);
+  }
+  /* 6 blocks ×4 — numbered reasons, stacked ---------------------------------- */
+  .blocks{ position:absolute; left:680rem; top:296rem; width:536rem; }
+  .blk{ position:relative; padding-left:44rem; min-height:74rem; }
+  .blk + .blk{ margin-top:14rem; }
+  .blk .n{
+    position:absolute; left:0; top:1rem; width:28rem; height:28rem; border-radius:7rem;
+    background:linear-gradient(135deg, var(--grad-a), var(--block));
+    color:#FFFFFF; font-size:14.5rem; font-weight:800; line-height:28rem; text-align:center;
+    font-family:var(--font-display);
+  }
+  .blk .h{ font-size:13rem; font-weight:700; line-height:1.3; color:var(--ink); }
+  .blk .t{ font-size:12.5rem; line-height:1.4; color:var(--gray-1); font-family:var(--font-body); margin-top:.3rem; }
+  /* 7 footer anatomy ---------------------------------------------------------- */
+  .foot{ position:absolute; left:0; right:0; bottom:0; height:40rem; border-top:1px solid var(--rule); }
+  .source{
+    position:absolute; left:64rem; bottom:11rem; width:980rem; margin:0;
+    font-family:var(--font-body); font-size:9.5rem; line-height:1.25; color:var(--gray-2);
+  }
+  .source sup{ font-size:7.5rem; }
+  .pageno{
+    position:absolute; right:64rem; bottom:12rem; margin:0;
+    font-family:var(--font-display); font-size:10.5rem; font-weight:700; letter-spacing:.12rem;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .pageno b{ color:var(--grad-a); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 kicker -->
+  <div class="kicker">2025 Global TMT Predictions · GenAI adoption</div>
+
+  <!-- 2 fixed interrogative device (slot = line 2 only; line 1 is furniture) -->
+  <div class="why">Why does<br>it matter?</div>
+
+  <!-- 3 photo — replace the SVG fill with <img> or a CSS background-image;
+        keep the teal duotone (grayscale + duotone-lookup, not a colour photo) -->
+  <div class="photo">
+    <svg viewBox="0 0 560 344" aria-label="photo placeholder">
+      <defs>
+        <linearGradient id="duo" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#16323B"/><stop offset="1" stop-color="#36E0DF"/>
+        </linearGradient>
+      </defs>
+      <rect width="560" height="344" fill="url(#duo)"/>
+      <g fill="#0F2A32" opacity=".5">
+        <rect x="30"  y="86" width="120" height="258" rx="6"/>
+        <rect x="168" y="46" width="104" height="298" rx="6"/>
+        <rect x="286" y="118" width="128" height="226" rx="6"/>
+        <rect x="430" y="72" width="98"  height="272" rx="6"/>
+        <rect x="36"  y="150" width="94" height="14" rx="7" fill="#7FF6F5" opacity=".8"/>
+        <rect x="174" y="112" width="88" height="14" rx="7" fill="#7FF6F5" opacity=".8"/>
+        <rect x="294" y="184" width="110" height="14" rx="7" fill="#7FF6F5" opacity=".8"/>
+        <rect x="438" y="136" width="80" height="14" rx="7" fill="#7FF6F5" opacity=".8"/>
+      </g>
+    </svg>
+    <span class="cap">PHOTO — teal duotone, 16:10 (data-centre towers, field crew, device macro)</span>
+  </div>
+
+  <!-- 4 lead — the quantitative/claim sentence -->
+  <div class="lead">Electricity demand was already surging from electrification — but gen AI has likely compounded the grid constraints the power sector was already facing.</div>
+
+  <!-- 5 sub — support paragraph -->
+  <div class="sub">Hyperscalers expanding their AI footprints push sector consumption into record territory while renewables, storage and demand-side programmes compete for the same interconnection queue. The next four years decide the landing.</div>
+
+  <!-- 6 numbered blocks -->
+  <div class="blocks">
+    <div class="blk">
+      <span class="n">1</span>
+      <div class="h">Grid and interconnection:</div>
+      <div class="t">Connection queues in Flanders and Wallonia already run 4–7 years; new campuses cannot wait and will default to self-generation and backup gas.</div>
+    </div>
+    <div class="blk">
+      <span class="n">2</span>
+      <div class="h">Cooling and efficiency:</div>
+      <div class="t">Liquid-cooled AI halls cut PUE toward 1.10, but the retrofit premium only pencils for operators who consolidate workloads across sites.</div>
+    </div>
+    <div class="blk">
+      <span class="n">3</span>
+      <div class="h">Sourcing:</div>
+      <div class="t">PPAs with Belgian offshore wind and French nuclear cover roughly two-thirds of projected 2028 demand; the remainder is still scheduled on the open market.</div>
+    </div>
+    <div class="blk">
+      <span class="n">4</span>
+      <div class="h">Footprint honesty:</div>
+      <div class="t">Locational marginal pricing, not national averages, determines the real emissions of each compute hour — and therefore which products clear the disclosure gate.</div>
+    </div>
+  </div>
+
+  <!-- 7 footer -->
+  <footer class="foot">
+    <p class="source">Source: Deloitte, <i>TMT Predictions 2025 — Belgium edition</i>, ch. GenAI adoption; Elia capacity outlook, Oct 2024; Connected Consumer Survey 2024 (n=1,005).<sup>1</sup></p>
+    <p class="pageno"><b>08</b> &nbsp;|&nbsp; GenAI Adoption</p>
+  </footer>
+
+</div>
+</body>
+</html>

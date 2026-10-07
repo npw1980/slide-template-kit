@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>stat-callout-list-kpmg-rail — blue claim title + lead column + right rail of 3 stat callouts, KPMG navy/purple (1280×720)</title>
+<!--
+  Evidence: kpmg__kpmg_kpmg_our_impact_plan_2024_update_2022 (2024 update) p27 "wellbeing
+  stats page — 5 numbers" + p32 "blue title + stat callouts".
+  sw_sheets/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024_s02.jpg (p21–p30; p27 row 2,
+  col 2: blue statement title over two columns, bold inline figures with small captions).
+  Palette: reviews/kpmg__kpmg_kpmg_our_impact_plan_2024_update_2024.md §4 — brand blue
+  #00338D, purple accent #6D207E/#8E298C, white field, hairline rules.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit,
+  so every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+  ----------------------------------------------------------------------------
+-->
+<style>
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #14264B;   /* body text — deep navy, deck's dark text */
+    --accent:    #00338D;   /* KPMG brand blue: titles + stat figures */
+    --accent-2:  #6D207E;   /* KPMG purple: chip, unit/qualifier marks */
+    --gray-1:    #59595F;   /* captions, notes */
+    --gray-2:    #7A7A82;   /* kicker, footnotes, page number */
+    --rule:      #D9D9DD;   /* hairlines, rail dividers */
+    --rail-bg:   #F4F1F8;   /* rail field — very light purple tint */
+    --check:     #00338D;   /* bullet checkmarks */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#101216; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    font-family:var(--font-display);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- masthead (1px purple rail on far left, deck's chip-rail motif) ---------- */
+  .edgerail{ position:absolute; left:0; top:0; bottom:0; width:6rem; background:var(--accent-2); }
+
+  .head{ position:absolute; left:56rem; right:56rem; top:44rem; }
+  .kicker{
+    display:inline-block; font-family:var(--font-display); font-size:12rem; font-weight:700;
+    letter-spacing:.14em; text-transform:uppercase; color:#FFFFFF;
+    background:var(--accent-2); padding:5rem 12rem; border-radius:2rem;
+  }
+  h1.claim{
+    margin:16rem 0 0; font-family:var(--font-display); font-weight:500; font-size:34rem;
+    line-height:1.14; letter-spacing:-.005em; color:var(--accent);
+    max-width:1120rem;                    /* forces the 2-line gate on long titles */
+  }
+  .head .rule{ height:1px; background:var(--rule); margin-top:20rem; }
+
+  /* ---------- body: two columns ---------- */
+  .body{ position:absolute; left:56rem; right:56rem; top:206rem; bottom:66rem; display:flex; }
+
+  /* left column: lead + bullets */
+  .col-lead{ width:604rem; padding-right:36rem; }
+  .lead{
+    margin:0; font-family:var(--font-body); font-size:17.5rem; line-height:1.38; font-weight:700;
+    color:var(--ink);
+  }
+  ul.points{ margin:20rem 0 0; padding:0; list-style:none; }
+  ul.points li{
+    position:relative; margin:0 0 14rem; padding-left:24rem;
+    font-family:var(--font-body); font-size:14.5rem; line-height:1.42; color:var(--ink);
+  }
+  ul.points li::before{
+    content:"\2713"; position:absolute; left:0; top:.1em;
+    font-size:14rem; font-weight:700; color:var(--check);
+  }
+  .method{
+    position:absolute; left:56rem; bottom:96rem; width:604rem;
+    font-family:var(--font-body); font-size:11rem; line-height:1.5; color:var(--gray-1);
+    border-left:3rem solid var(--accent-2); padding-left:12rem;
+  }
+
+  /* right rail: the stat-callout list itself */
+  .rail{
+    width:560rem; background:var(--rail-bg); border:1px solid var(--rule);
+    border-radius:3rem; padding:26rem 30rem 0; box-sizing:border-box;
+  }
+  .rail-h{
+    margin:0 0 8rem; font-family:var(--font-display); font-size:11.5rem; font-weight:700;
+    letter-spacing:.16em; text-transform:uppercase; color:var(--gray-2);
+  }
+  .callout{ padding:18rem 0; border-bottom:1px solid var(--rule); }
+  .callout:first-of-type{ padding-top:12rem; }
+  .callout .fig{
+    margin:0; font-family:var(--font-display); font-weight:700; font-size:52rem; line-height:1;
+    letter-spacing:-.01em; color:var(--accent);
+  }
+  .callout .fig .unit{ font-size:26rem; font-weight:500; color:var(--accent-2); }
+  .callout .fig .sup{ font-size:22rem; vertical-align:1.1em; color:var(--gray-2); }
+  .callout .lab{
+    margin:8rem 0 0; font-family:var(--font-body); font-size:13.5rem; font-weight:700;
+    line-height:1.3; color:var(--ink);
+  }
+  .callout .note{ margin:5rem 0 0; font-family:var(--font-body); font-size:12rem; line-height:1.4; color:var(--gray-1); }
+
+  /* ---------- footer anatomy ---------- */
+  .foot{ position:absolute; left:56rem; right:56rem; bottom:28rem; }
+  .foot .rule{ height:1px; background:var(--rule); margin-bottom:10rem; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:baseline; }
+  .source{
+    font-family:var(--font-body); font-size:9.5rem; line-height:1.45; color:var(--gray-2);
+    max-width:1020rem;
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{
+    font-family:var(--font-body); font-size:10.5rem; font-weight:700; letter-spacing:.08em;
+    color:var(--gray-2); white-space:nowrap;
+  }
+  .pageno b{ color:var(--accent); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="edgerail" aria-hidden="true"></div>
+
+  <header class="head">
+    <span class="kicker">01 People</span>
+    <h1 class="claim">Wellbeing programme has scaled activity, but impact tracking has not kept pace with the promise</h1>
+    <div class="rule"></div>
+  </header>
+
+  <div class="body">
+    <div class="col-lead">
+      <p class="lead">Activity counts have grown fourfold since FY21, yet the evidence base for “wellbeing outcomes” remains survey-staffed, not outcome-measured.</p>
+      <ul class="points">
+        <li>Programme footprint expanded from <b>3,100 hours</b> delivered in FY21 to <b>12,870 hours</b> in FY23, driven by manager-led toolkits and opt-in courses across 246,000 colleagues.</li>
+        <li>Reach is broad but shallow: the global survey captures <b>1 in 3</b> employees on wellbeing priorities, and only a minority of member firms report repeat measures against a baseline.</li>
+        <li>Community programmes contributed a further <b>23.6M hours</b> of wellbeing-adjacent impact in FY23, none of which is reflected in the wellbeing reporting line.</li>
+      </ul>
+    </div>
+
+    <aside class="rail" aria-label="Key figures, wellbeing">
+      <p class="rail-h">Key figures — FY23 wellbeing</p>
+      <div class="callout">
+        <p class="fig">12,870<span class="unit"> hrs</span></p>
+        <p class="lab">Wellbeing learning delivered across member firms</p>
+        <p class="note">4.2× the FY21 total; manager-led sessions account for 71% of hours.</p>
+      </div>
+      <div class="callout">
+        <p class="fig">9,000</p>
+        <p class="lab">Participants in the global wellbeing survey</p>
+        <p class="note">One in three reports the firm’s programme has real, day-to-day impact.</p>
+      </div>
+      <div class="callout">
+        <p class="fig">63<span class="unit">%</span><span class="sup">†</span></p>
+        <p class="lab">Leaders who hold wellbeing as a standing priority</p>
+        <p class="note">Tracked quarterly on the People Analytics dashboard since FY21.</p>
+      </div>
+    </aside>
+  </div>
+
+  <p class="method">Figures are self-reported by member firms and consolidated by KPMG International; survey weights applied to headcount. FY = year ending 30 September.</p>
+
+  <footer class="foot">
+    <div class="rule"></div>
+    <div class="foot-row">
+      <p class="source">Source: KPMG International, <i>Our Impact Plan 2024 Update</i>, People pillar; Global Wellbeing Survey FY23 (n=9,000); manager-learning registry, 31 Dec 2023.<sup>1</sup></p>
+      <p class="pageno"><b>27</b> &nbsp;|&nbsp; PEOPLE</p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

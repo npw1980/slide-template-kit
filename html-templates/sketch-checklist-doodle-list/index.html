@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>sketch-checklist-doodle-list — hand-drawn figure + blue-check habit list (1280×720)</title>
+<style>
+  /* Stage scales, never reflows: 1rem = 1 stage px on the 1280x720 canvas. */
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  body{ margin:0; background:#fff; }
+  .stage{ position:absolute; inset:0; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); }
+  .page{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #1F2A65;   /* deep navy — titles, emphasis text               */
+    --accent:  #00D4C8;   /* teal brand hue (light)                          */
+    --accent-deep: #006F68; /* teal, darkened — checks ONLY (contrast-safe)  */
+    --gray-1:  #23262B;   /* near-black body text                            */
+    --gray-2:  #4A4F55;   /* secondary text                                  */
+    --gray-3:  #818990;   /* notes, dimmed item, source line                 */
+    --gray-4:  #E9ECEF;   /* neutral fill                                    */
+    --gray-5:  #F4F6F8;   /* faint panel fill                                */
+    --rule:    #C9CFD4;   /* hairlines                                       */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  .kicker{ font-family:var(--font-display); font-size:11.5px; font-weight:700;
+           letter-spacing:1.8px; fill:var(--gray-2); }
+  .title { font-family:var(--font-display); font-size:30px; font-weight:700;
+           letter-spacing:-.2px; fill:var(--ink); }
+  .title .em{ fill:var(--accent-deep); }
+
+  .item{ font-family:var(--font-body); font-size:17px; fill:var(--gray-1); }
+  .item .lead{ font-weight:700; }
+  .item.dim{ fill:var(--gray-3); }
+  .note{ font-family:var(--font-body); font-size:11px; fill:var(--gray-3); font-style:italic; }
+
+  .figure-label{ font-family:var(--font-display); font-size:10px; font-style:italic;
+                 fill:var(--gray-3); letter-spacing:.4px; }
+
+  .src{ font-family:var(--font-body); font-size:9.5px; fill:var(--gray-3); }
+  .pageno{ font-family:var(--font-body); font-size:9.5px; fill:var(--gray-3);
+           letter-spacing:1px; }
+
+  .check{ fill:none; stroke:var(--accent-deep); stroke-width:3.1px; stroke-linecap:round; stroke-linejoin:round; }
+  .open{ fill:none; stroke:var(--gray-3); stroke-width:1.8px; }
+  .doodle{ fill:none; stroke:var(--ink); stroke-width:4.4px; stroke-linecap:round; stroke-linejoin:round; }
+  .doodle.thin{ stroke-width:3px; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <svg class="page" viewBox="0 0 1280 720" role="img" aria-label="Hand-drawn stick figure beside a checklist of five habits, four checked and one open">
+    <defs>
+      <!-- One wobble filter, reused everywhere the strokes need to feel drawn. -->
+      <filter id="sk" x="-25%" y="-25%" width="150%" height="150%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="11" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="4"/>
+      </filter>
+    </defs>
+
+    <text class="kicker" x="64" y="64">THE FINAL STEP — DRAW IT, DON'T POLISH IT</text>
+    <text class="title"  x="64" y="106">Imperfection is the feature: five habits</text>
+    <text class="title"  x="64" y="146">that make rough strategy sketches <tspan class="em">land</tspan></text>
+
+    <!-- ============ FIGURE COLUMN (hand-drawn stick figure) ============ -->
+    <!-- Single group; move it by changing the translate, scale via scale(). -->
+    <g id="figure" transform="translate(0,0)">
+      <g filter="url(#sk)">
+        <!-- head: two overlapping loops, the classic double-drawn circle -->
+        <g class="doodle">
+          <ellipse cx="168" cy="196" rx="27" ry="31" transform="rotate(-4 168 196)"/>
+          <ellipse cx="168" cy="196" rx="25" ry="30" transform="rotate(5 168 196)" opacity=".8"/>
+        </g>
+        <!-- face: two eye dots + a lopsided smile -->
+        <g class="doodle thin" stroke-linecap="round">
+          <circle cx="159" cy="188" r="1.6" fill="var(--ink)" stroke="none"/>
+          <circle cx="177" cy="188" r="1.6" fill="var(--ink)" stroke="none"/>
+          <path d="M157 202 q11 13 24 -1"/>
+        </g>
+        <!-- torso + raised arms ending in mitten loops, legs ending in shoes -->
+        <g class="doodle">
+          <path d="M168 228 q5 62 -1 94"/>                                <!-- torso -->
+          <path d="M167 252 Q118 214 94 190"/>                            <!-- left arm -->
+          <path d="M94 190 q-9 -6 -12 3 q-2 9 8 9 q9 1 12 -6 z"/>         <!-- left mitten -->
+          <path d="M170 250 Q216 216 246 204"/>                           <!-- right arm -->
+          <path d="M246 204 q9 -4 11 5 q2 9 -8 9 q-9 0 -10 -8 z"/>        <!-- right mitten -->
+          <path d="M167 321 q-16 44 -26 66"/>                             <!-- left leg -->
+          <path d="M169 321 q14 40 30 58"/>                               <!-- right leg -->
+          <ellipse cx="139" cy="392" rx="12" ry="6" transform="rotate(14 139 392)"/>  <!-- left shoe -->
+          <ellipse cx="201" cy="381" rx="12" ry="6" transform="rotate(-12 201 381)"/><!-- right shoe -->
+        </g>
+      </g>
+      <text class="figure-label" x="170" y="440" text-anchor="middle">figure 1 — the plan, roughly</text>
+    </g>
+
+    <!-- ============ CHECKLIST COLUMN ============ -->
+    <!-- Each item is one <g class="row"> translated to (360, Ystart): 360=1280-116-804
+         (item text starts at x=392 = 360+32). Ystart steps by 82px: 222, 304, 386, 468, 550. -->
+    <g id="items">
+      <g class="row" transform="translate(360,222)">
+        <path class="check" filter="url(#sk)" d="M0 8 l9 9 l16 -19"/>
+        <text class="item" x="32" y="17"><tspan class="lead">Iterate first, polish last.</tspan> The drawing is</text>
+        <text class="item" x="32" y="43">a draft to critique, never the deliverable.</text>
+      </g>
+      <g class="row" transform="translate(360,304)">
+        <path class="check" filter="url(#sk)" d="M0 8 l9 9 l16 -19"/>
+        <text class="item" x="32" y="17"><tspan class="lead">Imperfection invites correction.</tspan> Audiences</text>
+        <text class="item" x="32" y="43">edit what looks unfinished and resist what looks final.</text>
+      </g>
+      <g class="row" transform="translate(360,386)">
+        <path class="check" filter="url(#sk)" d="M0 8 l9 9 l16 -19"/>
+        <text class="item" x="32" y="17"><tspan class="lead">Borrow the client's metaphors.</tspan> Stories and</text>
+        <text class="item" x="32" y="43">images from varied peers sharpen the viewpoint faster.</text>
+      </g>
+      <g class="row" transform="translate(360,468)">
+        <path class="check" filter="url(#sk)" d="M0 8 l9 9 l16 -19"/>
+        <text class="item" x="32" y="17"><tspan class="lead">Draw it so one person can redraw it.</tspan> One page,</text>
+        <text class="item" x="32" y="43">one claim, one figure your reader could sketch.</text>
+      </g>
+      <!-- The open (unchecked) row: hollow ring + dimmed text = "not started yet". -->
+      <g class="row" transform="translate(360,550)">
+        <circle class="open" cx="12" cy="12" r="10"/>
+        <text class="item dim" x="32" y="17"><tspan class="lead">Retire the deck once the sketch circulates.</tspan></text>
+        <text class="item dim" x="32" y="43">Pilot not started — this row shows the open state.</text>
+      </g>
+    </g>
+
+    <!-- ============ FOOTER ============ -->
+    <text class="src" x="64" y="700">Source: adapted from Gartner conference material, slide S0042 (2017); firm synthesis of sketch-review guidance.</text>
+    <text class="pageno" x="1216" y="700" text-anchor="end">11 | RITUALS</text>
+  </svg>
+</div>
+</body>
+</html>

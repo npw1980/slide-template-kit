@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>word-cloud-definition — concept-definition word cloud (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  word-cloud-definition  ·  family word-cloud
+  Evidence: Forvis Mazars "Strategic Planning" deck, corpus slide S0007, read
+            on corpus/sheets/sheet_001.jpg frame 7 (S0001-S0010 row-major 5col
+            x 2row, row 2 col 2); corpus/pdfpages/4890_..._St_-07.png (corpus
+            tag 4890). Catalog row catalog_1-20.csv S0007: "giant overlapping
+            words; small bullets", green/teal/purple cloud, full-width word-
+            cloud typography device. The page sells the concept "what is a
+            strategy" by surrounding 4-5 true definitional anchors with dozens
+            of misused buzzwords — size IS the argument.
+  Kit adaptation (stated, not silent): the source cloud runs 3 brand hues;
+            this build follows DESIGN_PLAYBOOK colour discipline with ONE
+            accent hue (teal) + gray ramp + one lightness of accent. No
+            review file exists for this deck, so the teal/green/gray hexes
+            below are eyeball-sampled from the contact sheet, not quoted.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length is a 1:1 stage coordinate that MANUAL.md
+  quotes (1280x720 fixed stage, uniform scale). 1 user unit == 1 stage px
+  inside the inline SVG, which spans the whole stage (position:absolute;
+  inset:0; viewBox 0 0 1280 720).
+  ----------------------------------------------------------------------------
+  DATA MODEL — THE CLOUD IS TEXT, NOT A PICTURE. Three <g> tiers, each word
+  one <text> line:
+      g#tier-anchor   5 words   76-96px  class "a"      (the definition)
+      g#tier-core     18 words  36-42px  class "c"|"c2" (supporting terms)
+      g#tier-filler   46 words  17-19px  class "f"|"f2" (the buzzword haze)
+  Each tier lists its words on baseline ROWS; a row is one y value and words
+  sit on it with text-anchor:middle. Rows never cross the title pocket
+  (x<560 & y<170) or the footer strip (y>668) — those two exclusions are the
+  ONLY geometry rules. Everything inside the cloud rect (x 64..1216,
+  y 170..668) is fair game, including overlap: overlap is the look.
+  To add/remove a word: add/remove ONE <text> line inside its tier group
+  (copy the nearest neighbour's line, change x by roughly half both words'
+  widths). Nothing else reflows — the tiers are paint layers, not a flow.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: one emphasis hue + gray ramp.
+     Teal sampled from the S0007/S0016 contact sheets (Forvis Mazars house
+     greens/teals; green-teal is the firm's real register, stated in MANUAL). */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1B1B1B;    /* title, body */
+    --accent:      #0E6B70;    /* TEAL emphasis: anchor words + pills */
+    --accent-soft: #3D9498;    /* accent one lightness up: core words */
+    --gray-1:      #6E6E6E;    /* secondary text, core words, filler hi */
+    --gray-2:      #899296;    /* filler words >=18px (3.1:1 on white) */
+    --gray-3:      #C9CDD0;    /* decorative hairline wash (no text) */
+    --rule:        #D9DCDC;    /* footer rule */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+  }
+  /* ---- header slots ---- */
+  .kicker{
+    position:absolute; left:64rem; top:48rem;
+    font-size:12rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gray-1); font-family:var(--font-display);
+  }
+  .title{
+    position:absolute; left:64rem; top:74rem; width:640rem;
+    font-size:30rem; line-height:1.15; font-weight:700;
+    font-family:var(--font-display); color:var(--ink);
+  }
+  /* ---- cloud: one SVG layer over the stage, words are text nodes ---- */
+  svg.cloud{ position:absolute; inset:0; width:100%; height:100%; }
+  svg.cloud text{ font-family:var(--font-display); text-anchor:middle; dominant-baseline:alphabetic; }
+  .a  { font-size:96px;  font-weight:700; fill:var(--accent);      fill-opacity:.92; }
+  .a2 { font-size:80px;  font-weight:700; fill:var(--accent);      fill-opacity:.92; }
+  .a3 { font-size:88px;  font-weight:700; fill:var(--accent);      fill-opacity:.92; }
+  .c  { font-size:40px;  font-weight:700; fill:var(--accent-soft); fill-opacity:.85; }
+  .c2 { font-size:38px;  font-weight:400; fill:var(--gray-1);      fill-opacity:.9;  }
+  .f  { font-size:17px;  font-weight:400; fill:var(--gray-1); }
+  .f2 { font-size:19px;  font-weight:400; fill:var(--gray-2); }
+  /* ---- footer anatomy ---- */
+  .footrule{ position:absolute; left:64rem; right:64rem; top:678rem; height:.1rem; background:var(--rule); }
+  .footnote{
+    position:absolute; left:64rem; right:64rem; top:656rem;
+    font-size:10.5rem; line-height:1.45; color:var(--gray-1);
+  }
+  .source{
+    position:absolute; left:64rem; bottom:18rem;
+    font-size:10.5rem; color:var(--gray-1);
+  }
+  .runhead{
+    position:absolute; right:64rem; bottom:18rem;
+    font-size:11rem; letter-spacing:.10em; color:var(--gray-1);
+    font-family:var(--font-display);
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker">Strategy, defined</div>
+  <div class="title">Strategy is a set of choices about what not to do &mdash; not a wish list</div>
+
+  <!-- ===================== THE CLOUD =====================
+       Three tier groups. Word format: <text class="?" x="center" y="baseline">word</text>
+       Keep out of: title pocket (x<560 AND y<170) and footer strip (y>668). -->
+
+  <!-- TIER 1 — filler haze (behind). Rows y = 195, 234, 275, 315, 355,
+       415, 455, 500, 540, 580, 645. class f (17px) / f2 (19px). -->
+  <svg class="cloud" viewBox="0 0 1280 720" role="img" aria-label="Word cloud of strategy vocabulary">
+    <g id="tier-filler">
+      <text class="f"  x="150"  y="195">goals</text>
+      <text class="f"  x="330"  y="195">objectives</text>
+      <text class="f"  x="495"  y="195">planning</text>
+      <text class="f"  x="650"  y="195">ambition</text>
+      <text class="f"  x="790"  y="195">mission</text>
+      <text class="f"  x="940"  y="195">benchmark</text>
+      <text class="f"  x="1105" y="195">engagement</text>
+
+      <text class="f2" x="130"  y="234">aspiration</text>
+      <text class="f2" x="270"  y="234">north star</text>
+      <text class="f2" x="385"  y="234">OKR</text>
+      <text class="f2" x="465"  y="234">vision</text>
+      <text class="f2" x="555"  y="234">pivot</text>
+      <text class="f2" x="650"  y="234">synergy</text>
+      <text class="f2" x="745"  y="234">leverage</text>
+      <text class="f2" x="875"  y="234">disruption</text>
+      <text class="f2" x="1010" y="234">innovation</text>
+      <text class="f2" x="1140" y="234">growth</text>
+
+      <text class="f"  x="115"  y="275">deck</text>
+      <text class="f"  x="190"  y="275">KPI</text>
+      <text class="f"  x="275"  y="275">matrix</text>
+      <text class="f"  x="390"  y="275">framework</text>
+      <text class="f"  x="520"  y="275">governance</text>
+      <text class="f"  x="645"  y="275">roadmap</text>
+      <text class="f"  x="770"  y="275">portfolio</text>
+      <text class="f"  x="915"  y="275">stakeholder</text>
+      <text class="f"  x="1085" y="275">five-year plan</text>
+      <text class="f"  x="1210" y="275">operating model</text>
+
+      <text class="f2" x="110"  y="315">governance</text>
+      <text class="f2" x="310"  y="315">pivot</text>
+      <text class="f2" x="620"  y="315">best practice</text>
+      <text class="f2" x="815"  y="315">positioning</text>
+      <text class="f2" x="960"  y="315">cadence</text>
+      <text class="f2" x="1140" y="315">maturity model</text>
+
+      <text class="f"  x="115"  y="355">initiative</text>
+      <text class="f"  x="700"  y="355">framework</text>
+      <text class="f"  x="845"  y="355">cadence</text>
+      <text class="f"  x="1150" y="355">strategy note</text>
+
+      <text class="f"  x="110"  y="415">playbook</text>
+      <text class="f"  x="640"  y="415">intent</text>
+      <text class="f"  x="760"  y="415">value</text>
+      <text class="f"  x="1150" y="415">north star</text>
+
+      <text class="f2" x="130"  y="455">share gains</text>
+      <text class="f2" x="310"  y="455">acquisitions</text>
+      <text class="f2" x="1050" y="455">divestitures</text>
+      <text class="f2" x="1210" y="455">adjacency</text>
+
+      <text class="f"  x="115"  y="500">offsite</text>
+      <text class="f"  x="250"  y="500">synergy</text>
+      <text class="f"  x="1140" y="500">growth targets</text>
+
+      <text class="f2" x="150"  y="540">budget cycle</text>
+      <text class="f2" x="700"  y="540">alignment</text>
+      <text class="f2" x="1050" y="540">ten-year plan</text>
+
+      <text class="f"  x="110"  y="580">deck</text>
+      <text class="f"  x="700"  y="580">purpose</text>
+      <text class="f"  x="1080" y="580">road map</text>
+
+      <text class="f"  x="150"  y="645">transformation</text>
+      <text class="f"  x="380"  y="645">stakeholder</text>
+      <text class="f"  x="560"  y="645">five-year plan</text>
+      <text class="f"  x="780"  y="645">disruption</text>
+      <text class="f"  x="985"  y="645">innovation</text>
+      <text class="f"  x="1160" y="645">engagement</text>
+    </g>
+
+    <!-- TIER 2 — core supporting terms (over fillers). Rows: 215, 250, 605.
+         class c (accent-soft, bold) / c2 (gray-1). -->
+    <g id="tier-core">
+      <text class="c"  x="155"  y="215">deliberate</text>
+      <text class="c"  x="310"  y="215">markets</text>
+      <text class="c"  x="500"  y="215">capability</text>
+      <text class="c"  x="690"  y="215">priorities</text>
+      <text class="c"  x="880"  y="215">resources</text>
+      <text class="c"  x="1080" y="215">distinctive</text>
+
+      <text class="c2" x="175"  y="250">aligned</text>
+      <text class="c2" x="360"  y="250">coherent</text>
+      <text class="c2" x="545"  y="250">focus</text>
+      <text class="c2" x="735"  y="250">boundaries</text>
+      <text class="c2" x="955"  y="250">consequences</text>
+      <text class="c2" x="1155" y="250">bet</text>
+
+      <text class="c2" x="150"  y="605">outcomes</text>
+      <text class="c2" x="350"  y="605">clarity</text>
+      <text class="c"  x="550"  y="605">ownership</text>
+      <text class="c"  x="760"  y="605">winning</text>
+      <text class="c"  x="915"  y="605">risk</text>
+      <text class="c2" x="1100" y="605">investment</text>
+    </g>
+
+    <!-- TIER 3 — the five anchor words (the definition itself), on top.
+         class a / a2 / a3 set the size ladder 96 / 88 / 80. -->
+    <g id="tier-anchor">
+      <text class="a"  x="400" y="395">choices</text>
+      <text class="a3" x="845" y="300">direction</text>
+      <text class="a2" x="700" y="498">commitment</text>
+      <text class="a2" x="1050" y="372">trade-offs</text>
+      <text class="a3" x="470" y="565">position</text>
+    </g>
+  </svg>
+  <!-- =================== /THE CLOUD =================== -->
+
+  <div class="footnote">&sup1; In this deck, strategy = an explicit, coherent set of deliberate choices about where to compete and how to win.</div>
+  <div class="footrule"></div>
+  <div class="source">Source: Forvis Mazars strategic-planning mandate set, 2019&ndash;2024; internal analysis <sup>1</sup></div>
+  <div class="runhead">4 | DEFINITIONS</div>
+
+</div>
+</body>
+</html>

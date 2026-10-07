@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>issue-tree-answers — question tree with answer panels (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  issue-tree-answers  ·  family issue-tree
+  Evidence (see MANUAL.md -> SOURCE):
+    umbrex__umbrex_umbrex_patterns S1752 "Template — Hypothesis Tree" —
+      2-level scaffold read in corpus/sheets/sheet_176.jpg: navy root, two
+      cornflower mid boxes, grey side-leaf boxes on elbow connectors.
+    Here each side-leaf is widened into an answer panel (stat + claim +
+    status), so the tree doubles as the "what we found" register.
+  ----------------------------------------------------------------------------
+  NODE / LINK ANATOMY (resizable — see MANUAL FILL):
+    Branch centre y and panel centre y are IDENTICAL (a panel is bolted to
+    its branch). Each row = 1 branch <g> + 1 panel <g> + 2 <path>s; copy all
+    four pieces and set the row centre. Row centres run on one pitch:
+    centre(i) = 170 + i x (380 / (n-1)).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. 1rem == 1 STAGE PIXEL at the current viewport fit.
+  The SVG overlay maps 0 0 1280 720 -> stage, so SVG units == stage px.
+  SELF-CONTAINED: inline CSS + inline SVG, no webfonts, no requests, no JS.
+  ============================================================================
+-->
+<style>
+  :root{
+    /* Palette anchors: reviews/umbrex_patterns.md — navy #1F2A65, teal #00D4C8. */
+    --bg:      #FFFFFF;
+    --ink:     #1F2A65;   /* deep navy — root, numerals, claim emphasis     */
+    --accent:  #00D4C8;   /* teal — marks the branch the recommendation rests on */
+    --gray-1:  #23262B;
+    --gray-2:  #4A4F55;   /* body text on examined panels                   */
+    --gray-3:  #818990;   /* notes, dimmed text, source line                 */
+    --gray-4:  #E9ECEF;   /* neutral fill: answered chips                    */
+    --gray-5:  #F4F6F8;   /* panel / dim fill                                */
+    --rule:    #C9CFD4;
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#101524;                    /* studio backdrop, not the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); }
+  .tree{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem;
+           font:600 12rem/1 var(--font-display); letter-spacing:.18rem;
+           text-transform:uppercase; color:var(--gray-2); }
+  .kicker .n{ color:var(--accent); font-weight:700; }
+  .kicker .dim{ color:var(--gray-3); letter-spacing:.12rem; }
+
+  h1.title{ position:absolute; left:64rem; top:58rem; width:1152rem;
+            font:700 28rem/38rem var(--font-display); color:var(--ink);
+            letter-spacing:-.2rem; }
+  h1.title sup{ font-size:13rem; color:var(--gray-2); }
+
+  .lead{ position:absolute; left:64rem; top:138rem; width:700rem;
+         font:700 13rem/16.5rem var(--font-body); color:var(--gray-1); }
+  .lead::after{ content:""; display:block; width:56rem; height:2rem;
+                background:var(--accent); margin-top:8rem; }
+
+  .legend{ position:absolute; left:64rem; bottom:34rem; width:1050rem;
+           font:9.5rem/1.5 var(--font-body); color:var(--gray-3); }
+  .legend b{ color:var(--gray-2); font-weight:700; }
+  .sw{ display:inline-block; width:9rem; height:9rem; border-radius:50%;
+       vertical-align:-.05rem; margin:0 .3rem 0 .7rem; }
+  .sw.ans{ background:var(--gray-3); }
+  .sw.lag{ background:var(--accent); }
+  .sw.set{ background:#fff; border:1px solid var(--rule); }
+
+  .source{ position:absolute; left:64rem; bottom:14rem; max-width:860rem;
+           font:10rem/1.35 var(--font-body); color:var(--gray-3); }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:14rem;
+           font:700 10rem/1.35 var(--font-body); color:var(--gray-2);
+           letter-spacing:.1rem; }
+
+  .node text{ font-family:var(--font-body); }
+  .node-label{ font-size:9rem; font-weight:700; letter-spacing:.14rem; }
+  .node-q{ font-size:12.5rem; font-weight:700; }
+  .sub-q{ font-size:11.5rem; font-weight:700; }
+  .sub-note{ font-size:9rem; }
+  .panel-head{ font-size:8.5rem; font-weight:700; letter-spacing:.13rem; }
+  .panel-stat{ font-size:23rem; font-weight:700; }
+  .panel-claim{ font-size:10rem; }
+  .chip{ font-size:8.5rem; font-weight:700; letter-spacing:.1rem; }
+  .link{ fill:none; stroke:var(--rule); stroke-width:1.5rem; }
+  .link.focus{ stroke:var(--accent); stroke-width:2.2rem; }
+  .dim{ opacity:.78; }
+  .fn{ font-size:7rem; baseline-shift:super; fill:var(--accent); }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Question tree with answer panels">
+
+  <header>
+    <p class="kicker"><span class="n">04</span><span class="dim"> | Diagnostics — hypothesis status</span></p>
+    <h1 class="title">All three answers point to cost, not price<sup>1</sup> — the turnaround basis is logistics</h1>
+    <p class="lead">Answered states per branch</p>
+  </header>
+
+  <!-- =============== THE DIAGRAM ===============
+       Row centres: 170 / 360 / 550  (pitch 190, n=3).
+       A row = branch node + answer panel share ONE centre line.
+       ============================================ -->
+  <svg class="tree" viewBox="0 0 1280 720" role="img"
+       aria-label="Question tree: key question, three sub-questions, three answer panels">
+
+    <!-- root -> branches -->
+    <g id="links-root">
+      <path class="link"       d="M300 360 H356 V170 H430"/>
+      <path class="link focus" d="M300 360 H356 V360 H430"/>
+      <path class="link"       d="M300 360 H356 V550 H430"/>
+    </g>
+    <!-- branch -> panel (single straight segment, y = row centre) -->
+    <path class="link"       d="M680 170 H786"/>
+    <path class="link focus" d="M680 360 H786"/>
+    <path class="link"       d="M680 550 H786"/>
+
+    <!-- root question (navy, centred on the middle row) -->
+    <g class="node" id="node-root" transform="translate(64,304)">
+      <rect x="0" y="0" width="236" height="112" rx="6" fill="var(--ink)"/>
+      <text class="node-label" x="16" y="24" fill="#A8B0E8">KEY QUESTION</text>
+      <text class="node-q" x="16" y="50" fill="#fff">
+        <tspan x="16">Where does the</tspan>
+        <tspan x="16" dy="18">350 bps margin</tspan>
+        <tspan x="16" dy="18">erosion sit?</tspan>
+      </text>
+    </g>
+
+    <!-- ---- ROW 1: question + answered panel ---- -->
+    <g class="node" id="node-q1" transform="translate(430,132)">
+
+      <rect x="0" y="0" width="250" height="76" rx="6" fill="#fff" stroke="var(--rule)"/>
+<circle cx="0" cy="38" r="11.5" fill="var(--gray-3)"/>
+      <text class="sub-q-num" x="0" y="41.5" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">1</text>
+            <text class="sub-q" x="24" y="36" fill="var(--ink)">Is price giving margin away?</text>
+      <text class="sub-note" x="24" y="56" fill="var(--gray-3)">list price, promo, own-brand mix</text>
+    </g>
+    <g class="node" id="panel-1" transform="translate(786,118)">
+      <rect x="0" y="0" width="430" height="104" rx="6" fill="var(--gray-5)" stroke="var(--rule)"/>
+      <text class="panel-head" x="16" y="18" fill="var(--gray-3)">WHAT WE FOUND — 1</text>
+      <rect x="336" y="6" width="78" height="16" rx="8" fill="var(--gray-4)"/>
+      <text class="chip" x="375" y="17" text-anchor="middle" fill="var(--gray-2)">ANSWERED</text>
+      <text class="panel-stat" x="16" y="48" fill="var(--ink)">−110 bps</text>
+      <text class="panel-claim" x="116" y="44" fill="var(--gray-2)">
+        <tspan x="116">Private-label mix drives two-thirds of</tspan>
+        <tspan x="116" dy="14">the price gap; accepted as a driver.</tspan>
+      </text>
+    </g>
+
+    <!-- ---- ROW 2: question + focus panel (largest answer) ---- -->
+    <g class="node" id="node-q2" transform="translate(430,322)">
+
+      <rect x="0" y="0" width="250" height="76" rx="6" fill="#fff" stroke="var(--accent)" stroke-width="2.5"/>
+<circle cx="0" cy="38" r="11.5" fill="var(--accent)"/>
+      <text x="0" y="41.5" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">2</text>
+            <text class="sub-q" x="24" y="36" fill="var(--ink)">Are unit costs breaking?</text>
+      <text class="sub-note" x="24" y="56" fill="var(--gray-3)">labour, shrink, freight</text>
+    </g>
+    <g class="node" id="panel-2" transform="translate(786,308)">
+      <rect x="0" y="0" width="430" height="104" rx="6" fill="#fff" stroke="var(--accent)" stroke-width="2"/>
+      <rect x="0" y="0" width="5" height="104" rx="2.5" fill="var(--accent)"/>
+      <text class="panel-head" x="16" y="18" fill="var(--gray-2)">WHAT WE FOUND — 2</text>
+      <rect x="318" y="6" width="96" height="16" rx="8" fill="var(--accent)"/>
+      <text class="chip" x="366" y="17" text-anchor="middle" fill="var(--ink)">LARGEST</text>
+      <text class="panel-stat" x="16" y="48" fill="var(--ink)">−160 bps</text>
+      <text class="panel-claim" x="116" y="44" fill="var(--gray-1)">
+        <tspan x="116">Labour + logistics outpace price in every</tspan>
+        <tspan x="116" dy="14">of the 212 stores sampled — recommendation basis.</tspan>
+      </text>
+    </g>
+
+    <!-- ---- ROW 3: question + set-aside panel (dimmed) ---- -->
+    <g class="node dim" id="node-q3" transform="translate(430,512)">
+
+      <rect x="0" y="0" width="250" height="76" rx="6" fill="#fff" stroke="var(--rule)" stroke-dasharray="4 3"/>
+<circle cx="0" cy="38" r="11.5" fill="var(--gray-3)"/>
+      <text x="0" y="41.5" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">3</text>
+            <text class="sub-q" x="24" y="36" fill="var(--gray-2)">Is basket mix shifting?</text>
+      <text class="sub-note" x="24" y="56" fill="var(--gray-3)">category weight, traffic mix</text>
+    </g>
+    <g class="node dim" id="panel-3" transform="translate(786,498)">
+      <rect x="0" y="0" width="430" height="104" rx="6" fill="var(--gray-5)" stroke="var(--rule)" stroke-dasharray="4 3"/>
+      <text class="panel-head" x="16" y="18" fill="var(--gray-3)">WHAT WE FOUND — 3</text>
+      <rect x="316" y="6" width="98" height="16" rx="8" fill="#fff" stroke="var(--rule)"/>
+      <text class="chip" x="365" y="17" text-anchor="middle" fill="var(--gray-3)">SET ASIDE</text>
+      <text class="panel-stat" x="16" y="48" fill="var(--gray-2)">−10 bps</text>
+      <text class="panel-claim" x="116" y="44" fill="var(--gray-3)">
+        <tspan x="116">Confirmed real but immaterial — branch</tspan>
+        <tspan x="116" dy="14">closed here, not carried into the fix.</tspan>
+      </text>
+    </g>
+  </svg>
+
+  <footer>
+    <p class="legend"><span class="sw ans"></span><b>ANSWERED</b> concluded &nbsp;<span class="sw lag"></span><b>LARGEST</b> where the recommendation lands &nbsp;<span class="sw set"></span><b>SET ASIDE</b> examined, not carried</p>
+    <p class="source">Source: NorthCo P&amp;L model FY25<sup>1</sup> — EBITDA bridge Q1–Q3 vs LY; 212-store operations sample<sup>2</sup></p>
+    <p class="pageno">1 | Diagnostics</p>
+  </footer>
+</main>
+</body>
+</html>

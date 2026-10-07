@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>framework-named-option-scorecard — decision scorecard table (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  framework-named-option-scorecard  ·  family framework-named
+  Evidence (see MANUAL.md -> SOURCE):
+    Deloitte "Town of Tillsonburg IT Strategic Review" p15 — option-comparison
+      table Option | Risk | Benefits | Cost | Decision, navy header band,
+      semantic traffic-light rating cells, bold option leads. The deck's
+      "strongest single device" per reviews/deloitte__..._upd.md §devices #4.
+      Image: sw_sheets/deloitte__deloitte_town_of_tillsonburg_it_strategic_
+      review_council_upd_s01.jpg (floor(15/10)=1), row 1 col 5.
+    PwC Annual Report 2017-18 p26 — scorecard-table discipline: dense 8-9pt
+      sans, bold actual/target figures, red/white zebra, verdict column.
+      Image: sw_sheets/pwc_strategy__pwc_pwc_annual_report_2018_s02.jpg
+      (floor(25/10)=2), row 1 col 5 = p25 (offset — p26 lands one cell later).
+  ----------------------------------------------------------------------------
+  This is a REAL table (semantic HTML <table>), not SmartArt. Zebra rows,
+  hairline rules, and a rating ramp encoded as GRAYS (light/medium/dark) so
+  the palette stays "one accent + grays": the single accent is reserved for
+  the recommended row's verdict. SCALING: zero JS, 1rem = 1 stage px.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: --accent emphasis (one hue only), --ink,
+     --gray-* ramp, --rule hairlines, --bg ground. Rating ramp is ENCODED
+     in grays — dark = high risk/cost — not in traffic-light hues; the
+     deck's RAG device is reproduced semantically, one hue cheaper.
+     Measured contrast: white pill text on --gray-2 8.6:1; ink on ramp
+     fills >=8:1; accent verdict text on white 6.3:1.
+     ================================================================= */
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #051C2C;   /* titles, header band                    */
+    --accent:  #2251FF;   /* THE emphasis color — recommended only   */
+    --gray-1:  #2D2D2D;   /* cell body text                          */
+    --gray-2:  #464646;   /* dark ramp step = HIGH rating fill       */
+    --gray-3:  #7D7D7D;   /* source line                             */
+    --gray-4:  #F1F3F5;   /* light ramp step = LOW rating fill       */
+    --gray-5:  #C9CFD4;   /* mid ramp step = MODERATE fill / rules   */
+    --gray-6:  #FAFBFC;   /* zebra fill                              */
+    --rule:    #DEDEDE;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ background:#3A3F44; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; margin:auto;
+    background:var(--bg); overflow:hidden;
+    font-family:"Helvetica Neue", Arial, Calibri, sans-serif;
+  }
+  .kicker{
+    position:absolute; left:64rem; top:36rem;
+    font-size:12rem; font-weight:700; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .kicker b{ color:var(--accent); }
+  h1.title{
+    position:absolute; left:64rem; top:58rem; width:1152rem;
+    font-size:30rem; line-height:38rem; font-weight:700; color:var(--ink);
+    letter-spacing:-.01em;
+  }
+  .lead{
+    position:absolute; left:64rem; top:106rem; width:1152rem;
+    font-size:13rem; line-height:18rem; font-weight:700; color:var(--gray-1);
+  }
+  .lead sup{ font-size:9rem; color:var(--gray-2); }
+
+  /* ---------------- the scorecard table ---------------- */
+  table.score{
+    position:absolute; left:64rem; top:158rem; width:1152rem;
+    border-collapse:collapse; table-layout:fixed;
+  }
+  table.score col.c-opt{ width:300rem; }
+  table.score col.c-risk{ width:104rem; }
+  table.score col.c-ben{ width:302rem; }
+  table.score col.c-cost{ width:288rem; }
+  table.score col.c-dec{ width:158rem; }
+  table.score thead th{
+    background:var(--ink); color:#FFFFFF; text-align:left;
+    font-size:11rem; font-weight:700; letter-spacing:.10em; text-transform:uppercase;
+    padding:10rem 14rem; border:0;
+  }
+  table.score tbody td{
+    padding:12rem 14rem; border-bottom:1px solid var(--rule);
+    vertical-align:top;
+  }
+  table.score tbody tr:nth-child(even) td{ background:var(--gray-6); }
+  table.score tbody tr{ height:110rem; }
+  td.dec{ border-left:1px solid var(--rule); }
+
+  /* option lead: number badge + bold lead + note */
+  .opt-lead{ font-size:12rem; font-weight:700; color:var(--ink); line-height:16rem; }
+  .opt-lead i{
+    display:inline-block; width:16rem; height:16rem; border-radius:50%;
+    border:1.4rem solid var(--gray-5); color:var(--gray-2);
+    font-style:normal; font-size:10rem; font-weight:700;
+    text-align:center; line-height:14rem; margin-right:6rem;
+  }
+  .opt-note{ font-size:10.5rem; line-height:14rem; color:var(--gray-2); margin-top:4rem; }
+
+  /* rating pill: the ramp lives in grays (light -> dark = low -> high) */
+  .pill{
+    display:inline-block; font-size:9.5rem; font-weight:700;
+    letter-spacing:.06em; padding:3rem 7rem; border-radius:3rem;
+  }
+  .pill.h{ background:var(--gray-2); color:#FFFFFF; }   /* HIGH     */
+  .pill.m{ background:var(--gray-5); color:var(--ink); } /* MODERATE */
+  .pill.l{ background:var(--gray-4); color:var(--ink); } /* LOW      */
+
+  .cell-text{ font-size:10.5rem; line-height:14.5rem; color:var(--gray-1); }
+  .dec-text{ font-size:11rem; line-height:15rem; font-weight:700; color:var(--gray-2); }
+  /* recommended row: the ONLY place the accent appears in the table */
+  tr.reco td{ border-left-color:transparent; }
+  tr.reco td.dec{ border-left:4rem solid var(--accent); }
+  tr.reco .dec-text{ color:var(--accent); }
+  td.dec .dec-fine{ display:block; font-size:9.5rem; font-weight:400;
+                    line-height:13rem; color:var(--gray-2); margin-top:4rem; }
+
+  /* ---------------- footer ---------------- */
+  .foot{
+    position:absolute; left:0; bottom:0; width:1280rem; height:56rem;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 64rem; border-top:1rem solid var(--rule);
+  }
+  .foot .src{ font-size:9.5rem; color:var(--gray-3); max-width:940rem; }
+  .foot .src sup{ font-size:7.5rem; }
+  .foot .page{ font-size:10rem; font-weight:700; letter-spacing:.08em; color:var(--gray-2); white-space:nowrap; }
+</style>
+</head>
+<body>
+<div class="stage" role="group" aria-label="Option comparison scorecard: four operating-model options with risk, benefits, cost and decision">
+
+  <p class="kicker"><b>07</b> | Options appraisal</p>
+
+  <h1 class="title">Fully in-house IT is the recommended operating model</h1>
+
+  <p class="lead">Four options scored against risk, service impact and five-year cost<sup>1</sup> — none is free, one is defensible.</p>
+
+  <!-- ================= SCORECARD ================= -->
+  <table class="score" aria-label="Operating-model option comparison">
+    <colgroup><col class="c-opt"><col class="c-risk"><col class="c-ben"><col class="c-cost"><col class="c-dec"></colgroup>
+    <thead>
+      <tr><th scope="col">Option</th><th scope="col">Risk</th><th scope="col">Benefits</th><th scope="col">Cost</th><th scope="col">Decision</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p class="opt-lead"><i>1</i>Status quo</p>
+            <p class="opt-note">Keep the shared-service relationship with the county; no formal IT function.</p></td>
+        <td><span class="pill h">High</span></td>
+        <td class="cell-text">No disruption; current staffing intact. Retains informal escalation paths that already miss service targets.</td>
+        <td class="cell-text">None on paper — absorbed as staff overtime and deferred refresh cycles.</td>
+        <td class="dec"><p class="dec-text">Not viable</p><span class="dec-fine">Fails 3 of 5 council objectives</span></td>
+      </tr>
+      <tr class="reco">
+        <td><p class="opt-lead"><i>2</i>Fully in-house IT</p>
+            <p class="opt-note">Develop a 4-person municipal IT department with direct council reporting.</p></td>
+        <td><span class="pill m">Moderate</span></td>
+        <td class="cell-text">Full control of devices, infrastructure and roadmap; clear accountability to the council and residents.</td>
+        <td class="cell-text">Hiring and training premium; $1.4M/yr fully loaded for a 4-person team.</td>
+        <td class="dec"><p class="dec-text">Recommended</p><span class="dec-fine">Phase in FY27, first 18 months</span></td>
+      </tr>
+      <tr>
+        <td><p class="opt-lead"><i>3</i>County contract + governance</p>
+            <p class="opt-note">Maintain the county relationship with a dedicated IT steering board and SLA.</p></td>
+        <td><span class="pill l">Low</span></td>
+        <td class="cell-text">Leverages county scale and negotiated licences; predictable run-rate; risk shared with the county.</td>
+        <td class="cell-text">Low incremental cost; 3-yr commitment caps local change queue and roadmap control.</td>
+        <td class="dec"><p class="dec-text">Fallback</p><span class="dec-fine">Revisit at FY30 county contract renewal</span></td>
+      </tr>
+      <tr>
+        <td><p class="opt-lead"><i>4</i>Outsource to private provider</p>
+            <p class="opt-note">Transfer all IT to a managed provider under a fixed-fee contract.</p></td>
+        <td><span class="pill h">High</span></td>
+        <td class="cell-text">Rapid adoption of leading practices; provider owns lifecycle and on-call burden.</td>
+        <td class="cell-text">Few credible vendors within region — single-source exposure; exit costs unclear.</td>
+        <td class="dec"><p class="dec-text">Not short-term</p><span class="dec-fine">No qualified vendor met RFP bar</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- ================= /SCORECARD ================= -->
+
+  <footer class="foot">
+    <p class="src">Source: capability assessment workshops, May 2026; five-year TCO model v4 (present-value basis, 3.2% discount); IT council minutes Q1–Q3 2026.<sup>1</sup></p>
+    <p class="page">07 | OPERATING MODEL</p>
+  </footer>
+</div>
+</body>
+</html>

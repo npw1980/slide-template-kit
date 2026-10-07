@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>exec-summary-ataglance-editorial-spread — executive summary, editorial spread with chapter marker + photo (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  exec-summary-ataglance-editorial-spread  ·  family exec-summary-ataglance
+  THE EDITORIAL SUMMARY PAGE: a big quiet chapter numeral with micro-caption, a
+  plain heading under a short yellow brand rule, then a two-column spread —
+  lead paragraph + photo left, justified takeaway prose right. Where the
+  findings-rail variant argues with bullets, this one argues with paragraphs,
+  each opening on a bold claim sentence. For research reports that read like a
+  publication, not a slide.
+  Evidence: EY / IIF — "Risk management in a time of transformation"
+  (ey__ey_risk_management_in_a_time_of_transformation_2024), Executive summary
+  = p4. From sw_sheets/ey__ey_risk_management_in_a_time_of_transformation_2024_s00.jpg
+  (frame 4): "a small section number '04' and micro-caption sit at the top-left,
+  the heading 'Executive summary' is set on the left with a short yellow rule, a
+  short lead paragraph and a grayscale photo ... fill the left column, and two
+  narrower justified body paragraphs occupy the right columns." The harvest's
+  "stat-callout" tag for this page was NOT observed on the page image and is
+  deliberately not reproduced (see DON'T). Palette hexes cited from
+  reviews/ey__ey_risk_management_in_a_time_of_transformation_2024.md: yellow
+  #FFE600 (brand rule only — never type), violet ramp #7B2FA6 / #4B1F7D /
+  #C8B4DC, gray #6E6E73, wash #EFEFF2.
+  Font note: EY's real faces are the EY Sans family (and the body read as a
+  small serif in the sheet, not certain). Standing in: Helvetica/Arial for the
+  display layer, Georgia for justified body — per TEMPLATE_SPEC's editorial
+  exception. State the substitute in any deck that ships this.
+  ----------------------------------------------------------------------------
+  SCALING (zero JS): html font-size = min(100vw/1280, 100vh/720), so 1rem == 1
+  stage pixel; .stage is a fixed 1280x720 canvas. Coordinates match MANUAL.md.
+  SELF-CONTAINED: inline CSS + one inline SVG for the photo placeholder and one
+  for the brand lockup. No imports, no webfonts, no img/link/script/iframe —
+  zero network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================ */
+  :root{
+    --accent:       #FFE600; /* EY brand yellow — rules/marker only, never text */
+    --violet:       #7B2FA6; /* brand violet — chapter numeral, kicker emphasis  */
+    --violet-deep:  #4B1F7D; /* deeper step, on-violet chip text if used        */
+    --violet-pale:  #C8B4DC; /* chapter numeral + hairline tint                 */
+    --wash:         #EFEFF2; /* photo field, figure block, zebra if needed      */
+    --ink:          #1A1A1A; /* heading + bold claim sentences                  */
+    --gray-1:       #3F3F46; /* justified body text                             */
+    --gray-2:       #6E6E73; /* cited gray — captions, micro-caption, footers   */
+    --rule:         #C9C9C9; /* page hairline                                   */
+    --bg:           #FFFFFF;
+    --font-display: "Helvetica Neue", Arial, sans-serif;
+    --font-body:    Georgia, "Times New Roman", serif;
+    --m-side:       88rem;
+  }
+
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#1c1822}
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .abs{position:absolute}
+
+  /* ---------------- 1 · chapter marker band ----------------------------- */
+  .chapter-num{
+    left:var(--m-side); top:60rem;
+    font-family:var(--font-display); font-size:60rem; font-weight:300;
+    letter-spacing:-2rem; line-height:1; color:var(--violet-pale);
+  }
+  .micro-caption{
+    left:var(--m-side); top:132rem; width:600rem;
+    font-family:var(--font-display); font-size:10.5rem; font-weight:700;
+    letter-spacing:.18rem; text-transform:uppercase; color:var(--gray-2);
+  }
+  .micro-caption b{color:var(--violet); font-weight:700}
+
+  /* ---------------- 2 · heading + yellow rule --------------------------- */
+  h1.title{
+    left:var(--m-side); top:164rem; width:560rem; margin:0;
+    font-family:var(--font-display); font-size:40rem; line-height:1.05;
+    font-weight:400; letter-spacing:-.6rem; color:var(--ink);
+  }
+  .rule-brand{
+    left:var(--m-side); top:234rem; width:132rem; height:5rem;
+    background:var(--accent);
+  }
+
+  /* ---------------- 3 · left column: lead + figure ---------------------- */
+  p.lead{
+    left:var(--m-side); width:520rem; top:270rem; margin:0;
+    font-size:15.5rem; line-height:1.6; color:var(--ink);
+    letter-spacing:-.05rem;
+  }
+  p.lead b{font-weight:700}
+  figure.photo{
+    position:absolute; left:var(--m-side); top:414rem; width:520rem; margin:0;
+  }
+  figure.photo svg{display:block; width:520rem; height:168rem}
+  figure.photo figcaption{
+    margin-top:8rem; font-family:var(--font-display); font-size:10rem;
+    line-height:1.45; color:var(--gray-2);
+  }
+  figure.photo figcaption b{color:var(--gray-1)}
+
+  /* ---------------- 4 · right column: justified prose ------------------- */
+  article.body{
+    position:absolute; left:680rem; width:512rem; top:270rem;
+  }
+  article.body p{
+    margin:0 0 15rem; font-size:12.75rem; line-height:1.68; color:var(--gray-1);
+    text-align:justify; hyphens:auto;
+  }
+  article.body p:last-child{margin-bottom:0}
+  article.body p b.claim{color:var(--ink); font-weight:700}
+  article.body p sup{font-size:8.5rem; color:var(--gray-2); font-weight:400}
+  article.body .pullnum{
+    font-family:var(--font-display); font-size:16rem; font-weight:700;
+    color:var(--violet); letter-spacing:-.3rem;
+  }
+
+  /* ---------------- 5 · footer ------------------------------------------ */
+  .brandmark{position:absolute; left:var(--m-side); bottom:58rem; display:flex; align-items:center; gap:10rem}
+  .brandmark svg{display:block}
+  .brandmark span{
+    font-family:var(--font-display); font-size:11.5rem; font-weight:700;
+    letter-spacing:.05rem; color:var(--gray-2);
+  }
+  .source{
+    left:var(--m-side); right:300rem; bottom:38rem;
+    font-size:9.5rem; line-height:1.4; color:var(--gray-2); font-family:var(--font-display);
+  }
+  .source sup{font-size:7.5rem}
+  .running{
+    right:var(--m-side); bottom:38rem; text-align:right;
+    font-family:var(--font-display); font-size:10rem; font-weight:700;
+    letter-spacing:.12rem; color:var(--gray-2);
+  }
+  .running b{color:var(--violet)}
+  .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+</style>
+</head>
+<body>
+<main class="stage">
+
+  <p class="abs chapter-num">04</p>
+  <p class="abs micro-caption">Executive summary&nbsp;<b>·</b>&nbsp;inaugural global survey&nbsp;<b>·</b>&nbsp;fieldwork Q1 2026</p>
+
+  <h1 class="abs title">Executive summary</h1>
+  <div class="abs rule-brand" role="presentation"></div>
+
+  <p class="abs lead">Firms that pair a strong risk core with the ability to <b>move faster than their portfolio changes</b> are outperforming peers on both volatility and growth — but only where the CRO sits inside transformation decisions, not downstream of them.</p>
+
+  <figure class="photo">
+    <svg viewBox="0 0 520 168" role="img" aria-label="Photo placeholder: risk-committee working session, grayscale">
+      <rect width="520" height="168" fill="var(--wash)"/>
+      <rect x="0" y="134" width="520" height="34" fill="#D8D8DE"/>
+      <rect x="40" y="104" width="120" height="34" rx="3" fill="#B9B9C2"/>
+      <rect x="52" y="96" width="96" height="8" rx="2" fill="#9A9AA6"/>
+      <rect x="188" y="112" width="150" height="26" rx="3" fill="#C4C4CC"/>
+      <circle cx="394" cy="80" r="30" fill="#ABABB6"/>
+      <circle cx="394" cy="70" r="13" fill="#EFEFF2"/>
+      <path d="M376 110 q18 -20 36 0 v14 h-36 z" fill="#ABABB6"/>
+      <rect x="440" y="36" width="46" height="74" rx="3" fill="#9A9AA6"/>
+      <circle cx="463" cy="50" r="4" fill="#EFEFF2"/>
+      <path d="M0 134 L520 134" stroke="#8E8E99" stroke-width="1"/>
+      <text x="260" y="28" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" letter-spacing="2" fill="#6E6E73">GRAYSCALE PHOTO — REPLACE</text>
+    </svg>
+    <figcaption><b>Figure:</b> replace with grayscale photograph, 520×168, same tonal value as the spread (caption names who/where, not what the picture looks like).</figcaption>
+  </figure>
+
+  <article class="body">
+    <p><b class="claim">Risk is no longer a single portfolio problem.</b> CROs describe their mandate as covering cyber, climate, and technology risk alongside the traditional financial book, and <span class="pullnum">5 of 10</span> of the largest emerging risks now sit outside the actuarial function entirely.<sup>1</sup></p>
+    <p><b class="claim">Capability gaps concentrate mid-stack.</b> Data quality, tooling, and specialist talent are the constraints named consistently across firms, while governance — the cheapest layer to upgrade — is nearly universally claimed and rarely demonstrated under stress.</p>
+    <p><b class="claim">Transformation is the CRO&rsquo;s agenda.</b> Firms that involve risk leadership in transformation design report faster capital release and fewer product-level surprises; where the risk function arrives late, first-year remediation costs dominate everything the initiative saves.<sup>1</sup></p>
+  </article>
+
+  <div class="abs brandmark" aria-label="Brand lockup (placeholder)">
+    <svg width="34" height="22" viewBox="0 0 34 22" role="img" aria-label="Placeholder co-brand lockup">
+      <rect x="0.5" y="0.5" width="15" height="21" fill="#FFFFFF" stroke="#C9C9C9"/>
+      <rect x="2.5" y="2.5" width="11" height="17" fill="#EFEFF2"/>
+      <rect x="18.5" y="0.5" width="15" height="21" fill="#FFFFFF" stroke="#C9C9C9"/>
+      <rect x="20.5" y="2.5" width="11" height="17" fill="#C8B4DC"/>
+    </svg>
+    <span>FIRM × PARTNER — PLACEHOLDER LOCKUP</span>
+  </div>
+
+  <p class="abs source">Source: EY | IIF survey, n=512 CROs and risk leads, insurance sector, weighted by premium volume; engagement-team analysis of 60 interviews. Footnotes continue on p.&nbsp;41.<sup>1</sup></p>
+  <p class="abs running"><b>5</b>&nbsp;|&nbsp;EXECUTIVE SUMMARY</p>
+</main>
+</body>
+</html>

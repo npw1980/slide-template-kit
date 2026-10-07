@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>case-study-three-column — green topic title + message line + 3 color-headed panels (Background/Issues/Challenges) + implication bar (1280×720)</title>
+<!--
+  Evidence: deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p43 / p67 / p68 —
+  "3-column case study (Background / Issues / Challenges)" with color-headed panels and an
+  icon rail per column. Title zone = brand-green topic label + message line carrying the claim
+  (Monitor house style). Implication bar = the deck's kicker/so-what bar device (p18: solid
+  callout, bold white label). Palette: reviews/deloitte__deloitte_accelerated_access_review_
+  uk_mapping_2015.md §Color system — Deloitte green (titles/brand), deep navy, cyan, lime-green,
+  neutral grays; color is a data dimension (who/which stage), not decoration.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit;
+  every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+  ----------------------------------------------------------------------------
+-->
+<style>
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #1A1A1A;    /* body + message line */
+    --gray-1:    #4A4A4A;    /* panel body text */
+    --gray-2:    #8A8A8A;    /* footnotes, page stamp */
+    --rule:      #D6D6D6;    /* panel hairlines */
+    --brand:     #86BC25;    /* Deloitte green — brand band (dark text on it, see MANUAL) */
+    --green-ink: #557A0E;    /* green for title text / icon strokes — clears contrast */
+    --navy:      #0E2A47;    /* structural navy — white text clears 12:1 */
+    --grayh:     #6D6E71;    /* neutral header band — white text 4.8:1 */
+    --tint:      #F5F7F2;    /* green-gray body field */
+    --accent:    #557A0E;    /* the page's emphasis (title + icon lead) */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- title zone: topic + message (claim lives here) ---------- */
+  .head{ position:absolute; left:56rem; right:56rem; top:40rem; }
+  h1.topic{
+    margin:0; font-family:var(--font-display); font-weight:700; font-size:27rem;
+    letter-spacing:-.005em; color:var(--green-ink);
+  }
+  h1.topic .lbl{ font-weight:400; }
+  p.message{
+    margin:10rem 0 0; font-size:13.5rem; line-height:1.4; color:var(--ink);
+    max-width:1080rem;                       /* gate: ≤15 words / ≤2 lines */
+  }
+
+  /* ---------- three color-headed panels ---------- */
+  .panels{
+    position:absolute; left:56rem; right:56rem; top:150rem;
+    display:flex; gap:24rem; height:452rem;
+  }
+  .panel{ flex:1 1 0; display:flex; flex-direction:column; min-width:0;
+          border:1px solid var(--rule); }
+  .panel .band{
+    height:34rem; display:flex; align-items:center; padding:0 14rem;
+    font-size:12.5rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+  }
+  .panel--navy .band { background:var(--navy);  color:#FFFFFF; }
+  .panel--green .band{ background:var(--brand); color:var(--ink); }
+  .panel--gray .band { background:var(--grayh); color:#FFFFFF; }
+  .panel .body{
+    flex:1 1 0; display:flex; flex-direction:column; gap:16rem;
+    padding:16rem 14rem 14rem; background:var(--tint);
+  }
+  .item{ display:flex; gap:10rem; align-items:flex-start; }
+  .item svg{ width:20rem; height:20rem; flex:0 0 20rem; margin-top:1rem; }
+  .item p{ margin:0; font-size:10rem; line-height:1.44; color:var(--gray-1); }
+  .item p b{ color:var(--ink); }
+  .panel--navy  svg{ color:var(--navy); }
+  .panel--green svg{ color:var(--green-ink); }
+  .panel--gray  svg{ color:var(--grayh); }
+
+  /* ---------- implication bar (so-what device) ---------- */
+  .implication{
+    position:absolute; left:56rem; right:56rem; top:620rem; height:40rem;
+    display:flex; align-items:center; gap:16rem; padding:0 16rem;
+    background:var(--navy); color:#FFFFFF;
+  }
+  .implication .tag{ font-size:10.5rem; font-weight:700; letter-spacing:.14em;
+                     text-transform:uppercase; color:#C8D8E4; flex:0 0 auto; }
+  .implication p{ margin:0; font-size:12rem; line-height:1.3; }
+  .implication b{ color:#FFFFFF; }
+
+  /* ---------- footer ---------- */
+  .footer{ position:absolute; left:56rem; right:56rem; bottom:24rem;
+           display:flex; justify-content:space-between; align-items:baseline; }
+  .footer .src{ font-size:8.5rem; color:var(--gray-2); }
+  .footer .run{ font-size:9.5rem; color:var(--gray-2); letter-spacing:.04em; }
+</style>
+</head>
+<body>
+
+<!-- inline icon library: 1.7-stroke outline icons, color inherited from the column -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 8h6M9 12h6M9 16h4"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16 10"/></g></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10L12 4l8 6"/><path d="M6 10v8M12 10v8M18 10v8M4 20h16"/></g></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></g></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L22 20H2z"/><path d="M12 10v4M12 17.5v.01"/></g></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 5h16v11H10l-4 4v-4H4z"/></g></symbol>
+    <symbol id="i-cycle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 9a8 8 0 1 0-1 6"/><path d="M19 5v4h-4"/></g></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16M5 20h14M12 6L6 9c0-1 .5-3 3-3s3 2 3 3zM12 6l6 3c0-1-.5-3-3-3s-3 2-3 3z"/></g></symbol>
+    <symbol id="i-coin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M14.5 9.5c-1-1-4-1-4 .7 0 2 4 1 4 3 0 1.7-3 1.8-4 .8"/></g></symbol>
+  </defs>
+</svg>
+
+<div class="stage">
+
+  <div class="head">
+    <h1 class="topic"><span class="lbl">Case study:</span> Pharma</h1>
+    <p class="message">Adoption of new stroke-prevention drugs stays limited despite clear clinical and cost benefits</p>
+  </div>
+
+  <div class="panels">
+    <div class="panel panel--navy">
+      <div class="band">Background</div>
+      <div class="body">
+        <div class="item"><svg><use href="#i-doc"/></svg><p>Non-Vitamin K antagonist oral anticoagulants (<b>NOACs</b>) were approved by NICE in 2011, with a 2016 update adding the first stroke-prevention option beyond warfarin.</p></div>
+        <div class="item"><svg><use href="#i-bank"/></svg><p>Guidance sits with NICE, but uptake is decided by local formularies — <b>21 systems</b> reviewed, no single gate.</p></div>
+        <div class="item"><svg><use href="#i-clock"/></svg><p>European Society of Cardiology guidance already recommends them; the gap between recommendation and practice is the story.</p></div>
+      </div>
+    </div>
+
+    <div class="panel panel--green">
+      <div class="band">Issues</div>
+      <div class="body">
+        <div class="item"><svg><use href="#i-warn"/></svg><p>Clinicians remain wary of the <b>2016 safety signal</b> and the absence of long-term stroke data beyond 36 months.</p></div>
+        <div class="item"><svg><use href="#i-chat"/></svg><p>The 90-day formulary rule delays adoption; prescribers wait for a second opinion before the first is booked.</p></div>
+        <div class="item"><svg><use href="#i-cycle"/></svg><p>NICE concluded cost-effectiveness, but primary-care budget holders price the drug <b>per patient</b>, not per pathway.</p></div>
+      </div>
+    </div>
+
+    <div class="panel panel--gray">
+      <div class="band">Challenges</div>
+      <div class="body">
+        <div class="item"><svg><use href="#i-scale"/></svg><p>Budget silos between secondary and primary care mean the party that <b>pays is not the party that benefits</b>.</p></div>
+        <div class="item"><svg><use href="#i-coin"/></svg><p>No accountability mechanism for outcomes — no registry tracks who prescribed what, and what happened after.</p></div>
+        <div class="item"><svg><use href="#i-check"/></svg><p>Transparency gap: NICE appraisals lag real-world evidence by <b>18&ndash;24 months</b>, feeding the caution.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="implication">
+    <span class="tag">Implication</span>
+    <p>Reimbursement bodies should fund an <b>outcomes registry</b> and an early-access pathway — not another HTA review.</p>
+  </div>
+
+  <div class="footer">
+    <span class="src">Source: NICE approval data and European Heart Journal submissions; stakeholder interviews, n=38. &copy; 2015 Deloitte MCS Limited.</span>
+    <span class="run">43 | CASE STUDIES</span>
+  </div>
+
+</div>
+</body>
+</html>

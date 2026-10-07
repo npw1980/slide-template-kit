@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cover-standalone-band — field cover + full-width value band (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  cover-standalone-band  ·  family cover-standalone
+  A display-only title page that splits the ground into a brand field on top
+  (title stack) and a full-width ACCENT value-band across the lower third that
+  carries the subtitle / value line, over a giant translucent section numeral.
+  Still type-only — no photo — but the composition is a two-band field, which
+  is the sibling subtype of cover-standalone-flat.
+  Evidence: KPMG Global Tech Report 2022 cover p1 — solid brand field with the
+            right/lower half blending into an accent band that lifts the value
+            line off the title; a large faint numeral / brand texture sits
+            behind the type. The lower band is where the one emphasis color
+            does real work instead of hiding in a corner chip.
+  ----------------------------------------------------------------------------
+  SCALING (zero JS): html font-size = min(100vw/1280, 100vh/720); 1rem == 1
+  stage px. .stage is a fixed 1280×720 canvas that scales uniformly with the
+  window — same geometry as a transform wrapper, no script. Every rem below
+  is a 1:1 coordinate on 1280×720 that MANUAL.md quotes.
+  SELF-CONTAINED: inline CSS + inline SVG only. No imports, no webfonts, and
+  no img / link / script / iframe element of any kind — zero network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Field hue = KPMG brand blue #00338D (quoted
+     from reviews/kpmg__kpmg_kpmg_global_tech_report_2022_2022.md), the accent
+     band is KPMG azure #00AEEF. One hue + achromes; contrast on the BAND
+     forces dark ink (azure is too light for white body text — see VERIFY). */
+  :root{
+    --bg:          #00338D;   /* brand field (upper ground)               */
+    --field-deep:  #001E3C;   /* dark ink used ON the azure band           */
+    --accent:      #00AEEF;   /* the value band + brand chips             */
+    --accent-edge: #31C6FF;   /* light edge of the band gradient          */
+    --tint:        #CFEEFB;   /* light azure tint for marks / eyebrow     */
+    --ink:         #FFFFFF;   /* display title on the field               */
+    --gray-1:      #D6E4F5;   /* secondary text on field                 */
+    --gray-2:       #A9C4E6;  /* footer run (azure-ish, ~4.9:1 on field)   */
+    --band-ink:    #001E3C;   /* text ON the azure band (high contrast)    */
+    --band-sub:    #0A3A5C;   /* secondary text on band (~7:1)             */
+    --rule:        rgba(255,255,255,.34);
+    --rule-band:   rgba(0,30,60,.22);   /* hairline inside the band        */
+
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+
+    --t-kicker: 15rem;
+    --t-title:  54rem;        /* display title, exactly 2 lines           */
+    --t-band:   22rem;        /* value line inside the band               */
+    --t-meta:   13rem;
+    --t-mark:   13rem;
+    --m-side:   64rem;
+  }
+
+  *{box-sizing:border-box}
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#0a0a0c}
+  .viewport{display:flex;align-items:center;justify-content:center;min-height:100vh}
+
+  .stage{position:relative;width:1280rem;height:720rem;background:var(--bg);
+    overflow:hidden;font-family:var(--font-body);color:var(--ink);
+    -webkit-font-smoothing:antialiased}
+
+  /* giant translucent section numeral — texture, sits BEHIND type */
+  .watermark{position:absolute;right:40rem;top:-40rem;font-family:var(--font-display);
+    font-weight:800;font-size:520rem;line-height:1;color:#ffffff;opacity:.055;
+    pointer-events:none;letter-spacing:-3rem;-webkit-user-select:none;user-select:none}
+
+  /* value band — full width across lower third */
+  .band{position:absolute;left:0;right:0;top:520rem;height:120rem;
+    background:linear-gradient(100deg,var(--accent) 0%, var(--accent-edge) 100%)}
+
+  /* brand chip + eyebrow — 64,56 */
+  .kicker{position:absolute;left:64rem;top:56rem;display:flex;align-items:center;height:20rem}
+  .kicker .chip{width:26rem;height:8rem;border-radius:1rem;background:var(--accent);flex:none}
+  .kicker .eyebrow{margin-left:12rem;font-size:var(--t-kicker);letter-spacing:.18em;
+    text-transform:uppercase;color:var(--tint);font-weight:600}
+
+  /* firm lockup — top-right */
+  .lockup{position:absolute;right:64rem;top:54rem;display:flex;align-items:center;gap:8rem;z-index:4}
+  .lockup .bars{display:flex;gap:3rem}
+  .lockup .bars i{display:block;width:4rem;height:26rem;background:var(--ink);border-radius:.5rem}
+  .lockup .bars i:nth-child(2){height:20rem}
+  .lockup .bars i:nth-child(3){height:14rem}
+  .lockup .word{font-size:15rem;font-weight:700;letter-spacing:.04em;color:var(--ink)}
+  .lockup .word sup{font-size:8rem;font-weight:400;vertical-align:super;color:var(--tint)}
+
+  /* display title — 64, 260, 2 lines (field, so white) */
+  .title{position:absolute;left:64rem;top:260rem;width:1000rem;margin:0;z-index:3;
+    font-family:var(--font-display);font-weight:700;font-size:var(--t-title);
+    line-height:1.08;letter-spacing:-0.6rem;color:var(--ink)}
+  .title em{font-style:normal;color:var(--accent-edge)}   /* tinted emphasis, same hue */
+
+  /* value line sits inside the band, left-aligned, dark ink for contrast */
+  .bandtext{position:absolute;left:64rem;right:280rem;top:556rem;z-index:5;
+    font-size:var(--t-band);line-height:1.4;color:var(--band-ink);font-weight:500}
+  .bandtext b{font-weight:800}
+  .bandtext .sup{font-size:12rem;vertical-align:super;color:var(--field-deep)}
+
+  /* band stat chip — right side of band, dark ink */
+  .bandstat{position:absolute;right:64rem;top:546rem;z-index:5;text-align:right;color:var(--band-ink)}
+  .bandstat .big{font-family:var(--font-display);font-weight:800;font-size:44rem;line-height:1;
+    font-variant-numeric:tabular-nums}
+  .bandstat .cap{font-size:12rem;letter-spacing:.02em;color:var(--band-sub);margin-top:4rem}
+
+  /* footer hairline + meta run — on the FIELD below the band, so light ink */
+  .bandrule{position:absolute;left:64rem;right:64rem;top:616rem;height:1rem;background:var(--rule-band);z-index:6}
+  .meta{position:absolute;left:64rem;top:658rem;z-index:6;display:flex;align-items:center;gap:16rem;
+    font-size:var(--t-meta);color:var(--gray-2);letter-spacing:.01em}
+  .meta .date{color:var(--ink);font-weight:700}
+  .meta .dot{width:3rem;height:3rem;border-radius:50%;background:var(--gray-2)}
+  .meta a{color:var(--tint);text-decoration:none;border-bottom:1rem solid var(--rule)}
+  .meta .home{color:var(--gray-1);font-weight:600}
+
+  /* page marker — sits on the field above the band, right */
+  .page{position:absolute;right:64rem;top:494rem;font-size:var(--t-mark);z-index:6;
+    color:var(--gray-2);font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="stage">
+
+      <div class="watermark" aria-hidden="true">1</div>
+
+      <!-- full-width accent value band -->
+      <div class="band" aria-hidden="true"></div>
+
+      <!-- 1 · brand chip + eyebrow -->
+      <div class="kicker"><span class="chip"></span><span class="eyebrow">Global Technology Report 2026</span></div>
+
+      <!-- firm lockup -->
+      <div class="lockup">
+        <span class="bars"><i></i><i></i><i></i></span>
+        <span class="word">YOURCO<sup>&reg;</sup></span>
+      </div>
+
+      <!-- 2 · display title (2-line gate) -->
+      <h1 class="title">Digital Investment Held Steady, but Governance Is the Ceiling on <em>Scale</em></h1>
+
+      <!-- 3 · value line inside the band -->
+      <p class="bandtext">Leaders report solid budgets and measurable progress, but <b>64%</b> say governance, not spend, limits scale<span class="sup">1</span> — from <b>450</b> CIO interviews across <b>12</b> markets.</p>
+
+      <!-- band stat chip -->
+      <div class="bandstat"><div class="big">64%</div><div class="cap">cite governance as the top barrier<sup>1</sup></div></div>
+
+      <!-- page marker (on field) -->
+      <div class="page">1</div>
+
+      <!-- footer hairline + meta run inside band -->
+      <div class="bandrule"></div>
+      <div class="meta">
+        <span class="date">September 2026</span><span class="dot"></span>
+        <span class="home">Global</span><span class="dot"></span>
+        <a href="#" data-replace="report url">yourco.com/techreport</a>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>

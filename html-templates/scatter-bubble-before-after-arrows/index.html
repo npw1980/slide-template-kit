@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>scatter-bubble-before-after-arrows — Before/now bubble pairs with increase arrows (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  scatter-bubble-before-after-arrows  ·  family scatter-bubble
+  Evidence: accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o
+            p13 (bubble-scatter on "enjoyment % vs avg weekly hours": category
+            legend, grey "time-saving essentials" region box, dashed callout
+            with leader, bubble-size key "1 million circle") — read from
+            sw_sheets/accenture__accenture_the_nbn_effect..._s01.jpg sheet row 1;
+            the same devices recur on p12 (paired before/now dots with
+            "(142% increase)" labels + axis break) per the deck review.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length is a 1:1 stage-pixel coordinate as quoted in
+  MANUAL.md (1280x720 fixed stage, uniform scale). Inside the inline SVG the
+  viewBox makes 1 user unit == 1 stage px; SVG font sizes are plain numbers.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;   /* body text */
+    --accent:      #7B1FF0;   /* brand violet (nbn deck) — emphasis, one series */
+    --accent-ink:  #6E00C9;   /* deep banded purple: title band, axis titles */
+    --accent-mid:  #8E24EA;   /* mid violet — callout accents */
+    --tint:        #C9A9E9;   /* one lightness of accent for secondary series */
+    --zone-fill:   #F4EFFA;   /* shaded region (gray-violet, not a new hue) */
+    --zone-st:     #B9A3D9;
+    --gray-1:      #7D7D7D;   /* secondary text + "the rest" series */
+    --gray-2:      #B8B8B8;   /* faint gridlines */
+    --gray-3:      #D9D9D9;
+    --rule:        #E3E3E3;
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#141019; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+
+  /* ---- purple claim band (the deck's signature title system) ---- */
+  .band{ position:absolute; left:0; top:0; width:1280rem; height:104rem;
+          background:linear-gradient(115deg,#7B1FF0 0%,#6E00C9 58%,#5A00B0 100%); }
+  .band h1{ position:absolute; left:64rem; top:16rem; width:1152rem;
+             font-family:var(--font-display); font-size:25rem; font-weight:700;
+             line-height:33rem; letter-spacing:-.4rem; color:#fff;
+             max-height:66rem; overflow:hidden; }          /* 2-line cap = the MBB gate */
+  .band h1 sup{ font-size:13rem; color:#D9C6F4; }
+
+  /* ---- panel subhead under the band ---- */
+  .sub-kicker{ position:absolute; left:64rem; top:118rem; width:1152rem;
+                font-size:15rem; font-weight:700; color:var(--accent-ink); }
+  .sub-kicker sup{ font-size:9rem; }
+  .sub-line{ position:absolute; left:64rem; top:139rem; width:1152rem; font-size:11.5rem;
+              color:var(--gray-1); line-height:15rem; }
+  .sub-line sup{ font-size:8rem; color:var(--accent-ink); }
+  .rule-top{ position:absolute; left:64rem; top:158rem; width:1152rem; height:1px; background:var(--rule); }
+
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+
+  /* ---- footer (SOURCE / NOTE contract + page stamp) ---- */
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:14rem;
+            display:flex; justify-content:space-between; align-items:flex-end; gap:24rem; }
+  .source{ font-size:9rem; color:var(--gray-1); line-height:12rem; max-width:1010rem; }
+  .source b{ color:var(--ink); font-weight:700; }
+  .source sup{ font-size:7rem; }
+  .pageno{ font-size:12rem; font-weight:700; color:var(--ink); white-space:nowrap; }
+  .pageno .sect{ color:var(--gray-1); font-weight:400; }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="Before versus now bubble pairs for work-related online activities, hours per week versus enjoyment share, with percentage-increase arrows and an x-axis break">
+
+  <!-- slot 1 · purple claim band with 2-line action title -->
+  <div class="band"><h1>Time spent on work services grew most for conferencing and work tools — enjoyment was unchanged</h1></div>
+
+  <!-- slot 2 · panel subhead: bold violet line + grey measurement line -->
+  <div class="sub-kicker">Work-related activities — weekly hours before vs now<sup>1</sup></div>
+  <div class="sub-line">Share of users who enjoy the activity (%); average weekly hours spent on the activity (hours); the arrow marks the hours change<sup>1</sup></div>
+  <div class="rule-top"></div>
+
+  <!-- ===================== CHART (inline SVG) =====================
+       DATA ARRAY (per activity: name, hours_before, hours_now, pct_enjoy,
+       m_before, m_now, delta). Geometry: pair = open ring (before) + solid
+       dot (now), same y; when far apart a dashed arrow connects them.
+       X is SPLIT: 120-772 = 0-9 hrs linear; 772-812 = axis break (two tick
+       marks); 812-1160 = 16-17 hrs (stretch shown for Work tools only).
+       Y: 254-544 = 0-65% enjoyment. r = 7*sqrt(millions). -->
+  <svg class="chart" viewBox="0 0 1280 720" aria-hidden="true">
+    <line x1="120" y1="521.7" x2="1160" y2="521.7" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="499.4" x2="1160" y2="499.4" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="477.1" x2="1160" y2="477.1" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="454.8" x2="1160" y2="454.8" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="432.5" x2="1160" y2="432.5" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="410.2" x2="1160" y2="410.2" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="387.8" x2="1160" y2="387.8" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="365.5" x2="1160" y2="365.5" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="343.2" x2="1160" y2="343.2" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="320.9" x2="1160" y2="320.9" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="298.6" x2="1160" y2="298.6" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="120" y1="276.3" x2="1160" y2="276.3" stroke="var(--gray-2)" stroke-opacity=".3" stroke-width="1"/>
+    <!-- axes with a break: split x -->
+    <line x1="120" y1="254" x2="120" y2="544" stroke="var(--ink)" stroke-width="1.5"/>
+    <line x1="120" y1="544" x2="772" y2="544" stroke="var(--ink)" stroke-width="1.5"/>
+    <line x1="812" y1="544" x2="1160" y2="544" stroke="var(--ink)" stroke-width="1.5"/>
+    <line x1="779" y1="539" x2="787" y2="549" stroke="var(--ink)" stroke-width="1.4"/>
+    <line x1="795" y1="539" x2="803" y2="549" stroke="var(--ink)" stroke-width="1.4"/>
+    <line x1="115" y1="544.0" x2="120" y2="544.0" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="547.5" text-anchor="end" font-size="10.5" fill="var(--gray-1)">0</text>
+    <line x1="115" y1="521.7" x2="120" y2="521.7" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="525.2" text-anchor="end" font-size="10.5" fill="var(--gray-1)">5</text>
+    <line x1="115" y1="499.4" x2="120" y2="499.4" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="502.9" text-anchor="end" font-size="10.5" fill="var(--gray-1)">10</text>
+    <line x1="115" y1="477.1" x2="120" y2="477.1" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="480.6" text-anchor="end" font-size="10.5" fill="var(--gray-1)">15</text>
+    <line x1="115" y1="454.8" x2="120" y2="454.8" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="458.3" text-anchor="end" font-size="10.5" fill="var(--gray-1)">20</text>
+    <line x1="115" y1="432.5" x2="120" y2="432.5" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="436.0" text-anchor="end" font-size="10.5" fill="var(--gray-1)">25</text>
+    <line x1="115" y1="410.2" x2="120" y2="410.2" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="413.7" text-anchor="end" font-size="10.5" fill="var(--gray-1)">30</text>
+    <line x1="115" y1="387.8" x2="120" y2="387.8" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="391.3" text-anchor="end" font-size="10.5" fill="var(--gray-1)">35</text>
+    <line x1="115" y1="365.5" x2="120" y2="365.5" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="369.0" text-anchor="end" font-size="10.5" fill="var(--gray-1)">40</text>
+    <line x1="115" y1="343.2" x2="120" y2="343.2" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="346.7" text-anchor="end" font-size="10.5" fill="var(--gray-1)">45</text>
+    <line x1="115" y1="320.9" x2="120" y2="320.9" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="324.4" text-anchor="end" font-size="10.5" fill="var(--gray-1)">50</text>
+    <line x1="115" y1="298.6" x2="120" y2="298.6" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="302.1" text-anchor="end" font-size="10.5" fill="var(--gray-1)">55</text>
+    <line x1="115" y1="276.3" x2="120" y2="276.3" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="279.8" text-anchor="end" font-size="10.5" fill="var(--gray-1)">60</text>
+    <line x1="115" y1="254.0" x2="120" y2="254.0" stroke="var(--ink)" stroke-width="1"/>
+    <text x="109" y="257.5" text-anchor="end" font-size="10.5" fill="var(--gray-1)">65</text>
+    <line x1="120.0" y1="544" x2="120.0" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="120.0" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">0</text>
+    <line x1="192.4" y1="544" x2="192.4" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="192.4" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">1</text>
+    <line x1="264.9" y1="544" x2="264.9" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="264.9" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">2</text>
+    <line x1="337.3" y1="544" x2="337.3" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="337.3" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">3</text>
+    <line x1="409.8" y1="544" x2="409.8" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="409.8" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">4</text>
+    <line x1="482.2" y1="544" x2="482.2" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="482.2" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">5</text>
+    <line x1="554.7" y1="544" x2="554.7" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="554.7" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">6</text>
+    <line x1="627.1" y1="544" x2="627.1" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="627.1" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">7</text>
+    <line x1="699.6" y1="544" x2="699.6" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="699.6" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">8</text>
+    <line x1="772.0" y1="544" x2="772.0" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="772.0" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">9</text>
+    <line x1="812" y1="544" x2="812" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="812" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">16</text>
+    <line x1="1160" y1="544" x2="1160" y2="549" stroke="var(--ink)" stroke-width="1"/>
+    <text x="1160" y="561" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">17</text>
+    <text x="1160" y="583" text-anchor="end" font-size="12.5" font-weight="700" fill="var(--accent-ink)">Avg. weekly hours spent<tspan font-size="9">1</tspan></text>
+    <text x="88" y="510" transform="rotate(-90 88 510)" text-anchor="start" font-size="12.5" font-weight="700" fill="var(--accent-ink)">who enjoy the activity, %<tspan font-size="9">1</tspan></text>
+    <!-- before/now key above plot -->
+    <circle cx="916" cy="184" r="7" fill="#fff" stroke="var(--gray-1)" stroke-width="2"/>
+    <text x="929" y="188" font-size="11" fill="var(--ink)">Before COVID-19</text>
+    <circle cx="1030" cy="184" r="7" fill="var(--gray-1)"/>
+    <text x="1043" y="188" font-size="11" fill="var(--ink)">Now</text>
+    <text x="1160" y="211" text-anchor="end" font-size="9.5" fill="var(--gray-1)">Bubble size = households naming this activity most important — open circle = 1 million<tspan font-size="7">1</tspan></text>
+    <!-- LinkedIn: short dashed arrow, +6% hours -->
+    <g data-name="LinkedIn" data-h_before="3.4" data-h_now="3.6" data-pct="26" data-m_before="1.0" data-m_now="1.1" data-delta="+6%">
+      <!-- edges only 0.2px apart: adjacent pair, no arrow (drawn arrow would have no room) -->
+      <circle cx="366.3" cy="428.0" r="7.0" fill="#FFFFFF" stroke="var(--gray-1)" stroke-width="2.4"/>
+      <circle cx="380.8" cy="428.0" r="7.3" fill="var(--gray-1)"/>
+    </g>
+    <text x="373.6" y="412.0" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">LinkedIn</text>
+    <text x="373.6" y="458.0" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">(+6% hours increase)</text>
+    <!-- Conference calls: short dashed arrow, +142% hours -->
+    <g data-name="Conference calls" data-h_before="3.1" data-h_now="7.5" data-pct="27" data-m_before="1.6" data-m_now="1.9" data-delta="+142%">
+      <circle cx="344.6" cy="423.5" r="8.9" fill="#FFFFFF" stroke="var(--gray-1)" stroke-width="2.4"/>
+      <line x1="354.5" y1="423.5" x2="652.7" y2="423.5" stroke="var(--gray-1)" stroke-width="1.3" stroke-dasharray="4 3"/>
+      <path d="M 652.7 420.1 L 644.7 423.5 L 652.7 426.9 Z" fill="var(--gray-1)"/>
+      <circle cx="663.3" cy="423.5" r="9.6" fill="var(--gray-1)"/>
+    </g>
+    <text x="503.9" y="407.5" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Conference calls</text>
+    <text x="503.9" y="453.5" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">(+142% hours increase)</text>
+    <!-- Emails: short dashed arrow, +13% hours -->
+    <g data-name="Emails" data-h_before="5.2" data-h_now="5.9" data-pct="37" data-m_before="2.6" data-m_now="2.7" data-delta="+13%">
+      <circle cx="496.7" cy="378.9" r="11.3" fill="#FFFFFF" stroke="var(--gray-1)" stroke-width="2.4"/>
+      <line x1="509.0" y1="378.9" x2="534.9" y2="378.9" stroke="var(--gray-1)" stroke-width="1.3" stroke-dasharray="4 3"/>
+      <path d="M 534.9 375.5 L 526.9 378.9 L 534.9 382.3 Z" fill="var(--gray-1)"/>
+      <circle cx="547.4" cy="378.9" r="11.5" fill="var(--gray-1)"/>
+    </g>
+    <text x="522.0" y="362.9" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Emails</text>
+    <text x="522.0" y="408.9" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">(+13% hours increase)</text>
+    <!-- Web browsing: short dashed arrow, +7% hours -->
+    <g data-name="Web browsing" data-h_before="7.0" data-h_now="7.5" data-pct="60" data-m_before="4.5" data-m_now="4.7" data-delta="+7%">
+      <circle cx="627.1" cy="276.3" r="14.8" fill="#FFFFFF" stroke="var(--gray-1)" stroke-width="2.4"/>
+      <line x1="642.9" y1="276.3" x2="647.1" y2="276.3" stroke="var(--gray-1)" stroke-width="1.3" stroke-dasharray="4 3"/>
+      <path d="M 647.1 272.9 L 639.1 276.3 L 647.1 279.7 Z" fill="var(--gray-1)"/>
+      <circle cx="663.3" cy="276.3" r="15.2" fill="var(--gray-1)"/>
+    </g>
+    <text x="645.2" y="260.3" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Web browsing</text>
+    <text x="645.2" y="306.3" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">(+7% hours increase)</text>
+    <!-- Work tools: pair straddles the axis break, +175% -->
+    <g data-name="Work tools" data-h_before="6.0" data-h_now="16.5" data-pct="28" data-m_before="1.9" data-m_now="2.0" data-delta="+175%">
+      <circle cx="554.7" cy="419.1" r="9.6" fill="#FFFFFF" stroke="var(--gray-1)" stroke-width="2.4"/>
+      <line x1="565.3" y1="419.1" x2="975.1" y2="419.1" stroke="var(--gray-1)" stroke-width="1.4" stroke-dasharray="5 4"/>
+      <path d="M 975.1 415.5 L 966.1 419.1 L 975.1 422.7 Z" fill="var(--gray-1)"/>
+      <circle cx="986.0" cy="419.1" r="9.9" fill="var(--gray-1)"/>
+    </g>
+    <text x="770.4" y="403.1" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Work tools</text>
+    <text x="770.4" y="449.1" text-anchor="middle" font-size="10.5" fill="var(--gray-1)">(+175% hours increase)</text>
+    <!-- twin lavender takeaway boxes under the chart -->
+    <rect x="64" y="612" width="560" height="60" rx="6" fill="var(--zone-fill)"/>
+    <rect x="656" y="612" width="560" height="60" rx="6" fill="var(--zone-fill)"/>
+    <text x="82" y="633" font-size="10" font-weight="700" letter-spacing="1.4" fill="var(--accent-ink)">WHERE HOURS GREW</text>
+    <text x="82" y="652" font-size="11.5" fill="var(--ink)">Conferencing +142% and work tools +175% weekly hours —<tspan x="82" dy="15">the only services where time more than doubled.</tspan></text>
+    <text x="674" y="633" font-size="10" font-weight="700" letter-spacing="1.4" fill="var(--accent-ink)">WHERE IT DIDN'T</text>
+    <text x="674" y="652" font-size="11.5" fill="var(--ink)">Email, browsing and LinkedIn moved under +15% —<tspan x="674" dy="15">habitual, already-saturated activities.</tspan></text>
+  </svg>
+
+  <!-- slot N · footer: NOTE/SOURCE contract bottom-left, page stamp bottom-right -->
+  <div class="footer">
+    <div class="source"><sup>1</sup> <b>SOURCE:</b> Consumer sentiment survey of 2,420 respondents in March 2021, Accenture analysis; baseline = pre-pandemic, now = March 2021. Shares based on respondents enjoying each activity. <b>NOTE:</b> Enjoyment and hours shares calculated among respondents who selected the activity in their “top 5 most important activities”; activities below a 5% base are excluded.</div>
+    <div class="pageno">14 <span class="sect">| SURVEY FINDINGS</span></div>
+  </div>
+
+</div>
+</body>
+</html>

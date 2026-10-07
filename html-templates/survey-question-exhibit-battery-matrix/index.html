@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>survey-question-exhibit-battery-matrix — question battery as a response matrix with bars-in-cells (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  survey-question-exhibit-battery-matrix  ·  family survey-question-exhibit
+  Evidence: accenture__accenture_2019_accenture_global_financial_services_consumer
+            p23 lower half / p34 / p55 — the review of that deck (line 37) names the
+            device "percentage matrix tables with colored column bars", and line 60
+            "Persona color legend fixed on every chart".
+            pwc_strategy__pwc_navigating_the_payments_matrix_charting_a_course_amid_ev
+            p20-p22 (read on sw_sheets/..._s02.jpg) — "Figure 8: Preparing for
+            tomorrow: the four Rs", a 3-page action matrix whose claim sits in the
+            FIGURE CAPTION above a bordered table with rows on the left, header band
+            across the top and "Source: PwC analysis" bottom-left. Review sections
+            4-5 give the caption/footnote convention and the serif/sans pairing.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current viewport
+  fit, so every length is a 1:1 stage-pixel coordinate as quoted in MANUAL.md.
+  Inside the inline SVG the viewBox makes 1 user unit equal 1 stage px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY — 6 battery items (rows) x 4 response options (columns), one row
+  object per item. Each row's four values MUST sum to 100 (single-choice intent
+  scale; see MANUAL CHART RECIPE for the multiple-response variant).
+
+    columns = ["Definitely", "Probably", "Not really", "Don't know"]   left->right
+    rows = [
+      { q:"Q12a", text:"Bundle home and auto insurance with my bank",              v:[24, 41, 29,  6], top:65, y18:51 },
+      { q:"Q12b", text:"One app for all my accounts and cards",                    v:[18, 43, 32,  7], top:61, y18:48 },
+      { q:"Q12c", text:"One provider for insurance, banking and utilities",        v:[11, 29, 53,  7], top:40, y18:35 },
+      { q:"Q12d", text:"Bundled offers that reward loyalty behaviour",             v:[15, 37, 41,  7], top:52, y18:41 },
+      { q:"Q12e", text:"Third-party apps that hold my payment data",               v:[ 6, 21, 65,  8], top:27, y18:17 },
+      { q:"Q12f", text:"Non-bank providers such as telcos or retailers for credit", v:[ 4, 17, 71,  8], top:21, y18:12 }
+    ];
+
+  GEOMETRY RULES (recompute these, don't re-guess):
+    row pitch      : 56 px; row i top edge = 228 + 56*i  (i = 0..5)
+    statement slot : x 64, two lines, baselines rowTop+16 and rowTop+34
+    response cols  : colX(j) = 456 + 164*j  (j = 0..3), cell track 156 wide
+    cell bar       : x = colX(j), y = rowTop + 22, height 6,
+                     width = v[j] * 1.58   (158 px == 100%; clamp at 158)
+    cell value     : x = colX(j), y = rowTop + 16, left-aligned, 12 px bold
+    topline        : top = v[0] + v[1]  (the pill in the right rail)
+                     circle centre (1130, rowTop+26), r 19
+    prior-wave delta: y18 = 2018 value; delta = top - y18, printed beside the pill
+    column shading : col 0 = accent, cols 1-3 = grey ramp (never a 4th hue)
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     PwC editorial system reduced to the kit's roles: ONE accent (the magenta
+     the review cites as a chart series, #E4146E / #D9105A) + grey ramp for
+     everything that is not being argued. Hexes are the review's eyeball
+     approximations from JPEG rendering, not invented by this template. */
+  :root{
+    --bg:         #FFFFFF;
+    --ink:        #1A1A1A;
+    --accent:     #D9105A;   /* col 1 bars, pill stroke — 5.0:1 on white */
+    --accent-ink: #D9105A;   /* accent text (same value, contrast-checked) */
+    --gray-1:     #6E6E6E;   /* col 2 + secondary text */
+    --gray-2:     #ABABAB;   /* col 3 */
+    --gray-3:     #D9D9D9;   /* col 4, rules, cell tracks */
+    --band:       #FAFAFA;   /* zebra band */
+    --rule:       #E4E4E4;
+    --font-display: Georgia, "Times New Roman", "Liberation Serif", serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#111214; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+
+  /* ---- title zone: kicker 34, title 62 (2-line cap), rule 146, lead 158 ---- */
+  .kicker{ position:absolute; left:64rem; top:34rem; width:1152rem; font-size:15rem;
+           color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-ink); font-weight:700; }
+  .kicker sup{ font-size:11rem; color:var(--accent-ink); }
+  .title{ position:absolute; left:64rem; top:60rem; width:1152rem; max-height:70rem; overflow:hidden;
+          font-family:var(--font-display); font-size:29rem; font-weight:700; line-height:35rem;
+          letter-spacing:-.2rem; }
+  .title em{ font-style:normal; color:var(--accent-ink); }
+  .rule-top{ position:absolute; left:64rem; top:146rem; width:1152rem; height:1rem; background:var(--ink); opacity:.85; }
+  .lead{ position:absolute; left:64rem; top:158rem; width:1152rem; font-size:16rem; font-weight:700;
+         color:var(--accent-ink); line-height:21rem; }
+  /* PwC convention: the claim-bearing FIGURE CAPTION sits above the exhibit */
+  .figure-cap{ position:absolute; left:64rem; top:184rem; width:900rem; font-family:var(--font-display);
+               font-size:14rem; color:var(--ink); }
+  .figure-cap b{ font-weight:700; }
+  .rail-head{ position:absolute; left:1100rem; top:180rem; width:116rem; font-size:10rem;
+              color:var(--gray-1); text-align:center; line-height:14rem; }
+  .header-rule{ position:absolute; left:64rem; top:212rem; width:1152rem; height:1rem; background:var(--ink); opacity:.85; }
+  .colhead{ position:absolute; top:198rem; font-size:11rem; font-weight:700; color:var(--gray-1);
+            letter-spacing:.3rem; }
+
+  svg.matrix{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .band{ fill:var(--band); }
+  .track{ fill:var(--gray-3); opacity:.35; }
+  .b1{ fill:var(--accent); }   /* Definitely */
+  .b2{ fill:var(--gray-1); }   /* Probably   */
+  .b3{ fill:var(--gray-2); }   /* Not really */
+  .b4{ fill:var(--gray-3); stroke:var(--gray-2); stroke-width:.5; }  /* Don't know */
+  .cv{ font-size:12px; font-weight:700; fill:var(--gray-1); }
+  .cv-a{ font-size:12px; font-weight:700; fill:var(--accent-ink); }
+  .q{ font-size:11px; font-weight:700; fill:var(--accent-ink); }
+  .txt{ font-size:13px; fill:var(--ink); }
+  .rowline{ stroke:var(--rule); stroke-width:1; }
+  .pill{ fill:none; stroke:var(--accent); stroke-width:1.8; }
+  .pill-tx{ font-size:11px; font-weight:700; fill:var(--accent-ink); }
+  .prior{ font-size:10px; fill:var(--gray-1); }
+  .delta{ font-size:11px; font-weight:700; fill:var(--accent-ink); }
+  .delta-flat{ font-size:11px; font-weight:700; fill:var(--gray-1); }
+
+  .base{ position:absolute; left:64rem; right:64rem; top:592rem; font-size:11rem; color:var(--gray-1); line-height:16rem; }
+  .base sup{ color:var(--accent-ink); }
+  .note{ position:absolute; left:64rem; right:64rem; top:620rem; font-size:11rem; color:var(--gray-1); line-height:16rem; }
+  .note sup{ color:var(--accent-ink); }
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:16rem; display:flex;
+           justify-content:space-between; align-items:baseline; font-size:10rem; color:var(--gray-1); }
+  .footer sup{ font-size:8rem; color:var(--accent-ink); }
+  .footer .runhead{ margin-left:22rem; }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="Matrix of six switch-intent statements against four response options, with a bar and value in every cell and a top-box plus prior-year trend in the right rail">
+
+  <!-- slot 1 · battery question, verbatim -->
+  <div class="kicker">Q12: <b>Which of the following would you consider</b> switching your financial provider for?<sup>1</sup></div>
+
+  <!-- slot 2 · claim title (<=15 words / 2 lines — the MBB gate) -->
+  <div class="title"><em>65%</em> would trade providers for a bundle — but only two services deep</div>
+
+  <div class="rule-top"></div>
+
+  <!-- slot 3 · assertive lead -->
+  <div class="lead">Depth beats breadth: extend the two-service bundle, stop selling the whole household.</div>
+
+  <!-- slot 4 · figure caption, claim-bearing, above the exhibit -->
+  <div class="figure-cap"><b>Figure 6.</b> Switch intent by use case, top-box and change since 2018</div>
+  <div class="rail-head">Top-box<br>vs. 2018</div>
+
+  <!-- column headers sit on the header rule -->
+  <div class="colhead" style="left:456rem">Definitely</div>
+  <div class="colhead" style="left:620rem">Probably</div>
+  <div class="colhead" style="left:784rem">Not really</div>
+  <div class="colhead" style="left:948rem">Don&rsquo;t know</div>
+  <div class="header-rule"></div>
+
+  <!-- ===================== MATRIX (inline SVG, 1 row = 1 <g>) =====================
+       Data array + geometry rules: file header. Row pitch 56, first row 228.
+       Cell bar width = value x 1.58 px (158 = 100%), always anchored left on
+       colX(j) so columns read as a shared 0-100 scale. -->
+  <svg class="matrix" viewBox="0 0 1280 720">
+
+    <!-- row 0 · Q12a · v [24 41 29 6] · top 65 · 2018 51 -->
+    <g transform="translate(0,228)">
+      <rect class="track" x="456" y="18" width="156" height="14"/>
+      <rect class="track" x="620" y="18" width="156" height="14"/>
+      <rect class="track" x="784" y="18" width="156" height="14"/>
+      <rect class="track" x="948" y="18" width="156" height="14"/>
+      <text class="q" x="64" y="16">Q12a</text>
+      <text class="txt" x="64" y="34">Bundle home and auto insurance with my bank</text>
+      <rect class="b1" x="456" y="22" width="37.9"  height="6"/>
+      <rect class="b2" x="620" y="22" width="64.8"  height="6"/>
+      <rect class="b3" x="784" y="22" width="45.8"  height="6"/>
+      <rect class="b4" x="948" y="22" width="9.5"   height="6"/>
+      <text class="cv-a" x="456" y="16">24%</text>
+      <text class="cv" x="620" y="16">41%</text>
+      <text class="cv" x="784" y="16">29%</text>
+      <text class="cv" x="948" y="16">6%</text>
+      <circle class="pill" cx="1130" cy="26" r="19"/>
+      <text class="pill-tx" x="1130" y="30" text-anchor="middle">65</text>
+      <text class="prior" x="1156" y="22">2018  51</text>
+      <text class="delta" x="1156" y="36">&#8593; +14</text>
+      <line class="rowline" x1="64" y1="52" x2="1216" y2="52"/>
+    </g>
+
+    <!-- row 1 · Q12b · v [18 43 32 7] · top 61 · 2018 48 -->
+    <g transform="translate(0,284)">
+      <rect class="band" x="64" y="-4" width="1152" height="54"/>
+      <rect class="track" x="456" y="18" width="156" height="14"/>
+      <rect class="track" x="620" y="18" width="156" height="14"/>
+      <rect class="track" x="784" y="18" width="156" height="14"/>
+      <rect class="track" x="948" y="18" width="156" height="14"/>
+      <text class="q" x="64" y="16">Q12b</text>
+      <text class="txt" x="64" y="34">One app for all my accounts and cards</text>
+      <rect class="b1" x="456" y="22" width="28.4" height="6"/>
+      <rect class="b2" x="620" y="22" width="68.0" height="6"/>
+      <rect class="b3" x="784" y="22" width="50.6" height="6"/>
+      <rect class="b4" x="948" y="22" width="11.1" height="6"/>
+      <text class="cv-a" x="456" y="16">18%</text>
+      <text class="cv" x="620" y="16">43%</text>
+      <text class="cv" x="784" y="16">32%</text>
+      <text class="cv" x="948" y="16">7%</text>
+      <circle class="pill" cx="1130" cy="26" r="19"/>
+      <text class="pill-tx" x="1130" y="30" text-anchor="middle">61</text>
+      <text class="prior" x="1156" y="22">2018  48</text>
+      <text class="delta" x="1156" y="36">&#8593; +13</text>
+      <line class="rowline" x1="64" y1="52" x2="1216" y2="52"/>
+    </g>
+
+    <!-- row 2 · Q12c · v [11 29 53 7] · top 40 · 2018 35 -->
+    <g transform="translate(0,340)">
+      <rect class="track" x="456" y="18" width="156" height="14"/>
+      <rect class="track" x="620" y="18" width="156" height="14"/>
+      <rect class="track" x="784" y="18" width="156" height="14"/>
+      <rect class="track" x="948" y="18" width="156" height="14"/>
+      <text class="q" x="64" y="16">Q12c</text>
+      <text class="txt" x="64" y="34">One provider for insurance, banking and utilities</text>
+      <rect class="b1" x="456" y="22" width="17.4" height="6"/>
+      <rect class="b2" x="620" y="22" width="45.8" height="6"/>
+      <rect class="b3" x="784" y="22" width="83.7" height="6"/>
+      <rect class="b4" x="948" y="22" width="11.1" height="6"/>
+      <text class="cv-a" x="456" y="16">11%</text>
+      <text class="cv" x="620" y="16">29%</text>
+      <text class="cv" x="784" y="16">53%</text>
+      <text class="cv" x="948" y="16">7%</text>
+      <circle class="pill" cx="1130" cy="26" r="19"/>
+      <text class="pill-tx" x="1130" y="30" text-anchor="middle">40</text>
+      <text class="prior" x="1156" y="22">2018  35</text>
+      <text class="delta" x="1156" y="36">&#8593; +5</text>
+      <line class="rowline" x1="64" y1="52" x2="1216" y2="52"/>
+    </g>
+
+    <!-- row 3 · Q12d · v [15 37 41 7] · top 52 · 2018 41 -->
+    <g transform="translate(0,396)">
+      <rect class="band" x="64" y="-4" width="1152" height="54"/>
+      <rect class="track" x="456" y="18" width="156" height="14"/>
+      <rect class="track" x="620" y="18" width="156" height="14"/>
+      <rect class="track" x="784" y="18" width="156" height="14"/>
+      <rect class="track" x="948" y="18" width="156" height="14"/>
+      <text class="q" x="64" y="16">Q12d</text>
+      <text class="txt" x="64" y="34">Bundled offers that reward loyalty behaviour</text>
+      <rect class="b1" x="456" y="22" width="23.7" height="6"/>
+      <rect class="b2" x="620" y="22" width="58.5" height="6"/>
+      <rect class="b3" x="784" y="22" width="64.8" height="6"/>
+      <rect class="b4" x="948" y="22" width="11.1" height="6"/>
+      <text class="cv-a" x="456" y="16">15%</text>
+      <text class="cv" x="620" y="16">37%</text>
+      <text class="cv" x="784" y="16">41%</text>
+      <text class="cv" x="948" y="16">7%</text>
+      <circle class="pill" cx="1130" cy="26" r="19"/>
+      <text class="pill-tx" x="1130" y="30" text-anchor="middle">52</text>
+      <text class="prior" x="1156" y="22">2018  41</text>
+      <text class="delta" x="1156" y="36">&#8593; +11</text>
+      <line class="rowline" x1="64" y1="52" x2="1216" y2="52"/>
+    </g>
+
+    <!-- row 4 · Q12e · v [6 21 65 8] · top 27 · 2018 17 -->
+    <g transform="translate(0,452)">
+      <rect class="track" x="456" y="18" width="156" height="14"/>
+      <rect class="track" x="620" y="18" width="156" height="14"/>
+      <rect class="track" x="784" y="18" width="156" height="14"/>
+      <rect class="track" x="948" y="18" width="156" height="14"/>
+      <text class="q" x="64" y="16">Q12e</text>
+      <text class="txt" x="64" y="34">Third-party apps that hold my payment data</text>
+      <rect class="b1" x="456" y="22" width="9.5"  height="6"/>
+      <rect class="b2" x="620" y="22" width="33.2" height="6"/>
+      <rect class="b3" x="784" y="22" width="102.7" height="6"/>
+      <rect class="b4" x="948" y="22" width="12.6" height="6"/>
+      <text class="cv-a" x="456" y="16">6%</text>
+      <text class="cv" x="620" y="16">21%</text>
+      <text class="cv" x="784" y="16">65%</text>
+      <text class="cv" x="948" y="16">8%</text>
+      <circle class="pill" cx="1130" cy="26" r="19"/>
+      <text class="pill-tx" x="1130" y="30" text-anchor="middle">27</text>
+      <text class="prior" x="1156" y="22">2018  17</text>
+      <text class="delta" x="1156" y="36">&#8593; +10</text>
+      <line class="rowline" x1="64" y1="52" x2="1216" y2="52"/>
+    </g>
+
+    <!-- row 5 · Q12f · v [4 17 71 8] · top 21 · 2018 12 -->
+    <g transform="translate(0,508)">
+      <rect class="band" x="64" y="-4" width="1152" height="54"/>
+      <rect class="track" x="456" y="18" width="156" height="14"/>
+      <rect class="track" x="620" y="18" width="156" height="14"/>
+      <rect class="track" x="784" y="18" width="156" height="14"/>
+      <rect class="track" x="948" y="18" width="156" height="14"/>
+      <text class="q" x="64" y="16">Q12f</text>
+      <text class="txt" x="64" y="34">Non-bank providers such as telcos or retailers for credit</text>
+      <rect class="b1" x="456" y="22" width="6.3"  height="6"/>
+      <rect class="b2" x="620" y="22" width="26.9" height="6"/>
+      <rect class="b3" x="784" y="22" width="112.2" height="6"/>
+      <rect class="b4" x="948" y="22" width="12.6" height="6"/>
+      <text class="cv-a" x="456" y="16">4%</text>
+      <text class="cv" x="620" y="16">17%</text>
+      <text class="cv" x="784" y="16">71%</text>
+      <text class="cv" x="948" y="16">8%</text>
+      <circle class="pill" cx="1130" cy="26" r="19"/>
+      <text class="pill-tx" x="1130" y="30" text-anchor="middle">21</text>
+      <text class="prior" x="1156" y="22">2018  12</text>
+      <text class="delta" x="1156" y="36">&#8593; +9</text>
+    </g>
+  </svg>
+
+  <!-- slot 5 · base line (the n= the reader needs before trusting a single cell) -->
+  <div class="base">Base: all respondents n = 1,842; of which 1,193 changed at least one financial provider in the past 24 months<sup>2</sup></div>
+
+  <!-- slot 6 · methodology note carrying sup 1 / sup 2 -->
+  <div class="note"><sup>1</sup> Single response per statement; the four cells on a row sum to 100% (rounding may move them
+  to 99 or 101). <sup>2</sup> "2018" is the same question in the 2018 wave (n = 1,704); the comparison is only valid where the
+  wording and the response scale are unchanged.</div>
+
+  <!-- slot 7 · footer: source bottom-left, running head + page bottom-right -->
+  <div class="footer">
+    <div>Source: PwC Strategy&amp; Consumer Intent Panel 2020 — Q12, base as stated<sup>1 2</sup></div>
+    <div>Number of responses = 1,842<span class="runhead">2 | Navigating the payments matrix</span><span class="pagenum">27</span></div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>exec-summary-ataglance-findings-rail — executive summary, numbered findings column + methodology rail (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  exec-summary-ataglance-findings-rail  ·  family exec-summary-ataglance
+  THE AT-A-GLANCE PAGE: a plain label title (no colored band), one bold
+  positioning sentence, then a numbered column of findings — each finding is a
+  short bold lead + a sentence whose load-bearing statistic is bold in the
+  accent — with a methodology callout rail pinned right. Everything is text;
+  the credibility lives in the numbers being inside sentences, not in charts.
+  Evidence: KPMG — "GenAI Survey 2024, Key insights"
+  (kpmg__kpmg_genai_survey_2024_key_insights_2024), Executive summary = p2.
+  From sw_sheets/kpmg__kpmg_genai_survey_2024_key_insights_2024_s00.jpg (frame 2):
+  "clean white page dominated by a left-aligned bold navy heading 'Executive
+  Summary' followed by six long bullet points of body text, with a single
+  cyan-tinted 'Methodology' callout box on the right side", footer = wordmark
+  left, classification line, page number right. Palette anchors cited from
+  sibling KPMG reviews: navy #00338D (reviews/kpmg__kpmg_kpmg_our_impact_plan_
+  2024_update_2024.md), cyan #019cde (reviews/kpmg__kpmg_kpmg_2020_ceo_outlook_
+  covid_19_special_edition_2020.md); the rail wash is a derived 8% tint of that
+  cyan, not a sampled hex. Numbering device (vs the deck's plain dots) is the
+  kit's playbook takeaway-column standard — noted in MANUAL, don't section.
+  Font note: the deck's real face is KPMG's house geometric sans (per review);
+  Arial stands in.
+  ----------------------------------------------------------------------------
+  SCALING (zero JS): html font-size = min(100vw/1280, 100vh/720), so 1rem == 1
+  stage pixel; .stage is a fixed 1280x720 canvas. Coordinates match MANUAL.md.
+  SELF-CONTAINED: inline CSS + one inline SVG for the brand mark. No imports,
+  no webfonts, no img/link/script/iframe — zero network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================ */
+  :root{
+    --accent:      #00338D;  /* KPMG-style firm navy — title, numbers, stats   */
+    --accent-ink:  #00338D;  /* same value used for emphasis type (AA on white)*/
+    --cyan:        #019cde;  /* brand cyan — rail cap only, never body text    */
+    --wash:        #E8F5FB;  /* derived: 8% tint of --cyan for the rail field  */
+    --ink:         #1A1A1A;  /* bold leads on near-black so leads read heavier */
+    --gray-1:      #454545;  /* finding body copy                              */
+    --gray-2:      #7D7D7D;  /* kicker, footer, rail heading                   */
+    --gray-3:      #A9A9A9;  /* hairlines inside the rail                      */
+    --rule:        #C9C9C9;  /* page hairline                                  */
+    --bg:          #FFFFFF;
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Calibri, Arial, "Helvetica Neue", sans-serif;
+    --m-side:      88rem;
+  }
+
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#10141c}
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .abs{position:absolute}
+
+  /* ---------------- 1 · page furniture ---------------------------------- */
+  .rule-top{
+    left:var(--m-side); right:var(--m-side); top:64rem; height:.1rem;
+    background:var(--rule);
+  }
+  .kicker{
+    left:var(--m-side); top:78rem; width:840rem;
+    font-family:var(--font-display); font-size:11rem; font-weight:700;
+    letter-spacing:.16rem; text-transform:uppercase; color:var(--gray-2);
+  }
+
+  /* ---------------- 2 · label title + context block ---------------------- */
+  h1.title{
+    left:var(--m-side); top:104rem; width:640rem; margin:0;
+    font-family:var(--font-display); font-size:44rem; line-height:1;
+    font-weight:700; letter-spacing:-.9rem; color:var(--accent-ink);
+  }
+  .edition{
+    right:var(--m-side); top:112rem; text-align:right; width:330rem;
+    font-family:var(--font-display); font-size:11.5rem; color:var(--gray-2);
+    line-height:1.5;
+  }
+  .edition b{display:block; font-size:14rem; color:var(--ink); letter-spacing:-.2rem}
+
+  /* ---------------- 3 · positioning sentence ----------------------------- */
+  p.thesis{
+    left:var(--m-side); right:256rem; top:178rem; margin:0;
+    font-family:var(--font-display); font-size:17.5rem; line-height:1.45;
+    font-weight:500; color:var(--ink); letter-spacing:-.15rem;
+  }
+  p.thesis .turn{color:var(--accent)}
+
+  /* ---------------- 4 · numbered findings column ------------------------- */
+  ol.findings{
+    position:absolute; left:var(--m-side); width:800rem; top:256rem; margin:0;
+    padding:0; list-style:none; counter-reset:f;
+  }
+  ol.findings li{
+    display:grid; grid-template-columns:44rem 1fr; column-gap:12rem;
+    margin-bottom:16rem;
+  }
+  ol.findings li .num{
+    font-family:var(--font-display); font-size:15rem; font-weight:700;
+    color:var(--accent); line-height:1.5; letter-spacing:-.2rem;
+    /* the number sits on the text baseline row of the first line */
+    transform:translateY(.2rem);
+  }
+  ol.findings li p{
+    margin:0; font-size:13.5rem; line-height:1.5; color:var(--gray-1);
+  }
+  ol.findings li p strong{color:var(--ink); font-weight:700}
+  ol.findings li p b.stat{color:var(--accent-ink); font-weight:700}
+  ol.findings li p sup{font-size:9rem; color:var(--gray-2); font-weight:400}
+
+  /* ---------------- 5 · methodology rail ------------------------------- */
+  aside.method{
+    position:absolute; right:var(--m-side); width:256rem; top:256rem;
+    background:var(--wash);
+    border-top:4rem solid var(--cyan);
+    padding:14rem 16rem 16rem;
+  }
+  aside.method h2{
+    margin:0 0 8rem; font-family:var(--font-display); font-size:11rem;
+    font-weight:700; letter-spacing:.14rem; text-transform:uppercase;
+    color:var(--accent-ink);
+  }
+  aside.method p{
+    margin:0 0 10rem; font-size:11.5rem; line-height:1.55; color:var(--gray-1);
+  }
+  aside.method dl{
+    margin:0; padding-top:10rem; border-top:.1rem solid var(--gray-3);
+  }
+  aside.method dl div{display:flex; justify-content:space-between; margin-bottom:5rem}
+  aside.method dt{font-size:10rem; color:var(--gray-2); text-transform:uppercase; letter-spacing:.08rem}
+  aside.method dd{margin:0; font-size:10.5rem; font-weight:700; color:var(--ink); font-family:var(--font-display)}
+  aside.method sup{font-size:8.5rem; color:var(--gray-2); font-weight:400}
+
+  /* ---------------- 6 · footer ----------------------------------------- */
+  .brandmark{position:absolute; left:var(--m-side); bottom:58rem; display:flex; align-items:center; gap:8rem}
+  .brandmark svg{display:block}
+  .brandmark span{
+    font-family:var(--font-display); font-size:12rem; font-weight:700;
+    letter-spacing:.06rem; color:var(--gray-2);
+  }
+  .source{
+    left:var(--m-side); right:280rem; bottom:38rem;
+    font-size:9.5rem; line-height:1.4; color:var(--gray-2);
+  }
+  .source sup{font-size:7.5rem}
+  .running{
+    right:var(--m-side); bottom:38rem; text-align:right;
+    font-family:var(--font-display); font-size:10rem; font-weight:700;
+    letter-spacing:.12rem; color:var(--gray-2);
+  }
+  .running b{color:var(--accent-ink)}
+  .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+</style>
+</head>
+<body>
+<main class="stage">
+  <div class="abs rule-top" role="presentation"></div>
+  <p class="abs kicker">Global tech report 2026 · Executive summary</p>
+
+  <h1 class="abs title">Executive summary</h1>
+
+  <div class="abs edition">
+    <span>Prepared for</span>
+    <b>Board of Directors</b>
+    Independent review · Series A findings
+  </div>
+
+  <p class="abs thesis">Adoption has moved from experimentation to a standing budget line: spend is rising, deployment is spreading into new functions, and the binding constraint is now the workforce&nbsp;— <span class="turn">not the technology</span>.</p>
+
+  <ol class="findings">
+    <li>
+      <span class="num" aria-hidden="true">1</span>
+      <p><strong>Investment is accelerating.</strong> <b class="stat">83%</b> of executives expect GenAI investment to grow over the next three years, and <b class="stat">78%</b> are confident the planned spend will pay back within the horizon.<sup>1</sup></p>
+    </li>
+    <li>
+      <span class="num" aria-hidden="true">2</span>
+      <p><strong>Deployment is broadening.</strong> Within one to three years, <b class="stat">61%</b> plan to expand existing GenAI initiatives and <b class="stat">55%</b> will introduce the technology into business functions that have no deployment today.<sup>1</sup></p>
+    </li>
+    <li>
+      <span class="num" aria-hidden="true">3</span>
+      <p><strong>Workforce readiness is the bottleneck.</strong> Only <b class="stat">16%</b> call their workforce highly equipped, even though training programs reached <b class="stat">69%</b>, up from 12% a year earlier — capacity is rising, but behind demand.</p>
+    </li>
+    <li>
+      <span class="num" aria-hidden="true">4</span>
+      <p><strong>Risk attention has shifted.</strong> Cybersecurity and data quality now lead the risk agenda, while regulatory uncertainty fell to <b class="stat">13%</b> from <b class="stat">24%</b> as guidance matured across the survey markets.<sup>1</sup></p>
+    </li>
+    <li>
+      <span class="num" aria-hidden="true">5</span>
+      <p><strong>Revenue impact is real but early.</strong> <b class="stat">52%</b> of adopters report GenAI opening new revenue opportunities, concentrated so far in marketing and R&amp;D rather than core operations.</p>
+    </li>
+  </ol>
+
+  <aside class="method" aria-label="Methodology">
+    <h2>Methodology</h2>
+    <p>This analysis draws on the firm&rsquo;s survey of senior decision-makers on technology adoption, fieldwork and weighting as stated below; percentages are computed on weighted respondents unless marked.</p>
+    <dl>
+      <div><dt>Respondents</dt><dd>240 leaders</dd></div>
+      <div><dt>Population</dt><dd>Firms &gt;$1bn revenue</dd></div>
+      <div><dt>Fieldwork</dt><dd>14 Mar&nbsp;&ndash;&nbsp;11 Apr 2026</dd></div>
+      <div><dt>Markets</dt><dd>12 countries</dd></div>
+    </dl>
+    <p style="margin-bottom:0"><sup>1</sup>Weighted to sector revenue shares; margins of error apply to bases under 50.</p>
+  </aside>
+
+  <div class="abs brandmark" aria-label="Brand mark (placeholder)">
+    <svg width="26" height="26" viewBox="0 0 26 26" role="img" aria-label="Placeholder brand mark">
+      <rect x="0.5" y="0.5" width="25" height="25" fill="#FFFFFF" stroke="#C9C9C9"/>
+      <rect x="4" y="4" width="18" height="18" fill="#00338D"/>
+      <text x="13" y="17.4" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#FFFFFF">A</text>
+    </svg>
+    <span>YOUR FIRM MARK</span>
+  </div>
+
+  <p class="abs source">Source: Firm survey panel, Q1 2026, n=240 weighted respondents; engagement-team analysis of deployment and investment items.<sup>1</sup></p>
+  <p class="abs running"><b>03</b>&nbsp;|&nbsp;EXECUTIVE SUMMARY</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>process-flow-pathway — pathway summary: lane map + milestones + duration + stage band (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  process-flow-pathway  ·  family process-flow
+  Evidence (see MANUAL.md -> SOURCE):
+    deloitte__deloitte_accelerated_access_review_uk_mapping_2015 p15–p17
+    "pathway summary" pages, read in
+    sw_sheets/deloitte__deloitte_accelerated_access_review_uk_mapping_2015_s01.jpg
+    (bottom row): claim title + message line, actor-lane process network with
+    milestone callouts on drop-lines, a per-stage duration ribbon, and a
+    4-stage chevron band across the page foot. Review:
+    reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md.
+  ----------------------------------------------------------------------------
+  RESIZE ANATOMY (why this page is a diagram, not a picture — see MANUAL FILL):
+    • Stage band + duration ribbon share ONE column model: N equal columns
+      across x64–x1216. Stage i is one <g class="chev"> translate.
+    • Each milestone is one self-contained <g class="ms" translate(x,555)> —
+      circle + drop-line + label live together; copy it, change x.
+    • Process nodes are <g class="nd" translate(x,y)>; connectors are plain
+      paths whose only per-node numbers are node edges.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. 1rem == 1 STAGE PIXEL at the current viewport fit; the
+  SVG overlay maps viewBox 0 0 1280 720 onto the stage, so SVG user units ARE
+  stage pixels. SELF-CONTAINED: inline CSS, inline SVG, system fonts.
+  ============================================================================
+-->
+<style>
+  :root{
+    /* Roles per DESIGN_PLAYBOOK. Brand anchor: Deloitte green #86BC25
+       (same anchor as sibling agenda-contents-tracker). The source deck paints
+       one hue PER STAGE; the kit rule collapses that to one accent + grey. */
+    --bg:      #FFFFFF;
+    --ink:     #1A1A1A;   /* text ink                                   */
+    --accent:  #86BC25;   /* brand lime — the ONE emphasis colour        */
+    --gray-1:  #23262B;   /* body text on white                          */
+    --gray-2:  #4A4F55;   /* secondary text                              */
+    --gray-3:  #818990;   /* notes / drop-lines / dim                    */
+    --gray-4:  #E9ECEF;   /* neutral fill (lane chips)                   */
+    --gray-5:  #F4F6F8;   /* light wash                                  */
+    --rule:    #C9CFD4;   /* hairlines, node strokes, default arrows     */
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#101524;                 /* studio backdrop, not part of the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); }
+  .diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  /* ---- page furniture ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem;
+           font:600 12rem/1 var(--font-display); letter-spacing:.18rem;
+           text-transform:uppercase; color:var(--gray-2); }
+  .kicker .n{ color:var(--accent); font-weight:700; }
+  .kicker .dim{ color:var(--gray-3); letter-spacing:.12rem; }
+
+  h1.title{ position:absolute; left:64rem; top:56rem; width:1152rem;
+            font:700 27rem/35rem var(--font-display); color:var(--ink);
+            letter-spacing:-.2rem; }
+  h1.title sup{ font-size:12rem; color:var(--gray-2); }
+
+  .lead{ position:absolute; left:64rem; top:100rem; width:1152rem;
+         font:700 13rem/17rem var(--font-body); color:var(--gray-1); }
+
+  .source{ position:absolute; left:64rem; bottom:14rem; max-width:900rem;
+           font:10rem/1.35 var(--font-body); color:var(--gray-3); }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:14rem;
+           font:700 10rem/1.35 var(--font-body); color:var(--gray-2);
+           letter-spacing:.1rem; }
+
+  /* ---- diagram classes (all geometry lives in the markup) ---- */
+  .ln{ stroke:var(--rule); stroke-width:1; opacity:.55; }
+  .lnlbl{ font:700 9.5rem var(--font-body); letter-spacing:.06em; fill:var(--gray-2);
+          text-transform:uppercase; }
+  .lnchip{ fill:var(--gray-4); stroke:var(--rule); stroke-width:1; }
+
+  .nd rect.box{ fill:#fff; stroke:var(--rule); stroke-width:1.4; }
+  .nd.crit rect.box{ stroke:var(--accent); stroke-width:2.2; }
+  .ndl{ font:600 9.5rem var(--font-body); fill:var(--gray-1); }
+  .lk{ fill:none; stroke:var(--rule); stroke-width:1.5; }
+  .lk.crit{ stroke:var(--accent); stroke-width:2.1; }
+
+  .msc{ fill:#fff; stroke:var(--ink); stroke-width:1.6; }
+  .msd{ stroke:var(--gray-3); stroke-width:1; stroke-dasharray:3 3; opacity:.7; }
+  .msn{ font:700 10rem var(--font-body); fill:var(--gray-1); }
+  .msx{ font:9rem var(--font-body); fill:var(--gray-3); }
+
+  .dur{ stroke:var(--gray-2); stroke-width:1.2; fill:none; }
+  .durT{ font:700 10rem var(--font-body); fill:var(--gray-1); }
+
+  .cvt{ font:700 12rem var(--font-display); letter-spacing:.04rem; }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Pathway summary: medical devices versus the pharmaceutical route">
+
+  <header>
+    <p class="kicker"><span class="n">15</span><span class="dim"> | Pathway maps — medical devices</span></p>
+    <h1 class="title">The device pathway adds no step the pharma route lacks — only time<sup>1</sup></h1>
+    <p class="lead">Across 14 device classes and 42 stakeholder interviews, every pathway stage mirrors innovative pharmaceuticals; the divergence is stage duration, not process count.</p>
+  </header>
+
+  <svg class="diagram" viewBox="0 0 1280 720" role="img"
+       aria-label="Three-lane pathway map with five milestone callouts, a per-stage duration ribbon and a four-stage chevron band">
+    <defs>
+      <!-- one arrowhead, two colours; used with orient="auto-start-reverse"
+           on the duration ribbon so the SAME marker serves both ends -->
+      <marker id="ar"  markerWidth="8" markerHeight="8" refX="6.6" refY="3.4"
+              orient="auto-start-reverse" markerUnits="userSpaceOnUse">
+        <path d="M0.4 0.4 L6.6 3.4 L0.4 6.4 Z" fill="var(--rule)"/>
+      </marker>
+      <marker id="arA" markerWidth="8" markerHeight="8" refX="6.6" refY="3.4" orient="auto"
+              markerUnits="userSpaceOnUse">
+        <path d="M0.4 0.4 L6.6 3.4 L0.4 6.4 Z" fill="var(--accent)"/>
+      </marker>
+    </defs>
+
+    <!-- =================== MILESTONE DROP-LINES =========================
+         Full-height leader lines (y553 -> y170) drawn BEHIND lanes/links/
+         nodes so the map paints over them. One line per milestone: copy and
+         change x only.
+         ================================================================= -->
+    <g id="drops">
+      <line class="msd" x1="275" x2="275" y1="553" y2="170"/>
+      <line class="msd" x1="531" x2="531" y1="553" y2="170"/>
+      <line class="msd" x1="787" x2="787" y1="553" y2="170"/>
+      <line class="msd" x1="1043" x2="1043" y1="553" y2="170"/>
+      <line class="msd" x1="1152" x2="1152" y1="553" y2="170"/>
+    </g>
+    <!-- ===================== LANES (3 actor bands, y 150–490) =================
+         Lane divider hairlines only; the label chips sit at each lane centre.
+         ===================================================================== -->
+    <g id="lanes">
+      <line class="ln" x1="64" y1="265" x2="1216" y2="265"/>
+      <line class="ln" x1="64" y1="395" x2="1216" y2="395"/>
+      <g class="lnlab" id="lane-1"><rect class="lnchip" x="64" y="188" width="118" height="24" rx="3"/>
+        <text class="lnlbl" x="123" y="204" text-anchor="middle">Manufacturer</text></g>
+      <g class="lnlab" id="lane-2"><rect class="lnchip" x="64" y="318" width="118" height="24" rx="3"/>
+        <text class="lnlbl" x="123" y="334" text-anchor="middle">Regulator / HTA</text></g>
+      <g class="lnlab" id="lane-3"><rect class="lnchip" x="64" y="448" width="118" height="24" rx="3"/>
+        <text class="lnlbl" x="123" y="464" text-anchor="middle">Payer / provider</text></g>
+    </g>
+
+    <!-- ================= CONNECTORS (behind nodes) ==========================
+         Per connector, the numbers that move on resize are node edges.
+         Node edges on this stage: lane 1 y 182–218 (centres x 275 / 531 / 787),
+         lane 2 y 312–348 (centres 531 / 787 / 1043), lane 3 y 442–478
+         (centres 787 / 1043). Arrow: marker-end="url(#ar)" (crit: arA).
+         ===================================================================== -->
+    <g id="links">
+      <path class="lk"    d="M337 200 H469"  marker-end="url(#ar)"/>
+      <path class="lk"    d="M593 200 H725"  marker-end="url(#ar)"/>
+      <path class="lk"    d="M531 218 V312"  marker-end="url(#ar)"/>
+      <path class="lk"    d="M593 330 H725"  marker-end="url(#ar)"/>
+      <path class="lk"    d="M849 330 H981"  marker-end="url(#ar)"/>
+      <path class="lk"    d="M1043 348 V442" marker-end="url(#ar)"/>
+      <path class="lk"    d="M849 460 H979"  marker-end="url(#ar)"/>
+      <!-- CRITICAL PATH: technical file → HTA submission → funding
+           negotiation. Three nodes + these two paths carry the emphasis. -->
+      <path class="lk crit" d="M787 218 V312" marker-end="url(#arA)"/>
+      <path class="lk crit" d="M787 348 V460 H979" marker-end="url(#arA)"/>
+    </g>
+
+    <!-- ==================== PROCESS NODES ====================================
+         One <g class="nd" translate(x,y)> each: 124×36 box, label centred at
+         (62,22). COPY ONE OF THESE + its connector paths to add a node.
+         ===================================================================== -->
+    <g id="nodes">
+      <g class="nd" id="n1" transform="translate(213,182)"><rect class="box" width="124" height="36" rx="4"/>
+        <text class="ndl" x="62" y="22" text-anchor="middle">Design &amp; build</text></g>
+      <g class="nd" id="n2" transform="translate(469,182)"><rect class="box" width="124" height="36" rx="4"/>
+        <text class="ndl" x="62" y="22" text-anchor="middle">Clinical evidence</text></g>
+      <g class="nd crit" id="n3" transform="translate(725,182)"><rect class="box" width="124" height="36" rx="4"/>
+        <rect class="wash" width="124" height="36" rx="4" fill="var(--accent)" fill-opacity=".07"/>
+        <text class="ndl" x="62" y="22" text-anchor="middle">Technical file + UDI</text></g>
+      <g class="nd" id="n4" transform="translate(469,312)"><rect class="box" width="124" height="36" rx="4"/>
+        <text class="ndl" x="62" y="22" text-anchor="middle">Notified body review</text></g>
+      <g class="nd crit" id="n5" transform="translate(725,312)"><rect class="box" width="124" height="36" rx="4"/>
+        <rect class="wash" width="124" height="36" rx="4" fill="var(--accent)" fill-opacity=".07"/>
+        <text class="ndl" x="62" y="22" text-anchor="middle">HTA submission</text></g>
+      <g class="nd" id="n6" transform="translate(981,312)"><rect class="box" width="124" height="36" rx="4"/>
+        <text class="ndl" x="62" y="22" text-anchor="middle">Guidance published</text></g>
+      <g class="nd" id="n7" transform="translate(725,442)"><rect class="box" width="124" height="36" rx="4"/>
+        <text class="ndl" x="62" y="22" text-anchor="middle">Local needs scan</text></g>
+      <g class="nd crit" id="n8" transform="translate(981,442)"><rect class="box" width="124" height="36" rx="4"/>
+        <rect class="wash" width="124" height="36" rx="4" fill="var(--accent)" fill-opacity=".07"/>
+        <text class="ndl" x="62" y="22" text-anchor="middle">Funding negotiation</text></g>
+    </g>
+
+    <!-- ==================== MILESTONE CALLOUTS (baseline y=555) ==============
+         Each milestone = ONE self-contained <g class="ms" translate(x,555)>:
+         circle + dashed drop-line (up into the map) + two-line label below.
+         COPY ONE and change the translate x to add a milestone. Drop-lines
+         rise to y≈488 (just under lane 3); lengthen the msd line to reach
+         higher lanes. Milestones sit under a real event — a blank column of
+         dots is the classic SmartArt tell; never render one.
+         ===================================================================== -->
+    <g id="milestones">
+      <g class="ms" id="m1" transform="translate(275,555)">
+        <circle class="msc" r="5.5"/>
+        <text class="msn" y="15" text-anchor="middle">Design freeze</text>
+        <text class="msx" y="26" text-anchor="middle">13 mo.</text></g>
+      <g class="ms" id="m2" transform="translate(531,555)">
+        <circle class="msc" r="5.5"/>
+        <text class="msn" y="15" text-anchor="middle">Clinical testing</text>
+        <text class="msx" y="26" text-anchor="middle">33 mo.</text></g>
+      <g class="ms" id="m3" transform="translate(787,555)">
+        <circle class="msc" r="5.5"/>
+        <text class="msn" y="15" text-anchor="middle">HTA submission</text>
+        <text class="msx" y="26" text-anchor="middle">51 mo.</text></g>
+      <g class="ms" id="m4" transform="translate(1043,555)">
+        <circle class="msc" r="5.5"/>
+        <text class="msn" y="15" text-anchor="middle">Guidance published</text>
+        <text class="msx" y="26" text-anchor="middle">67 mo.</text></g>
+      <g class="ms" id="m5" transform="translate(1152,555)">
+        <circle class="msc" r="5.5"/>
+        <text class="msn" y="15" text-anchor="middle">Roll-out begins</text>
+        <text class="msx" y="26" text-anchor="middle">118 mo.</text></g>
+    </g>
+
+    <!-- ==================== DURATION RIBBON (y≈602) ==========================
+         One bracket per stage column, x = stage boundary. Double-ended arrows:
+         same marker at both ends (auto-start-reverse). Range text centred.
+         Stage columns: 4 equal columns of 288 from x64 → boundaries
+         352 / 640 / 928. Formula for N stages in FILL §2.
+         ===================================================================== -->
+    <g id="durations">
+      <g class="brk" transform="translate(64,602)"><line class="dur" x1="12" y1="0" x2="276" y2="0"
+          marker-start="url(#ar)" marker-end="url(#ar)"/>
+        <text class="durT" x="144" y="19" text-anchor="middle">2 – 5 yrs</text></g>
+      <g class="brk" transform="translate(352,602)"><line class="dur" x1="12" y1="0" x2="276" y2="0"
+          marker-start="url(#ar)" marker-end="url(#ar)"/>
+        <text class="durT" x="144" y="19" text-anchor="middle">4 – 18 mo.</text></g>
+      <g class="brk" transform="translate(640,602)"><line class="dur" x1="12" y1="0" x2="276" y2="0"
+          marker-start="url(#ar)" marker-end="url(#ar)"/>
+        <text class="durT" x="144" y="19" text-anchor="middle">6 – 15 mo.</text></g>
+      <g class="brk" transform="translate(928,602)"><line class="dur" x1="12" y1="0" x2="276" y2="0"
+          marker-start="url(#ar)" marker-end="url(#ar)"/>
+        <text class="durT" x="144" y="19" text-anchor="middle">1 – 4 yrs</text></g>
+    </g>
+
+    <!-- ==================== STAGE CHEVRON BAND (y 632–676) ===================
+         4 stages, equal columns, chevron tip/notch t = 14 (28 overlap).
+         W = (1152 + 28·(N−1)) / N ; stage i sits at translate(64 + i·(W−28)).
+         Fill ramp = grey ramp, last stage = accent (the destination). Text:
+         white on the two dark stages, ink on the two light ones.
+         ===================================================================== -->
+    <g id="stageband">
+      <g class="chev" id="s1" transform="translate(64,632)">
+        <polygon fill="#262B30" points="14,0 295,0 309,22 295,44 14,44 28,22"/>
+        <text class="cvt" x="158" y="27" fill="#FFFFFF" text-anchor="middle">Development</text></g>
+      <g class="chev" id="s2" transform="translate(345,632)">
+        <polygon fill="#565E65" points="0,0 295,0 309,22 295,44 0,44 14,22"/>
+        <text class="cvt" x="157" y="27" fill="#FFFFFF" text-anchor="middle">Regulation</text></g>
+      <g class="chev" id="s3" transform="translate(626,632)">
+        <polygon fill="#E9ECEF" points="0,0 295,0 309,22 295,44 0,44 14,22"/>
+        <text class="cvt" x="157" y="27" fill="var(--ink)" text-anchor="middle">Reimbursement</text></g>
+      <g class="chev" id="s4" transform="translate(907,632)">
+        <polygon fill="var(--accent)" points="0,0 287,0 301,22 287,44 0,44 14,22"/>
+        <text class="cvt" x="151" y="27" fill="var(--ink)" text-anchor="middle">Local adoption</text></g>
+    </g>
+
+    <!-- brand ornament: the stage strip repeated small, top-right -->
+    <g id="ornament">
+      <polygon fill="#565E65" points="1060,38 1082,46 1060,54 1064,46"/>
+      <polygon fill="#818990" points="1096,38 1118,46 1096,54 1100,46"/>
+      <polygon fill="#D9DEE2" points="1132,38 1154,46 1132,54 1136,46"/>
+      <polygon fill="var(--accent)" points="1168,38 1190,46 1168,54 1172,46"/>
+    </g>
+  </svg>
+
+  <footer>
+    <p class="source">Source: Stakeholder interviews and workshops, n=42<sup>1</sup>; public guidance and HTA decision registers; stage durations from client project timelines, 2014–2024<sup>2</sup></p>
+    <p class="pageno">15 | Pathway maps</p>
+  </footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>org-hub-map-orbit — capability orbit hub (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  org-hub-map-orbit  ·  family org-hub-map
+  Evidence (see MANUAL.md -> SOURCE):
+    PwC Strategy — "Insurance Reimagined: Spotlight on Trust, Convergence
+    and Competition" p18 ("Adaptive ways to reimagine your business"):
+    white ground, central hub disc "Insurer of the future" ringed by five
+    white satellite circles (icons + name + one-line description), claim line
+    under the kicker, PwC red panels as emphasis. Read from
+    sw_sheets/pwc_strategy__pwc_insurance_reimagined_spotlight_on_trust_convergence_and__s01.jpg
+    (row 2, centre cell).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html font-size maps 1rem == 1 STAGE PIXEL, so every length
+  is a 1:1 stage-pixel coordinate with the same numbers MANUAL.md quotes. The
+  stage itself is the transform-to-viewport wrapper the kit spec requires.
+  ----------------------------------------------------------------------------
+  GEOMETRY (all in stage px, inside the full-stage SVG viewBox 0 0 1280 720):
+    hub centre C = (640, 418), hub circle r = 88.
+    FIVE satellites on the orbit ring R = 198 at 72° apart, first straight up:
+      angle_i = -90 + 72*i degrees
+      sat-1 (i=0): (640.0, 220.0)   sat-2 (i=1): (828.3, 356.8)
+      sat-3 (i=2): (756.4, 578.2)   sat-4 (i=3): (523.6, 578.2)
+      sat-5 (i=4): (451.7, 356.8)
+    satellite circle r = 56; label baseline = cy + 75, description = cy + 91.
+    spoke line from C + 88·u to C + 142·u (u = unit vector of the angle) —
+    so spokes run hub-edge -> satellite-edge, never under a disc.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Palette anchor: PwC brand red bands
+     sampled ≈ #A6192E–#C1272D; grey ramp light #D9D9D9 / mid #8C8C8C /
+     dark #404040; white page ground; body text #333333 (all cited in
+     reviews/pwc_strategy__pwc_insurance_reimagined...md §color).
+     Contrast on white (measured):
+       --ink #333333 on --bg        = 12.6:1
+       --gray-1 #404040 on --bg     =  9.8:1
+       --gray-2 #8C8C8C on --bg     =  3.8:1  -> 18px+/bold uses only
+       --gray-note #666666 on --bg  =  5.9:1  (all note-size text)
+       --accent #A6192E on --bg     =  6.6:1  (titles/lead OK, small bold OK)
+       #FFFFFF on --accent          =  6.6:1  (label ON red)
+     ================================================================= */
+  :root{
+    --bg:      #FFFFFF;   /* white page ground */
+    --ink:     #333333;   /* titles */
+    --gray-1:  #404040;   /* body text (dark grey from ramp) */
+    --gray-2:  #8C8C8C;   /* secondary, descriptions */
+    --gray-3:  #D9D9D9;   /* orbit ring, tracks */
+    --gray-note:#666666;  /* note-size text (9.5-11px): 5.9:1 on white */
+    --rule:    #D9D9D9;   /* hairlines */
+    --accent:  #A6192E;   /* PwC red: THE emphasis (one hue) */
+    --accent-soft: #F7EBED; /* one lightness of accent: highlight disc fill */
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{ background:#4A4A50; display:grid; place-items:center; min-height:100vh; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink); overflow:hidden;
+  }
+  /* ---------- header band: kicker / claim title / lead line ---------- */
+  .kicker{
+    position:absolute; left:64rem; top:36rem; font-size:11rem; line-height:1;
+    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    font-family:var(--font-display); color:var(--gray-1);
+  }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  h1.title{
+    position:absolute; left:64rem; top:58rem; width:1152rem;
+    font-family:var(--font-display); font-size:30rem; line-height:36rem;
+    font-weight:700; letter-spacing:-.012em; color:var(--ink);
+    max-height:76rem; overflow:hidden;   /* 2-line gate: a 3rd line is clipped */
+  }
+  p.lead{
+    position:absolute; left:64rem; top:150rem; width:860rem;
+    font-size:15rem; line-height:21rem; color:var(--gray-1);
+    font-weight:600;
+  }
+  p.lead .em{ color:var(--accent); font-weight:700; }
+  /* ------------------------------ diagram ------------------------------ */
+  svg.diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+  .sat-ring   { fill:#FFFFFF; stroke:#C9C9C9; stroke-width:1.6; }
+  .sat-hi     { fill:var(--accent-soft); stroke:var(--accent); stroke-width:2.5; }
+  .orbit      { fill:none; stroke:var(--gray-3); stroke-width:1.4; stroke-dasharray:3 7; }
+  .spoke      { stroke:#C9C9C9; stroke-width:1.4; }
+  .spoke-hi   { stroke:var(--accent); stroke-width:1.7; }
+  .hub-ring   { fill:#FFFFFF; stroke:var(--accent); stroke-width:2.5; }
+  .hub-kick   { font:700 9px var(--font-display); letter-spacing:.16em; fill:var(--accent); text-anchor:middle; text-transform:uppercase; }
+  .hub-name   { font:700 17px var(--font-display); fill:var(--ink); text-anchor:middle; }
+  .hub-sub    { font:9.5px var(--font-body); fill:var(--gray-note); text-anchor:middle; }
+  .sat-name   { font:700 13.5px var(--font-display); fill:var(--ink); text-anchor:middle; }
+  .sat-desc   { font:11px var(--font-body); fill:var(--gray-note); text-anchor:middle; }
+  .icon       { fill:none; stroke:var(--gray-2); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+  .icon-hi    { fill:none; stroke:var(--accent); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+  /* ------------------------------ footer ------------------------------ */
+  .source{
+    position:absolute; left:64rem; bottom:22rem; width:900rem;
+    font-size:10rem; line-height:13rem; color:var(--gray-note);
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{
+    position:absolute; right:64rem; bottom:22rem; font-size:10rem; color:var(--gray-note);
+  }
+  .pageno b{ color:var(--ink); font-weight:700; }
+  .hairline{ position:absolute; left:64rem; right:64rem; bottom:38rem; border-top:1px solid var(--rule); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. KICKER · 2. CLAIM TITLE · 3. LEAD LINE -->
+  <div class="kicker" data-slot="kicker"><b>1 |</b> Future-of-insurance operating model</div>
+  <h1 class="title" data-slot="title">Five capabilities decide whether the operating model holds</h1>
+  <p class="lead" data-slot="lead">Insurers that operate as one organisation turn trust into margin — and <span class="em">all five capabilities must move together</span>.</p>
+
+  <!-- 4. DIAGRAM — full-stage SVG, all coordinates in stage px -->
+  <svg class="diagram" viewBox="0 0 1280 720" aria-label="Capability orbit hub">
+
+    <!-- orbit track (one circle; resize by editing its r, see MANUAL) -->
+    <circle class="orbit" cx="640" cy="418" r="198"></circle>
+
+    <!-- spokes hub-edge -> satellite-edge; recopy with the matching sat group -->
+    <line class="spoke"     x1="640"   y1="330" x2="640"   y2="276"></line>
+    <line class="spoke-hi"  x1="723.7" y1="390.8" x2="775.1" y2="374.2"></line>
+    <line class="spoke"     x1="751.7" y1="489.2" x2="723.5" y2="532.9"></line>
+    <line class="spoke"     x1="588.3" y1="489.2" x2="556.5" y2="532.9"></line>
+    <line class="spoke"     x1="556.3" y1="390.8" x2="504.9" y2="374.2"></line>
+
+    <!-- HUB — the claim sits here; copy = one <g id="hub">, nothing reflows -->
+    <g id="hub" data-slot="hub">
+      <circle class="hub-ring" cx="640" cy="418" r="88"></circle>
+      <text class="hub-kick" x="640" y="394">At the centre</text>
+      <text class="hub-name" x="640" y="418">One operating model</text>
+      <text class="hub-sub"  x="640" y="436">five capabilities, one engine</text>
+    </g>
+
+    <!-- SATELLITES — one <g class="sat" data-slot="sat-N"> holds circle + icon
+         + name + description. Copy the whole group to add a node. -->
+    <g class="sat" data-slot="sat-1">
+      <circle class="sat-ring" cx="640" cy="220" r="56"></circle>
+      <g class="icon" transform="translate(640,220)">
+        <circle r="11"></circle><circle r="4"></circle>
+        <line x1="-11" y1="0" x2="11" y2="0"></line>
+      </g>
+      <text class="sat-name" x="640" y="295">Customer insight</text>
+      <text class="sat-desc" x="640" y="311">one view of the customer, refreshed daily</text>
+    </g>
+
+    <g class="sat" data-slot="sat-2">
+      <circle class="sat-hi" cx="828.3" cy="356.8" r="56"></circle>
+      <g class="icon-hi" transform="translate(828.3,356.8)">
+        <line x1="-11" y1="8" x2="11" y2="8"></line>
+        <rect x="-10" y="-2"  width="5" height="10"></rect>
+        <rect x="-2.5" y="-8" width="5" height="16"></rect>
+        <rect x="5"  y="-5"  width="5" height="13"></rect>
+      </g>
+      <text class="sat-name" x="828.3" y="432">Data &amp; analytics</text>
+      <text class="sat-desc" x="828.3" y="448">one data estate, shared models</text>
+    </g>
+
+    <g class="sat" data-slot="sat-3">
+      <circle class="sat-ring" cx="756.4" cy="578.2" r="56"></circle>
+      <g class="icon" transform="translate(756.4,578.2)">
+        <line x1="0" y1="10" x2="0" y2="-9"></line>
+        <polyline points="-7,-2 0,-10 7,-2"></polyline>
+      </g>
+      <text class="sat-name" x="756.4" y="653">Distribution</text>
+      <text class="sat-desc" x="756.4" y="669">one commercial engine across channels</text>
+    </g>
+
+    <g class="sat" data-slot="sat-4">
+      <circle class="sat-ring" cx="523.6" cy="578.2" r="56"></circle>
+      <g class="icon" transform="translate(523.6,578.2)">
+        <path d="M0,-11 L9,-7.5 V-1 c0,7 -4.5,11 -9,12.5 C-4.5,10 -9,6 -9,-1 V-7.5 Z"></path>
+        <line x1="-3.5" y1="-1.5" x2="-1" y2="1.5"></line>
+        <line x1="-1" y1="1.5" x2="4.5" y2="-4.5"></line>
+      </g>
+      <text class="sat-name" x="523.6" y="653">Risk &amp; controls</text>
+      <text class="sat-desc" x="523.6" y="669">controls inside workflows, not after</text>
+    </g>
+
+    <g class="sat" data-slot="sat-5">
+      <circle class="sat-ring" cx="451.7" cy="356.8" r="56"></circle>
+      <g class="icon" transform="translate(451.7,356.8)">
+        <circle r="4.5" cy="-5"></circle>
+        <path d="M-10,10 C-10,2 -5,-1 0,-1 C5,-1 10,2 10,10"></path>
+      </g>
+      <text class="sat-name" x="451.7" y="432">People &amp; culture</text>
+      <text class="sat-desc" x="451.7" y="448">skills built, not hired per project</text>
+    </g>
+
+    <!-- emphasis rule: exactly ONE louder element — sat-2 (Data &amp; analytics)
+         carries sat-hi + icon-hi + spoke-hi; copy that triple swap, nothing else. -->
+  </svg>
+
+  <!-- 5. FOOTER — hairline, source line bottom-left, page bottom-right -->
+  <div class="hairline"></div>
+  <div class="source" data-slot="source">Source: illustrative content · n = 112 insurer operating-model interviews, 2024 capability benchmark<sup>1</sup> — names shown are representative, not from a specific carrier.</div>
+  <div class="pageno"><b>18</b> | Operating model</div>
+</div>
+</body>
+</html>

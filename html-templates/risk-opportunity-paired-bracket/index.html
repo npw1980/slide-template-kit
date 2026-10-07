@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>risk-opportunity-paired-bracket — risk ↔ opportunity pair ladder (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  risk-opportunity-paired-bracket  ·  family risk-opportunity
+  WHAT THIS PAGE DOES
+    A risk register that argues rather than lists. Every material RISK (grey
+    block, left) is bracketed across a "response lever" gutter to the
+    OPPORTUNITY it can be converted into (accent block, right). One pair is
+    drawn in accent (the focus); a risk with no priced upside is drawn with a
+    dashed connector and a grey terminal block — that is the honest variant,
+    and it is what keeps this off the SmartArt list.
+
+  EVIDENCE (full provenance in MANUAL.md -> SOURCE)
+    kpmg__kpmg_genai_survey_2024_key_insights_2024 p9 — risk pages rendered as
+      ranked pill/track bars over grey tracks, one value numeral per item
+      (sheet sw_sheets/kpmg__kpmg_genai_survey_2024_key_insights_2024_s00.jpg).
+    kpmg__kpmg_kpmg_2022_ceo_outlook_2022 p5 — numbered risk-list discipline +
+      "Source: KPMG 2022 CEO Outlook" line under every exhibit
+      (sw_sheets/kpmg__kpmg_kpmg_2022_ceo_outlook_2022_s00.jpg).
+    pwc_strategy__pwc_boardroom_agenda_2022 p26 — numbered blocks whose copy is
+      literally "Risks/opportunities identified over short/medium/long term"
+      (sw_sheets/pwc_strategy__pwc_boardroom_agenda_2022_s02.jpg).
+    Palette: KPMG review md — royal blue #243CE4, deep navy ≈#002478 titles,
+      neutral greys, no second hue. Grey = risk, blue = upside: semantic, not
+      decorative (the PwC review's explicit complaint about that deck).
+  ----------------------------------------------------------------------------
+  RESIZE ANATOMY (this page is a diagram, not a picture)
+    One RISK/OPPORTUNITY pair = ONE svg group:
+      <g class="pair" id="p1" transform="translate(0,242)">
+    Its children carry no absolute y — the group translate IS the row centre.
+    Copy/paste that group and set a new translate y (pitch 112px). Nothing else
+    reflows: the column headers, gutter spine and footer are outside the loop.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. 1rem == 1 stage pixel at the current viewport fit, so every
+    rem length is a 1:1 stage-pixel coordinate quoted in MANUAL.md. The SVG
+    overlay maps 0 0 1280 720 onto the stage, so SVG user-units ARE pixels.
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks, zero requests.
+  ============================================================================
+-->
+<style>
+  :root{
+    /* Roles per DESIGN_PLAYBOOK. Hue budget: ONE accent (royal blue) + grey
+       ramp + one lightness of accent. Navy is ink, not a third hue. */
+    --bg:       #FFFFFF;
+    --ink:      #002478;   /* deep navy — titles, risk/opportunity headlines */
+    --accent:   #243CE4;   /* royal blue — THE emphasis colour (upside side) */
+    --accent-1: #C9D0F8;   /* the one lightness of accent: tints, zone fill  */
+    --gray-1:   #23262B;   /* body text                                      */
+    --gray-2:   #4A4F55;   /* secondary text, block headlines                */
+    --gray-3:   #6E767F;   /* source line, axis labels (4.6:1 on white)      */
+    --gray-4:   #A7AEB6;   /* dimmed / unpriced variant                      */
+    --gray-5:   #EDEFF3;   /* neutral fill — risk blocks                     */
+    --gray-6:   #DCE0E6;   /* hairline fills, pill tracks                    */
+    --rule:     #C9CFD4;   /* hairlines                                      */
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  /* Stage = 1280×720, transform-scaled by the root font size. 1rem = 1 px. */
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#101524;                 /* studio backdrop, not part of slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); }
+
+  /* ---- page furniture (HTML, outside the diagram loop) ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:696rem;
+           font:700 11.5rem/1 var(--font-display); letter-spacing:.2rem;
+           text-transform:uppercase; color:var(--gray-2); }
+  .kicker .n{ color:var(--accent); }
+  h1.title{ position:absolute; left:64rem; top:56rem; width:696rem;
+            font:700 27rem/34rem var(--font-display); color:var(--ink);
+            letter-spacing:-.3rem; }
+  h1.title sup{ font-size:12rem; color:var(--accent); }
+
+  /* register-count strip, right of the title (the page's own headline number) */
+  .strip{ position:absolute; right:64rem; top:56rem; width:372rem;
+          display:flex; justify-content:flex-end; gap:26rem; }
+  .strip .cell{ text-align:right; }
+  .strip .fig{ font:700 25rem/1 var(--font-display); color:var(--ink);
+               letter-spacing:-.4rem; }
+  .strip .fig.accent{ color:var(--accent); }
+  .strip .lab{ margin-top:5rem; font:600 8.5rem/1.35 var(--font-body);
+               letter-spacing:.13rem; text-transform:uppercase;
+               color:var(--gray-3); }
+
+  /* ---- diagram overlay: user units == stage pixels ---- */
+  svg.map{ position:absolute; inset:0; width:1280rem; height:720rem;
+           display:block; }
+
+  /* column headers */
+  .hdr{ font-family:var(--font-display); font-size:9.5rem; font-weight:700;
+        letter-spacing:.19rem; text-transform:uppercase; fill:var(--gray-3); }
+  .hdr.sub{ fill:var(--accent); }
+
+  /* pair body — classes are per-role, geometry lives in markup */
+  .risk-box{ fill:var(--gray-5); }
+  .rank{ font-family:var(--font-display); font-size:10.5rem; font-weight:700;
+         fill:#FFFFFF; letter-spacing:.05rem; }
+  .rank-box{ fill:var(--gray-2); }
+  .focus .rank-box{ fill:var(--accent); }
+  .r-head{ font-family:var(--font-body); font-size:12rem; font-weight:700;
+           fill:var(--ink); }
+  .sev{ font-family:var(--font-display); font-size:7.5rem; font-weight:700;
+        letter-spacing:.14rem; fill:var(--gray-2); }
+  .sev-box{ fill:var(--gray-6); }
+
+  .conn{ fill:none; stroke:var(--gray-4); stroke-width:1.6rem; }
+  .conn.focus{ stroke:var(--accent); stroke-width:2rem; }
+  .conn.none{ stroke:var(--gray-4); stroke-dasharray:5 4; }
+  .knot{ fill:var(--bg); stroke:var(--gray-4); stroke-width:1.6rem; }
+  .knot.focus{ fill:var(--accent); stroke:var(--accent); }
+  .lever{ font-family:var(--font-display); font-size:8rem; font-weight:700;
+          letter-spacing:.13rem; text-transform:uppercase; fill:var(--gray-3); }
+  .lever.focus{ fill:var(--accent); }
+
+  .opp-box{ fill:var(--bg); stroke:var(--accent); stroke-width:1.5rem; }
+  .focus .opp-box{ stroke-width:2.2rem; }
+  .o-head{ font-family:var(--font-body); font-size:12rem; font-weight:700;
+           fill:var(--ink); }
+  .o-val{ font-family:var(--font-display); font-size:19rem; font-weight:700;
+          fill:var(--accent); letter-spacing:-.3rem; }
+  .o-cap{ font-family:var(--font-body); font-size:9rem; fill:var(--gray-3); }
+  .none .opp-box{ fill:var(--bg); stroke:var(--gray-4); stroke-dasharray:6 4; }
+  .none .o-head{ fill:var(--gray-3); }
+  .none .o-val{ fill:var(--gray-4); }
+  .none .o-cap{ fill:var(--gray-4); }
+
+  .spine{ stroke:var(--rule); stroke-width:1.5rem; }
+  .hair{ stroke:var(--rule); stroke-width:1rem; }
+
+  /* ---- footer anatomy ---- */
+  .source{ position:absolute; left:64rem; bottom:14rem; max-width:960rem;
+           font:10rem/1.4 var(--font-body); color:var(--gray-3); }
+  .source sup{ font-size:7rem; color:var(--accent); }
+  .pageno{ position:absolute; right:64rem; bottom:14rem;
+           font:700 10rem/1.35 var(--font-body); letter-spacing:.1rem;
+           color:var(--gray-2); }
+  .footrule{ position:absolute; left:64rem; right:64rem; bottom:44rem;
+             height:.1rem; background:var(--rule); }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Risk register with paired opportunities">
+
+  <header>
+    <p class="kicker"><span class="n">04</span> | Risk &amp; opportunity — conversion view</p>
+    <h1 class="title">Three of the four paired risks carry priced upside; two fund their own mitigation<sup>1</sup></h1>
+  </header>
+
+  <!-- register roll-up: the page's own count, not part of the pair loop -->
+  <aside class="strip" aria-label="Register roll-up">
+    <div class="cell"><div class="fig">18</div><div class="lab">risks logged</div></div>
+    <div class="cell"><div class="fig accent">4</div><div class="lab">risks paired</div></div>
+    <div class="cell"><div class="fig">2</div><div class="lab">self-funding</div></div>
+  </aside>
+
+  <!-- ======================================================================
+       THE DIAGRAM. Pair loop only — 4 pairs, row centres y = 242 / 354 / 466
+       / 578 (pitch 112). To add a pair: copy one <g class="pair"> and change
+       its translate y. To drop one: delete the whole group. See MANUAL/FILL.
+       ====================================================================== -->
+  <svg class="map" viewBox="0 0 1280 720" role="img"
+       aria-label="Each risk bracketed to its opportunity">
+
+    <!-- column headers + gutter spine (static frame, do not copy) -->
+    <g class="frame">
+      <text class="hdr" x="64" y="176">Risk — what could go wrong</text>
+      <text class="hdr sub" x="856" y="176">Opportunity — what we can claim</text>
+      <text class="hdr" x="640" y="176" text-anchor="middle">Response lever</text>
+      <line class="spine" x1="640" y1="196" x2="640" y2="628"/>
+      <line class="hair" x1="64" y1="186" x2="1216" y2="186"/>
+    </g>
+
+    <!-- ================= PAIR 1 — FOCUS (accent) ========================
+         translate(0, CENTRE). Block height 92 (centre ±46).
+         Left block x 64..424. Right block x 856..1216. Gutter 640. -->
+    <g class="pair focus" id="p1" transform="translate(0,242)">
+      <!-- risk block -->
+      <rect class="risk-box" x="64" y="-46" width="360" height="92"/>
+      <rect class="rank-box" x="76" y="-38" width="22" height="22"/>
+      <text class="rank" x="87" y="-23" text-anchor="middle">R1</text>
+      <text class="r-head" x="106" y="-16">Talent scarcity in
+        <tspan x="106" dy="15">four key markets</tspan></text>
+      <rect class="sev-box" x="366" y="-38" width="46" height="16"/>
+      <text class="sev" x="389" y="-26" text-anchor="middle">HIGH</text>
+      <text class="sev" x="389" y="10" text-anchor="middle">↑ 3 mo</text>
+      <!-- connector + lever knot -->
+      <path class="conn focus" d="M424 0 H616 M664 0 H856"/>
+      <rect class="knot focus" x="632" y="-8" width="16" height="16"
+            transform="rotate(45 640 0)"/>
+      <text class="lever focus" x="640" y="-24" text-anchor="middle">Automate 3 workflows</text>
+      <!-- opportunity block -->
+      <rect class="opp-box" x="856" y="-46" width="360" height="92"/>
+      <text class="o-head" x="876" y="-18">Release 18 FTE from rework
+        <tspan x="876" dy="15">into client-facing sales roles</tspan></text>
+      <text class="o-val" x="876" y="28">$2.4M
+        <tspan class="o-cap" dx="8">contribution p.a.</tspan></text>
+    </g>
+
+    <!-- ================= PAIR 2 — grey connector, real upside =========== -->
+    <g class="pair" id="p2" transform="translate(0,354)">
+      <rect class="risk-box" x="64" y="-46" width="360" height="92"/>
+      <rect class="rank-box" x="76" y="-38" width="22" height="22"/>
+      <text class="rank" x="87" y="-23" text-anchor="middle">R2</text>
+      <text class="r-head" x="106" y="-16">Policy-admin dependency
+        <tspan x="106" dy="15">on 2 unsupported platforms</tspan></text>
+      <rect class="sev-box" x="366" y="-38" width="46" height="16"/>
+      <text class="sev" x="389" y="-26" text-anchor="middle">HIGH</text>
+      <text class="sev" x="389" y="34" text-anchor="middle">↑ 3 mo</text>
+      <path class="conn" d="M424 0 H616 M664 0 H856"/>
+      <rect class="knot" x="632" y="-8" width="16" height="16"
+            transform="rotate(45 640 0)"/>
+      <text class="lever" x="640" y="-24" text-anchor="middle">Re-host 2 modules</text>
+      <rect class="opp-box" x="856" y="-46" width="360" height="92"/>
+      <text class="o-head" x="876" y="-18">Retire 11% of application
+        <tspan x="876" dy="15">run-rate; cut change failures 40%</tspan></text>
+      <text class="o-val" x="876" y="28">$1.1M
+        <tspan class="o-cap" dx="8">run-rate p.a.</tspan></text>
+    </g>
+
+    <!-- ================= PAIR 3 ======================================== -->
+    <g class="pair" id="p3" transform="translate(0,466)">
+      <rect class="risk-box" x="64" y="-46" width="360" height="92"/>
+      <rect class="rank-box" x="76" y="-38" width="22" height="22"/>
+      <text class="rank" x="87" y="-23" text-anchor="middle">R3</text>
+      <text class="r-head" x="106" y="-16">Rate compression on the
+        <tspan x="106" dy="15">commercial book</tspan></text>
+      <rect class="sev-box" x="366" y="-38" width="46" height="16"/>
+      <text class="sev" x="389" y="-26" text-anchor="middle">MED</text>
+      <text class="sev" x="389" y="34" text-anchor="middle">→ flat</text>
+      <path class="conn" d="M424 0 H616 M664 0 H856"/>
+      <rect class="knot" x="632" y="-8" width="16" height="16"
+            transform="rotate(45 640 0)"/>
+      <text class="lever" x="640" y="-24" text-anchor="middle">Reprice + bundle</text>
+      <rect class="opp-box" x="856" y="-46" width="360" height="92"/>
+      <text class="o-head" x="876" y="-18">Bundle attach lifts commercial
+        <tspan x="876" dy="15">retention 6 pts at 8% lower churn</tspan></text>
+      <text class="o-val" x="876" y="28">+6 pts
+        <tspan class="o-cap" dx="8">retention</tspan></text>
+    </g>
+
+    <!-- ================= PAIR 4 — HONEST VARIANT: no priced upside =======
+         Dashed connector + grey terminal block. Copy this pattern whenever a
+         risk is mitigation-only: it is what stops the page being optimistic. -->
+    <g class="pair none" id="p4" transform="translate(0,578)">
+      <rect class="risk-box" x="64" y="-46" width="360" height="92"/>
+      <rect class="rank-box" x="76" y="-38" width="22" height="22"/>
+      <text class="rank" x="87" y="-23" text-anchor="middle">R4</text>
+      <text class="r-head" x="106" y="-16">Third-party claims
+        <tspan x="106" dy="15">concentration — 1 vendor</tspan></text>
+      <rect class="sev-box" x="366" y="-38" width="46" height="16"/>
+      <text class="sev" x="389" y="-26" text-anchor="middle">MED</text>
+      <text class="sev" x="389" y="34" text-anchor="middle">↑ 6 mo</text>
+      <path class="conn none" d="M424 0 H616 M664 0 H856"/>
+      <rect class="knot" x="632" y="-8" width="16" height="16"
+            transform="rotate(45 640 0)"/>
+      <text class="lever" x="640" y="-24" text-anchor="middle">Dual-source (priced)</text>
+      <rect class="opp-box" x="856" y="-46" width="360" height="92"/>
+      <text class="o-head" x="876" y="-18">Mitigation only — no upside
+        <tspan x="876" dy="15">identified at this horizon</tspan></text>
+      <text class="o-val" x="876" y="28">$240k
+        <tspan class="o-cap" dx="8">cost, no offset</tspan></text>
+    </g>
+  </svg>
+
+  <div class="footrule"></div>
+  <footer>
+    <p class="source">Source: 2027 operating-risk workshop (12 management interviews);
+      exposures management-validated, Sep’26.
+      <sup>1</sup>Likelihood/impact bands per ISO 31010; upside stated pre-contingency.</p>
+    <p class="pageno">7 | RISK &amp; OPPORTUNITY</p>
+  </footer>
+</main>
+</body>
+</html>

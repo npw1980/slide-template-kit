@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>stacked-share-100col — 100% stacked columns with segment share labels + pp-shift band (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  stacked-share-100col  ·  family stacked-share (100% share stack page)
+  Evidence: accenture__accenture_2023_post_parcel_industry_trends_2023 p11
+            (three 100%-stacked columns, segment share labels inside, right-side
+            "+/− pp" share-shift band with arrow stats) and
+            accenture__accenture_the_nbn_effect… p07–p10 (monochrome violet +
+            grey stacks, white claim title, legend chips, NOTE/footer contract).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length is a 1:1 stage-pixel coordinate as MANUAL.md
+  quotes. Inside the inline SVG, viewBox makes 1 user unit == 1 stage px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY (3 columns × 5 segments, each column sums to EXACTLY 100; swap the
+  numbers, not the geometry):
+      segments = ["Mail", "Parcel", "Logistics", "Financial services", "Other"];
+      columns = [
+        { label: "2007", segs: [57, 11,  4, 17, 11] },
+        { label: "2014", segs: [47, 18, 12, 11, 12] },
+        { label: "2021", segs: [36, 31, 18,  7,  8] }
+      ];
+      shift = [                                  // right band, computed by you:
+        { name: "Mail",               delta: -21, fromTo: "57% → 36%" },
+        { name: "Parcel",             delta: +20, fromTo: "11% → 31%" },
+        { name: "Logistics",          delta: +11, fromTo: " 4% → 18%" },
+        { name: "Financial services", delta:  -8, fromTo: "17% →  7%" },
+        { name: "Other",              delta:  -2, fromTo: "11% →  8%" }
+      ];
+    Geometry rules (values are %, linear, zero-based, 100%-normalised):
+      segment height px = round(value × 3.6)          (100% -> 360px column)
+      stack BOTTOM-UP in segment order: Mail sits on the baseline y = 560,
+        each next segment sits on the previous one: y_next = y_prev − h_prev.
+        Last (top) segment: h = 360 − sum(previous)  -> closes the column at
+        exactly y = 200 regardless of rounding drift.
+      column c (0-2): x = 132 + c × 188, width 108, centre x = 186 + c × 188.
+      inside label: centred in column, y = seg_y + h/2 + 4; use it when
+        value >= 6 (>= ~22px band). Below 6: leader line out of the column's
+        right edge + external "v%" label (see 2007·Logistics for the pattern).
+      shift band rows i (0-4): triangle x 712-724, numeral x 730, name/lines
+        x 830; row i centred on y = 232 + i × 66; hairline under each row.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK: --accent emphasis, --ink text, --gray-*
+     secondary + "the rest", --rule hairlines, --bg ground.
+     Monochrome-violet system; hexes from reviews/accenture__accenture_the_
+     nbn_effect…md colour section (deep #6E00C9/#7B1FF0, mid #A45CF0, tints
+     #C9A6F2/#E7D9F8, greys #7D7D7D/#B8B8B8, near-black ink #1A1A1A).
+     Grey is RESERVED for the residual/"the rest" series, never decoration. */
+  :root{
+    --bg:         #FFFFFF;
+    --ink:        #1A1A1A;   /* body text, title */
+    --accent:     #8E24EA;   /* brand purple — legend / emphasis / markers */
+    --accent-ink: #6E00C9;   /* deepest purple: keyword, +pp numerals */
+    --gray-1:     #7D7D7D;   /* secondary text, −pp numerals, captions */
+    --gray-2:     #B8B8B8;   /* "Financial services" series fill */
+    --gray-3:     #E6E6E6;   /* "Other" series fill (residual) */
+    --rule:       #E3E3E3;   /* hairlines */
+    /* segment ramp — ONE hue + greys for the residual series */
+    --seg-mail: #6E00C9;   /* deep accent   (hero / largest at start)   */
+    --seg-parcel: #A45CF0; /* mid accent                                */
+    --seg-log:  #C9A6F2;   /* light accent (the growth story)           */
+    --seg-fin:  #B8B8B8;   /* grey — displaced legacy series            */
+    --seg-oth:  #E6E6E6;   /* grey-3 — residual "other"                 */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#141019; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+  /* ---- title zone ---- */
+  .kicker{ position:absolute; left:64rem; top:34rem; width:1152rem; font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent-ink); font-weight:700; }
+  .kicker sup{ font-size:11rem; color:var(--accent-ink); }
+  .title{ position:absolute; left:64rem; top:62rem; width:1152rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700; line-height:36rem;
+          letter-spacing:-.6rem; max-height:72rem; overflow:hidden; }  /* 2-line slot = MBB gate */
+  .title em{ font-style:normal; color:var(--accent-ink); }
+  .rule-top{ position:absolute; left:64rem; top:138rem; width:1152rem; height:1rem; background:var(--rule); }
+  /* ---- chart: one inline SVG over the stage ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .seg-mail{ fill:var(--seg-mail); } .seg-parcel{ fill:var(--seg-parcel); } .seg-log{ fill:var(--seg-log); }
+  .seg-fin{ fill:var(--seg-fin); }   .seg-oth{ fill:var(--seg-oth); stroke:#FFFFFF; stroke-width:1 }
+  .seg{ stroke:#FFFFFF; stroke-width:1.6 }
+  .lbl-w{ font-size:11px; font-weight:700; fill:#FFFFFF; text-anchor:middle }
+  .lbl-d{ font-size:11px; font-weight:700; fill:var(--ink);  text-anchor:middle }  /* on light tints/greys */
+  .lbl-x{ font-size:10px; font-weight:700; fill:var(--gray-1) }                    /* external, with leader */
+  .leader{ stroke:var(--gray-2); stroke-width:1 }
+  .axis{ stroke:#333333; stroke-width:1.6 }
+  .xl{ font-size:12px; fill:var(--ink); text-anchor:middle }
+  .band-sep{ stroke:var(--rule); stroke-width:1 }
+  .tri-up{ fill:var(--accent-ink) } .tri-dn{ fill:var(--gray-2) }
+  .num-pos{ font-size:26px; font-weight:700; fill:var(--accent-ink) }
+  .num-neg{ font-size:26px; font-weight:700; fill:var(--gray-1) }
+  .num-unit{ font-size:11px; font-weight:700 }
+  .band-name{ font-size:13px; font-weight:700; fill:var(--ink) }
+  .band-ft{ font-size:11px; fill:var(--gray-1) }
+  .band-cap{ font-size:12px; font-weight:700; fill:var(--ink) }
+  .divider{ stroke:var(--rule); stroke-width:1 }
+  /* ---- legend ---- */
+  .legend{ position:absolute; left:96rem; top:604rem; display:flex; gap:26rem; font-size:11rem; color:var(--ink); }
+  .legend .sw{ display:inline-block; width:11rem; height:11rem; margin-right:7rem; vertical-align:-1px; border:1px solid rgba(0,0,0,.08); }
+  .base-note{ position:absolute; left:96rem; top:628rem; width:1152rem; font-size:10rem; color:var(--gray-1); }
+  .base-note sup{ font-size:7.5rem; }
+  /* ---- footer ---- */
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:16rem; display:flex; justify-content:space-between; font-size:10rem; color:var(--gray-1); }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+  .footer sup{ font-size:7.5rem; color:var(--accent-ink); }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="Three 100% stacked vertical columns, 2007 2014 2021, of a diversified postal operator's revenue mix across Mail, Parcel, Logistics, Financial services and Other, with segment share labels inside and a right-hand band of percentage-point share shifts">
+
+  <!-- slot 1 · kicker (framing line, one keyword phrase emphasised) -->
+  <div class="kicker">Revenue mix of diversified postal operators¹ — winners were decided by <b>who moved into parcel &amp; logistics</b></div>
+
+  <!-- slot 2 · claim title (≤15 words, 2-line slot — MBB gate) -->
+  <div class="title">Mail Share Has Fallen 21 Points Since 2007 — <em>Parcel and Logistics Only Partly Offset It</em></div>
+
+  <div class="rule-top"></div>
+
+  <!-- ===================== CHART (inline SVG) =====================
+       Data arrays live in the file header. Per column, 5 stacked <rect>s
+       bottom-up in segment order (Mail at baseline y=560 -> Other on top,
+       column top y=200). Inside label per segment >= 6%; below that,
+       external label + leader line (see 2007 · Logistics 4%). -->
+  <svg class="chart" viewBox="0 0 1280 720">
+
+    <!-- baseline -->
+    <line class="axis" x1="96" y1="560" x2="660" y2="560"/>
+
+    <!-- column 0 · 2007 : segs [57, 11, 4, 17, 11] -->
+    <g>
+      <rect class="seg seg-mail"   x="132" y="355" width="108" height="205"/>
+      <rect class="seg seg-parcel" x="132" y="315" width="108" height="40"/>
+      <rect class="seg seg-log"    x="132" y="301" width="108" height="14"/>
+      <rect class="seg seg-fin"    x="132" y="240" width="108" height="61"/>
+      <rect class="seg seg-oth"    x="132" y="200" width="108" height="40"/>
+      <text class="lbl-w" x="186" y="462">57%</text>
+      <text class="lbl-w" x="186" y="339">11%</text>
+      <!-- Logistics 4% -> external leader label -->
+      <line class="leader" x1="240" y1="308" x2="258" y2="308"/>
+      <text class="lbl-x" x="262" y="312">4%</text>
+      <text class="lbl-d" x="186" y="275">17%</text>
+      <text class="lbl-d" x="186" y="224">11%</text>
+      <text class="xl" x="186" y="584">2007</text>
+    </g>
+
+    <!-- column 1 · 2014 : segs [47, 18, 12, 11, 12] -->
+    <g>
+      <rect class="seg seg-mail"   x="320" y="391" width="108" height="169"/>
+      <rect class="seg seg-parcel" x="320" y="326" width="108" height="65"/>
+      <rect class="seg seg-log"    x="320" y="283" width="108" height="43"/>
+      <rect class="seg seg-fin"    x="320" y="243" width="108" height="40"/>
+      <rect class="seg seg-oth"    x="320" y="200" width="108" height="43"/>
+      <text class="lbl-w" x="374" y="479">47%</text>
+      <text class="lbl-w" x="374" y="363">18%</text>
+      <text class="lbl-d" x="374" y="309">12%</text>
+      <text class="lbl-d" x="374" y="267">11%</text>
+      <text class="lbl-d" x="374" y="225">12%</text>
+      <text class="xl" x="374" y="584">2014</text>
+    </g>
+
+    <!-- column 2 · 2021 : segs [36, 31, 18, 7, 8] -->
+    <g>
+      <rect class="seg seg-mail"   x="508" y="430" width="108" height="130"/>
+      <rect class="seg seg-parcel" x="508" y="318" width="108" height="112"/>
+      <rect class="seg seg-log"    x="508" y="253" width="108" height="65"/>
+      <rect class="seg seg-fin"    x="508" y="228" width="108" height="25"/>
+      <rect class="seg seg-oth"    x="508" y="200" width="108" height="28"/>
+      <text class="lbl-w" x="562" y="499">36%</text>
+      <text class="lbl-w" x="562" y="378">31%</text>
+      <text class="lbl-d" x="562" y="289">18%</text>
+      <text class="lbl-d" x="562" y="245">7%</text>
+      <text class="lbl-d" x="562" y="217">8%</text>
+      <text class="xl" x="562" y="584">2021</text>
+    </g>
+
+    <!-- divider between exhibit and shift band -->
+    <line class="divider" x1="682" y1="164" x2="682" y2="640"/>
+
+    <!-- ===== slot: shift band (right) · "what moved, in pp" ===== -->
+    <text class="band-cap" x="712" y="196">Share shift, 2007 → 2021 (percentage points)</text>
+    <line class="band-sep" x1="712" y1="206" x2="1216" y2="206"/>
+
+    <!-- row 0 · Mail −21 -->
+    <g>
+      <path class="tri-dn" d="M 712 226 L 724 226 L 718 238 Z"/>
+      <text class="num-neg" x="730" y="240">−21<tspan class="num-unit" fill="#7D7D7D"> pp</tspan></text>
+      <text class="band-name" x="830" y="235">Mail</text>
+      <text class="band-ft" x="830" y="252">57% → 36%</text>
+      <line class="band-sep" x1="712" y1="264" x2="1216" y2="264"/>
+    </g>
+    <!-- row 1 · Parcel +20 (emphasis) -->
+    <g>
+      <path class="tri-up" d="M 712 298 L 718 286 L 724 298 Z"/>
+      <text class="num-pos" x="730" y="306">+20<tspan class="num-unit" fill="#6E00C9"> pp</tspan></text>
+      <text class="band-name" x="830" y="301">Parcel</text>
+      <text class="band-ft" x="830" y="318">11% → 31%</text>
+      <line class="band-sep" x1="712" y1="330" x2="1216" y2="330"/>
+    </g>
+    <!-- row 2 · Logistics +11 (emphasis) -->
+    <g>
+      <path class="tri-up" d="M 712 364 L 718 352 L 724 364 Z"/>
+      <text class="num-pos" x="730" y="372">+11<tspan class="num-unit" fill="#6E00C9"> pp</tspan></text>
+      <text class="band-name" x="830" y="367">Logistics</text>
+      <text class="band-ft" x="830" y="384">4% → 18%</text>
+      <line class="band-sep" x1="712" y1="396" x2="1216" y2="396"/>
+    </g>
+    <!-- row 3 · Financial services −8 -->
+    <g>
+      <path class="tri-dn" d="M 712 430 L 724 430 L 718 442 Z"/>
+      <text class="num-neg" x="730" y="438">−8<tspan class="num-unit" fill="#7D7D7D"> pp</tspan></text>
+      <text class="band-name" x="830" y="433">Financial services</text>
+      <text class="band-ft" x="830" y="450">17% → 7%</text>
+      <line class="band-sep" x1="712" y1="462" x2="1216" y2="462"/>
+    </g>
+    <!-- row 4 · Other −2 -->
+    <g>
+      <path class="tri-dn" d="M 712 496 L 724 496 L 718 508 Z"/>
+      <text class="num-neg" x="730" y="504">−2<tspan class="num-unit" fill="#7D7D7D"> pp</tspan></text>
+      <text class="band-name" x="830" y="499">Other</text>
+      <text class="band-ft" x="830" y="516">11% → 8%</text>
+    </g>
+  </svg>
+
+  <!-- slot · legend (segment order mirrors the stack, bottom→top) -->
+  <div class="legend">
+    <span><i class="sw" style="background:var(--seg-mail)"></i>Mail</span>
+    <span><i class="sw" style="background:var(--seg-parcel)"></i>Parcel</span>
+    <span><i class="sw" style="background:var(--seg-log)"></i>Logistics</span>
+    <span><i class="sw" style="background:var(--seg-fin)"></i>Financial services</span>
+    <span><i class="sw" style="background:var(--seg-oth)"></i>Other</span>
+  </div>
+
+  <!-- slot · base / n note under the legend -->
+  <div class="base-note">Base: FY revenue, $B, of 46 diversified postal operators across 31 markets, indexed to 100 per column<sup>1</sup></div>
+
+  <!-- slot · footer: source bottom-left, running head bottom-right -->
+  <div class="footer">
+    <span>Source: Accenture Research analysis of company annual reports &amp; investor disclosures, FY07–FY21<sup>1</sup></span>
+    <span class="pagenum">11 | INDUSTRY EVOLUTION</span>
+  </div>
+</div>
+</body>
+</html>

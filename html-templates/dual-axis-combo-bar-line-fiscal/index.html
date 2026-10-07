@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>dual-axis-combo-bar-line-fiscal — crimson % bars (left) + N$ line (right), fiscal-year qualifiers (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  dual-axis-combo-bar-line-fiscal  ·  family dual-axis-combo
+  Evidence: pwc_strategy__pwc_namibia_national_budget_2024_25_for_our_humanity_now_s_t
+            p05/p06 (sw_sheets/..._s00.jpg — "Interest Repayment" exhibit: crimson
+            columns with 9–15% labels + black line "interest payments and borrowing
+            related charges", N$ millions left axis, % right axis, fiscal-year x-axis
+            with Actual/Estimate/Budget qualifiers). Review palette: crimson
+            #C4172C–#D6006C dominant series, amber #E87722 / yellow #F8C820 for
+            highlight/second tier, charcoal #3E474D, near-black #141A1E; footer
+            convention "deck tag left; month + page number right"; small triangle
+            motif cluster top-right as brand echo. PwC prints value labels on nearly
+            every bar (review §charts) — kept here in reduced weight; the last two
+            (projected) bars are amber = the same series, projected flag, not a
+            second series.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280, 100vh/720)} maps 1rem == 1
+  STAGE PIXEL, so every length is a 1:1 stage-pixel coordinate and the inline
+  SVG (viewBox 0 0 1280 720) uses plain numbers == px.
+  ----------------------------------------------------------------------------
+  DATA ARRAYS (8 fiscal years 2017/18..2024/25; swap NUMBERS, not geometry):
+      fyears = ["2017/18","2018/19","2019/20","2020/21","2021/22","2022/23","2023/24E","2024/25B"];
+      bars   = [9, 10, 10, 10, 12, 14, 15, 15];        // % of expense budget — LEFT axis
+      line   = [9800, 10400, 11800, 13600, 14200, 14800, 15100, 15900]; // N$ mn — RIGHT axis
+    Geometry (both linear, zero-based, shared gridlines):
+      bar centres: cx(k) = 174 + k × 127.5         (k = 0..7 → 174 .. 1066.5, bars w=64 fully inside plot 110..1130)
+      bar top:     y = 565 − pct × 22.5           (left axis 0→16%, step 2%)
+      line points: (cx(k), 565 − $mn × 0.0225)    (right axis 0→16,000 N$m)
+      fiscal qualifier words (Actual/Estimate/Budget) sit in a SECOND x-line —
+      the projection boundary is stated in words AND in fill (amber bars), a
+      PwC habit; keep both, but the words are authoritative.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts. No images, no
+  webfonts, no @import, no JavaScript. Nothing here makes a network request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     PwC Namibia house palette (measured hexes in review §palette): crimson is
+     THE ONE ACCENT (the bars); amber appears only as the projected-years fill
+     (a flag, not a series — same value, same story); the line is near-black
+     (an axis reading, not a hue); grays carry context. Two-axis colour rule:
+     % labels on bars are crimson-tinted = "left axis", line end-label is black
+     = "right axis". */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #141A1E;    /* line series + value text */
+    --accent:      #C4172C;    /* PwC crimson — the bars, the one hue */
+    --accent-deep: #8E1221;    /* darker crimson: emphasised bar label */
+    --amber:       #F8C820;    /* projected years FLAG (not a series) */
+    --amber-deep:  #B48C00;    /* amber text tier for the flag legend */
+    --gray-1:      #8A8D91;    /* secondary text, axis labels, source */
+    --gray-2:      #B7BABD;    /* lightest tier, projected x-qualifiers */
+    --rule:        #E6E7E9;    /* gridlines, hairlines */
+    --axis:        #9DA0A3;    /* baseline / y-axis lines */
+    --charcoal:    #3E474D;    /* neutral series role (unused here — kept for swaps) */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#10141c; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+
+  /* ---- title zone ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1000rem; font-size:15rem; color:var(--gray-1); line-height:20rem; }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  .kicker sup{ font-size:10.5rem; color:var(--accent); }
+  .title{ position:absolute; left:64rem; top:64rem; width:1080rem;
+          font-family:var(--font-display); font-size:28rem; font-weight:700; line-height:36rem;
+          letter-spacing:-.6rem; max-height:72rem; overflow:hidden; }   /* 2-line slot = MBB gate */
+  .title em{ font-style:normal; color:var(--accent); }                 /* operative clause */
+
+  /* ---- brand echo: triangle motif cluster, top-right (review §brand echo) ---- */
+  .tri{ position:absolute; right:64rem; top:36rem; }
+
+  .rule-top{ position:absolute; left:64rem; top:138rem; width:1152rem; height:1rem; background:var(--rule); }
+
+  /* ---- exhibit: ONE inline SVG over the stage, 1 unit = 1 px ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .grid{ stroke:var(--rule); stroke-width:1; }
+  .axis{ stroke:var(--axis); stroke-width:1.4; }
+  .axlab{ font-size:12rem; fill:var(--gray-1); }
+  .axlab.l2{ fill:var(--gray-2); }
+  .xlab{ font-size:13rem; fill:var(--ink); text-anchor:middle; font-weight:700; }
+  .xq{ font-size:9.5rem; fill:var(--gray-1); text-anchor:middle; font-style:italic; }
+  .xq.proj{ fill:var(--amber-deep); }
+  .bar{ fill:var(--accent); }
+  .bar.proj{ fill:var(--amber); }                      /* projected year fill = FLAG */
+  /* bar labels print INSIDE the bar top (white) — the right-axis line runs in the
+     corridor just above the bars, so printed labels clear it; emphasis = size/weight */
+  .barlab{ font-size:11.5rem; fill:#fff; text-anchor:middle; font-weight:700; }
+  .barlab.now{ font-size:14rem; }
+  .barlab.d{ fill:var(--ink); }   /* ink labels on AMBER bars — white on amber fails contrast */
+  .line{ stroke:var(--ink); stroke-width:2.6; fill:none; }
+  .dot{ fill:#fff; stroke:var(--ink); stroke-width:2; }
+  .dot.now{ stroke-width:2.8; }
+  .vlab{ font-size:15rem; font-weight:700; fill:var(--ink); }   /* line label = ink = right axis */
+  .nlab{ font-size:11rem; fill:var(--gray-1); }
+  .leg{ font-size:12.5rem; fill:var(--gray-1); }
+  .leg i{ font-style:normal; color:var(--amber-deep); }
+  .callout{ font-size:12.5rem; fill:#4A5568; }
+  .lead{ stroke:var(--gray-1); stroke-width:1.2; stroke-dasharray:3 3; }
+
+  /* ---- footer anatomy (PwC: source left; month + page right) ---- */
+  .source{ position:absolute; left:64rem; bottom:26rem; width:960rem; font-size:11.5rem; color:var(--gray-1); line-height:16rem; }
+  .source sup{ font-size:8.5rem; }
+  .runhead{ position:absolute; right:64rem; bottom:26rem; font-size:12rem; font-weight:700;
+            color:var(--gray-1); letter-spacing:.3rem; }
+  .runhead b{ color:var(--accent); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>Fiscal 2017/18–2024/25:</b> interest as % of expense budget (left axis) vs interest payments, N$ millions (right axis), nominal<sup>1</sup></div>
+  <div class="title">Debt service now takes 15 cents of every rand spent —<br><em>the interest bill, not development, sets the budget</em></div>
+
+  <!-- brand echo: three small triangles, firm motif -->
+  <svg class="tri" width="58" height="17" viewBox="0 0 58 17">
+    <polygon points="0,15 6,1 12,15" fill="var(--gray-2)"/>
+    <polygon points="21,15 27,1 33,15" fill="var(--accent)"/>
+    <polygon points="43,15 49,1 55,15" fill="var(--amber)"/>
+  </svg>
+  <div class="rule-top"></div>
+
+  <svg class="chart" viewBox="0 0 1280 720" role="img" aria-label="Dual-axis combo: crimson columns for interest as percent of expense budget on the left axis, black line for interest payments in N$ millions on the right axis, fiscal years 2017/18 to 2024/25">
+    <!-- shared gridlines every 2% (= N$2,000mn) : y = 565 − v × 22.5 / 180 -->
+    <line class="grid" x1="110" y1="520" x2="1130" y2="520"/>
+    <line class="grid" x1="110" y1="475" x2="1130" y2="475"/>
+    <line class="grid" x1="110" y1="430" x2="1130" y2="430"/>
+    <line class="grid" x1="110" y1="385" x2="1130" y2="385"/>
+    <line class="grid" x1="110" y1="340" x2="1130" y2="340"/>
+    <line class="grid" x1="110" y1="295" x2="1130" y2="295"/>
+    <line class="grid" x1="110" y1="250" x2="1130" y2="250"/>
+    <line class="grid" x1="110" y1="205" x2="1130" y2="205"/>
+
+    <!-- LEFT axis: % of expense budget -->
+    <line class="axis" x1="110" y1="205" x2="110" y2="565"/>
+    <line class="axis" x1="110" y1="565" x2="1130" y2="565"/>
+    <text class="axlab" x="98" y="569" text-anchor="end">0%</text>
+    <text class="axlab" x="98" y="524" text-anchor="end">2%</text>
+    <text class="axlab" x="98" y="479" text-anchor="end">4%</text>
+    <text class="axlab" x="98" y="434" text-anchor="end">6%</text>
+    <text class="axlab" x="98" y="389" text-anchor="end">8%</text>
+    <text class="axlab" x="98" y="344" text-anchor="end">10%</text>
+    <text class="axlab" x="98" y="299" text-anchor="end">12%</text>
+    <text class="axlab" x="98" y="254" text-anchor="end">14%</text>
+    <text class="axlab" x="98" y="209" text-anchor="end">16%</text>
+
+    <!-- RIGHT axis: N$ millions -->
+    <line class="axis" x1="1130" y1="205" x2="1130" y2="565"/>
+    <text class="axlab l2" x="1142" y="569">0</text>
+    <text class="axlab l2" x="1142" y="524">2,000</text>
+    <text class="axlab l2" x="1142" y="479">4,000</text>
+    <text class="axlab l2" x="1142" y="434">6,000</text>
+    <text class="axlab l2" x="1142" y="389">8,000</text>
+    <text class="axlab l2" x="1142" y="344">10,000</text>
+    <text class="axlab l2" x="1142" y="299">12,000</text>
+    <text class="axlab l2" x="1142" y="254">14,000</text>
+    <text class="axlab l2" x="1142" y="209">16,000</text>
+    <text class="axlab" x="1130" y="192" font-size="11" text-anchor="middle" fill="var(--gray-1)">N$ millions</text>
+
+    <!-- x-axis: fiscal years (bold) + qualifiers (italic, second line) -->
+    <text class="xlab" x="174"   y="606">2017/18</text><text class="xq"     x="174"   y="622">Actual</text>
+    <text class="xlab" x="301.5" y="606">2018/19</text><text class="xq"     x="301.5" y="622">Actual</text>
+    <text class="xlab" x="429"   y="606">2019/20</text><text class="xq"     x="429"   y="622">Actual</text>
+    <text class="xlab" x="556.5" y="606">2020/21</text><text class="xq"     x="556.5" y="622">Actual</text>
+    <text class="xlab" x="684"   y="606">2021/22</text><text class="xq"     x="684"   y="622">Actual</text>
+    <text class="xlab" x="811.5" y="606">2022/23</text><text class="xq"     x="811.5" y="622">Actual</text>
+    <text class="xlab" x="939"   y="606">2023/24</text><text class="xq proj" x="939"   y="622">Estimate</text>
+    <text class="xlab" x="1066.5" y="606">2024/25</text><text class="xq proj" x="1066.5" y="622">Budget</text>
+
+    <!-- COLUMNS: interest as % of expense budget. crimson; projected years AMBER (flag).
+         y = 565 − pct×22.5 ; w=64 centred on cx(k)=174+k×127.5 -->
+    <rect class="bar"      x="142"  y="362.5" width="64" height="202.5"/>
+    <rect class="bar"      x="269.5" y="340.0" width="64" height="225.0"/>
+    <rect class="bar"      x="397"  y="340.0" width="64" height="225.0"/>
+    <rect class="bar"      x="524.5" y="340.0" width="64" height="225.0"/>
+    <rect class="bar"      x="652"  y="295.0" width="64" height="270.0"/>
+    <rect class="bar"      x="779.5" y="250.0" width="64" height="315.0"/>
+    <rect class="bar proj" x="907"  y="227.5" width="64" height="337.5"/>
+    <rect class="bar proj" x="1034.5" y="227.5" width="64" height="337.5"/>
+
+    <!-- value labels INSIDE bar tops (white, clear of the line corridor); final bar larger -->
+    <text class="barlab" x="174"   y="380">9%</text>
+    <text class="barlab" x="301.5" y="357">10%</text>
+    <text class="barlab" x="429"   y="357">10%</text>
+    <text class="barlab" x="556.5" y="357">10%</text>
+    <text class="barlab" x="684"   y="312">12%</text>
+    <text class="barlab" x="811.5" y="267">14%</text>
+    <text class="barlab d" x="939"   y="244.5">15%</text>
+    <text class="barlab d now" x="1066.5" y="245.5">15%</text>
+
+    <!-- LINE: interest payments, N$ millions — ink = reads against RIGHT axis -->
+    <polyline class="line" points="174,344.5 301.5,331.0 429,299.5 556.5,259.0 684,245.5 811.5,232.0 939,225.3 1066.5,207.3"/>
+    <circle class="dot"     cx="174"   cy="344.5" r="3.5"/>
+    <circle class="dot"     cx="301.5" cy="331.0" r="3.5"/>
+    <circle class="dot"     cx="429"   cy="299.5" r="3.5"/>
+    <circle class="dot"     cx="556.5" cy="259.0" r="3.5"/>
+    <circle class="dot"     cx="684"   cy="245.5" r="3.5"/>
+    <circle class="dot"     cx="811.5" cy="232.0" r="3.5"/>
+    <circle class="dot"     cx="939"   cy="225.3" r="3.5"/>
+    <circle class="dot now" cx="1066.5" cy="207.3" r="4.5"/>
+
+    <!-- line end label (right axis, ink). Unit NOT repeated here — the axis head "N$ millions" owns it. -->
+    <text class="vlab" x="1066" y="190" text-anchor="middle">15,900</text>
+
+    <!-- ONE annotation: the 2021/22 step change -->
+    <line class="lead" x1="684" y1="245.5" x2="602" y2="184"/>
+    <text class="callout" x="452" y="176">2021/22: capped interest rates end —</text>
+    <text class="callout" x="452" y="193">the first year the bill outgrows revenue</text>
+
+    <!-- legend row under the chart -->
+    <rect x="110" y="648" width="13" height="13" fill="var(--accent)"/>
+    <text class="leg" x="130" y="659">Interest as % of expense budget (left axis)</text>
+    <line x1="386" y1="654" x2="412" y2="654" stroke="var(--ink)" stroke-width="2.6"/>
+    <circle cx="399" cy="654" r="3.5" fill="#fff" stroke="var(--ink)" stroke-width="2"/>
+    <text class="leg" x="419" y="659">Interest payments and borrowing charges, N$m (right axis)</text>
+    <rect x="870" y="648" width="13" height="13" fill="var(--amber)"/>
+    <text class="leg" x="890" y="659"><i>Estimate / Budget years</i></text>
+  </svg>
+
+  <div class="source">Source: Republic of Namibia Appropriation Statements 2024/25 and Medium-Term Budget Policy Statement; PwC Namibia analysis, fiscal-year basis, nominal N$ millions. Interest payments include borrowing-related charges and are net of interest income received.<sup>1</sup> 2023/24 = revised estimate, 2024/25 = budget appropriation (not actual).</div>
+  <div class="runhead"><b>PwC Namibia</b> · February 2024 | 5</div>
+
+</div>
+</body>
+</html>

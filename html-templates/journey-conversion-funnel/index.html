@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>journey-conversion-funnel — stage funnel: proportional stage widths + retention rail (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  journey-conversion-funnel  ·  family journey
+  Evidence (see MANUAL.md -> SOURCE):
+    accenture__accenture_accelerating_global_companies_toward_net_zero_by_2
+    p39 "G2000 SAMPLE" (sw_sheets/accenture__accenture_accelerating_global_
+    companies_toward_net_zero_by_2_s03.jpg, sheet index floor(39/10)=3,
+    5col x 2row row-major -> row 2 col 4): a cascade of stage definition
+    boxes each carrying its own n=, drop-off counts printed off the spine,
+    one stage recoloured for emphasis, methodology prose beside it. Catalog
+    corroboration: S0018 funnel + callout arrows (corpus/sheets/sheet_002.jpg
+    frame 8), S0257 layered funnel (sheet_026.jpg), S0266 funnel-to-target
+    (sheet_027.jpg).
+  ----------------------------------------------------------------------------
+  THE ONE ENCODING: stage WIDTH. Each stage is one <rect> whose width is
+  proportional to that stage's population, linear and zero-based, centred on
+  the funnel axis x=414. Height and pitch are FIXED furniture and carry no
+  number, so swapping numbers moves widths only:
+      v1   = stages[0].v                    (the base, always 100%)
+      w(i) = round( v(i) / v1 * 640 )       640 = maximum stage width
+      x(i) = 414 - w(i)/2
+      y(i) = 196 + i*104                    (196/300/404/508),  h = 84
+  Retention lives in the 20px gaps in a fixed column at x=500 — never inside
+  a narrow bar and never at a variable x:
+      gapCentre(i) = y(i) + 84 + 10         290 / 394 / 498
+      chip(i)      = v(i+1)/v(i)  as "24.8%"      (bold, ink)
+      loss(i)      = v(i+1)-v(i)  as "-965,400"   (9.5px, grey)
+  Labels: inside the bar when w >= 150, otherwise right of the bar at
+  x = x(i)+w(i)+12 (two stages here). The right rail (x 780..1216) restates
+  the SAME retention percentages with a benchmark delta; one number per row.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts, zero network calls,
+  no JavaScript. 1rem == 1 stage pixel; SVG user units == stage px.
+  ============================================================================
+-->
+<style>
+  :root{
+    /* Palette ruling, DESIGN_PLAYBOOK line 57: deep navy ink + ONE accent +
+       grey ramp. The source deck's purple/violet gradient is deliberately NOT
+       ported (one-emphasis-colour rule); #2251FF is the kit's default accent. */
+    --bg:      #FFFFFF;
+    --ink:     #051C2C;   /* titles + primary numerals                       */
+    --accent:  #2251FF;   /* THE ONE emphasis colour — one stage + its chips  */
+    --accent-1:#8FA5FF;   /* the single lightness of accent allowed           */
+    --gray-1:  #2D2D2D;   /* body text / dark neutral fill                   */
+    --gray-2:  #464646;   /* kicker, rail labels                             */
+    --gray-3:  #7D7D7D;   /* notes, source line, dimmed labels               */
+    --gray-4:  #DEDEDE;   /* neutral fill for the "rest" of the funnel        */
+    --gray-5:  #F2F4F6;   /* rail wash                                        */
+    --rule:    #C7CDD3;   /* hairlines, bar outlines, ticks                  */
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, Calibri, "Helvetica Neue", "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }   /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#101524;                 /* studio backdrop, not part of the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); }
+  .layer{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  /* ---- page furniture ---- */
+  .kicker{ position:absolute; left:64rem; top:34rem; width:1152rem;
+           font:600 12rem/1 var(--font-display); letter-spacing:.2rem;
+           text-transform:uppercase; color:var(--gray-2); }
+  .kicker .n{ color:var(--accent); font-weight:700; }
+  .kicker .dim{ color:var(--gray-3); letter-spacing:.12rem; }
+
+  h1.title{ position:absolute; left:64rem; top:56rem; width:1152rem;
+            font:700 27rem/35rem var(--font-display); color:var(--ink);
+            letter-spacing:-.2rem; }
+  h1.title sup{ font-size:12rem; color:var(--gray-2); }
+
+  .lead{ position:absolute; left:64rem; top:102rem; width:1152rem;
+         font:700 13rem/17rem var(--font-body); color:var(--gray-1); }
+  .lead b{ color:var(--accent); }
+
+  .base{ position:absolute; left:64rem; bottom:52rem; width:1152rem;
+         font:10rem/14rem var(--font-body); color:var(--gray-3); }
+  .base b{ color:var(--gray-1); font-weight:700; }
+
+  .source{ position:absolute; left:64rem; bottom:16rem; max-width:980rem;
+           font:10rem/14rem var(--font-body); color:var(--gray-3); }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:16rem;
+           font:700 10rem/1 var(--font-body); letter-spacing:.1rem; color:var(--gray-2); }
+
+  /* ---- svg text roles ---- */
+  .stageName{ font:700 11rem var(--font-display); letter-spacing:.11em;
+              text-transform:uppercase; fill:var(--gray-2); }
+  .stageNum{ font:700 26rem var(--font-display); fill:var(--ink); letter-spacing:-.4px; }
+  .stageSub{ font:10rem var(--font-body); fill:var(--gray-3); }
+  .stageSub.ink{ fill:var(--gray-1); }
+  .chipCap{ font:600 9.5rem var(--font-display); letter-spacing:.14em;
+            text-transform:uppercase; fill:var(--gray-3); }
+  .chipTxt{ font:700 12.5rem var(--font-body); fill:var(--ink); }
+  .chipTxt.hi{ fill:var(--accent); }
+  .chipLoss{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+  .railCap{ font:600 9.5rem var(--font-display); letter-spacing:.14em;
+            text-transform:uppercase; fill:var(--gray-3); }
+  .railCap.hi{ fill:var(--accent); }
+  .railNum{ font:700 21rem var(--font-display); fill:var(--gray-2); letter-spacing:-.4px; }
+  .railNum.hi{ fill:var(--accent); }
+  .railName{ font:700 11rem var(--font-body); fill:var(--gray-1); }
+  .railDelta{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+  .railDelta.hi{ fill:var(--accent); font-weight:700; }
+  .noteT{ font:700 10rem var(--font-display); letter-spacing:.1em;
+          text-transform:uppercase; fill:var(--accent); }
+  .note{ font:9.5rem var(--font-body); fill:var(--gray-1); }
+  .footNote{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Four-stage customer journey funnel with stage-to-stage retention and a benchmark rail">
+
+  <header>
+    <p class="kicker"><span class="n">14</span><span class="dim"> | Customer journey — awareness to purchase</span></p>
+    <h1 class="title">The journey is lost between consideration and trial, not at awareness<sup>1</sup></h1>
+    <p class="lead">Reach converts to consideration in line with category; only <b>27.1%</b> of considerers ever trial — 2.1pp under benchmark, and the only gap worth a plan.</p>
+  </header>
+
+  <svg class="layer" viewBox="0 0 1280 720" role="img"
+       aria-label="Four-stage funnel: awareness 1,284,000, consideration 318,600, trial 86,400, purchase 41,900; retention chips in the gaps; benchmark rail on the right">
+    <defs>
+      <marker id="drop" markerWidth="9" markerHeight="9" refX="4.4" refY="6" orient="auto"
+              markerUnits="userSpaceOnUse">
+        <path d="M1 1.4 L7.8 1.4 L4.4 6.2 Z" fill="var(--rule)"/>
+      </marker>
+      <marker id="dropA" markerWidth="9" markerHeight="9" refX="4.4" refY="6" orient="auto"
+              markerUnits="userSpaceOnUse">
+        <path d="M1 1.4 L7.8 1.4 L4.4 6.2 Z" fill="var(--accent)"/>
+      </marker>
+    </defs>
+
+    <!-- ================= FUNNEL ================= -->
+    <!-- axis: one dashed centrefold, no ticks (the widths ARE the scale) -->
+    <line x1="414" y1="176" x2="414" y2="616" stroke="var(--rule)" stroke-width="1"
+          stroke-dasharray="2 5" opacity=".65"/>
+
+    <!-- stage 1 · Awareness · v=1,284,000 · w=640 (the base, 100%) -->
+    <g aria-label="Awareness, 1,284,000, 100 percent of base">
+      <rect x="94" y="196" width="640" height="84" fill="var(--gray-4)" stroke="var(--rule)" stroke-width="1"/>
+      <text class="stageName" x="112" y="220">Awareness — reached</text>
+      <text class="stageNum"  x="112" y="252">1,284,000</text>
+      <text class="stageSub"  x="112" y="268">100% of base · unique adults, Q1 2026</text>
+    </g>
+
+    <!-- stage 2 · Consideration · v=318,600 · w=159 (labels inside, w >= 150) -->
+    <g aria-label="Consideration, 318,600, 24.8 percent of base">
+      <rect x="334.5" y="300" width="159" height="84" fill="var(--accent-1)" stroke="var(--rule)" stroke-width="1"/>
+      <text class="stageName" x="344.5" y="322">Consideration</text>
+      <text class="stageNum"  x="344.5" y="354">318,600</text>
+      <text class="stageSub ink" x="344.5" y="370">24.8% of base</text>
+    </g>
+
+    <!-- stage 3 · Trial · v=86,400 · w=43 — THE EMPHASIS STAGE (accent fill) -->
+    <g aria-label="Trial, 86,400, 6.7 percent of base — the stage under the claim">
+      <rect x="392.5" y="404" width="43" height="84" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/>
+      <text class="stageName" x="447" y="430">Trial</text>
+      <text class="stageNum"  x="447" y="458">86,400</text>
+      <text class="stageSub"  x="447" y="474">6.7% of base · the stage the page argues about</text>
+    </g>
+
+    <!-- stage 4 · Purchase · v=41,900 · w=21 (labels outside, right of bar) -->
+    <g aria-label="Purchase, 41,900, 3.3 percent of base">
+      <rect x="403.5" y="508" width="21" height="84" fill="var(--gray-1)" stroke="var(--rule)" stroke-width="1"/>
+      <text class="stageName" x="438" y="534">Purchase</text>
+      <text class="stageNum"  x="438" y="562">41,900</text>
+      <text class="stageSub"  x="438" y="578">3.3% of base · 1 in 31 reached adults</text>
+    </g>
+
+    <!-- ============ RETENTION COLUMN (fixed x=500, one block per gap) ============ -->
+    <text class="chipCap" x="500" y="186">Stage to stage</text>
+    <line x1="500" y1="168" x2="500" y2="536" stroke="var(--rule)" stroke-width="1" stroke-dasharray="2 5" opacity=".5"/>
+
+    <g aria-label="Awareness to consideration: 24.8 percent retained, 965,400 lost">
+      <line x1="414" y1="282" x2="414" y2="298" stroke="var(--rule)" stroke-width="1" marker-end="url(#drop)"/>
+      <text class="chipTxt" x="512" y="285">24.8% retained</text>
+      <text class="chipLoss" x="512" y="299">−965,400 did not continue</text>
+    </g>
+    <g aria-label="Consideration to trial: 27.1 percent retained, 232,200 lost — highlighted">
+      <line x1="414" y1="386" x2="414" y2="402" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#dropA)"/>
+      <text class="chipTxt hi" x="512" y="389">27.1% retained</text>
+      <text class="chipLoss" x="512" y="403">-232,200 did not continue</text>
+    </g>
+    <g aria-label="Trial to purchase: 48.5 percent retained, 44,500 lost">
+      <line x1="414" y1="490" x2="414" y2="506" stroke="var(--rule)" stroke-width="1" marker-end="url(#drop)"/>
+      <text class="chipTxt" x="512" y="493">48.5% retained</text>
+      <text class="chipLoss" x="512" y="507">-44,500 did not continue</text>
+    </g>
+
+    <!-- the one annotation on the page: leader from stage 3's bar to a note block -->
+    <g aria-label="Annotation: what closing the gap is worth">
+      <line x1="300" y1="466" x2="390" y2="466" stroke="var(--accent)" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle cx="390" cy="466" r="2" fill="var(--accent)"/>
+      <text class="noteT" x="100" y="430">What the gap is worth</text>
+      <text class="note" x="100" y="448">At the 29.2% category rate, 93,000 would</text>
+      <text class="note" x="100" y="462">enter trial and ~45,100 would purchase —</text>
+      <text class="note" x="100" y="476">3,200 more than today, on the same reach.</text>
+    </g>
+
+    <!-- ================= BENCHMARK RAIL (x 780..1216) =================
+         One row per gap + a summary row. Row pitch 100 starting y=184:
+         caption y = 184 + i*100 + 30, numeral y = caption + 34.
+         Every row prints ONE percentage plus a pp delta. No second hue. -->
+    <line x1="766" y1="168" x2="766" y2="636" stroke="var(--rule)" stroke-width="1"/>
+    <rect x="786" y="168" width="430" height="468" fill="var(--gray-5)" fill-opacity=".6"/>
+
+    <g aria-label="Gap 1 versus benchmark">
+      <text class="railCap" x="802" y="214">Gap 1 · awareness → consideration</text>
+      <text class="railNum" x="802" y="252">24.8%</text>
+      <text class="railName" x="884" y="250">318,600 moved forward</text>
+      <text class="railDelta" x="802" y="274">benchmark 22.0% · +2.8pp — performing</text>
+    </g>
+    <line x1="802" y1="292" x2="1192" y2="292" stroke="var(--rule)" stroke-width="1"/>
+
+    <g aria-label="Gap 2 versus benchmark, highlighted">
+      <rect x="786" y="296" width="430" height="88" fill="var(--accent)" fill-opacity=".05"/>
+      <text class="railCap hi" x="802" y="324">Gap 2 · consideration → trial</text>
+      <text class="railNum hi" x="802" y="362">27.1%</text>
+      <text class="railName" x="884" y="360">86,400 moved forward</text>
+      <text class="railDelta hi" x="802" y="384">benchmark 29.2% · −2.1pp — the gap</text>
+    </g>
+    <line x1="802" y1="404" x2="1192" y2="404" stroke="var(--rule)" stroke-width="1"/>
+
+    <g aria-label="Gap 3 versus benchmark">
+      <text class="railCap" x="802" y="434">Gap 3 · trial → purchase</text>
+      <text class="railNum" x="802" y="472">48.5%</text>
+      <text class="railName" x="884" y="470">41,900 moved forward</text>
+      <text class="railDelta" x="802" y="494">benchmark 46.9% · +1.6pp — performing</text>
+    </g>
+    <line x1="802" y1="514" x2="1192" y2="514" stroke="var(--rule)" stroke-width="1"/>
+
+    <g aria-label="End to end versus benchmark">
+      <text class="railCap" x="802" y="544">End to end · reached → purchased</text>
+      <text class="railNum" x="802" y="582">3.3%</text>
+      <text class="railName" x="866" y="580">41,900 of 1,284,000</text>
+      <text class="railDelta" x="802" y="604">benchmark 3.1% · +0.2pp — at par on the whole</text>
+    </g>
+
+    <!-- footnote anchor 1 sits on the title; anchor 2 on the source line -->
+    <text class="footNote" x="94" y="634">¹ Stage assignment is respondent-level, refreshed monthly; respondents who skipped
+      a stage are counted at the next stage they entered.</text>
+  </svg>
+
+  <p class="base"><b>Base:</b> 1,284,000 unique adults aged 18–64 reached by paid and organic media in Q1 2026, single-source
+    panel (n=1,284,000; fieldwork 12 Jan – 28 Mar 2026). The four stages are the same respondents tracked forward, not four samples.</p>
+  <p class="source">Source: Journey Analytics panel wave 14, stage-by-stage unique-audience reconciliation, Q1 2026; category
+    benchmarks from the 2025 Media Effectiveness Study, 112 campaigns<sup>2</sup>.</p>
+  <p class="pageno">14 | JOURNEY</p>
+
+</main>
+</body>
+</html>

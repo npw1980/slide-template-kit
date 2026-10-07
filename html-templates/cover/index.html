@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cover — full-bleed consulting cover, firm mark bottom-right (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  cover  ·  deck-research group A, item 1
+  Evidence: accenture__accenture_the_nbn_effect... p00  (violet field, slanted
+            split, commissioning mark bottom-LEFT, giant lowercase firm mark
+            bottom-RIGHT, date line under the title)
+            kpmg__kpmg_kpmg_2021_ceo_outlook_2021 p00  (full-bleed photo cover,
+            left-aligned title stack, bold tagline line, small publisher line)
+            See MANUAL.md  ->  SOURCE for page refs and the review files.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length in this file is a 1:1 stage-pixel coordinate
+  with the same numbers MANUAL.md quotes (left:64rem means x = 64 on the
+  1280x720 canvas). The stage stays a fixed 1280x720 canvas and scales
+  uniformly with the window, which is the same result a transform wrapper
+  gives, without script.
+  To own the transform yourself instead, drop the html rule and use
+      .stage { width:1280px; height:720px; transform:scale(var(--fit,1));
+               transform-origin: 50% 50%; }
+  with --fit set by the embedding page. Then read every rem below as px.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles follow DESIGN_PLAYBOOK: --accent emphasis, --ink text,
+     --gray-* secondary + "the rest", --rule hairlines, --bg ground.
+     Default variant is the Accenture-pattern violet field; hexes are quoted
+     from the Accenture NBN review's color section, not invented. */
+  :root{
+    --bg:          #2E0B66;   /* deep field end (#3C0A80 / #4B0E8F family) */
+    --field-1:     #4B0E8F;   /* darker field band            */
+    --field-2:     #6E00C9;   /* banded purple, title ground  */
+    --accent:      #7B1FF0;   /* emphasis / brand mark        */
+    --accent-mid:  #8E24EA;   /* mid violet fill              */
+    --tint:        #E7D9F8;   /* lavender tint: chips, rules  */
+    --ink:         #FFFFFF;   /* primary text on the field    */
+    --gray-1:      #E7DEF7;   /* secondary text  (lede)  ~5.8:1  */
+    --gray-2:      #CBBAEC;   /* tertiary text   (notes)   ~4.7:1  */
+    --gray-3:      #7D7D7D;   /* playbook gray, for light fields */
+    --gray-4:      #DEDEDE;   /* playbook light gray             */
+    --rule:        rgba(231,217,248,.30);   /* hairlines */
+
+    /* Typography: ONE sans family, weight carries hierarchy.
+       The deck's real display face is a humanist/geometric house sans
+       (Avenir-like on the nbn work). This stack is the honest substitute. */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+
+    --t-kicker:  15rem;   /* eyebrow / program line      */
+    --t-meta:    14rem;   /* as-of / fieldwork line      */
+    --t-title:   38rem;   /* claim title, 2-line slot    */
+    --t-lede:    18rem;   /* subtitle / value statement  */
+    --t-note:    12rem;   /* methodology footnote        */
+    --t-mark:    38rem;   /* firm wordmark cap height    */
+
+    --m-side:    64rem;   /* left / right margin */
+    --photo-h:  290rem;   /* photo block height; see .visual */
+  }
+
+  /* ====================== KPMG VARIANT, for the comments ======================
+     Swap the tokens to the KPMG 2021 CEO Outlook cover system:
+       --bg:#001E3C;  --field-1:#00338D;  --field-2:#00338D;  --accent:#00AEEF;
+       --accent-mid:#00B0F0;  --tint:#CFEEFB;  --ink:#FFFFFF;
+       --gray-1:#CFE4F3;  --gray-2:#93B6CF;  --rule:rgba(207,238,251,.30);
+     then three layout edits, from that deck's p00:
+       1. .visual: clip-path none, left 0, width 1280rem, height 720rem
+          -- the photo becomes the whole ground, not a corner block.
+       2. add a scrim layer with a horizontal fade so type stays legible over
+          the photo: linear-gradient(90deg, var(--bg) 0 40%, rgba(0,0,0,0) 95%).
+       3. move the firm lockup to the TOP-LEFT (that deck carries it at x 64 /
+          y 56) and leave the bottom-right for the page-level device only.
+     KPMG maps one hue per chapter (navy / purple / azure). When this cover
+     seeds a chapter deck, the cover hue must equal the chapter hue.
+     =========================================================================== */
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#150f22;                 /* studio backdrop, not part of the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    /* gradient is capped at --field-2 so no text ever sits on a brighter field
+       than #6E00C9: white text = 8.4:1, the lavender grays clear 4.5:1. */
+    background:linear-gradient(118deg, var(--bg) 0%, var(--field-1) 46%, var(--field-2) 100%);
+    color:var(--ink);
+  }
+
+  /* ---------- layer 1: brand field devices (decorative, replace nothing) ---------- */
+  .brand-field{ position:absolute; inset:0; }
+  .brand-field svg{ position:absolute; inset:0; width:1280rem; height:720rem; }
+
+  /* ---------- layer 2: photo slot (upper right, bleeding off the edge) ----------
+     Replace the SVG block with one duotone image: a single <image> element inside
+     the same clip keeps the slanted brand edge. Keep the photo OUT of the title
+     band (below y 290), otherwise the claim title loses its contrast guarantee. */
+  .visual{
+    position:absolute; left:700rem; top:0; width:580rem; height:290rem;
+    clip-path:polygon(12% 0, 100% 0, 100% 100%, 0 100%);
+    background:radial-gradient(120% 150% at 78% 20%,
+              rgba(158,92,240,.85) 0%, rgba(110,0,201,.75) 45%, rgba(30,7,72,.94) 100%);
+  }
+  .visual svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .visual-cap{
+    position:absolute; right:12rem; bottom:10rem; max-width:360rem;
+    font:400 10rem/1.35 var(--font-body); letter-spacing:.3px;
+    color:rgba(245,240,255,.86); text-align:right;
+  }
+
+  /* ---------- copy stack ---------- */
+  .kicker{
+    position:absolute; left:var(--m-side); top:56rem;
+    display:flex; align-items:center; gap:12rem;
+    font:700 var(--t-kicker)/20rem var(--font-display);
+    letter-spacing:2.6px; text-transform:uppercase; color:var(--tint);
+  }
+  .kicker .chip{
+    display:inline-block; width:26rem; height:3rem; border-radius:2rem;
+    background:linear-gradient(90deg, var(--tint), var(--accent-mid));
+  }
+
+  .meta{                              /* as-of / fieldwork stamp, right edge */
+    position:absolute; right:var(--m-side); top:316rem; text-align:right;
+    font:400 var(--t-meta)/22rem var(--font-body); letter-spacing:.3px; color:var(--gray-2);
+  }
+  .meta b{ font-weight:700; color:var(--gray-1); }
+
+  .title{                             /* THE slot: 2 lines x 46rem = 92rem */
+    position:absolute; left:var(--m-side); right:var(--m-side); top:368rem;
+    max-height:92rem;                 /* cap = 2 lines; overflow stays visible */
+    font:700 var(--t-title)/46rem var(--font-display);
+    letter-spacing:-0.5px; color:var(--ink);
+  }
+  .title sup{ font-size:.45em; line-height:0; color:var(--tint); }
+
+  .lede{
+    position:absolute; left:var(--m-side); right:var(--m-side); top:476rem;
+    font:400 var(--t-lede)/26rem var(--font-body); color:var(--gray-1);
+  }
+  .lede sup{ font-size:.62em; line-height:0; color:var(--tint); }
+
+  .note{                              /* methodology footnote: N, dates, instrument */
+    position:absolute; left:var(--m-side); right:var(--m-side); top:566rem;
+    font:400 var(--t-note)/16rem var(--font-body); color:var(--gray-2);
+  }
+  .note sup{ font-size:.72em; line-height:0; }
+
+  .hairline{ position:absolute; left:var(--m-side); right:var(--m-side); top:616rem; height:1px; background:var(--rule); }
+
+  /* ---------- footer row: commissioning mark (left) / firm mark (right) ---------- */
+  .commission{
+    position:absolute; left:var(--m-side); top:640rem;
+    display:flex; flex-direction:column; gap:8rem;
+  }
+  .commission .lbl{
+    font:700 11rem/12rem var(--font-display); letter-spacing:2px;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .commission .lockup{
+    display:flex; align-items:center; gap:9rem; color:var(--ink);
+    font:700 21rem/24rem var(--font-display); letter-spacing:.2px;
+  }
+  .commission .lockup sup{ font-size:.42em; line-height:0; color:var(--gray-1); }
+
+  /* Firm mark, bottom-right. On an absolute layer, "bottom" is measured from
+     the stage's bottom edge, so 26rem puts the block in y 630-694. */
+  .firmmark{ position:absolute; right:var(--m-side); bottom:26rem; text-align:right; }
+  .firmmark .chev{ display:block; margin:0 4rem 3rem auto; }
+  .firmmark .word{
+    display:block; font:700 var(--t-mark)/40rem var(--font-display);
+    letter-spacing:.8px; text-transform:lowercase; color:var(--ink);
+  }
+</style>
+</head>
+<body>
+<div class="stage" role="img"
+     aria-label="Report cover: The NBN Effect, prepared for nbn by Accenture, August 2021">
+
+  <!-- ================= layer 1: brand-field devices (decorative) ================= -->
+  <div class="brand-field" data-slot="brand-field" aria-hidden="true">
+    <svg viewBox="0 0 1280 720" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="swoosh" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#E7D9F8" stop-opacity=".22"/>
+          <stop offset="1" stop-color="#FFFFFF" stop-opacity=".04"/>
+        </linearGradient>
+        <linearGradient id="duotone" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0"   stop-color="#8E24EA"/>
+          <stop offset=".55" stop-color="#6E00C9"/>
+          <stop offset="1"   stop-color="#2E0B66"/>
+        </linearGradient>
+      </defs>
+
+      <!-- diagonal brand swoosh; keep alpha low so the type contrast floor holds -->
+      <path d="M600 720 L1280 540 L1280 720 Z" fill="url(#swoosh)"/>
+      <!-- hairline echoing the photo's slanted edge, the cover's one graphic gesture -->
+      <path d="M769.6 0 L700 290" stroke="#E7D9F8" stroke-opacity=".22" stroke-width="1" fill="none"/>
+      <path d="M700 290 L624 290" stroke="#E7D9F8" stroke-opacity=".14" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- =============== layer 2: PHOTO SLOT — replace this block, keep the clip =============== -->
+  <div class="visual" data-slot="visual">
+    <svg viewBox="0 0 580 290" preserveAspectRatio="none" aria-hidden="true">
+      <rect width="580" height="290" fill="url(#duotone)"/>
+      <!-- subject stand-in: figures + devices, duotone-ghosted. Delete on paste. -->
+      <g fill="#FFFFFF" opacity=".12">
+        <ellipse cx="392" cy="258" rx="150" ry="62"/>
+        <rect x="150" y="126" width="118" height="70" rx="6"/>
+        <rect x="298" y="166" width="70" height="48" rx="5"/>
+        <circle cx="205" cy="92" r="25"/>
+        <rect x="181" y="118" width="48" height="80" rx="22"/>
+        <circle cx="328" cy="128" r="18"/>
+        <rect x="311" y="146" width="36" height="66" rx="16"/>
+      </g>
+      <rect width="580" height="290" fill="#1A0436" opacity=".16"/>
+    </svg>
+    <span class="visual-cap">Photo slot — swap for one duotone image, brand tint 55-70%, clear of the title band.</span>
+  </div>
+
+  <!-- ============================ editable slots ============================ -->
+  <div class="kicker" data-slot="kicker"><span class="chip" aria-hidden="true"></span><span>Consumer Value Research — Australia</span></div>
+
+  <div class="meta" data-slot="as-of"><b>Fieldwork March 2021</b><br>Report published August 2021</div>
+
+  <h1 class="title" data-slot="title">The NBN Effect: Reliable Connectivity Adds $1,920<sup>1</sup> a Year in Household Value Across Essential Activities</h1>
+
+  <p class="lede" data-slot="lede">Two years of survey and conjoint work with 2,420 households<sup>1</sup> separates the value households get from the network into two halves: the essential tasks that have to happen online, and the enriching activities people choose.</p>
+
+  <p class="note" data-slot="note"><sup>1</sup> Online survey of nbn&#8482; internet users, fieldwork March 2021 (n = 2,420, weighted to ABS regional distribution); economic value modelled with a discrete-choice conjoint experiment at 95% confidence.</p>
+
+  <div class="hairline" data-slot="hairline" aria-hidden="true"></div>
+
+  <div class="commission" data-slot="commission-mark">
+    <span class="lbl">Commissioned by</span>
+    <span class="lockup">
+      <svg width="26" height="26" viewBox="0 0 30 30" aria-hidden="true">
+        <circle cx="15" cy="15" r="13" fill="none" stroke="#E7D9F8" stroke-opacity=".5"  stroke-width="1.4"/>
+        <circle cx="15" cy="15" r="8.4" fill="none" stroke="#E7D9F8" stroke-opacity=".8" stroke-width="1.6"/>
+        <circle cx="15" cy="15" r="3.6" fill="#E7D9F8"/>
+      </svg>
+      nbn<sup>&#8482;</sup>
+    </span>
+  </div>
+
+  <div class="firmmark" data-slot="firm-mark">
+    <svg class="chev" width="20" height="17" viewBox="0 0 20 17" aria-hidden="true">
+      <path d="M5 2 L14 8.5 L5 15" fill="none" stroke="#FFFFFF" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span class="word">accenture</span>
+  </div>
+</div>
+</body>
+</html>

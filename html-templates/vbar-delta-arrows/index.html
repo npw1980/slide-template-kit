@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vbar-delta-arrows — vertical columns with benchmark line + directional delta arrows (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  vbar-delta-arrows  ·  family vbar (vertical column chart page)
+  Evidence: accenture__accenture_the_moneyball_moment_for_marketing_in_canada_2019
+            p16 (sw_sheets/..._s01.jpg row 2 — "When evaluating the attributed
+            returns, the SALES ROI OF TV INCREASED BY 23%"): one accent column,
+            dark-grey Overall, light-grey channels, value labels INSIDE bar tops,
+            dashed benchmark line, red up-arrows / grey down-arrows with delta
+            chips, media-spend share row below the categories.
+            Palette + arrow semantics from
+            reviews/accenture__..._2019.md (colour system, line 25-26).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html rule maps 1rem == 1 STAGE PIXEL (1280×720 fit), same
+  numbers MANUAL.md quotes; inside SVG, viewBox user units == stage px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY (single series; swap numbers, not geometry):
+      bars = [
+        { label:"Overall",     value:11.79, delta:null, kind:"dark" },   // reference
+        { label:"TV",          value:14.34, delta:22,   kind:"focus" },  // ONE accent bar
+        { label:"Display & Other", value:12.71, delta:8,  kind:"light" },
+        { label:"Paid Search", value:11.45, delta:-3,  kind:"light" },
+        { label:"Paid Social", value:9.99,  delta:-15, kind:"light" },
+        { label:"SFVOD",       value:13.52, delta:15,  kind:"light" },
+        { label:"Other Media", value:6.95,  delta:-41, kind:"light" }
+      ];
+      spendRow = [100, 42, 18, 14, 6, 2, 18];   // share of total media spend
+    Geometry rule (units $, linear, zero-based):
+      bar height px = value × 19   (14.34 → 272px)
+      bar i (0-6)  : slot centre x = 100 + i×164.57; rect x = centre − 46, w 92,
+                     y = 598 − height.
+      value label: INSIDE bar, centred, white 700, y = bar top + 21
+      benchmark line: y = 598 − value(Overall) × 19
+      delta chip/arrow: 56 wide × 50 tall group, centred on bar x. Sign =
+                     direction: +delta points UP, −delta points DOWN (tip 10px
+                     above bar top). Fill = emphasis: the ONE focus bar's delta
+                     gets the accent fill; every other delta (up or down) is
+                     dark grey. Text centred in chip. (moneyball's page paints
+                     every up-arrow red — kit keeps a single accent.)
+      spend row text: centred under bar x, y = 666 (HTML row at 660).
+    Swap numbers = only height/y + two text nodes per bar; arrows follow the sign.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Accenture RED palette — hexes quoted from the
+     moneyball review's colour system (red = the finding; dark grey = the
+     comparison baseline; light grey = context). Swapping to a purple brand:
+     recolour --accent/--accent-deep and keep --dark (dark grey is semantic,
+     it IS the "current state / benchmark" role, not decoration). */
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #1A1A1A;   /* title line 1, category labels */
+    --accent:     #D8112B;  /* Accenture red — the ONE accent, the finding */
+    --accent-deep:#9B0B20;  /* title emphasis, negative-arrow-free dark text */
+    --dark:      #4D4D4D;   /* dark grey: Overall/benchmark + down-arrows (loss) */
+    --gray-1:    #7D7D7D;   /* secondary text */
+    --light:     #BFBFBF;   /* light grey: context series */
+    --rule:      #D9D9D9;   /* hairlines */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#141019; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+  /* ---- title zone (the deck's red-clause action-title device) ---- */
+  .title{ position:absolute; left:64rem; top:36rem; width:1152rem;
+          font-family:var(--font-display); font-size:30rem; font-weight:700; line-height:38rem;
+          letter-spacing:-.6rem; max-height:152rem; }   /* 2-line slot, MBB gate */
+  .title .em{ color:var(--accent); }
+  .kicker{ position:absolute; left:64rem; top:118rem; width:1152rem;
+           font-size:15rem; font-weight:700; letter-spacing:.8rem; color:var(--gray-1); }
+  .kicker sup{ font-size:10rem; color:var(--accent-deep); }
+  /* ---- chart ---- */
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .bar-focus{ fill:var(--accent); }
+  .bar-dark{ fill:var(--dark); }
+  .bar-light{ fill:var(--light); }
+  .inlab{ font-size:13px; font-weight:700; fill:#fff; }          /* inside-bar value */
+  .bench{ stroke:var(--gray-1); stroke-width:1.6; stroke-dasharray:6 5; }
+  .bench-tx{ font-size:11px; fill:var(--gray-1); }
+  .up-accent{ fill:var(--accent); }
+  .down-dark{ fill:var(--dark); }
+  .delta{ font-size:13px; font-weight:700; fill:#fff; }
+  .catlab{ font-size:12px; fill:var(--ink); }
+  .baseline{ stroke:#333333; stroke-width:1.6; }
+  .note{ position:absolute; left:64rem; bottom:36rem; width:1152rem; font-size:10rem; color:var(--gray-1); }
+  .note sup{ font-size:8rem; }
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:16rem; display:flex; justify-content:space-between; font-size:10rem; color:var(--gray-1); }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="Column chart of attributed sales ROI by media channel versus a benchmark line, TV highlighted with a red up-arrow of +22 percent">
+
+  <!-- slot 1 · action title, second line rendered in the accent (deck device) -->
+  <div class="title">TV's attributed sales ROI beats the benchmark by 22%<br><span class="em">while digital channels span −15% to +15%</span></div>
+
+  <!-- slot 2 · kicker: figure caption, all-caps -->
+  <div class="kicker">ATTRIBUTED SALES ROI BY MEDIA CHANNEL<sup>1</sup> · USD per incremental sales dollar, vs blended benchmark</div>
+
+  <!-- ===================== CHART (inline SVG) =====================
+       7 columns. One <g class="bar-g"> per column: swap value height/y,
+       inside label text, and the sign/fill of the arrow. Arrows follow the
+       delta sign: + → accent fill, − → dark grey.  -->
+  <svg class="chart" viewBox="0 0 1280 720">
+    <line class="baseline" x1="58" y1="598" x2="1222" y2="598"/>
+
+    <!-- benchmark line at Overall = $11.79 → y = 598 − 11.79*19 = 374 -->
+    <line class="bench" x1="58" y1="374" x2="1222" y2="374"/>
+    <text class="bench-tx" x="1214" y="366" text-anchor="end">Benchmark = $11.79 (all channels blended)</text>
+
+    <!-- col 0 · Overall 11.79 · dark grey reference, no arrow -->
+    <g transform="translate(0,0)">
+      <rect class="bar-dark" x="54" y="374" width="92" height="224"/>
+      <text class="inlab" x="100" y="395" text-anchor="middle">$11.79</text>
+      <text class="catlab" x="100" y="624" text-anchor="middle">Overall</text>
+    </g>
+
+    <!-- col 1 · TV 14.34 · THE focus bar, +22% up-arrow (accent) -->
+    <g transform="translate(164.57,0)">
+      <rect class="bar-focus" x="54" y="326" width="92" height="272"/>
+      <text class="inlab" x="100" y="347" text-anchor="middle">$14.34</text>
+      <path class="up-accent" d="M 72 316 L 128 316 L 128 296 L 100 286 L 72 296 Z"/>
+      <text class="delta" x="100" y="311" text-anchor="middle">+22%</text>
+      <text class="catlab" x="100" y="624" text-anchor="middle">TV</text>
+      <text class="catlab" x="100" y="666" text-anchor="middle" style="font-weight:700">42%</text>
+    </g>
+
+    <!-- col 2 · Display & Other 12.71 · +8% up-arrow, dark (context) -->
+    <g transform="translate(329.14,0)">
+      <rect class="bar-light" x="54" y="357" width="92" height="241"/>
+      <text class="inlab" x="100" y="378" text-anchor="middle" style="fill:var(--ink)">$12.71</text>
+      <path class="down-dark" d="M 72 307 L 128 307 L 128 337 L 100 357 L 72 337 Z" transform="rotate(180 100 332)"/>
+      <text class="delta" x="100" y="327" text-anchor="middle">+8%</text>
+      <text class="catlab" x="100" y="624" text-anchor="middle">Display &amp; Other</text>
+      <text class="catlab" x="100" y="666" text-anchor="middle" style="font-weight:700">18%</text>
+    </g>
+
+    <!-- col 3 · Paid Search 11.45 · −3% down-arrow (dark) -->
+    <g transform="translate(493.71,0)">
+      <rect class="bar-light" x="54" y="380" width="92" height="218"/>
+      <text class="inlab" x="100" y="401" text-anchor="middle" style="fill:var(--ink)">$11.45</text>
+      <path class="down-dark" d="M 72 330 L 128 330 L 128 350 L 100 370 L 72 350 Z"/>
+      <text class="delta" x="100" y="355" text-anchor="middle">−3%</text>
+      <text class="catlab" x="100" y="624" text-anchor="middle">Paid Search</text>
+      <text class="catlab" x="100" y="666" text-anchor="middle" style="font-weight:700">14%</text>
+    </g>
+
+    <!-- col 4 · Paid Social 9.99 · −15% down-arrow (dark) -->
+    <g transform="translate(658.29,0)">
+      <rect class="bar-light" x="54" y="408" width="92" height="190"/>
+      <text class="inlab" x="100" y="429" text-anchor="middle" style="fill:var(--ink)">$9.99</text>
+      <path class="down-dark" d="M 72 358 L 128 358 L 128 378 L 100 398 L 72 378 Z"/>
+      <text class="delta" x="100" y="383" text-anchor="middle">−15%</text>
+      <text class="catlab" x="100" y="624" text-anchor="middle">Paid Social</text>
+      <text class="catlab" x="100" y="666" text-anchor="middle" style="font-weight:700">6%</text>
+    </g>
+
+    <!-- col 5 · SFVOD 13.52 · +15% up-arrow, dark (positive but context) -->
+    <g transform="translate(822.86,0)">
+      <rect class="bar-light" x="54" y="341" width="92" height="257"/>
+      <text class="inlab" x="100" y="362" text-anchor="middle" style="fill:var(--ink)">$13.52</text>
+      <path class="down-dark" d="M 72 291 L 128 291 L 128 321 L 100 341 L 72 321 Z" transform="rotate(180 100 316)"/>
+      <text class="delta" x="100" y="311" text-anchor="middle">+15%</text>
+      <text class="catlab" x="100" y="624" text-anchor="middle">SFVOD</text>
+      <text class="catlab" x="100" y="666" text-anchor="middle" style="font-weight:700">2%</text>
+    </g>
+
+    <!-- col 6 · Other Media 6.95 · −41% down-arrow (dark) -->
+    <g transform="translate(987.43,0)">
+      <rect class="bar-light" x="54" y="466" width="92" height="132"/>
+      <text class="inlab" x="100" y="487" text-anchor="middle" style="fill:var(--ink)">$6.95</text>
+      <path class="down-dark" d="M 72 416 L 128 416 L 128 436 L 100 456 L 72 436 Z"/>
+      <text class="delta" x="100" y="441" text-anchor="middle">−41%</text>
+      <text class="catlab" x="100" y="624" text-anchor="middle">Other Media</text>
+      <text class="catlab" x="100" y="666" text-anchor="middle" style="font-weight:700">18%</text>
+    </g>
+
+    <!-- spend-share row label (left gutter, aligned to the row) -->
+    <text class="bench-tx" x="58" y="666" text-anchor="start" style="font-weight:700; fill:var(--ink)">MEDIA SPEND:</text>
+  </svg>
+
+  <!-- slot 4 · methodology note (footer carries the claim marker) -->
+  <div class="note">Note: Display &amp; Other includes static and rich media. Attributed via media-mix model, last-touch<sup>1</sup>; ROI = revenue per $1 of media spend.</div>
+
+  <!-- slot 5 · footer -->
+  <div class="footer">
+    <span>Source: Accenture Analysis; ThinkTV / Numeris media panel<sup>1</sup></span>
+    <span><span class="pagenum">16 | 4 TV MARGINAL RETURNS</span></span>
+  </div>
+</div>
+</body>
+</html>

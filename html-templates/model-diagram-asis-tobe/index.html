@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>model-diagram-asis-tobe — as-is vs future-state operating model, mirrored panels + spectrum rail (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  model-diagram-asis-tobe  ·  family model-diagram
+  Evidence (see MANUAL.md -> SOURCE):
+    Deloitte — "New Mexico State University staffing / operating-model
+    study", "As-Is vs Future-State operating model spread": TWO MIRRORED
+    text-box panels (left = current state, right = future state) plus a vertical
+    SIDE RAIL carrying the ordinal scale (Centralized / Hybrid / Decentralized)
+    with today/target markers — archetype item 9 of
+    reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun.md.
+    Crimson band + red emphasis per §Color system; the diagonal "Illustrative"
+    watermark is deliberately NOT copied (§IGNORE: working-session artifact) —
+    "model illustrative" survives as a plain rail footnote.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html font-size maps 1rem == 1 STAGE PIXEL; the stage is the
+  transform-to-viewport wrapper the kit spec requires.
+  ----------------------------------------------------------------------------
+  GEOMETRY (stage px, inside full-stage SVG viewBox 0 0 1280 720):
+    LEFT PANEL  x64  w544 : header band y178 h34, body y212 h356,
+                4 rows y226/302/378/454 h64 (pitch 76), row bg x78 w516.
+    RIGHT PANEL x676 w450 : header band + body same ys, rows x690 w422;
+                rows mirror the left rows 1:1 by y.
+    MOVE arrow  centred x644, chevron y352..380 in the 612..676 gap (64px),
+                captions 8.5px so they fit the gap.
+    SPECTRUM RAIL track x1168 w14 y178 h436; thirds centred y251 / 396 / 541;
+                target band 396..541 (grey lightness);
+                marker dashes x1160..1188 (accent = target 396, grey = today 541);
+                scale words x1190 anchor-start per third.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Palette anchor cited from
+     reviews/deloitte__deloitte_new_mexico_state_university_staffing_study_opportun.md
+     §Color system: crimson/magenta brand used semantically (bands, headers,
+     rules), grey/white base, red emphasis. Darkened here for AA body text.
+     Contrast on white (measured):
+       --ink #1A1A1A on --bg        = 16.9:1
+       --gray-1 #404040 on --bg     =  9.8:1
+       --gray-note #666666 on --bg  =  5.9:1 (all note-size text)
+       --accent #A1194B on --bg     =  9.0:1 (crimson; AA at 11px+ bold)
+       #FFFFFF on --accent          =  9.0:1
+       #FFFFFF on --gray-1 #404040  =  9.8:1
+     ================================================================= */
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #1A1A1A;
+    --gray-1:    #404040;   /* body text + as-is header band */
+    --gray-2:    #8C8C8C;   /* secondary, rail target band */
+    --gray-3:    #D9D9D9;   /* as-is row fill, rail track, hairlines */
+    --gray-note: #666666;   /* note-size text */
+    --panel-as:  #F2F2F2;   /* as-is (neutral) panel body */
+    --rule:      #D9D9D9;
+    --accent:      #A1194B; /* THE emphasis (Deloitte crimson, AA-darkened) */
+    --accent-soft: #F6EBF0; /* one lightness of accent: to-be row fill */
+
+    /* Deloitte ships Graphik + brand serif (Freight); stacks stand in —
+       see MANUAL -> SOURCE */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, Calibri, "Helvetica Neue", "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{ background:#4A4A50; display:grid; place-items:center; min-height:100vh; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink); overflow:hidden;
+  }
+  /* ---------- header band: kicker / claim title / lead line ---------- */
+  .kicker{
+    position:absolute; left:64rem; top:34rem; font-size:11rem; line-height:1;
+    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    font-family:var(--font-display); color:var(--gray-1);
+  }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  h1.title{
+    position:absolute; left:64rem; top:56rem; width:1152rem;
+    font-family:var(--font-display); font-size:29rem; line-height:35rem;
+    font-weight:700; letter-spacing:-.012em; color:var(--ink);
+    max-height:70rem; overflow:hidden;   /* 2-line gate: a 3rd line is clipped */
+  }
+  p.lead{
+    position:absolute; left:64rem; top:138rem; width:1010rem;
+    font-size:13.5rem; line-height:19rem; color:var(--gray-1);
+  }
+  p.lead .em{ color:var(--accent); font-weight:700; }
+  /* ------------------------------ diagram ------------------------------ */
+  svg.diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+  .panel-head-as { fill:var(--gray-1); }
+  .panel-head-to { fill:var(--accent); }
+  .panel-body-as { fill:var(--panel-as); stroke:var(--rule); stroke-width:1; }
+  .panel-body-to { fill:#FFFFFF; stroke:var(--accent); stroke-width:1.4; }
+  .panel-cap     { font:700 13px var(--font-display); fill:#FFFFFF; letter-spacing:.05em; }
+  .row-bg-as     { fill:var(--gray-3); }
+  .row-bg-to     { fill:var(--accent-soft); }
+  .row-head      { font:700 10.5px var(--font-body); fill:var(--ink); }
+  .row-head-to   { font:700 10.5px var(--font-body); fill:var(--accent); }
+  .row-body      { font:10px var(--font-body); fill:var(--gray-1); }
+  .move-cap      { font:700 10px var(--font-body); fill:var(--accent); letter-spacing:.1em; text-anchor:middle; }
+  .rail-track    { fill:var(--gray-3); }
+  .rail-band     { fill:var(--gray-2); opacity:.55; }
+  .rail-tick     { stroke:#FFFFFF; stroke-width:1.4; }
+  .rail-word     { font:700 8.8px var(--font-body); fill:var(--gray-note); }
+  .rail-mark-ln  { stroke-width:3; }
+  .rail-note     { font:700 8.5px var(--font-body); fill:var(--gray-1); letter-spacing:.06em; text-anchor:middle; }
+  .rail-note-to  { font:700 8.5px var(--font-body); fill:var(--accent); letter-spacing:.06em; text-anchor:middle; }
+  /* ------------------------------ footer ------------------------------ */
+  .source{
+    position:absolute; left:64rem; bottom:20rem; width:880rem;
+    font-size:10rem; line-height:13rem; color:var(--gray-note);
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{
+    position:absolute; right:64rem; bottom:20rem; font-size:10rem; color:var(--gray-note);
+  }
+  .pageno b{ color:var(--ink); font-weight:700; }
+  .hairline{ position:absolute; left:64rem; right:64rem; bottom:38rem; border-top:1px solid var(--rule); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. KICKER · 2. CLAIM TITLE · 3. LEAD LINE -->
+  <div class="kicker" data-slot="kicker"><b>4 |</b> Operating model</div>
+  <h1 class="title" data-slot="title">A hybrid shared-services model removes duplication without giving up campus ownership</h1>
+  <p class="lead" data-slot="lead">What changes the answer is moving the highlighted components <span class="em">from fragmented units to the hybrid centre</span> — structure alone, without process and tooling shifts, does not.</p>
+
+  <!-- 4. DIAGRAM — full-stage SVG, all coordinates in stage px -->
+  <svg class="diagram" viewBox="0 0 1280 720" aria-label="As-is versus future-state operating model, mirrored panels with spectrum rail">
+
+    <!-- ================= LEFT PANEL — AS-IS ================= -->
+    <g id="panel-as">
+      <rect class="panel-head-as" x="64" y="178" width="544" height="34" rx="2"></rect>
+      <text class="panel-cap" x="80" y="200">AS-IS — CURRENT STATE</text>
+      <rect class="panel-body-as" x="64" y="212" width="544" height="356" rx="2"></rect>
+
+      <!-- one row = one <g class="row" id="as-row-N"> : bg + head + 2 body lines -->
+      <g class="row" id="as-row-1">
+        <rect class="row-bg-as" x="78" y="226" width="516" height="64" rx="2"></rect>
+        <text class="row-head" x="90" y="248">Shared-service model</text>
+        <text class="row-body" x="90" y="266"><tspan x="90">No centre — each division runs its own back-office teams</tspan><tspan x="90" dy="12">(5–7 staff per unit, 5–12 direct reports per manager)</tspan></text>
+      </g>
+      <g class="row" id="as-row-2">
+        <rect class="row-bg-as" x="78" y="302" width="516" height="64" rx="2"></rect>
+        <text class="row-head" x="90" y="324">Structure &amp; locations</text>
+        <text class="row-body" x="90" y="342"><tspan x="90">Fragments across 7 locations; no single process owner; position,</tspan><tspan x="90" dy="12">travel, and finance handled locally per unit</tspan></text>
+      </g>
+      <g class="row" id="as-row-3">
+        <rect class="row-bg-as" x="78" y="378" width="516" height="64" rx="2"></rect>
+        <text class="row-head" x="90" y="400">Process &amp; tooling</text>
+        <text class="row-body" x="90" y="418"><tspan x="90">Paper-first intake, 14 handoffs per request; systems unconnected;</tspan><tspan x="90" dy="12">service levels undocumented</tspan></text>
+      </g>
+      <g class="row" id="as-row-4">
+        <rect class="row-bg-as" x="78" y="454" width="516" height="64" rx="2"></rect>
+        <text class="row-head" x="90" y="476">People &amp; skills</text>
+        <text class="row-body" x="90" y="494"><tspan x="90">Generalists per unit; no cross-coverage for absence; training</tspan><tspan x="90" dy="12">funding varies by division</tspan></text>
+      </g>
+    </g>
+
+    <!-- ================= RIGHT PANEL — TO-BE =================
+         rows mirror the as-is rows 1:1 by y (226/302/378/454) -->
+    <g id="panel-to">
+      <rect class="panel-head-to" x="676" y="178" width="450" height="34" rx="2"></rect>
+      <text class="panel-cap" x="692" y="200">TO-BE — FUTURE STATE</text>
+      <rect class="panel-body-to" x="676" y="212" width="450" height="356" rx="2"></rect>
+
+      <g class="row" id="to-row-1">
+        <rect class="row-bg-to" x="690" y="226" width="422" height="64" rx="2"></rect>
+        <text class="row-head-to" x="696" y="248">Shared-service model</text>
+        <text class="row-body" x="696" y="266"><tspan x="696">One hybrid centre (24 FTE) serves all</tspan><tspan x="696" dy="12">units; divisions keep front-door roles</tspan></text>
+      </g>
+      <g class="row" id="to-row-2">
+        <rect class="row-bg-to" x="690" y="302" width="422" height="64" rx="2"></rect>
+        <text class="row-head-to" x="696" y="324">Structure &amp; locations</text>
+        <text class="row-body" x="696" y="342"><tspan x="696">Named process owners per domain;</tspan><tspan x="696" dy="12">campus champions own exceptions</tspan></text>
+      </g>
+      <g class="row" id="to-row-3">
+        <rect class="row-bg-to" x="690" y="378" width="422" height="64" rx="2"></rect>
+        <text class="row-head-to" x="696" y="400">Process &amp; tooling</text>
+        <text class="row-body" x="696" y="418"><tspan x="696">Single intake queue, 4 handoffs (was 14);</tspan><tspan x="696" dy="12">documented service levels per request</tspan></text>
+      </g>
+      <g class="row" id="to-row-4">
+        <rect class="row-bg-to" x="690" y="454" width="422" height="64" rx="2"></rect>
+        <text class="row-head-to" x="696" y="476">People &amp; skills</text>
+        <text class="row-body" x="696" y="494"><tspan x="696">Specialist pods with cross-coverage;</tspan><tspan x="696" dy="12">shared training budget and ladder</tspan></text>
+      </g>
+    </g>
+
+    <!-- ================= MOVE ARROW (gap 624..656, centred x640) =================
+         chevron only exists between paired rows; if you delete a row pair,
+         centre the chevron on the remaining rows' vertical midpoint. -->
+    <g id="move">
+      <path fill="var(--accent)" d="M 629 358 L 655 358 L 655 352 L 661 366 L 655 380 L 655 374 L 629 374 Z"></path>
+      <text class="move-cap" x="644" y="398" style="letter-spacing:.04em">phase 1–2</text>
+    </g>
+
+    <!-- ================= SPECTRUM RAIL (vertical side rail) =================
+         thirds centred y251 / 396 / 541 (track 178..614). Target third band =
+         one lightness of grey. Markers: dash + label; TODAY grey, TARGET accent. -->
+    <g id="rail">
+      <text class="rail-note" x="1175" y="166" fill="#666666" style="letter-spacing:.1em">OPERATING SPAN</text>
+      <rect class="rail-track" x="1168" y="178" width="14" height="436" rx="7"></rect>
+      <rect class="rail-band" x="1168" y="324" width="14" height="145"></rect>
+      <line class="rail-tick" x1="1168" y1="251" x2="1182" y2="251"></line>
+      <line class="rail-tick" x1="1168" y1="396" x2="1182" y2="396"></line>
+      <line class="rail-tick" x1="1168" y1="541" x2="1182" y2="541"></line>
+
+      <!-- TODAY marker dash (grey) on the decentralised third -->
+      <line class="rail-mark-ln" x1="1158" y1="552" x2="1190" y2="552" stroke="var(--gray-1)"></line>
+      <text class="rail-note" x="1174" y="570">TODAY</text>
+      <!-- TARGET marker dash (accent) on the hybrid third -->
+      <line class="rail-mark-ln" x1="1158" y1="382" x2="1190" y2="382" stroke="var(--accent)"></line>
+      <text class="rail-note-to" x="1174" y="372">TARGET</text>
+
+      <!-- scale words, centred on each third, right of the track -->
+      <text class="rail-word" x="1192" y="248" dominant-baseline="middle">CENTRALISED</text>
+      <text class="rail-word" x="1192" y="396" dominant-baseline="middle">HYBRID</text>
+      <text class="rail-word" x="1192" y="541" dominant-baseline="middle">DECENTRALISED</text>
+    </g>
+
+    <!-- rail footnote -->
+    <text class="row-body" x="1216" y="636" text-anchor="end" fill="#666666" style="font-size:9px">span read vs. benchmark scale<sup>1</sup> · model illustrative</text>
+  </svg>
+
+  <!-- 5. FOOTER -->
+  <div class="hairline"></div>
+  <div class="source" data-slot="source-line">Source: Deloitte analysis, <i>New Mexico State University staffing and operating-model study</i> — position and span read against Deloitte Global Benchmarking Center ranges (span-of-control benchmark 8:1–12:1)<sup>1</sup>; headcount per university position-control file, FY19.</div>
+  <div class="pageno" data-slot="page-stamp"><b>63</b> · 4. Future-state model</div>
+
+</div>
+</body>
+</html>

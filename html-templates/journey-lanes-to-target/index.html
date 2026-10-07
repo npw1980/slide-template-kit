@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>journey-lanes-to-target — segment lanes converging on a target ring (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  journey-lanes-to-target  ·  family journey
+  Evidence (see MANUAL.md -> SOURCE):
+    pwc_strategy__pwc_global_entertainment_media_outlook_2023_2027_hong_kong_s
+    p28 (sw_sheets/..._s02.jpg, sheet index floor(28/10)=2, 5col x 2row
+    row-major): a two-zone diagram — horizontal bands over a column grid, small
+    direct labels, white arrows, gradient bands. That band architecture is what
+    is ported here; the MAGENTA->ORANGE gradient is dropped (one-emphasis rule).
+    Funnel-to-target geometry from catalog S0266
+    (corpus/sheets/sheet_027.jpg frame 6: "4 bars converge arrow / funnel
+    arrows into target ring"), with S0018 (sheet_002.jpg frame 8, funnel +
+    callout arrows) and S0257 (sheet_026.jpg, numbered layered funnel).
+  ----------------------------------------------------------------------------
+  THE ONE ENCODING: lane THICKNESS = volume reached, zero-based and linear.
+  A lane is one <path>: straight band x190..x900, then two edges taper to the
+  single mouth point (1004,360). Thickness is the ONLY number a lane carries;
+  y-centres and pitch are fixed furniture.
+      t(i) = round( 30 * v(i) / vmax )      vmax = the largest v, t <= 30px
+      yc(i) = 232 + i*92                    232 / 324 / 416 / 508
+      d  =  M 190, yc-t/2  L 900, yc-t/2  L 1004,360  L 900, yc+t/2  L 190, yc+t/2  Z
+  Labels as BUILT (one convention, applied identically to all four lanes):
+      name  — 10.5px caps, ABOVE the band's top edge:  y = yc(i) - t/2 - 6
+      value — 13px, INSIDE the band when t >= 24 (y = yc + 6) so the number
+              sits on the fill; BELOW the band's bottom edge when t < 24
+              (y = yc + t/2 + 15) so it never collides with the fill.
+      unit  — 9.5px "reached" immediately right of the value, same baseline.
+  Conversion (buys / reached) is a second, smaller number and lives BELOW the
+  band's right end, right-aligned at x=888, 11px bold over a 9.5px buyer count.
+  It is NEVER inside the band and NEVER on the taper — that is the whole point
+  of the two-number split: length says volume, the label says rate.
+  The target ring (cx 1112, cy 360) is NOT scaled to the lanes: it is a gauge.
+      current arc  = 360deg * (today / target)     from 12 o'clock, grey
+      target notch = a radial tick at 100% + a label; the ring never encodes
+                     "reached" volume, only progress against the ambition.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts, zero network calls,
+  no JavaScript. 1rem == 1 stage pixel; SVG user units == stage px.
+  ============================================================================
+-->
+<style>
+  :root{
+    /* DESIGN_PLAYBOOK line 57: deep navy ink + ONE accent + grey ramp.
+       The PwC source paints a magenta->orange gradient over its bands; that is
+       exactly the 10-hue failure mode the kit forbids, so the bands here are
+       grey with ONE lane recoloured for the argument. */
+    --bg:      #FFFFFF;
+    --ink:     #051C2C;   /* titles + primary numerals                        */
+    --accent:  #2251FF;   /* THE ONE emphasis colour — the lane the page argues about */
+    --gray-1:  #2D2D2D;   /* body text, dark neutral fill, current arc        */
+    --gray-2:  #464646;   /* kicker, rail names                              */
+    --gray-3:  #7D7D7D;   /* notes, source line                              */
+    --gray-4:  #DEDEDE;   /* lane fill for the "rest" + ring track            */
+    --gray-5:  #F2F4F6;   /* wash band behind the lane field                  */
+    --rule:    #C7CDD3;   /* hairlines, ring outline, ticks                   */
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, Calibri, "Helvetica Neue", "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }   /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#101524;                 /* studio backdrop, not part of the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); }
+  .layer{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  /* ---- page furniture ---- */
+  .kicker{ position:absolute; left:64rem; top:34rem; width:1152rem;
+           font:600 12rem/1 var(--font-display); letter-spacing:.2rem;
+           text-transform:uppercase; color:var(--gray-2); }
+  .kicker .n{ color:var(--accent); font-weight:700; }
+  .kicker .dim{ color:var(--gray-3); letter-spacing:.12rem; }
+
+  h1.title{ position:absolute; left:64rem; top:56rem; width:1152rem;
+            font:700 27rem/35rem var(--font-display); color:var(--ink);
+            letter-spacing:-.2rem; }
+  h1.title sup{ font-size:12rem; color:var(--gray-2); }
+
+  .lead{ position:absolute; left:64rem; top:102rem; width:1152rem;
+         font:700 13rem/17rem var(--font-body); color:var(--gray-1); }
+  .lead b{ color:var(--accent); }
+
+  .base{ position:absolute; left:64rem; bottom:52rem; width:1152rem;
+         font:10rem/14rem var(--font-body); color:var(--gray-3); }
+  .base b{ color:var(--gray-1); font-weight:700; }
+
+  .source{ position:absolute; left:64rem; bottom:16rem; max-width:980rem;
+           font:10rem/14rem var(--font-body); color:var(--gray-3); }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:16rem;
+           font:700 10rem/1 var(--font-body); letter-spacing:.1rem; color:var(--gray-2); }
+
+  /* ---- svg text roles ---- */
+  .laneName{ font:700 10.5rem var(--font-display); letter-spacing:.1em;
+             text-transform:uppercase; fill:var(--gray-2); }
+  .laneName.hi{ fill:var(--accent); }
+  .laneNum{ font:700 13rem var(--font-display); fill:var(--ink); letter-spacing:-.2px; }
+  .laneNum.hi{ fill:var(--accent); }
+  .laneUnit{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+  .laneConv{ font:700 11rem var(--font-body); fill:var(--gray-1); }
+  .laneConv.hi{ fill:var(--accent); }
+  .laneConvSub{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+  .ringClaim{ font:700 10rem var(--font-display); letter-spacing:.12em;
+              text-transform:uppercase; fill:var(--gray-3); }
+  .ringNum{ font:700 30rem var(--font-display); fill:var(--ink); letter-spacing:-.8px; }
+  .ringTxt{ font:11rem var(--font-body); fill:var(--gray-1); }
+  .ringSub{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+  .tick{ font:700 10rem var(--font-display); letter-spacing:.08em; fill:var(--gray-1); }
+  .mouth{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+  .noteT{ font:700 10rem var(--font-display); letter-spacing:.1em;
+          text-transform:uppercase; fill:var(--accent); }
+  .note{ font:9.5rem var(--font-body); fill:var(--gray-1); }
+  .footNote{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Four acquisition paths converging into one target ring, with conversion rates per path">
+
+  <header>
+    <p class="kicker"><span class="n">17</span><span class="dim"> | Customer journey — paths to purchase, FY26 YTD</span></p>
+    <h1 class="title">One path converts 2.5× better than the rest of the journey<sup>1</sup></h1>
+    <p class="lead">Referral and advocacy buy at <b>6.5%</b> of reach against 2.6% for retail and 2.3% for owned — 1,184,000 reached, 47,700 buyers, 49% of the FY27 ambition.</p>
+  </header>
+
+  <svg class="layer" viewBox="0 0 1280 720" role="img"
+       aria-label="Four proportional lanes: organic search 428,000, retail partner 356,000, referral and advocacy 188,000, owned channels 212,000, all converging into a target ring showing 47,700 buyers against a 97,100 target">
+    <defs>
+      <marker id="arrA" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"
+              markerUnits="userSpaceOnUse">
+        <path d="M0.5 0.9 L8 4.5 L0.5 8.1 Z" fill="var(--accent)"/>
+      </marker>
+    </defs>
+
+    <!-- lane field wash: one lightness wash, not a second hue -->
+    <rect x="176" y="188" width="640" height="372" fill="var(--gray-5)" fill-opacity=".5"/>
+    <line x1="190" y1="188" x2="190" y2="560" stroke="var(--rule)" stroke-width="1"/>
+
+    <!-- ================= LANES ================= -->
+    <!-- lane 1 · Organic search · v=428,000 · t=30 · yc=232 (thickest = reference) -->
+    <g aria-label="Organic search: 428,000 reached, 5.0 percent bought">
+      <path d="M190,217 L900,217 L1004,360 L900,247 L190,247 Z" fill="var(--gray-4)" stroke="var(--rule)" stroke-width="1"/>
+      <text class="laneName" x="200" y="211">Organic search</text>
+      <text class="laneNum"  x="200" y="238">428,000</text>
+      <text class="laneUnit" x="200" y="252">reached</text>
+      <text class="laneConv" x="888" y="264" text-anchor="end">5.0% bought</text>
+      <text class="laneConvSub" x="888" y="277" text-anchor="end">21,400 buyers</text>
+    </g>
+
+    <!-- lane 2 · Retail partner · v=356,000 · t=25 · yc=324 -->
+    <g aria-label="Retail partner: 356,000 reached, 2.6 percent bought">
+      <path d="M190,311.5 L900,311.5 L1004,360 L900,336.5 L190,336.5 Z" fill="var(--gray-4)" stroke="var(--rule)" stroke-width="1"/>
+      <text class="laneName" x="200" y="307">Retail partner</text>
+      <text class="laneNum"  x="200" y="330">356,000</text>
+      <text class="laneUnit" x="263" y="330">reached</text>
+      <text class="laneConv" x="888" y="353" text-anchor="end">2.6% bought</text>
+      <text class="laneConvSub" x="888" y="366" text-anchor="end">9,200 buyers</text>
+    </g>
+
+    <!-- lane 3 · Referral / advocacy · v=188,000 · t=13 · yc=416 — THE EMPHASIS LANE -->
+    <g aria-label="Referral and advocacy: 188,000 reached, 6.5 percent bought — the highlighted path">
+      <path d="M190,409.5 L900,409.5 L1004,360 L900,422.5 L190,422.5 Z" fill="var(--accent)" stroke="var(--accent)" stroke-width="1"/>
+      <text class="laneName hi" x="190" y="401" text-anchor="start">Referral / advocacy</text>
+      <text class="laneNum hi"  x="190" y="437">188,000</text>
+      <text class="laneUnit"    x="252" y="437">reached</text>
+      <text class="laneConv hi" x="888" y="447" text-anchor="end">6.5% bought</text>
+      <text class="laneConvSub" x="888" y="460" text-anchor="end">12,300 buyers</text>
+    </g>
+
+    <!-- lane 4 · Owned channels · v=212,000 · t=15 · yc=508 -->
+    <g aria-label="Owned channels: 212,000 reached, 2.3 percent bought">
+      <path d="M190,500.5 L900,500.5 L1004,360 L900,515.5 L190,515.5 Z" fill="var(--gray-4)" stroke="var(--rule)" stroke-width="1"/>
+      <text class="laneName" x="200" y="495">Owned channels</text>
+      <text class="laneNum"  x="200" y="531">212,000</text>
+      <text class="laneUnit" x="263" y="531">reached</text>
+      <text class="laneConv" x="888" y="532" text-anchor="end">2.3% bought</text>
+      <text class="laneConvSub" x="888" y="545" text-anchor="end">4,800 buyers</text>
+    </g>
+
+    <!-- the one annotation: a note block, marked by an accent tick, that the
+         reader reads after the lanes. No leader line across the diagram. -->
+    <g aria-label="Annotation: value of closing the retail conversion gap">
+      <line x1="176" y1="574" x2="176" y2="600" stroke="var(--accent)" stroke-width="2.4"/>
+      <text class="noteT" x="190" y="580">The gap is the cheapest volume</text>
+      <text class="note" x="190" y="594">Retail at the referral rate, on the same 356,000 reach,</text>
+      <text class="note" x="190" y="606">would add ~13,900 buyers — 14% of the FY27 ambition.</text>
+    </g>
+
+    <!-- ================= TARGET RING (gauge, not scaled to lanes) ========== -->
+    <text class="mouth" x="1004" y="330" text-anchor="middle">converged</text>
+    <circle cx="1112" cy="360" r="86" fill="none" stroke="var(--rule)" stroke-width="1"/>
+    <circle cx="1112" cy="360" r="76" fill="none" stroke="var(--rule)" stroke-width="1"/>
+    <!-- ring track -->
+    <circle cx="1112" cy="360" r="86" fill="none" stroke="var(--gray-4)" stroke-width="13"/>
+    <!-- current: 47,700 / 97,100 = 49.1% of the target, grey, from 12 o'clock -->
+    <circle cx="1112" cy="360" r="86" fill="none" stroke="var(--gray-1)" stroke-width="13"
+            stroke-dasharray="265.3 275.1" stroke-linecap="butt" transform="rotate(-90 1112 360)"/>
+    <!-- target notch at 100%: radial tick + label -->
+    <line x1="1112" y1="267.5" x2="1112" y2="248" stroke="var(--gray-1)" stroke-width="1.6"/>
+    <text class="tick" x="1112" y="240" text-anchor="middle">TARGET 97,100</text>
+
+    <!-- inside the ring: the argument sentence, not a bare percentage -->
+    <text class="ringClaim" x="1112" y="312" text-anchor="middle">bought today</text>
+    <text class="ringNum" x="1112" y="368" text-anchor="middle">47,700</text>
+    <text class="ringTxt" x="1112" y="392" text-anchor="middle">49% of the FY27 ambition</text>
+    <text class="ringSub" x="1112" y="412" text-anchor="middle">1 in 25 reached adults</text>
+
+    <!-- stage axis along the lane field: the three journey moments, stated once -->
+    <text class="mouth" x="206" y="182">Reach</text>
+    <text class="mouth" x="560" y="182">Trial</text>
+    <text class="mouth" x="900" y="182">Purchase</text>
+    <line x1="190" y1="188" x2="190" y2="196" stroke="var(--gray-1)" stroke-width="1.2"/>
+    <line x1="560" y1="188" x2="560" y2="196" stroke="var(--gray-1)" stroke-width="1.2"/>
+    <line x1="900" y1="188" x2="900" y2="196" stroke="var(--gray-1)" stroke-width="1.2"/>
+    <text class="footNote" x="176" y="620">¹ Attribution: last-touch on the buyer's own path, FY26 YTD to 30 Sep; a buyer is counted once on the
+      highest-scoring path, so path totals do not double-count reach.</text>
+  </svg>
+
+  <p class="base"><b>Base:</b> 1,184,000 unique adults reached across four measured paths, FY26 YTD to 30 Sep 2026
+    (n=1,184,000; 47,700 buyers within 90 days of last touch). Paths are additive on reach, exclusive on credit.</p>
+  <p class="source">Source: Journey Analytics panel wave 14, path-level attribution, FY26 YTD; FY27 ambition of 97,100 buyers
+    set in the 2026 Commercial Plan<sup>2</sup>.</p>
+  <p class="pageno">17 | JOURNEY</p>
+
+</main>
+</body>
+</html>

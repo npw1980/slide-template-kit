@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>waterfall-bridge-deltas — from/to value bridge, floating delta bars + connectors (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  waterfall-bridge-deltas  ·  family waterfall-bridge
+  Evidence: EY-Parthenon "Generative AI in retail and commercial banking" (2023)
+            p9 (sw_sheets/ey__ey_generative_ai_in_retail_and_commercial_banking_
+            2023_s00.jpg row 2 col 4): accent-blue highlight bars + grey ramp,
+            value labels on/inside bars, DASHED OUTLINE = honest low-materiality
+            marker, verbatim-question header band. Palette + emphasis rules from
+            reviews/ey__ey_generative_ai_in_retail_and_commercial_banking_2023.md
+            (azure ~#1B96E0 = the finding, dark navy text, grey = comparison,
+            "dashed outlines group bars visually"). The start/stop bridge frame
+            is standard MBB practice, drawn here on EY's zero-based discipline.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html rule maps 1rem == 1 STAGE PIXEL (1280×720 fit); inside
+  SVG, viewBox user units == stage px.
+  ----------------------------------------------------------------------------
+  DATA ARRAY (bridge steps, left to right; swap NUMBERS, not geometry):
+    start = 22.0                      // opening value (FY24)
+    steps = [
+      { label:"Product mix",         sub:"volume & portfolio",  delta:+3.1, kind:"pos" },
+      { label:"Pricing & discounts", sub:"list price & promo",  delta:+1.8, kind:"pos" },
+      { label:"Cost of delivery",    sub:"hosting + services",  delta:-2.4, kind:"neg" },
+      { label:"FX & rate",           sub:"translation + rate",  delta:-0.6, kind:"neg",
+        dashed:true }                  // directional: draw dashed outline + dagger
+    ]
+    end   = 23.9                       // closing value; must equal start + Σdelta
+    net   = +1.9                       // end − start, shown in the pill
+  Geometry rule (linear, ZERO-BASED — the whole bridge must read off a real axis):
+    scale  y(v) = 600 − v × 11            // px per percentage point
+    column centres x = 170 + i×188, i = 0..5 (0 = start, 5 = end); bar w 96
+    start/end bars: full column  v=0..value   rect y=y(value), h=value×11,  fill neutral grey
+    float i (1..4): running cumulative r₀=22.0 → rᵢ=rᵢ₋₁+deltaᵢ
+                    rect x=centre−48, y=y(max(rᵢ₋₁,rᵢ)), h=|delta|×11
+                    fill: pos → --accent ; neg → --neg grey (+ dark stroke)
+    connector between column i and i+1: horizontal line at y(rᵢ),
+                    from (x_i+48) to (x_i+1 − 48)
+    delta label: above float top (positive) or below float bottom (negative),
+                    y = bar_edge ∓ 10, colour follows kind
+    inside value (totals only, if h≥40): white 700, y = bar top + 22
+    dashed-outline device: rect x=centre−54, y=bar top−5, w=108, h=bar h+10,
+                    stroke --neg, dashed 4 3, no fill + dagger "†" below column
+    NET pill: centred on column span mid (x 566 w 148, y 142 h 28 rx 14), accent fill
+    Swap numbers = running values → rect y/h, connectors' y, label text; nothing else moves.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     EY-Parthenon survey palette (hexes from the deck review: azure ~#1B96E0
+     is the ONE accent = "the answer/highlight"; greys carry everything that
+     isn't the finding; navy text). Semantic: --accent = positive movement,
+     --neg grey = drag/loss, --neutral = opening/closing totals (they anchor
+     the bridge, not the story, so they never take the accent). */
+  :root{
+    --bg:         #FFFFFF;
+    --ink:        #16212E;   /* title, axis text — EY dark navy */
+    --accent:     #1B96E0;   /* EY azure — the ONE accent hue */
+    --neg:        #B9C1C9;   /* light grey: negative movement bars */
+    --neg-stroke: #6E747C;   /* keeps thin negative bars legible */
+    --neutral:    #59616B;   /* start/end totals */
+    --gray-1:     #6E747C;   /* secondary text, captions */
+    --rule:       #D9DEE4;   /* hairlines, gridlines */
+    --grid:       #EDF0F3;   /* faint gridlines */
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#101823; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); color:var(--ink); }
+  /* ---- title zone: kicker / claim title / chart (EY three-zone block) ---- */
+  .title{ position:absolute; left:64rem; top:34rem; width:1152rem;
+          font-family:var(--font-display); font-size:29rem; font-weight:700; line-height:37rem;
+          letter-spacing:-.6rem; max-height:84rem; }   /* 2-line slot, MBB gate */
+  .title .em{ color:var(--accent); }
+  .kicker{ position:absolute; left:64rem; top:112rem; width:1152rem;
+           font-size:14rem; font-weight:700; letter-spacing:.9rem; color:var(--gray-1); }
+  .kicker sup{ font-size:9rem; }
+  svg.chart{ position:absolute; left:0; top:0; width:1280rem; height:720rem; font-family:var(--font-body); }
+  .note{ position:absolute; left:64rem; bottom:34rem; right:64rem; font-size:10rem; line-height:14rem; color:var(--gray-1); }
+  .note sup{ font-size:8rem; }
+  .footer{ position:absolute; left:64rem; right:64rem; bottom:14rem; display:flex; justify-content:space-between; font-size:10rem; color:var(--gray-1); }
+  .footer .pagenum{ font-weight:700; color:var(--ink); font-size:11rem; }
+</style>
+</head>
+<body>
+<div class="stage" role="img" aria-label="EBITDA margin bridge from 22.0 percent in FY24 to 23.9 percent in FY26: pricing and mix gains of plus 4.9 points outweigh cost and FX drag of minus 3.0 points; FX is flagged as directional">
+
+  <!-- slot 1 · claim title (13 words / 2 lines) -->
+  <div class="title">Pricing gains outweigh cost drag, lifting FY26 EBITDA margin <span class="em">+1.9pp to 23.9%</span></div>
+
+  <!-- slot 2 · kicker: figure caption -->
+  <div class="kicker">EBITDA MARGIN BRIDGE, FY24 → FY26<sup>1</sup> · PERCENTAGE POINTS OF REVENUE, CONTINUOUS OPERATIONS</div>
+
+  <!-- ===================== CHART (inline SVG) =====================
+       6 columns. One <g class="col"> per step: swap height/y from the running
+       total, connector y, and the label text. Positive float = accent fill,
+       negative = grey + dark stroke, totals = neutral grey. The FX step shows
+       the dashed-outline (directional) device. -->
+  <svg class="chart" viewBox="0 0 1280 720">
+
+    <!-- gridlines + % axis (zero-based) -->
+    <line x1="112" y1="600" x2="1216" y2="600" stroke="#9AA2AB" stroke-width="1.5"/>   <!-- baseline 0 -->
+    <line x1="112" y1="545" x2="1216" y2="545" stroke="#EDF0F3" stroke-width="1"/>
+    <line x1="112" y1="490" x2="1216" y2="490" stroke="#EDF0F3" stroke-width="1"/>
+    <line x1="112" y1="435" x2="1216" y2="435" stroke="#EDF0F3" stroke-width="1"/>
+    <line x1="112" y1="380" x2="1216" y2="380" stroke="#EDF0F3" stroke-width="1"/>
+    <line x1="112" y1="325" x2="1216" y2="325" stroke="#EDF0F3" stroke-width="1"/>
+    <text x="104" y="604" text-anchor="end" font-size="11" fill="#6E747C">0</text>
+    <text x="104" y="549" text-anchor="end" font-size="11" fill="#6E747C">5</text>
+    <text x="104" y="494" text-anchor="end" font-size="11" fill="#6E747C">10</text>
+    <text x="104" y="439" text-anchor="end" font-size="11" fill="#6E747C">15</text>
+    <text x="104" y="384" text-anchor="end" font-size="11" fill="#6E747C">20</text>
+    <text x="104" y="329" text-anchor="end" font-size="11" fill="#6E747C">25</text>
+    <text x="118" y="176" font-size="11" fill="#6E747C">% of revenue · EBITDA margin</text>
+
+    <!-- NET pill (end − start) -->
+    <line x1="170" y1="184" x2="170" y2="352" stroke="#D9DEE4" stroke-width="1.2"/>
+    <line x1="1110" y1="184" x2="1110" y2="336" stroke="#D9DEE4" stroke-width="1.2"/>
+    <line x1="170" y1="172" x2="1110" y2="172" stroke="#D9DEE4" stroke-width="1.2"/>
+    <rect x="566" y="158" width="148" height="28" rx="14" fill="#1B96E0"/>
+    <text x="640" y="177" text-anchor="middle" font-size="13" font-weight="700" fill="#FFFFFF">NET +1.9pp</text>
+
+    <!-- legend -->
+    <g font-size="11" fill="#6E747C">
+      <rect x="768" y="196" width="12" height="12" fill="#1B96E0"/><text x="786" y="206">value uplift</text>
+      <rect x="872" y="196" width="12" height="12" fill="#B9C1C9" stroke="#6E747C" stroke-width="1"/><text x="890" y="206">value erosion</text>
+      <rect x="986" y="196" width="12" height="12" fill="#59616B"/><text x="1004" y="206">opening / closing total</text>
+    </g>
+
+    <!-- connectors: horizontal at running-total levels -->
+    <line x1="218"  y1="358"   x2="310"  y2="358"   stroke="#8A9099" stroke-width="1.4"/>
+    <line x1="406"  y1="323.9" x2="498"  y2="323.9" stroke="#8A9099" stroke-width="1.4"/>
+    <line x1="594"  y1="304.1" x2="686"  y2="304.1" stroke="#8A9099" stroke-width="1.4"/>
+    <line x1="782"  y1="330.5" x2="874"  y2="330.5" stroke="#8A9099" stroke-width="1.4"/>
+    <line x1="970"  y1="337.1" x2="1062" y2="337.1" stroke="#8A9099" stroke-width="1.4"/>
+
+    <!-- col 1 · FY24 total : 0→22.0 → y=358 h=242 -->
+    <g class="col">
+      <rect x="122" y="358" width="96" height="242" fill="#59616B"/>
+      <text x="170" y="380" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">22.0%</text>
+      <text x="170" y="626" text-anchor="middle" font-size="12.5" fill="#16212E">FY24 margin</text>
+      <text x="170" y="642" text-anchor="middle" font-size="10.5" fill="#6E747C">2024 baseline</text>
+    </g>
+
+    <!-- col 2 · +3.1 mix : 22.0→25.1 → y=323.9 h=34.1 -->
+    <g class="col">
+      <rect x="310" y="323.9" width="96" height="34.1" fill="#1B96E0"/>
+      <text x="358" y="313" text-anchor="middle" font-size="13" font-weight="700" fill="#1B96E0">+3.1pp</text>
+      <text x="358" y="626" text-anchor="middle" font-size="12.5" fill="#16212E">Product mix</text>
+      <text x="358" y="642" text-anchor="middle" font-size="10.5" fill="#6E747C">volume &amp; portfolio</text>
+    </g>
+
+    <!-- col 3 · +1.8 pricing : 25.1→26.9 → y=304.1 h=19.8 -->
+    <g class="col">
+      <rect x="498" y="304.1" width="96" height="19.8" fill="#1B96E0"/>
+      <text x="546" y="293" text-anchor="middle" font-size="13" font-weight="700" fill="#1B96E0">+1.8pp</text>
+      <text x="546" y="626" text-anchor="middle" font-size="12.5" fill="#16212E">Pricing &amp; discounts</text>
+      <text x="546" y="642" text-anchor="middle" font-size="10.5" fill="#6E747C">list price &amp; promo</text>
+    </g>
+
+    <!-- col 4 · −2.4 cost : 26.9→24.5 → y=304.1 h=26.4 -->
+    <g class="col">
+      <rect x="686" y="304.1" width="96" height="26.4" fill="#B9C1C9" stroke="#6E747C" stroke-width="1"/>
+      <text x="734" y="350" text-anchor="middle" font-size="13" font-weight="700" fill="#4A4E55">−2.4pp</text>
+      <text x="734" y="626" text-anchor="middle" font-size="12.5" fill="#16212E">Cost of delivery</text>
+      <text x="734" y="642" text-anchor="middle" font-size="10.5" fill="#6E747C">hosting + services</text>
+    </g>
+
+    <!-- col 5 · −0.6 FX : 24.5→23.9 → y=330.5 h=6.6 · DASHED OUTLINE = directional -->
+    <g class="col">
+      <rect x="874" y="330.5" width="96" height="6.6" fill="#B9C1C9" stroke="#6E747C" stroke-width="1"/>
+      <rect x="868" y="325.5" width="108" height="16" fill="none" stroke="#6E747C" stroke-width="1.3" stroke-dasharray="4 3"/>
+      <text x="922" y="350" text-anchor="middle" font-size="13" font-weight="700" fill="#4A4E55">−0.6pp†</text>
+      <text x="922" y="626" text-anchor="middle" font-size="12.5" fill="#16212E">FX &amp; rate</text>
+      <text x="922" y="642" text-anchor="middle" font-size="10.5" fill="#6E747C">directional, not modelled</text>
+    </g>
+
+    <!-- col 6 · FY26 total : 0→23.9 → y=337.1 h=262.9 -->
+    <g class="col">
+      <rect x="1062" y="337.1" width="96" height="262.9" fill="#59616B"/>
+      <text x="1110" y="359" text-anchor="middle" font-size="14" font-weight="700" fill="#FFFFFF">23.9%</text>
+      <text x="1110" y="626" text-anchor="middle" font-size="12.5" fill="#16212E">FY26 margin</text>
+      <text x="1110" y="642" text-anchor="middle" font-size="10.5" fill="#6E747C">2026 guided</text>
+    </g>
+
+  </svg>
+
+  <!-- slot 4 · methodology note (dagger explains the dashed device) -->
+  <div class="note">† FX &amp; rate effect is directional: translation sensitivity spans −0.1 to −1.2pp and is not modelled to the cent — the dashed outline flags it as approximate.</div>
+
+  <!-- slot 5 · footer anatomy -->
+  <div class="footer">
+    <span>Source: Group management accounts FY24–FY26 (unaudited); bridge reconciles to board plan v4<sup>1</sup></span>
+    <span class="pagenum">2 | FINANCIALS</span>
+  </div>
+
+</div>
+</body>
+</html>

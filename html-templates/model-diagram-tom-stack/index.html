@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>model-diagram-tom-stack — target operating model, layer stack + callout leaders (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  model-diagram-tom-stack  ·  family model-diagram
+  Evidence (see MANUAL.md -> SOURCE):
+    PwC Strategy — "2019 Global Treasury Benchmarking Survey" p11 ("Technology
+    as core component of the Treasury target operating model"):
+    white ground, red serif title, vertical stack of named model LAYERS
+    (Vision banner + Processes / Organisation / Technology / Performance /
+    People / Governance bars), detail columns with real bullets under the
+    first two layers, and margin callout claims joined by thin leader lines.
+    Named reusable item #7 ("TOM nested box tree with margin callouts — needs
+    redraw; the original is dense") in
+    reviews/pwc_strategy__pwc_2019_global_treasury_benchmarking_survey_2019.md.
+    Read from sw_sheets/pwc_strategy__pwc_2019_global_treasury_benchmarking_survey_2019_s01.jpg
+    (p11 -> sheet index floor(11/10)=1, frame row 1 col 1).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html font-size maps 1rem == 1 STAGE PIXEL, so every length
+  is a 1:1 stage-pixel coordinate with the same numbers MANUAL.md quotes.
+  ----------------------------------------------------------------------------
+  GEOMETRY (stage px, inside full-stage SVG viewBox 0 0 1280 720):
+    Model column:  x 318 .. 962 (W 644). Layer stack pitch:
+      vision band    y178 h30 (accent fill)         processes header y216 h24
+      detail A cols  y246 .. 458 (4 cols, W (644-3*8)/4 = 155)
+      org header     y470 h24   detail B cols y500 .. 562 (3 cols)
+      tech band      y576 h22 (EMPHASIS accent fill)
+      perf band      y604 h22   people band y628 h22   gov band y654 h22
+    Callout chips: 3 left  (x 66  w192) + 3 right (x 1024 w192). Each chip is
+      one <g class="callout"> with a two-segment leader line ending in an
+      accent dot at the band edge (x=318 left / x=962 right).
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles per DESIGN_PLAYBOOK. Palette anchor cited from
+     reviews/pwc_strategy__pwc_2019_global_treasury_benchmarking_survey_2019.md
+     §Color system: brand orange-red ~#D04A02 (titles/bars/rules), grey ramp
+     #D9D9D9 (callout fill) / #8C8C8C, panels #F2F2F2, text #1A1A1A.
+     Contrast on white (measured):
+       --ink #1A1A1A on --bg        = 16.9:1
+       --gray-1 #404040 on --bg     =  9.8:1
+       --gray-2 #8C8C8C on --bg     =  3.8:1  -> large/bold only
+       --gray-note #666666 on --bg  =  5.9:1  (all note-size text)
+       --accent #B23A00 on --bg     =  6.9:1  (darkened PwC red for AA body;
+                               on-screen brand #D04A02 keeps 5.0:1 on white)
+       #FFFFFF on --accent          =  6.9:1  (label ON accent)
+     ================================================================= */
+  :root{
+    --bg:        #FFFFFF;   /* white page ground */
+    --ink:       #1A1A1A;   /* titles, near-black per deck */
+    --gray-1:    #404040;   /* body text */
+    --gray-2:    #8C8C8C;   /* secondary / leader lines */
+    --gray-3:    #D9D9D9;   /* chip fill, layer-bar fill, hairlines */
+    --gray-note: #666666;   /* note-size text (9–11px) */
+    --panel:     #F2F2F2;   /* detail column fill */
+    --rule:      #D9D9D9;
+    --accent:      #B23A00; /* THE emphasis (PwC red, darkened for AA) */
+    --accent-soft: #F8EFE9; /* one lightness of accent: callout hover-free fill */
+    --band:      #6E6E6E;   /* layer-bar fill (dark grey) */
+
+    /* PwC ships "Humanist 777 / Bower" for display and Calibri for body;
+       stacks below stand in — see MANUAL -> SOURCE */
+    --font-display: Georgia, "Times New Roman", "Liberation Serif", serif;
+    --font-body:    Arial, Calibri, "Helvetica Neue", "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{ background:#4A4A50; display:grid; place-items:center; min-height:100vh; }
+  .stage{
+    position:relative; width:1280rem; height:720rem; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink); overflow:hidden;
+  }
+  /* ---------- header band: kicker / claim title / lead line ---------- */
+  .kicker{
+    position:absolute; left:64rem; top:34rem; font-size:11rem; line-height:1;
+    font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    font-family:var(--font-display); color:var(--gray-1);
+  }
+  .kicker b{ color:var(--accent); font-weight:700; }
+  h1.title{
+    position:absolute; left:64rem; top:56rem; width:1152rem;
+    font-family:var(--font-display); font-size:30rem; line-height:36rem;
+    font-weight:700; letter-spacing:-.01em; color:var(--ink);
+    max-height:72rem; overflow:hidden;   /* 2-line gate: a 3rd line is clipped */
+  }
+  p.lead{
+    position:absolute; left:64rem; top:144rem; width:1152rem;
+    font-size:14rem; line-height:20rem; color:var(--gray-1); font-weight:400;
+  }
+  p.lead .em{ color:var(--accent); font-weight:700; }
+  /* ------------------------------ diagram ------------------------------ */
+  svg.diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+  .band-fill    { fill:var(--band); }
+  .band-accent  { fill:var(--accent); }
+  .band-emph    { fill:var(--accent); stroke:var(--ink); stroke-width:0; }
+  .band-name    { font:700 12px var(--font-body); fill:#FFFFFF; letter-spacing:.04em; }
+  .band-note    { font:700 9.5px var(--font-body); fill:#FFFFFF; opacity:.92; letter-spacing:.06em; }
+  .col-head     { font:700 8.5px var(--font-body); fill:var(--accent); letter-spacing:.07em; text-transform:uppercase; }
+  .col-bullet   { font:9.5px var(--font-body); fill:var(--gray-1); }
+  .col-bullet .b{ fill:var(--gray-2); }
+  .col-bg       { fill:var(--panel); }
+  .leader       { fill:none; stroke:var(--gray-2); stroke-width:1; }
+  .leader-dot   { fill:var(--accent); }
+  .chip-bg      { fill:#FFFFFF; stroke:var(--gray-3); stroke-width:1.2; }
+  .chip-kick    { font:700 9px var(--font-body); fill:var(--accent); letter-spacing:.09em; text-transform:uppercase; }
+  .chip-title   { font:700 11.5px var(--font-body); fill:var(--ink); }
+  .chip-body    { font:9.5px var(--font-body); fill:var(--gray-1); }
+  /* ------------------------------ footer ------------------------------ */
+  .source{
+    position:absolute; left:64rem; bottom:20rem; width:900rem;
+    font-size:10rem; line-height:13rem; color:var(--gray-note);
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{
+    position:absolute; right:64rem; bottom:20rem; font-size:10rem; color:var(--gray-note);
+  }
+  .pageno b{ color:var(--ink); font-weight:700; }
+  .hairline{ position:absolute; left:64rem; right:64rem; bottom:38rem; border-top:1px solid var(--rule); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1. KICKER · 2. CLAIM TITLE · 3. LEAD LINE -->
+  <div class="kicker" data-slot="kicker"><b>5 |</b> Digital Treasury</div>
+  <h1 class="title" data-slot="title">Technology is what makes a single Treasury operating model possible</h1>
+  <p class="lead" data-slot="lead">Digital tools let treasurers run every Treasury process, leverage data for decisions, and <span class="em">operate the whole target operating model as one system</span>.</p>
+
+  <!-- 4. DIAGRAM — full-stage SVG, all coordinates in stage px -->
+  <svg class="diagram" viewBox="0 0 1280 720" aria-label="Treasury target operating model, layer stack with callout leaders">
+
+    <!-- ============ LAYER STACK (bands) ============ -->
+    <!-- each band = one <g class="band"> : rect + name (+ note). Copy a band,
+         shift y by 26 (plain bands); see MANUAL -> SLOTS / FILL -->
+    <g id="bands">
+      <g class="band" id="band-vision">
+        <rect class="band-accent" x="318" y="178" width="644" height="30" rx="2"></rect>
+        <text class="band-name" x="330" y="198" style="font-size:12.5px">Vision, mandate, and objectives</text>
+      </g>
+
+      <g class="band" id="band-processes">
+        <rect class="band-fill" x="318" y="216" width="644" height="24" rx="2"></rect>
+        <text class="band-name" x="330" y="232">Processes</text>
+      </g>
+
+      <g class="band" id="band-organisation">
+        <rect class="band-fill" x="318" y="470" width="644" height="24" rx="2"></rect>
+        <text class="band-name" x="330" y="486">Organisation and structure</text>
+      </g>
+
+      <!-- EMPHASIS band — the page's claim component: same accent as vision,
+           flagged here by the right-hand capability strip. Only ONE hue. -->
+      <g class="band" id="band-technology">
+        <rect class="band-emph" x="318" y="576" width="644" height="22" rx="2"></rect>
+        <text class="band-name" x="330" y="591" style="font-size:11.5px">Technology</text>
+        <text class="band-note" x="954" y="591" text-anchor="end">AI · RPA · BLOCKCHAIN · CLOUD · IOT DASHBOARDS</text>
+      </g>
+
+      <g class="band" id="band-performance">
+        <rect class="band-fill" x="318" y="604" width="644" height="22" rx="2"></rect>
+        <text class="band-name" x="330" y="619" style="font-size:11.5px">Performance management and reporting</text>
+      </g>
+      <g class="band" id="band-people">
+        <rect class="band-fill" x="318" y="630" width="644" height="22" rx="2"></rect>
+        <text class="band-name" x="330" y="645" style="font-size:11.5px">People and talent management</text>
+      </g>
+      <g class="band" id="band-governance">
+        <rect class="band-fill" x="318" y="656" width="644" height="22" rx="2"></rect>
+        <text class="band-name" x="330" y="671" style="font-size:11.5px">Governance, policies, and procedures</text>
+      </g>
+    </g>
+
+    <!-- ============ DETAIL BLOCK A — 4 columns under "Processes" ============
+         columns live at y 246..458, x starts 318, width (644-3*8)/4 = 155.
+         one column = one <g class="dcol"> : bg rect + head + bullets.
+         add/remove column -> copy dcol, set x + width, re-fit sibling widths. -->
+    <g id="detail-processes">
+      <g class="dcol" id="dcol-cash">
+        <rect class="col-bg" x="318" y="246" width="155" height="212" rx="2"></rect>
+        <text class="col-head" x="326" y="262">Cash and liquidity management</text>
+        <text class="col-bullet" x="326" y="278"><tspan class="b">▪</tspan> Cash management (position,<tspan x="326" dy="11">collections &amp; disbursements)</tspan><tspan class="b" x="326" dy="12">▪</tspan> Bank accounts &amp; pooling<tspan class="b" x="326" dy="12">▪</tspan> Forecasting<tspan class="b" x="326" dy="12">▪</tspan> Business relationship<tspan x="337" dy="11">management &amp; administration</tspan><tspan class="b" x="326" dy="12">▪</tspan> Short-term investments<tspan x="337" dy="11">&amp; borrowing</tspan><tspan class="b" x="326" dy="12">▪</tspan> Intercompany lending<tspan x="337" dy="11">&amp; netting</tspan></text>
+      </g>
+      <g class="dcol" id="dcol-risk">
+        <rect class="col-bg" x="481" y="246" width="155" height="212" rx="2"></rect>
+        <text class="col-head" x="489" y="262">Financial risk management</text>
+        <text class="col-bullet" x="489" y="278"><tspan class="b">▪</tspan> FX risk<tspan class="b" x="489" dy="12">▪</tspan> Interest rate risk<tspan class="b" x="489" dy="12">▪</tspan> Commodity risk<tspan class="b" x="489" dy="12">▪</tspan> Credit risk<tspan class="b" x="489" dy="12">▪</tspan> Counterparty (credit)<tspan x="500" dy="11">risk</tspan></text>
+      </g>
+      <g class="dcol" id="dcol-corpfine">
+        <rect class="col-bg" x="644" y="246" width="155" height="212" rx="2"></rect>
+        <text class="col-head" x="652" y="262">Corporate finance</text>
+        <text class="col-bullet" x="652" y="278"><tspan class="b">▪</tspan> Trade finance<tspan class="b" x="652" dy="12">▪</tspan> Capital structure<tspan class="b" x="652" dy="12">▪</tspan> Debt financing<tspan class="b" x="652" dy="12">▪</tspan> Debt management<tspan x="663" dy="11">&amp; compliance</tspan><tspan class="b" x="652" dy="12">▪</tspan> Credit rating &amp; relationships<tspan class="b" x="652" dy="12">▪</tspan> Long-term investments<tspan class="b" x="652" dy="12">▪</tspan> Share repurchase<tspan class="b" x="652" dy="12">▪</tspan> Securities &amp; other<tspan x="663" dy="11">financing</tspan></text>
+      </g>
+      <g class="dcol" id="dcol-other">
+        <rect class="col-bg" x="807" y="246" width="153" height="212" rx="2"></rect>
+        <text class="col-head" x="815" y="262">Other</text>
+        <text class="col-bullet" x="815" y="278"><tspan class="b">▪</tspan> Business unit advisory<tspan class="b" x="815" dy="12">▪</tspan> Real estate<tspan class="b" x="815" dy="12">▪</tspan> Insurance<tspan class="b" x="815" dy="12">▪</tspan> Pension assets<tspan class="b" x="815" dy="12">▪</tspan> Working capital<tspan class="b" x="815" dy="12">▪</tspan> Other (please specify)</text>
+      </g>
+    </g>
+
+    <!-- ============ DETAIL BLOCK B — 3 columns under "Organisation" ============
+         columns y 500..562 (62px), x starts 318, width (644-2*8)/3 ≈ 209.3. -->
+    <g id="detail-org">
+      <g class="dcol" id="dcol-structure">
+        <rect class="col-bg" x="318" y="500" width="209" height="62" rx="2"></rect>
+        <text class="col-head" x="326" y="515">Structure &amp; locations</text>
+        <text class="col-bullet" x="326" y="530"><tspan class="b">▪</tspan> Geography vs. functional<tspan x="337" dy="11">vs. business unit</tspan><tspan class="b" x="326" dy="12">▪</tspan> Centralised vs. decentralised</text>
+      </g>
+      <g class="dcol" id="dcol-vehicles">
+        <rect class="col-bg" x="535.3" y="500" width="209" height="62" rx="2"></rect>
+        <text class="col-head" x="543.3" y="515">Vehicles</text>
+        <text class="col-bullet" x="543.3" y="530"><tspan class="b">▪</tspan> In-house bank<tspan class="b" x="543.3" dy="11">▪</tspan> Shared service centre<tspan class="b" x="543.3" dy="11">▪</tspan> Payment factory · Netting centre</text>
+      </g>
+      <g class="dcol" id="dcol-roles">
+        <rect class="col-bg" x="752.6" y="500" width="209" height="62" rx="2"></rect>
+        <text class="col-head" x="760.6" y="515">Roles &amp; responsibilities</text>
+        <text class="col-bullet" x="760.6" y="530"><tspan class="b">▪</tspan> Corporate Treasury<tspan class="b" x="760.6" dy="11">▪</tspan> Business units<tspan class="b" x="760.6" dy="11">▪</tspan> Other corporate departments</text>
+      </g>
+    </g>
+
+    <!-- ============ CALLOUTS — chips + leader lines ============
+         one callout = one <g class="callout"> : chip-bg + kicker/title/body
+         texts + leader polyline + leader-dot at the band edge.
+         LEFT chips: leader exits x=258 -> runs at x=278 down to target y ->
+           horizontal to band left edge x=318. dot at (318, ty).
+         RIGHT chips: leader exits x=1024 -> runs at x=1004 down to y ->
+           horizontal to band right edge x=962. dot at (962, ty). -->
+    <g id="callouts">
+
+      <g class="callout" id="callout-1">   <!-- left, -> Technology band -->
+        <path class="leader" d="M 258 250 L 278 250 L 278 587 L 318 587"></path>
+        <circle class="leader-dot" cx="318" cy="587" r="2.6"></circle>
+        <rect class="chip-bg" x="66" y="214" width="192" height="72" rx="3"></rect>
+        <text class="chip-kick" x="76" y="230">Technology</text>
+        <text class="chip-title" x="76" y="245"><tspan x="76" dy="0">AI-driven forecasting</tspan></text>
+        <text class="chip-body" x="76" y="260"><tspan x="76" dy="0">Recommend forecasts, trades,</tspan><tspan x="76" dy="11">and transactions from historical</tspan><tspan x="76" dy="11">data and market insight.</tspan></text>
+      </g>
+
+      <g class="callout" id="callout-2">   <!-- left, -> Technology band -->
+        <path class="leader" d="M 258 336 L 278 336 L 278 597 L 318 597"></path>
+        <circle class="leader-dot" cx="318" cy="597" r="2.6"></circle>
+        <rect class="chip-bg" x="66" y="316" width="192" height="66" rx="3"></rect>
+        <text class="chip-kick" x="76" y="332">Technology</text>
+        <text class="chip-title" x="76" y="347">Cloud access anywhere</text>
+        <text class="chip-body" x="76" y="362"><tspan x="76" dy="0">Connect TMS, ERP, and banking</tspan><tspan x="76" dy="11">systems — pay and report from</tspan><tspan x="76" dy="11">any location, at any time.</tspan></text>
+      </g>
+
+      <g class="callout" id="callout-3">   <!-- left, -> Processes detail col 1 -->
+        <path class="leader" d="M 258 468 L 278 468 L 278 300 L 318 300"></path>
+        <circle class="leader-dot" cx="318" cy="300" r="2.6"></circle>
+        <rect class="chip-bg" x="66" y="440" width="192" height="66" rx="3"></rect>
+        <text class="chip-kick" x="76" y="456">Processes</text>
+        <text class="chip-title" x="76" y="471">IoT-enabled supply chain</text>
+        <text class="chip-body" x="76" y="486"><tspan x="76" dy="0">Quicker conversion cycles and</tspan><tspan x="76" dy="11">tighter alignment of financial</tspan><tspan x="76" dy="11">metrics to operations.</tspan></text>
+      </g>
+
+      <g class="callout" id="callout-4">   <!-- right, -> Technology band -->
+        <path class="leader" d="M 1024 244 L 1004 244 L 1004 583 L 962 583"></path>
+        <circle class="leader-dot" cx="962" cy="583" r="2.6"></circle>
+        <rect class="chip-bg" x="1024" y="212" width="192" height="66" rx="3"></rect>
+        <text class="chip-kick" x="1034" y="228">Technology</text>
+        <text class="chip-title" x="1034" y="243">Smart-contract settlement</text>
+        <text class="chip-body" x="1034" y="258"><tspan x="1034" dy="0">Blockchain lets counterparties</tspan><tspan x="1034" dy="11">transact directly, with the</tspan><tspan x="1034" dy="11">right documentation.</tspan></text>
+      </g>
+
+      <g class="callout" id="callout-5">   <!-- right, -> Performance band -->
+        <path class="leader" d="M 1024 376 L 1004 376 L 1004 615 L 962 615"></path>
+        <circle class="leader-dot" cx="962" cy="615" r="2.6"></circle>
+        <rect class="chip-bg" x="1024" y="344" width="192" height="66" rx="3"></rect>
+        <text class="chip-kick" x="1034" y="360">Performance</text>
+        <text class="chip-title" x="1034" y="375">RPA standardises the SLA</text>
+        <text class="chip-body" x="1034" y="390"><tspan x="1034" dy="0">Automation holds the service</tspan><tspan x="1034" dy="11">level of the SLA process even</tspan><tspan x="1034" dy="11">as volumes change.</tspan></text>
+      </g>
+
+      <g class="callout" id="callout-6">   <!-- right, -> Governance band -->
+        <path class="leader" d="M 1024 500 L 1004 500 L 1004 667 L 962 667"></path>
+        <circle class="leader-dot" cx="962" cy="667" r="2.6"></circle>
+        <rect class="chip-bg" x="1024" y="468" width="192" height="66" rx="3"></rect>
+        <text class="chip-kick" x="1034" y="484">Governance</text>
+        <text class="chip-title" x="1034" y="499">Analytics on existing data</text>
+        <text class="chip-body" x="1034" y="514"><tspan x="1034" dy="0">Data mining and AI extend the</tspan><tspan x="1034" dy="11">infrastructure you already run</tspan><tspan x="1034" dy="11">— no rip-and-replace.</tspan></text>
+      </g>
+
+    </g>
+  </svg>
+
+  <!-- 5. FOOTER — hairline + source bottom-left + page stamp bottom-right -->
+  <div class="hairline"></div>
+  <div class="source" data-slot="source-line">Source: PwC, <i>2019 Global Treasury Benchmarking Survey</i> — respondents with a defined target operating model, n=115 of 208 corporate treasuries<sup>1</sup>; capabilities illustrative of 2019 practice<sup>2</sup>.</div>
+  <div class="pageno" data-slot="page-stamp"><b>11</b> · 5. Digital Treasury</div>
+
+</div>
+</body>
+</html>

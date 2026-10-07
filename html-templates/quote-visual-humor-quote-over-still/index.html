@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>quote-visual-humor-quote-over-still — centred quote over a full-bleed still (1280×720)</title>
+<style>
+  /* ============================================================
+     TEMPLATE  quote-visual-humor-quote-over-still · family quote-visual-humor
+     The "quote over a movie still" page: the photograph runs edge to
+     edge, a dark scrim keeps the type legible, and one sentence of
+     dialogue — spoken by a character, not a partner — is the exhibit.
+     There is no body copy: if the line needs explaining, the line is wrong.
+     Source evidence: corpus S1089 (catalog_101-134.csv "quote-slide",
+     "quote over movie still"; bold-italic quote centred, attribution
+     under it, no other furniture).
+     ============================================================ */
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  body{ margin:0; background:#0d1114; }
+
+  :root{
+    --bg:       #0D1114;   /* base behind everything                          */
+    --ink:      #FFFFFF;   /* type on the still                               */
+    --ink-dim:  #D8DCE0;   /* attribution, caption                           */
+    --accent:   #1F7CCE;   /* single emphasis hue                             */
+    --accent-on-dark: #79B6EE; /* the light lightness of it — used once,
+                                  on the rule under the attribution          */
+    --gray-3:   #9AA0A6;   /* footer on the scrim                            */
+    --rule:     rgba(255,255,255,.34);
+    --scrim:    rgba(9,14,18,.62);   /* flat wash for legibility             */
+    --scrim-band: rgba(6,10,13,.42); /* extra centre band (soft, no edge)    */
+    /* still placeholder — grayscale ramp, one hue only; the accent is NOT
+       put in the photograph, it stays in the type. Swap all three.       */
+    --photo-1:  #767B80;
+    --photo-2:  #3A3F44;
+    --photo-3:  #10161A;
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          margin:0 auto; background:var(--bg); }
+  .stage > *{ position:absolute; }
+
+  /* ---- the still (full bleed) ---------------------------------------- */
+  .still{ left:0; top:0; width:1280rem; height:720rem; margin:0; }
+  .still svg{ display:block; width:1280rem; height:720rem; }
+
+  /* scrim: a flat wash plus a soft centre band, never a visible seam */
+  .scrim{ left:0; top:0; width:1280rem; height:720rem;
+          background:var(--scrim); }
+  .scrim::after{ content:""; position:absolute; left:0; top:150rem;
+                 width:1280rem; height:420rem;
+                 background:linear-gradient(180deg, rgba(6,10,13,0) 0%,
+                          var(--scrim-band) 34%, var(--scrim-band) 66%,
+                          rgba(6,10,13,0) 100%); }
+  .still .stamp{ position:absolute; left:auto; right:14rem; bottom:12rem; font-family:var(--font-body);
+                 font-size:9px; letter-spacing:.5px; color:var(--ink-dim);
+                 background:rgba(9,14,18,.5); padding:.25rem .5rem; }
+
+  /* ---- kicker --------------------------------------------------------- */
+  .kicker{ left:64rem; top:56rem; margin:0; font-family:var(--font-display);
+           font-size:12.5px; font-weight:700; letter-spacing:2.1px;
+           text-transform:uppercase; color:var(--ink-dim); }
+
+  /* ---- the quote ------------------------------------------------------ */
+  /* Centred block. The quote carries its own opening/closing quotes as
+     real characters, so nothing decorative is needed.                  */
+  .quote{ left:190rem; top:286rem; width:900rem; margin:0; text-align:center;
+          font-family:var(--font-display); font-size:52px; line-height:1.2;
+          font-weight:700; font-style:italic; letter-spacing:-.6px;
+          color:var(--ink); text-wrap:balance; }
+  .quote .l{ display:block; }
+
+  .attrib{ left:0; top:470rem; width:1280rem; margin:0; text-align:center;
+           font-family:var(--font-body); font-size:20px; font-style:italic;
+           color:var(--ink-dim); }
+
+  /* the one accent: a 1px rule between quote and attribution */
+  .rule{ left:598rem; top:452rem; width:84rem; height:1px; background:var(--accent-on-dark); }
+
+  /* ---- footer --------------------------------------------------------- */
+  .caption{ left:64rem; bottom:30rem; margin:0; font-family:var(--font-body);
+            font-size:9.5px; letter-spacing:.2px; color:var(--gray-3); }
+  .pagestamp{ right:64rem; bottom:30rem; margin:0; font-family:var(--font-body);
+              font-size:9.5px; letter-spacing:1.1px; color:var(--gray-3); }
+  .mark{ right:64rem; bottom:50rem; margin:0; font-family:var(--font-display);
+         font-size:12px; font-weight:700; letter-spacing:1.6px;
+         text-transform:uppercase; color:var(--gray-3); }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Slide: a line of dialogue set over a full-bleed film still">
+
+  <!-- 1 · full-bleed still — PLACEHOLDER: replace svg contents with the frame -->
+  <figure class="still" aria-label="Full-bleed still placeholder: two figures, coloured bokeh, subject right of centre">
+    <svg viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Neutral placeholder for the still — grayscale with depth">
+      <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0"   stop-color="var(--photo-1)"/>
+          <stop offset=".52" stop-color="var(--photo-2)"/>
+          <stop offset="1"   stop-color="var(--photo-3)"/>
+        </linearGradient>
+        <radialGradient id="b1" cx=".18" cy=".30" r=".34">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".34"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="b2" cx=".90" cy=".72" r=".40">
+          <stop offset="0" stop-color="#ffffff" stop-opacity=".14"/>
+          <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--photo-3)" stop-opacity="0"/>
+          <stop offset="1" stop-color="var(--photo-3)" stop-opacity=".85"/>
+        </linearGradient>
+        <filter id="soft" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="26"/>
+        </filter>
+      </defs>
+
+      <rect width="1280" height="720" fill="url(#bg)"/>
+      <!-- bokeh field: shallow depth of field, the giveaway of a real still -->
+      <g filter="url(#soft)">
+        <circle cx="150" cy="150" r="120" fill="#ffffff" fill-opacity=".18"/>
+        <circle cx="1140" cy="120" r="86"  fill="#ffffff" fill-opacity=".11"/>
+        <circle cx="1030" cy="600" r="150" fill="#ffffff" fill-opacity=".09"/>
+        <circle cx="255"  cy="640" r="105" fill="#ffffff" fill-opacity=".07"/>
+        <circle cx="700"  cy="80"  r="70"  fill="#ffffff" fill-opacity=".08"/>
+      </g>
+      <rect width="1280" height="720" fill="url(#b1)"/>
+      <rect width="1280" height="720" fill="url(#b2)"/>
+      <!-- subject mass, right of centre, so the type has clear air on the left -->
+      <ellipse cx="835" cy="620" rx="330" ry="180" fill="var(--photo-3)" fill-opacity=".55"/>
+      <ellipse cx="815" cy="360" rx="145" ry="205" fill="var(--photo-3)" fill-opacity=".45"/>
+      <rect y="430" width="1280" height="290" fill="url(#floor)"/>
+    </svg>
+    <span class="stamp">Placeholder still · no external image</span>
+  </figure>
+
+  <!-- 2 · scrim -->
+  <div class="scrim" aria-hidden="true"></div>
+
+  <!-- 3 · kicker -->
+  <p class="kicker">In their own words</p>
+
+  <!-- 4 · the quote: 1 sentence, ≤15 words, ≤2 lines -->
+  <blockquote class="quote"><span class="l">“I am Buzz Lightyear;</span><span class="l">I come in peace.”</span></blockquote>
+
+  <div class="rule" aria-hidden="true"></div>
+  <p class="attrib">— Buzz Lightyear, toy, self-appointed</p>
+
+  <!-- 5 · footer anatomy -->
+  <p class="mark">Firm mark here</p>
+  <p class="caption">Still: animated feature, 2019 — placeholder credit. Source: studio publicity frame.</p>
+  <p class="pagestamp">1 | QUOTE</p>
+</main>
+</body>
+</html>

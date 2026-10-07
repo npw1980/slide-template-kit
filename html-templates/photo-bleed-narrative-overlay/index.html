@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>photo-bleed-narrative-overlay — full-bleed photograph with floating copy panel (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  photo-bleed-narrative-overlay  ·  family photo-bleed
+  The photograph IS the page: it bleeds to all four edges of the 1280x720
+  stage, and the argument sits in an opaque copy panel that floats over the
+  right half. Left of the panel the photo is uninterrupted; a soft bottom-left
+  scrim keeps the source line legible. Observed in PwC Strategy& narrative /
+  photo pages (PwC IAB Podcast Ad Revenue Study 2017 p04) and reused on the
+  PwC family-business / consumer-pulse narrative pages.
+  ----------------------------------------------------------------------------
+  SIGNATURE MOVES CARRIED OVER FROM THE SOURCE:
+    1. serif bold-italic page title with ONE keyword coloured in the brand
+       accent — everything else in the title is dark ink;
+    2. an opaque (not translucent) body panel, so 12-13px body copy keeps
+       full contrast over any photograph;
+    3. photo credit / source printed on the image itself, bottom-left,
+       white, with a scrim behind it.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport
+  fit, so every rem value below is a 1:1 coordinate on 1280x720 and matches
+  the px coords quoted in MANUAL.md.
+  SELF-CONTAINED: inline CSS + inline SVG only. No imports, no webfonts, no
+  img / link / script / iframe / url() reference — zero network requests.
+  PHOTOGRAPHY: the photo is an HONEST PLACEHOLDER — a warm duotone SVG stand-in
+  (gradient + bokeh + silhouette) whose bottom-right corner carries a small
+  "PHOTO PLACEHOLDER" badge, so nobody mistakes the mock for licensed imagery.
+  Replace the <figure class="photo"> content with the real image as described
+  in MANUAL.md (FILL step 1).
+  ============================================================================
+-->
+<style>
+  /* ============================== tokens ==============================
+     Roles per DESIGN_PLAYBOOK. Palette anchors quoted from
+     reviews/pwc_strategy__pwc_iab_podcast_ad_revenue_study_an_analysis_of_the_largest_.md:
+     PwC orange #E87722 / #ED8B2F (emphasis), deep maroon #71301D (second
+     family), grays #595959 / #404040, photo is warm sunlight. The accent is
+     used ONLY on: the title keyword, the eyebrow tick, the bold phrase inside
+     the panel, the sup markers and the small square by the running head. */
+  :root{
+    --bg:          #F5F4F1;   /* stage ground (shows only if photo is removed)*/
+    --accent:      #E87722;   /* PwC orange — the one emphasis hue            */
+    --accent-deep: #71301D;   /* maroon end of the photo / title-keyword pair */
+    --ink:         #211D1A;   /* body ink, near-black warm                    */
+    --ink-soft:    #404040;   /* panel body copy                              */
+    --gray-1:      #595959;   /* secondary text / source line on white        */
+    --gray-2:      #8A8681;   /* captions, credits                            */
+    --panel:       #FAF9F7;   /* opaque copy panel ground                     */
+    --panel-edge:  #DEDAD4;   /* 1px hairline around the panel                */
+    --rule:        #CFCBC4;   /* hairlines on white                           */
+    --photo-hi:    #F3CE8F;   /* photo placeholder: highlight / sun           */
+    --photo-mid:   #C98A3C;   /* photo placeholder: mid warm                  */
+    --photo-lo:    #6A441E;   /* photo placeholder: shadow warm               */
+    --scrim:       rgba(28,17,6,.62);   /* behind white type on the image     */
+
+    /* The firm's real display face is a serif-italic house face (review:
+       "serif bold-italic titles, Georgia/Palatino-like"); Georgia stands in.
+       Body/axis/footnote face is a grotesque; Arial/Calibri stack stands in. */
+    --font-display: Georgia, "Palatino Linotype", "Book Antiqua", "Times New Roman", serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{box-sizing:border-box}
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#111; font-family:var(--font-body)}
+  .viewport{display:flex; align-items:center; justify-content:center; min-height:100vh}
+
+  /* ------------------------------ stage ------------------------------ */
+  .stage{position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink); -webkit-font-smoothing:antialiased}
+
+  /* ===================== 1. photograph (full bleed) ==================== */
+  /* Bleeds to all four edges. preserveAspectRatio="xMidYMid slice" = the
+     same cover-crop behaviour a real photo needs, so swapping in a real
+     picture never changes the geometry. */
+  .photo{position:absolute; inset:0; margin:0; width:1280rem; height:720rem;
+    overflow:hidden}
+  .photo svg{display:block; width:1280rem; height:720rem}
+  /* honest placeholder badge — sits over the image, deliberately low key */
+  .photo .stamp{position:absolute; right:14rem; bottom:12rem;
+    font:700 8rem/1 var(--font-body); letter-spacing:.11em; color:#fff;
+    opacity:.62; text-transform:uppercase;
+    padding:3rem 6rem; border:.1rem dashed rgba(255,255,255,.75)}
+
+  /* ========================= 2. scrim layers =========================== */
+  /* bottom-left wash so the source line stays legible on any photograph */
+  .scrim-bl{position:absolute; left:0; bottom:0; width:660rem; height:120rem;
+    background:linear-gradient(90deg, var(--scrim) 0%, rgba(28,17,6,0) 100%);
+    pointer-events:none}
+  /* faint overall darkening on the exposed left third, keeps ink-on-light
+     photo areas from competing with the panel */
+  .scrim-top{position:absolute; left:0; top:0; width:1280rem; height:96rem;
+    background:linear-gradient(180deg, rgba(28,17,6,.26) 0%, rgba(28,17,6,0) 100%);
+    pointer-events:none}
+
+  /* ========================= 3. left-stage title ======================= */
+  /* Title sits ON the image (its own legibility field), not in the panel:
+     white serif-italic + one accent keyword. 64px left, 96px top.          */
+  .title{position:absolute; left:64rem; top:92rem; width:600rem; margin:0;
+    font-family:var(--font-display); font-style:italic; font-weight:700;
+    font-size:38rem; line-height:1.16; color:#fff;
+    text-shadow:0 1px 10rem rgba(20,12,4,.45); /* legibility, not decoration */}
+  /* keyword = accent; the amber tint + dark edge keeps it legible over ANY
+     photograph value (plain #E87722 disappears on a bright sky) */
+  .title em{font-style:italic; color:#FFC15A;
+    text-shadow:0 1px 0 rgba(74,36,6,.75), 0 2px 14rem rgba(30,17,5,.5)}
+
+  /* =========================== 4. eyebrow ============================== */
+  /* section tag above the title: accent square + white caps, letterspaced */
+  .kicker{position:absolute; left:64rem; top:66rem; display:flex;
+    align-items:center; height:18rem}
+  .kicker i{display:block; width:11rem; height:11rem; background:var(--accent);
+    margin-right:9rem}
+  .kicker span{font-size:10.5rem; font-weight:700; letter-spacing:.16em;
+    text-transform:uppercase; color:#fff}
+
+  /* ======================= 5. copy panel (right) ======================= */
+  /* Opaque on purpose: 12.5rem body over a translucent panel fails on busy
+     photographs. Panel occupies x 664 -> 1216 (width 552).                 */
+  /* Column spans y 196 -> 652 so its foot strip can carry the page number on
+     panel ground (dark ink, high contrast) exactly as the exemplar does,
+     instead of floating a page number on top of a photograph. */
+  .panel{position:absolute; left:664rem; top:196rem; width:552rem; height:456rem;
+    display:flex; flex-direction:column;
+    background:var(--panel); border:.1rem solid var(--panel-edge);
+    box-shadow:0 14rem 40rem rgba(24,15,5,.26);
+    padding:26rem 28rem 14rem}
+  .panel-body{flex:1 1 auto}
+  /* rule + label at the panel head — the source deck's "Overview" slot */
+  .panel-head{display:flex; align-items:baseline; gap:10rem;
+    border-bottom:.1rem solid var(--rule); padding-bottom:11rem; margin-bottom:13rem}
+  .panel-head h2{margin:0; font-family:var(--font-display); font-style:italic;
+    font-weight:700; font-size:19rem; line-height:1; color:var(--accent-deep)}
+  .panel-head span{margin-left:auto; font-size:9.5rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--gray-2); white-space:nowrap}
+  .panel p{margin:0 0 11rem; font-size:12.5rem; line-height:1.56;
+    text-align:justify; color:var(--ink-soft)}
+  .panel p:last-child{margin-bottom:0}
+  .panel strong{color:var(--accent-deep); font-weight:700}   /* bold phrase */
+  .panel sup{font-size:8.5rem; color:var(--accent); font-weight:700}
+  .panel q{font-style:italic; color:var(--ink)}              /* pulled quote */
+
+  /* ========================= 6. source / footer ======================== */
+  /* source line printed on the image, bottom-left, white over the scrim */
+  .source{position:absolute; left:24rem; bottom:20rem; width:600rem; margin:0;
+    font-size:9.5rem; line-height:1.4; color:rgba(255,255,255,.94)}
+  .source sup{font-size:7.5rem; color:var(--photo-hi)}
+  .credit{position:absolute; left:24rem; bottom:8rem; margin:0;
+    font-size:8rem; letter-spacing:.04em; color:rgba(255,255,255,.62)}
+  /* running head lives inside the panel foot on panel ground, so the page
+     number never has to fight the photograph for legibility */
+  .panel-foot{display:flex; align-items:center; justify-content:flex-end;
+    border-top:.1rem solid var(--rule); padding-top:10rem; margin-top:10rem}
+  .running{display:flex; align-items:center}
+  .running i{display:block; width:7rem; height:7rem; background:var(--accent);
+    margin-right:7rem}
+  .running b{font-size:10.5rem; font-weight:700; color:var(--ink)}
+  .running span{font-size:10.5rem; letter-spacing:.10em; text-transform:uppercase;
+    color:var(--gray-1)}
+</style>
+</head>
+<body>
+<div class="viewport">
+<main class="stage" aria-label="Slide: study design overview over a full-bleed photograph">
+
+  <!-- slot 1 · PHOTO — replace this figure's contents with the licensed image -->
+  <figure class="photo" aria-label="Photograph: a podcast listener outdoors with headphones, warm daylight, shallow depth of field (placeholder)">
+    <svg viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Placeholder photograph">
+      <defs>
+        <linearGradient id="sun" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="var(--photo-lo)"/>
+          <stop offset=".52" stop-color="var(--photo-mid)"/>
+          <stop offset="1" stop-color="var(--photo-hi)"/>
+        </linearGradient>
+        <radialGradient id="glow" cx=".74" cy=".30" r=".62">
+          <stop offset="0" stop-color="#FFF3D8" stop-opacity=".92"/>
+          <stop offset=".55" stop-color="var(--photo-hi)" stop-opacity=".30"/>
+          <stop offset="1" stop-color="var(--photo-mid)" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="26"/>
+        </filter>
+        <filter id="softer" x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="9"/>
+        </filter>
+      </defs>
+      <rect width="1280" height="720" fill="url(#sun)"/>
+      <rect width="1280" height="720" fill="url(#glow)"/>
+      <!-- bokeh circles = the stand-in for a real sun-dappled background -->
+      <g filter="url(#soft)" opacity=".78">
+        <circle cx="196" cy="150" r="112" fill="#FFE7B4" opacity=".50"/>
+        <circle cx="352" cy="520" r="140" fill="#F7D18A" opacity=".38"/>
+        <circle cx="980" cy="606" r="150" fill="#E9A94E" opacity=".34"/>
+        <circle cx="1130" cy="180" r="86" fill="#FFF0CE" opacity=".46"/>
+        <circle cx="620" cy="92"  r="96"  fill="#FFDDA0" opacity=".30"/>
+      </g>
+      <!-- horizon band + subject silhouette: keeps the composition readable -->
+      <g filter="url(#softer)">
+        <rect y="452" width="1280" height="268" fill="#8A5A26" opacity=".42"/>
+        <rect y="452" width="1280" height="6" fill="#FFF6E4" opacity=".38"/>
+      </g>
+      <g fill="#4A2F14" opacity=".72" filter="url(#softer)">
+        <!-- figure: shoulders + head, off-centre left of frame -->
+        <path d="M300 720c14-150 62-214 138-236 44-13 88-10 130 6 74 28 118 96 132 230z"/>
+        <ellipse cx="500" cy="356" rx="86" ry="100"/>
+        <!-- headphones band: the deck's photo subject -->
+        <path d="M414 344c14-74 60-118 86-118s72 44 86 118" fill="none"
+              stroke="#3A2410" stroke-width="26" stroke-linecap="round"/>
+      </g>
+      <!-- warm rim light along the subject edge -->
+      <path d="M596 300c34 96 30 214-14 322" fill="none" stroke="#FFE9BE"
+            stroke-width="10" opacity=".5" filter="url(#softer)"/>
+    </svg>
+    <span class="stamp">Photo placeholder</span>
+  </figure>
+
+  <div class="scrim-top" aria-hidden="true"></div>
+
+  <!-- slot 2 · kicker / section tag -->
+  <div class="kicker"><i aria-hidden="true"></i><span>Study design · 01</span></div>
+
+  <!-- slot 3 · claim title (serif italic, one keyword in the accent) -->
+  <h1 class="title">Published estimates were <em>too wide to be reliable</em></h1>
+
+  <!-- scrim under the source line, painted above the image, below the type -->
+  <div class="scrim-bl" aria-hidden="true"></div>
+
+  <!-- slot 4 · copy panel -->
+  <section class="panel" aria-label="Overview of the study">
+    <header class="panel-head">
+      <h2>Overview</h2>
+      <span>Fieldwork · 2017</span>
+    </header>
+    <div class="panel-body">
+    <p>IAB held its first annual Podcast Upfront showcase in September 2015, hosting an
+      audience of marketers and media buyers interested in learning more about the
+      <q>power of podcasts as a valuable platform to reach consumers.</q></p>
+    <p>Industry estimates existed, but <strong>the range in published estimates was too
+      wide to be reliable</strong>.<sup>1</sup> IAB's podcast group therefore elected to
+      sponsor a study to properly assess the potential for advertising revenue across
+      the industry, and PwC was engaged in March 2017 to survey the industry's
+      significant revenue generators.</p>
+    <p>Over 11 weeks PwC performed a market scan, conducted three discovery interviews,
+      facilitated a working session with IAB's audio working group, and surveyed 20 of
+      the largest podcast advertising companies to generate the findings presented
+      here.<sup>2</sup></p>
+    </div>
+    <div class="panel-foot">
+      <div class="running"><i aria-hidden="true"></i><b>4</b><span> &nbsp;|&nbsp; Study design</span></div>
+    </div>
+  </section>
+
+  <!-- slot 5 · source + credit (printed on the image) -->
+  <p class="source">Source: PwC podcast advertising revenue study, March&ndash;May 2017;
+    n=20 of the largest podcast advertising companies, fielded by telephone and
+    online.<sup>1,2</sup></p>
+  <p class="credit">Photo: iStock / licensed, replaced on build. Colour grade: PwC warm duotone.</p>
+
+</main>
+</div>
+</body>
+</html>

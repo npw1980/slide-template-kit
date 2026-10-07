@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>matrix-2x2-panels — 2x2 stakeholder / theme panel grid (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  matrix-2x2-panels  ·  family matrix-2x2
+  Evidence (see MANUAL.md -> SOURCE):
+    deloitte__deloitte_accelerated_access_review_uk_mapping_2015  p26 p31 p36
+      p41 p50 — "2x2 stakeholder-view panel": four bordered cards, each with a
+      centered heading over a hairline rule, a strip of line icons, and 3-5
+      bullets whose lead-ins are bolded inside the sentence.
+    pwc_strategy__pwc_boardroom_agenda_2022 p35 — the 2x2 quad (color-blocked;
+      we keep the grid, drop the four hues and the speech pointers).
+  ----------------------------------------------------------------------------
+  This is a 4-panel GRID, not an axis diagram: the four boxes are parallel
+  voices/topics with no measured dimension between them. For a page where the
+  axes carry the argument, use  matrix-2x2-scenario.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length below is a 1:1 stage-pixel coordinate with the
+  same numbers MANUAL.md quotes. Fixed 1280x720 canvas, uniform scale.
+  Self-owning transform instead: drop the html rule and use
+      .stage{width:1280px;height:720px;transform:scale(var(--fit,1));
+             transform-origin:50% 50%}
+  with --fit set by the embedding page. Then read every rem below as px.
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     One accent + gray ramp; the rule role is what makes 4 boxes read as a
+     grid rather than 4 floating boxes. Measured on white:
+       --ink #051C2C on #FFFFFF          = 16.0:1
+       --gray-1 #2D2D2D body             = 12.9:1
+       --gray-2 #464646                  =  8.6:1
+       --gray-3 #7D7D7D notes/labels     =  3.8:1  -> >=14px bold only
+       #FFFFFF on --accent #2251FF       =  5.7:1
+     ================================================================= */
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #051C2C;
+    --accent:  #2251FF;   /* THE emphasis color: the card that decides  */
+    --accent-soft:#EEF1FF;/* one lightness of accent: lead-card header   */
+    --gray-1:  #2D2D2D;   /* card titles                              */
+    --gray-2:  #464646;   /* bullets                                  */
+    --gray-3:  #7D7D7D;   /* labels, counts, source line               */
+    --gray-4:  #F4F5F7;   /* neutral card wash                         */
+    --rule:    #D5D9DE;   /* card borders + header rules               */
+    --rule-strong:#9AA0A6;/* non-lead card border                       */
+
+    --m-side:    64rem;   /* side margins                              */
+    --p-top:    174rem;   /* panel grid top                            */
+    --p-h:      442rem;   /* panel grid height  (174+442 = 616)        */
+    --p-gap:     18rem;   /* between cards                             */
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:    Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#0E1A22;                 /* studio backdrop, not part of the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); }
+
+  /* ------------------------------ header ------------------------------ */
+  .kicker{
+    position:absolute; left:var(--m-side); right:var(--m-side); top:40rem;
+    display:flex; align-items:center; gap:10rem;
+    font:700 12rem/14rem var(--font-display); letter-spacing:1.8px;
+    text-transform:uppercase; color:var(--gray-3);
+  }
+  .kicker .tick{ width:22rem; height:3rem; background:var(--accent); border-radius:2rem; }
+  .kicker .sec{ color:var(--accent); }
+
+  h1.title{                                   /* gate: <=15 words / 2 lines */
+    position:absolute; left:var(--m-side); right:var(--m-side); top:64rem;
+    max-height:84rem;
+    font:700 31rem/42rem var(--font-display); letter-spacing:-0.35px; color:var(--ink);
+  }
+  h1.title em{ font-style:italic; color:var(--gray-1); }   /* Deloitte's italic second half */
+
+  .sub{                                       /* optional deck-tag line */
+    position:absolute; left:var(--m-side); right:var(--m-side); top:152rem;
+    font:400 12rem/15rem var(--font-body); color:var(--gray-3);
+  }
+
+  /* ---------------------------- panel grid ----------------------------
+     Cards declare their own grid-line. Copy a card block, bump the line,
+     change two lines of grid-template. Nothing else moves. */
+  .panels{
+    position:absolute; left:var(--m-side); right:var(--m-side); top:var(--p-top);
+    height:var(--p-h);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:var(--p-gap);
+  }
+  .card{
+    position:relative;
+    border:1px solid var(--rule-strong);
+    border-radius:6rem;
+    padding:14rem 18rem 13rem;
+    display:flex; flex-direction:column; gap:9rem;
+    background:var(--bg);
+  }
+  .card.lead{ border-color:var(--accent); border-width:2px; }
+  .card.tint{ background:var(--gray-4); }
+
+  .c-head{
+    display:flex; align-items:baseline; gap:9rem;
+    padding-bottom:8rem; border-bottom:1px solid var(--rule);
+  }
+  .c-chip{
+    flex:0 0 auto; width:19rem; height:19rem; border-radius:50%;
+    background:var(--gray-3); color:#FFFFFF;
+    font:700 11rem/19rem var(--font-display); text-align:center;
+  }
+  .card.lead .c-chip{ background:var(--accent); }
+  .c-title{
+    font:700 14rem/17rem var(--font-display); letter-spacing:.2px;
+    text-transform:uppercase; color:var(--ink);
+  }
+  .c-count{
+    margin-left:auto; text-align:right;
+    font:700 10.5rem/13rem var(--font-body); letter-spacing:.3px; color:var(--gray-3);
+  }
+  .card.lead .c-count{ color:var(--accent); }
+
+  /* icon strip: who/what sits behind the card's voice */
+  .c-icons{ display:flex; align-items:center; gap:9rem; height:26rem; }
+  .c-icons svg{ display:block; color:var(--gray-1); }
+  .card.lead .c-icons svg{ color:var(--accent); }
+
+  .c-body{ list-style:none; display:flex; flex-direction:column; gap:5rem; }
+  .c-body li{
+    position:relative; padding-left:12rem;
+    font:400 11.5rem/15rem var(--font-body); color:var(--gray-2);
+  }
+  .c-body li::before{
+    content:""; position:absolute; left:0; top:7rem; width:4rem; height:4rem;
+    background:var(--gray-3);
+  }
+  .card.lead .c-body li::before{ background:var(--accent); }
+  .c-body b{ font-weight:700; color:var(--ink); }        /* bold lead-in inside the sentence */
+  .card.dim{ opacity:.55; }                               /* out-of-scope card, rarely used */
+
+  /* ---------------- synthesis strip (our addition, see MANUAL) ---------------- */
+  .so-what{
+    position:absolute; left:var(--m-side); right:var(--m-side); top:634rem;
+    display:flex; align-items:center; gap:14rem;
+    border-left:3px solid var(--accent);
+    padding:9rem 16rem;
+    background:var(--accent-soft);
+    font:400 12rem/16rem var(--font-body); color:var(--ink);
+  }
+  .so-what > b:first-child{
+    font:700 11rem/13rem var(--font-display); letter-spacing:1.2px;
+    text-transform:uppercase; color:var(--accent);
+  }
+  .so-what span b{ text-transform:none; letter-spacing:0; color:var(--ink); }
+  .so-what sup{ font-size:.72em; line-height:0; }
+
+  /* ------------------------------ footer ------------------------------ */
+  .foot{
+    position:absolute; left:var(--m-side); right:var(--m-side); bottom:20rem;
+    display:flex; align-items:flex-end; justify-content:space-between; gap:20rem;
+    font:400 10rem/13rem var(--font-body); color:var(--gray-3);
+  }
+  .foot .src{ max-width:660rem; }
+  .foot .src sup{ font-size:.75em; line-height:0; }
+  .foot .pg{ font-weight:700; color:var(--gray-2); }
+
+  /* ================= KPMG / DELOITTE VARIANTS, for the comments =================
+     Deloitte's own pages put a different hue on every card border (navy /
+     chartreuse / teal / green). The kit rule is one accent + gray, so port it
+     as: --rule-strong:var(--accent) on the lead card only, gray elsewhere.
+     KPMG nav strip instead of a kicker: --accent:#00338D, --rule:#B9C9D6,
+     .c-title{color:#00338D}. Four hues on one page is the flaw this template
+     exists to avoid, not the look to copy.
+     ============================================================================= */
+</style>
+</head>
+<body>
+<div class="stage" role="group" aria-label="Development: stakeholder views — four stakeholder panels with the consensus and the disagreement in each">
+
+  <!-- ============================ header slots ============================ -->
+  <div class="kicker" data-slot="kicker">
+    <span class="tick" aria-hidden="true"></span>
+    <span><span class="sec">02</span> | Development: stakeholder views</span>
+  </div>
+
+  <h1 class="title" data-slot="title">Four stakeholder groups each blame someone else for the <em>same</em> slow access to trials</h1>
+
+  <div class="sub" data-slot="deck-tag-line">Interview-based, 62 stakeholders across 4 groups, fieldwork Q3 2015</div>
+
+  <!-- ============================== PANELS ==============================
+       Four cards. Each card = chip (number) + title + respondent count, one
+       icon strip, 3-5 bullets. Copy/reorder: see MANUAL.md -> SLOTS / FILL. -->
+  <div class="panels" data-slot="panels">
+
+    <!-- card 1 — the LEAD card: accent border, accent chip, accent markers -->
+    <div class="card lead" style="grid-column:1;grid-row:1" data-slot="card-1">
+      <div class="c-head">
+        <span class="c-chip" data-slot="card-1-chip">1</span>
+        <span class="c-title" data-slot="card-1-title">Industry views</span>
+        <span class="c-count" data-slot="card-1-count">n = 18</span>
+      </div>
+      <div class="c-icons" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="9" r="3.2"/><path d="M2.5 19c1.1-3.2 3.1-4.8 5.5-4.8s4.4 1.6 5.5 4.8"/><path d="M16 6.5h5.5M18.7 9.3H21"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="15" rx="1.4"/><path d="M7 9h10M7 13h6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 3v6l-4.6 9A2 2 0 0 0 7.2 21h9.6a2 2 0 0 0 1.8-3L14 9V3"/><path d="M9 3h6"/></svg>
+      </div>
+      <ul class="c-body" data-slot="card-1-points">
+        <li>Consensus that the UK has a <b>strong capability</b> to conduct medical research and development</li>
+        <li>There is a <b>lack of incentives</b> and recognition for clinicians and nurses to work on clinical trials</li>
+        <li>Interviewers mentioned <b>increasing cost and effort</b> to set up trials with duplicated contract negotiation</li>
+        <li>Misalignment of interests between stakeholders — value lost to duplicated development efforts</li>
+      </ul>
+    </div>
+
+    <!-- card 2 -->
+    <div class="card" style="grid-column:2;grid-row:1" data-slot="card-2">
+      <div class="c-head">
+        <span class="c-chip" data-slot="card-2-chip">2</span>
+        <span class="c-title" data-slot="card-2-title">HMG / ALB views</span>
+        <span class="c-count" data-slot="card-2-count">n = 14</span>
+      </div>
+      <div class="c-icons" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 21h18M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="15" rx="1.4"/><path d="M7 9h10M7 13h6"/></svg>
+      </div>
+      <ul class="c-body" data-slot="card-2-points">
+        <li>Industry is <b>reluctant to engage NICE</b> and others on product development and evidence collection early</li>
+        <li><b>Fees are a potential barrier</b> to early-stage companies seeking advice, particularly for SMEs</li>
+        <li>Knowledge and technologies are <b>not shared</b> between industry and other organisations pre-competitively</li>
+        <li>Risk of early-stage development is <b>better shared</b> than it currently is</li>
+      </ul>
+    </div>
+
+    <!-- card 3 -->
+    <div class="card" style="grid-column:1;grid-row:2" data-slot="card-3">
+      <div class="c-head">
+        <span class="c-chip" data-slot="card-3-chip">3</span>
+        <span class="c-title" data-slot="card-3-title">NHS views</span>
+        <span class="c-count" data-slot="card-3-count">n = 19</span>
+      </div>
+      <div class="c-icons" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 19c1-3.4 3-5.1 6-5.1s5 1.7 6 5.1M13 19c.8-2.6 2.3-4 4.6-4 1.6 0 3 .8 4 2.4"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 4v16M4 12h16"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M4 19h16M7 19V9m5 10V5m5 14v-7"/></svg>
+      </div>
+      <ul class="c-body" data-slot="card-3-points">
+        <li>Respondents cite a <b>lack of specialised R&amp;D nurses</b>, clinician capacity and time for conducting trials</li>
+        <li>Revenue generated by trial participation <b>does not reflect the workload</b> required</li>
+        <li>Payment based on recruitment number, <b>not the complexity</b> of the study</li>
+        <li>Misalignment between local and global study-sponsor offices — multiple negotiation processes</li>
+      </ul>
+    </div>
+
+    <!-- card 4 -->
+    <div class="card" style="grid-column:2;grid-row:2" data-slot="card-4">
+      <div class="c-head">
+        <span class="c-chip" data-slot="card-4-chip">4</span>
+        <span class="c-title" data-slot="card-4-title">Charity views</span>
+        <span class="c-count" data-slot="card-4-count">n = 11</span>
+      </div>
+      <div class="c-icons" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 21s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 5.4-7 10-7 10z"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="4" width="18" height="15" rx="1.4"/><path d="M7 9h10M7 13h6"/></svg>
+      </div>
+      <ul class="c-body" data-slot="card-4-points">
+        <li>Patient groups feel the <b>development process is too long</b> and the paradigm does not fit rare, highly stratified therapies</li>
+        <li>Industry <b>cannot invest without reasonable returns</b>, especially for small patient populations</li>
+        <li>Late-stage <b>access to trials is the binding constraint</b>, not recruitment capacity</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- =========== synthesis strip: present on every one of these pages =========== -->
+  <div class="so-what" data-slot="so-what"><b>So what</b><span>The disagreement is not about the science — it is about <b>who pays for the trial setup</b> and who owns the duplicated effort. That is where the intervention belongs.<sup>2</sup></span></div>
+
+  <!-- ============================== footer ============================== -->
+  <div class="foot">
+    <span class="src" data-slot="source">Source: Stakeholder interviews, workshops and Deloitte analysis<sup>1</sup> &mdash; 62 interviews, 4 stakeholder groups, fieldwork Q3 2015; views weighted by group, not by respondent.</span>
+    <span class="tag" data-slot="deck-tag">Development | Stakeholder views</span>
+    <span class="pg" data-slot="page">26</span>
+  </div>
+</div>
+</body>
+</html>

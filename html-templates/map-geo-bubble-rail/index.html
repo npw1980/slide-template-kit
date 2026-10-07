@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>map-geo-bubble-rail — proportional-symbol world map + ranked region rail (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  map-geo-bubble-rail  ·  family map-geo
+  Evidence: pwc_strategy__pwc_five_global_shifts_reshaping_the_world_we_live_in_
+            2022 p21 "Megatrends: Social instability" (read on sw_sheets/
+            pwc_strategy__pwc_five_global_shifts_reshaping_the_world_we_live_in_
+            2022_s02.jpg row 1 frame 1): world map carrying balloon markers per
+            region with region label + one-decimal % printed at the marker, and
+            a ranked country column-list to the right of the same exhibit.
+            Companion evidence: pwc_strategy__pwc_copernicus_market_report_2019
+            p14 (big-stat + charts + world map on one evidence band).
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html{font-size:min(100vw/1280, 100vh/720)} maps 1rem == 1
+  STAGE PIXEL; the overlay SVG uses viewBox 0 0 1280 720, so every SVG number
+  below is also a stage-pixel coordinate.
+  ----------------------------------------------------------------------------
+  GEOGRAPHY IS A SCHEMATIC PLACEHOLDER: the group <g id="map-geometry"> holds
+  one rough blob path per continent drawn on an equirectangular frame
+  (lon −180..180 → x 64..716, lat +80..−60 → y 210..463). Swap the paths for
+  real map SVG (e.g. a Natural Earth export) but KEEP the frame: markers are
+  positioned by the SAME transform below, so the data layer needs no edits.
+
+  MARKER COORDINATE SYSTEM (equirectangular, documented):
+    x = 64 + (lon + 180) / 360 * 652
+    y = 210 + (80 - lat) / 140 * 253
+
+  DATA ARRAY — one row per region, mirrored as <circle data-*> in #markers:
+    markers = [                                        // v = %, age 15–24
+      { id:"NA",   label:"Northern America",            lat: 45, lon:-100, v:14.0 },
+      { id:"LAC",  label:"Latin America & Caribbean",   lat:-15, lon: -60, v:19.1 },
+      { id:"EEUR", label:"Eastern Europe",              lat: 52, lon:  40, v:21.9 },
+      { id:"NAF",  label:"Northern Africa",             lat: 25, lon:  15, v:24.7 },   // FOCUS
+      { id:"SSA",  label:"Sub-Saharan Africa",          lat:  0, lon:  20, v:18.0 },
+      { id:"MEA",  label:"Middle East",                 lat: 28, lon:  45, v:19.6 },
+      { id:"SEA",  label:"South-East Asia",             lat: 15, lon: 110, v:13.3 },
+      { id:"OCE",  label:"Australia & NZ",              lat:-25, lon: 135, v: 9.2 }
+    ];
+    FOCUS region = id "NAF": renders in --accent on BOTH map and rail.
+    Every other marker: flat gray #8A939C. One accent, gray ramp only.
+
+  RADIUS (AREA-PROPORTIONAL, honest scale):
+    r(v) = round(4.83 × √v), floor 6px, no r cap.   // 24.7% → 24px, 9.2% → 15px
+    Note: area-proportional means visually near-equal radii for close values
+    (21.9% vs 24.7% differ 7px). The RAIL is the precision reader — the map
+    carries geography, the rail carries rank. Say so if challenged.
+
+  RAIL (ranked, right panel x 760..1184):
+    rows sorted DESC by v, 8 rows, row pitch 51px, first row top t0 = 194.
+    rank # x 760 (bold, accent-deep), region name x 782 (12px bold ink),
+    value right-aligned x 1184 (11.5px bold). Bar under the name row:
+    x 760, y t+19, h 6, width = round(v × 16.0) → 25% maxes at 400px.
+    Focus row: bar --accent; all other bars --bar-gray (#C9CED3).
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system fonts, zero network calls.
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;   /* titles, value labels, rail names */
+    --accent:      #ED8B28;   /* PwC orange — the FOCUS region (map bubble + rail bar) */
+    --accent-deep: #D93F00;   /* running head, rank digits, focus label */
+    --gray-ink:    #6B7280;   /* kicker, captions, source, leader-free map labels */
+    --mark-gray:   #8A939C;   /* non-focus map bubbles ("the rest") */
+    --bar-gray:    #C9CED3;   /* non-focus rail bars */
+    --land:        #DDE1E4;   /* schematic continents */
+    --land-rule:   #C4CACF;
+    --map-bg:      #F0F2F4;   /* ocean */
+    --band:        #F7F8F9;   /* evidence band */
+    --rule:        #E6E8EB;   /* dividers, footer hairline */
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#10141c; display:grid; place-items:center; min-height:100vh; font-family:var(--font-body); }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); color:var(--ink); }
+  .stage > svg{ position:absolute; left:0; top:0; width:1280rem; height:720rem; }
+
+  .kicker{ position:absolute; left:64rem; top:38rem; width:1050rem;
+           font-size:14rem; line-height:19rem; color:var(--gray-ink); }
+  .kicker b{ color:var(--accent-deep); font-weight:700; }
+  .kicker sup{ font-size:10rem; color:var(--accent-deep); }
+  .title{ position:absolute; left:64rem; top:63rem; width:940rem;
+          font-family:var(--font-display); font-size:26rem; font-weight:700;
+          line-height:33rem; letter-spacing:-.5rem; max-height:67rem; overflow:hidden; }
+  .title em{ font-style:normal; color:var(--accent-deep); }   /* operative clause */
+
+  .foot-rule{ position:absolute; left:64rem; right:64rem; top:672rem; height:0;
+              border-top:1px solid var(--rule); }
+  .source{ position:absolute; left:64rem; top:681rem; width:1020rem;
+           font-size:10.5rem; line-height:14rem; color:var(--gray-ink); }
+  .source sup{ font-size:8rem; }
+  .pageno{ position:absolute; right:64rem; top:681rem; font-size:10.5rem;
+           color:var(--gray-ink); letter-spacing:.4rem; }
+  .pageno b{ color:var(--accent-deep); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker"><b>Base: labour force aged 15–24, 2021 annual average</b> — unemployment rate by region<sup>1</sup></div>
+  <div class="title">Youth joblessness tops 20% in North Africa and Eastern Europe <em>— where job creation runs slowest</em></div>
+
+  <!-- ======================================================================
+       CHART LAYER — evidence band 64..1216 × 150..610; divider x 744.
+       Map frame 64..716 × 210..463 (equirectangular). Markers: <circle> with
+       data-v/data-label attributes — swap r + cx/cy per the transform header,
+       or swap the map-geometry paths and keep the marker layer untouched.
+       ====================================================================== -->
+  <svg viewBox="0 0 1280 720" aria-label="World map with proportional bubbles for youth unemployment by region, ranked rail at right">
+
+    <!-- evidence band -->
+    <rect x="64" y="150" width="1152" height="460" fill="var(--band)"/>
+    <line x1="744" y1="166" x2="744" y2="596" stroke="var(--rule)" stroke-width="1"/>
+
+    <!-- ================= MAP (left) ================= -->
+    <rect x="64" y="210" width="652" height="253" fill="var(--map-bg)"/>
+
+    <g id="map-geometry" fill="var(--land)" stroke="var(--land-rule)" stroke-width="0.8">
+      <!-- SCHEMATIC PLACEHOLDER — replace with real continent paths, same frame -->
+      <path d="M150,225 C180,205 250,210 285,235 C300,258 285,290 255,305 C240,315 215,312 205,300 C185,308 170,300 165,285 C150,265 140,240 150,225 Z"/>   <!-- Northern America -->
+      <path d="M265,350 C285,342 305,355 308,375 C310,400 300,435 285,450 C275,458 268,448 266,430 C262,405 255,380 258,362 Z"/>                                 <!-- Latin America -->
+      <path d="M390,235 C408,228 428,232 438,245 C441,255 432,263 418,265 C405,268 393,262 390,252 Z"/>                                                            <!-- Europe -->
+      <path d="M398,285 C425,275 455,288 465,315 C470,340 462,370 445,390 C430,405 412,400 405,378 C400,355 393,310 398,285 Z"/>                                  <!-- Africa -->
+      <path d="M470,225 C510,205 600,210 650,235 C670,255 660,290 625,300 C590,312 545,315 512,305 C485,295 468,265 470,240 Z"/>                                  <!-- Asia -->
+      <path d="M585,315 C595,310 610,315 612,325 C612,335 600,340 590,338 C582,335 580,322 585,315 Z"/>                                                            <!-- S-E Asia -->
+      <path d="M615,265 C620,258 628,258 630,265 C631,272 626,278 620,277 C615,276 612,270 615,265 Z"/>                                                            <!-- Japan -->
+      <path d="M610,395 C625,385 655,388 665,402 C670,415 655,428 635,428 C618,428 605,418 605,408 Z"/>                                                            <!-- Oceania -->
+    </g>
+    <rect x="64" y="210" width="652" height="253" fill="none" stroke="var(--land-rule)" stroke-width="1"/>
+
+    <!-- graticule (30° lon / 20° lat), drawn to read as projection discipline -->
+    <g stroke="#FFFFFF" stroke-width="0.5" opacity="0.7">
+      <line x1="171.7" y1="210" x2="171.7" y2="463"/><line x1="279.4" y1="210" x2="279.4" y2="463"/>
+      <line x1="387.1" y1="210" x2="387.1" y2="463"/><line x1="494.8" y1="210" x2="494.8" y2="463"/>
+      <line x1="602.4" y1="210" x2="602.4" y2="463"/><line x1="710.1" y1="210" x2="710.1" y2="463"/>
+      <line x1="64" y1="245.7" x2="716" y2="245.7"/><line x1="64" y1="281.4" x2="716" y2="281.4"/>
+      <line x1="64" y1="317.1" x2="716" y2="317.1"/><line x1="64" y1="352.9" x2="716" y2="352.9"/>
+      <line x1="64" y1="388.6" x2="716" y2="388.6"/><line x1="64" y1="424.3" x2="716" y2="424.3"/>
+    </g>
+
+    <!-- MARKERS — data array is in the page header comment; keep cx/cy on the
+         documented transform, r = 4.83×√v. Focus bubble: class m-focus. -->
+    <g id="markers" stroke="#FFFFFF" stroke-width="1">
+      <circle class="m-gray"  data-id="NA"   cx="209" cy="273" r="18" data-label="Northern America" data-v="14.0"/>
+      <circle class="m-gray"  data-id="LAC"  cx="281" cy="382" r="21" data-label="Latin America &amp; Caribbean" data-v="19.1"/>
+      <circle class="m-gray"  data-id="EEUR" cx="463" cy="261" r="23" data-label="Eastern Europe" data-v="21.9"/>
+      <circle class="m-focus" data-id="NAF"  cx="417" cy="309" r="24" data-label="Northern Africa" data-v="24.7"/>
+      <circle class="m-gray"  data-id="SSA"  cx="427" cy="355" r="21" data-label="Sub-Saharan Africa" data-v="18.0"/>
+      <circle class="m-gray"  data-id="MEA"  cx="471" cy="304" r="21" data-label="Middle East" data-v="19.6"/>
+      <circle class="m-gray"  data-id="SEA"  cx="589" cy="327" r="18" data-label="South-East Asia" data-v="13.3"/>
+      <circle class="m-gray"  data-id="OCE"  cx="634" cy="400" r="15" data-label="Australia &amp; NZ" data-v="9.2"/>
+    </g>
+
+    <!-- value labels under bubbles; focus also carries its name above -->
+    <style>
+      .m-gray { fill:var(--mark-gray); fill-opacity:.82; }
+      .m-focus{ fill:var(--accent);    fill-opacity:.9;  stroke:var(--accent-deep); }
+      .vlab { font-family:Arial, sans-serif; font-size:10.5px; font-weight:700; fill:var(--ink); text-anchor:middle; }
+      .vlab-focus { font-family:Arial, sans-serif; font-size:11.5px; font-weight:700; fill:var(--accent-deep); text-anchor:middle; }
+      .legend { font-family:Arial, sans-serif; font-size:9.5px; fill:var(--gray-ink); }
+    </style>
+    <g>
+      <text class="vlab" x="209" y="302">14.0%</text>
+      <text class="vlab" x="281" y="414">19.1%</text>
+      <text class="vlab" x="463" y="295">21.9%</text>
+      <text class="vlab-focus" x="417" y="277">North Africa · 24.7%</text>
+      <text class="vlab" x="427" y="387">18.0%</text>
+      <text class="vlab" x="471" y="337">19.6%</text>
+      <text class="vlab" x="589" y="357">13.3%</text>
+      <text class="vlab" x="634" y="426">9.2%</text>
+    </g>
+
+    <!-- size legend: area-proportional key -->
+    <g class="legend">
+      <circle cx="100" cy="570" r="15.3" fill="none" stroke="var(--gray-ink)" stroke-width="1"/>
+      <circle cx="163" cy="570" r="21.6" fill="none" stroke="var(--gray-ink)" stroke-width="1"/>
+      <circle cx="238" cy="570" r="24.1" fill="none" stroke="var(--gray-ink)" stroke-width="1"/>
+      <text x="100" y="573.5" text-anchor="middle" font-size="9">10</text>
+      <text x="163" y="573.5" text-anchor="middle" font-size="9">20</text>
+      <text x="238" y="573.5" text-anchor="middle" font-size="9">25</text>
+      <text x="286" y="573" font-size="9.5">circle area ∝ unemployment rate (%)</text>
+    </g>
+
+    <!-- ================= RANKED RAIL (right) ================= -->
+    <g>
+      <text x="760" y="176" font-family="Arial, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1.2" fill="var(--accent-deep)">RANKED, BY REGION</text>
+      <line x1="760" y1="182" x2="1184" y2="182" stroke="var(--rule)" stroke-width="1"/>
+
+      <!-- row template: rank x760 · name x782 · value x1184 anchor-end · bar x760 y+19 h6 w=16v -->
+      <g font-family="Arial, sans-serif">
+        <!-- r1 FOCUS Northern Africa 24.7 -->
+        <text x="760" y="208" font-size="11.5" font-weight="700" fill="var(--accent-deep)">1</text>
+        <text x="782" y="208" font-size="12" font-weight="700" fill="var(--ink)">Northern Africa</text>
+        <text x="1184" y="208" font-size="11.5" font-weight="700" fill="var(--accent-deep)" text-anchor="end">24.7%</text>
+        <rect x="760" y="213" width="395" height="6" fill="var(--accent)"/>
+        <!-- r2 Eastern Europe 21.9 -->
+        <text x="760" y="259" font-size="11.5" font-weight="700" fill="var(--gray-ink)">2</text>
+        <text x="782" y="259" font-size="12" font-weight="700" fill="var(--ink)">Eastern Europe</text>
+        <text x="1184" y="259" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="end">21.9%</text>
+        <rect x="760" y="264" width="350" height="6" fill="var(--bar-gray)"/>
+        <!-- r3 Middle East 19.6 -->
+        <text x="760" y="310" font-size="11.5" font-weight="700" fill="var(--gray-ink)">3</text>
+        <text x="782" y="310" font-size="12" font-weight="700" fill="var(--ink)">Middle East</text>
+        <text x="1184" y="310" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="end">19.6%</text>
+        <rect x="760" y="315" width="314" height="6" fill="var(--bar-gray)"/>
+        <!-- r4 Latin America &amp; Caribbean 19.1 -->
+        <text x="760" y="361" font-size="11.5" font-weight="700" fill="var(--gray-ink)">4</text>
+        <text x="782" y="361" font-size="12" font-weight="700" fill="var(--ink)">Latin America &amp; Caribbean</text>
+        <text x="1184" y="361" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="end">19.1%</text>
+        <rect x="760" y="366" width="306" height="6" fill="var(--bar-gray)"/>
+        <!-- r5 Sub-Saharan Africa 18.0 -->
+        <text x="760" y="412" font-size="11.5" font-weight="700" fill="var(--gray-ink)">5</text>
+        <text x="782" y="412" font-size="12" font-weight="700" fill="var(--ink)">Sub-Saharan Africa</text>
+        <text x="1184" y="412" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="end">18.0%</text>
+        <rect x="760" y="417" width="288" height="6" fill="var(--bar-gray)"/>
+        <!-- r6 Northern America 14.0 -->
+        <text x="760" y="463" font-size="11.5" font-weight="700" fill="var(--gray-ink)">6</text>
+        <text x="782" y="463" font-size="12" font-weight="700" fill="var(--ink)">Northern America</text>
+        <text x="1184" y="463" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="end">14.0%</text>
+        <rect x="760" y="468" width="224" height="6" fill="var(--bar-gray)"/>
+        <!-- r7 South-East Asia 13.3 -->
+        <text x="760" y="514" font-size="11.5" font-weight="700" fill="var(--gray-ink)">7</text>
+        <text x="782" y="514" font-size="12" font-weight="700" fill="var(--ink)">South-East Asia</text>
+        <text x="1184" y="514" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="end">13.3%</text>
+        <rect x="760" y="519" width="213" height="6" fill="var(--bar-gray)"/>
+        <!-- r8 Australia &amp; NZ 9.2 -->
+        <text x="760" y="565" font-size="11.5" font-weight="700" fill="var(--gray-ink)">8</text>
+        <text x="782" y="565" font-size="12" font-weight="700" fill="var(--ink)">Australia &amp; NZ</text>
+        <text x="1184" y="565" font-size="11.5" font-weight="700" fill="var(--ink)" text-anchor="end">9.2%</text>
+        <rect x="760" y="570" width="147" height="6" fill="var(--bar-gray)"/>
+      </g>
+    </g>
+  </svg>
+
+  <div class="foot-rule"></div>
+  <div class="source">Source: ILOstat, Modelled Estimates, 2021 (regional aggregates are labour-force weighted) <sup>1</sup> — regional cut uses 12-month averages; the smallest of the three countries is excluded where reporting is partial.</div>
+  <div class="pageno"><b>21</b> &nbsp;|&nbsp; MEGATRENDS</div>
+
+</div>
+</body>
+</html>

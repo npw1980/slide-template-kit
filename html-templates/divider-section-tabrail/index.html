@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>divider-section-tabrail — display-title section divider with nav rail (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  divider-section-tabrail  ·  family divider-section
+  A SECTION OPENER on white. Giant ultra-thin display title, gradient-filled in
+  the section's own hue; a short intro; a headline stat with its claim; three
+  photo tiles as a "what's ahead" strip; and — the load-bearing part — a
+  right-edge vertical RAIL of the deck's sections with exactly one active tab,
+  the you-are-here marker that survives into every following page.
+  Evidence: KPMG 2021 CEO Outlook (kpmg__kpmg_kpmg_kpmg_2021_ceo_outlook_2021),
+  section dividers "The road to renewal" / "Trusted purpose" / "Digital agility".
+  The review states: "section dividers and opener titles … use an ultra-thin,
+  high-contrast display face … rendered in brand gradients" and "a right-edge
+  vertical section tab rail (each chapter marked with a small colored tick/label)
+  persists on nearly every page"; dividers = "giant gradient title left, short
+  intro, thin rules, photo strip". Section opener + stat claim re-sighted on
+  KPMG 2020 CEO Outlook COVID-19 Special Edition p5.
+  ----------------------------------------------------------------------------
+  SCALING (zero JS): html font-size = min(100vw/1280, 100vh/720) so 1rem equals
+  one stage pixel. The .stage is a fixed 1280x720 canvas scaled uniformly with
+  the window; every rem value below is a 1:1 coordinate on that canvas and is
+  quoted at the same number in MANUAL.md.
+  SELF-CONTAINED: inline CSS + inline SVG only. No imports, no webfonts, no
+  img / link / script / iframe — zero network requests. The photo tiles are
+  gradient stand-ins and say so.
+  GRADIENT TEXT FALLBACK: the display title sets a solid colour FIRST and the
+  clip after it, so a browser without background-clip:text shows solid brand
+  navy instead of invisible type.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     One section hue drives the whole page: title gradient, rail-active tab,
+     stat numeral, photo frame. Swapping --section for the next chapter is the
+     entire re-theming operation. Hexes quoted from
+     reviews/kpmg__kpmg_kpmg_kpmg_2021_ceo_outlook_2021.md (#00338D KPMG navy,
+     #001E3C, #0099DA / #00AEEF / #00B0F0 brand blues, #23bdb5-class teal) and
+     from the 2020 edition review (#004e98, #009fe2, #addee9) — not invented. */
+  :root{
+    --section:     #00338D;   /* THIS chapter's brand hue (1 chapter = 1 hue) */
+    --section-lt:  #0099DA;   /* its light step — gradient end + stat        */
+    --section-tint:#addee9;   /* its pale wash — inactive photo frames       */
+    --accent:      #00338D;   /* emphasis = the section hue, nothing else    */
+    --ink:         #16202B;   /* body text                                  */
+    --gray-1:      #5B6773;   /* secondary: intro, captions, tab labels      */
+    --gray-2:      #A9B2BC;   /* tertiary: rules, rail header, footnotes     */
+    --gray-3:      #DDE2E7;   /* "the rest": inactive rail fills            */
+    --rule:        #C9D2DA;   /* hairlines                                  */
+    --bg:          #FFFFFF;   /* the ground                                 */
+
+    --font-display:"Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:   Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+
+    --m-side:    64rem;       /* outer margin                               */
+    --rail-w:   168rem;       /* right-edge section rail                    */
+    --rail-x:  1048rem;       /* rail left edge = 1280 − 64 − 168            */
+    --t-eyebrow: 11rem;
+    --t-title:   80rem;       /* ultra-thin display, 1–2 lines              */
+    --t-lede:    18rem;
+    --t-stat:    58rem;
+    --t-cap:     12rem;
+    --t-tab:     12rem;
+    --t-foot:    11rem;
+  }
+
+  *{box-sizing:border-box}
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#0e1114}
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- rules + header line ------------------------------------- */
+  .rule{position:absolute; left:var(--m-side); width:944rem; height:1px; background:var(--rule)}
+  .rule.top{top:64rem}
+  .rule.mid{top:312rem}          /* sits under the display title */
+  .headerline{
+    position:absolute; left:var(--m-side); top:80rem; z-index:3;
+    display:flex; justify-content:space-between; align-items:baseline;
+    width:944rem; font-size:var(--t-eyebrow); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .headerline b{font-weight:700; color:var(--section); letter-spacing:.10em}
+
+  /* ---------- 1 · display title (gradient, ultra-thin) ----------------- */
+  .title{
+    position:absolute; left:var(--m-side); top:116rem; z-index:3;
+    width:900rem; margin:0;
+    font-family:var(--font-display); font-weight:200;
+    font-size:var(--t-title); line-height:1.08; letter-spacing:-.015em;
+    color:var(--section);                                  /* fallback        */
+    background:linear-gradient(96deg, var(--section) 0%, var(--section-lt) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  /* ---------- 2 · intro / lede ----------------------------------------- */
+  .lede{
+    position:absolute; left:var(--m-side); top:344rem; z-index:3;
+    width:620rem; font-size:var(--t-lede); line-height:1.5; color:var(--gray-1);
+    /* 3 lines max: 18px x 1.5 = 27rem/line. The strip starts at 460, so a
+       fourth line walks straight into tile 1. Overflow is clipped here so the
+       collision is impossible rather than silent — cut copy to fit. */
+    max-height:81rem; overflow:hidden;
+  }
+  .lede sup{font-size:10rem; color:var(--accent); vertical-align:super}
+
+  /* ---------- 3 · headline stat ---------------------------------------- */
+  .stat{position:absolute; left:758rem; top:340rem; z-index:3; width:250rem}
+  .stat .n{
+    font-family:var(--font-display); font-weight:200; font-size:var(--t-stat);
+    line-height:1; color:var(--section-lt); letter-spacing:-.02em;
+  }
+  .stat .c{
+    margin-top:10rem; font-size:var(--t-cap); line-height:1.45; color:var(--gray-1);
+    border-top:1px solid var(--rule); padding-top:9rem;
+  }
+  .stat .c sup{font-size:9rem; color:var(--accent); vertical-align:super}
+
+  /* ---------- 4 · photo strip (placeholder tiles) ---------------------- */
+  .strip{position:absolute; left:var(--m-side); top:460rem; z-index:2; width:944rem}
+  .strip .tiles{display:flex; gap:16rem}
+  .tile{width:304rem}
+  .tile svg{width:304rem; height:118rem; display:block}
+  .tile figcaption{
+    margin-top:8rem; font-size:11rem; line-height:1.35; color:var(--gray-1);
+    border-left:2px solid var(--section); padding-left:7rem;
+  }
+  .tile figcaption b{color:var(--ink); font-weight:700}
+
+  /* ---------- 5 · right-edge section rail (you-are-here) --------------- */
+  .rail{position:absolute; left:var(--rail-x); top:112rem; width:var(--rail-w); z-index:3}
+  .rail > h3{
+    margin:0 0 14rem; font:600 9rem/1 var(--font-body); letter-spacing:.18em;
+    text-transform:uppercase; color:var(--gray-2);
+  }
+  .rail ul{list-style:none; margin:0; padding:0}
+  .rail li{
+    position:relative; display:block; padding:13rem 10rem 13rem 12rem;
+    border-left:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  }
+  .rail li:last-child{border-bottom:none}
+  .rail li b{
+    display:block; font-size:var(--t-tab); font-weight:400; line-height:1.28;
+    color:var(--gray-1);
+  }
+  .rail li i{
+    display:block; margin-top:5rem; font-style:normal; font-size:9rem;
+    letter-spacing:.10em; color:var(--gray-2);
+  }
+  .rail li.now{background:var(--section); border-color:var(--section)}
+  .rail li.now::before{                    /* the tick */
+    content:""; position:absolute; left:-6rem; top:0; bottom:0; width:5rem;
+    background:var(--section-lt);
+  }
+  .rail li.now b{color:#FFFFFF; font-weight:700}
+  .rail li.now i{color:var(--section-tint)}
+  .rail .legend{
+    margin-top:14rem; font-size:9.5rem; line-height:1.4; color:var(--gray-2);
+  }
+
+  /* ---------- 6 · footer anatomy --------------------------------------- */
+  .source{
+    position:absolute; left:var(--m-side); bottom:28rem; z-index:3;
+    width:820rem; font-size:var(--t-foot); line-height:1.5; color:var(--gray-1);
+  }
+  .source sup{font-size:9rem; color:var(--accent); vertical-align:super}
+  .pageno{
+    position:absolute; right:var(--m-side); bottom:26rem; z-index:3;
+    font-family:var(--font-display); font-weight:300; font-size:30rem;
+    line-height:1; color:var(--section);
+  }
+  .pageno small{
+    display:block; font:500 9rem/1 var(--font-body); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--gray-2); text-align:right; margin-top:5rem;
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="rule top"></div>
+  <div class="headerline"><span>KPMG 2021 CEO Outlook</span><span>Section <b>02 / 05</b></span></div>
+
+  <!-- 1 · display title -->
+  <h1 class="title">The road to renewal</h1>
+
+  <div class="rule mid"></div>
+
+  <!-- 2 · intro -->
+  <p class="lede">CEOs remain the most resilient of the surveyed cohorts, and 60 percent expect to pursue growth through acquisitions and organic transformation.<sup>1</sup></p>
+
+  <!-- 3 · headline stat -->
+  <div class="stat">
+    <div class="n">69%</div>
+    <div class="c">of CEOs plan to increase investment in environmental, social and governance<sup>1</sup></div>
+  </div>
+
+  <!-- 4 · photo strip (placeholder tiles — swap for the real strip) -->
+  <div class="strip">
+    <div class="tiles">
+      <figure class="tile">
+        <svg viewBox="0 0 304 118" role="img" aria-label="Photo placeholder, navy to cyan duotone">
+          <defs><linearGradient id="p1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#001E3C"/><stop offset="1" stop-color="#0099DA"/>
+          </linearGradient></defs>
+          <rect width="304" height="118" fill="url(#p1)"/>
+          <circle cx="236" cy="34" r="44" fill="#FFFFFF" opacity=".10"/>
+        </svg>
+        <figcaption><b>Photo placeholder 1</b> — board-level confidence, field photography</figcaption>
+      </figure>
+      <figure class="tile">
+        <svg viewBox="0 0 304 118" role="img" aria-label="Photo placeholder, navy to cyan duotone">
+          <defs><linearGradient id="p2" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#00338D"/><stop offset="1" stop-color="#00B0F0"/>
+          </linearGradient></defs>
+          <rect width="304" height="118" fill="url(#p2)"/>
+          <path d="M0 86 C 70 60 128 104 190 82 S 272 54 304 74 L304 118 L0 118 Z" fill="#001E3C" opacity=".38"/>
+        </svg>
+        <figcaption><b>Photo placeholder 2</b> — renewal priorities, named interviewees</figcaption>
+      </figure>
+      <figure class="tile">
+        <svg viewBox="0 0 304 118" role="img" aria-label="Photo placeholder, pale tint band">
+          <defs><linearGradient id="p3" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0" stop-color="#addee9"/><stop offset="1" stop-color="#0099DA"/>
+          </linearGradient></defs>
+          <rect width="304" height="118" fill="url(#p3)"/>
+          <rect x="16" y="16" width="112" height="86" fill="#FFFFFF" opacity=".18"/>
+        </svg>
+        <figcaption><b>Photo placeholder 3</b> — workforce and skills, on-site photography</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- 5 · section rail: one active tab is the you-are-here marker -->
+  <nav class="rail" aria-label="Report sections">
+    <h3>In this report</h3>
+    <ul>
+      <li><b>Contents</b><i>p3</i></li>
+      <li><b>Key findings</b><i>p4–5</i></li>
+      <li class="now"><b>The road to renewal</b><i>p6–10</i></li>
+      <li><b>Trusted purpose</b><i>p11–16</i></li>
+      <li><b>Digital agility</b><i>p17–21</i></li>
+    </ul>
+    <div class="legend">Filled tab = the section you are reading.</div>
+  </nav>
+
+  <!-- 6 · footer -->
+  <div class="source">Source: KPMG 2021 CEO Outlook, survey conducted 14 January–26 February 2021 among 1,325 CEOs across 11 markets. <sup>1</sup>Percentages may not sum to 100 owing to multiple response.</div>
+  <div class="pageno">29<small>Section 02</small></div>
+
+</div>
+</body>
+</html>

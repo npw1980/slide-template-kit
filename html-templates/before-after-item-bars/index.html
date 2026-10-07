@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>before-after-item-bars — per-item before/after bar pairs + ringed highlight + callout (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  before-after-item-bars  ·  family before-after
+  Evidence (see MANUAL.md -> SOURCE):
+    ey__ey_ey_academic_resource_center_mission_2019 p12–p21 — the before/after
+    chart pairs (column bars) + the ring/arrow "correction" annotation that
+    marks one pair against the rest; red annotation recoloured to the kit's
+    single accent. sw_sheets/ey__ey_ey_academic_resource_center_mission_2019_s01.jpg
+    (p12 = row1 col2).  Second anchor: accenture NBN Effect p14 — icon-card row
+    where EACH item carries its own paired before/after bars:
+    reviews/accenture__accenture_the_nbn_effect_how_the_nbn_network_adds_value_to_o.md.
+  ----------------------------------------------------------------------------
+  PALETTE: EY yellow #FFE500 as the ONE accent (pixel-sampled from the EY
+  sheet). Non-highlighted series render as grey ramp; highlight pair's after
+  bar = accent fill + ink text. Never white text on yellow.
+  ----------------------------------------------------------------------------
+  RESIZE ANATOMY (why this page is a diagram, not a picture — see MANUAL FILL):
+    • Item count is the master reflow: one <g class="item" translate(cx,0)>,
+      cx = 172 + i*216. Copy/delete items; nothing else moves.
+    • Per item, the only per-item numbers are the two bar heights (v/scaleMax
+      × 400, baseline 600), which drive: the bar y, the value-label y, the
+      delta-pill y. Callout ring/leader anchor only to the ONE highlighted item.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. 1rem == 1 STAGE PIXEL via html font-size; SVG overlay maps
+  viewBox 0 0 1280 720 onto the stage. SELF-CONTAINED: inline CSS, inline SVG,
+  system fonts.
+  ============================================================================
+-->
+<style>
+  :root{
+    --bg:      #FFFFFF;
+    --ink:     #1A1A1A;
+    --accent:  #FFE500;   /* EY yellow — ONE emphasis colour */
+    --accent-ink: #665800;
+    --gray-1:  #23262B;   /* non-highlight "after" bars (darkest grey) */
+    --gray-2:  #4A4F55;   /* secondary text */
+    --gray-3:  #9AA1A8;   /* before bars — the old state */
+    --gray-4:  #E9ECEF;
+    --gray-5:  #F4F6F8;
+    --rule:    #C9CFD4;
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }
+  body{ min-height:100vh; display:grid; place-items:center; background:#101524;
+        font-family:var(--font-body); -webkit-font-smoothing:antialiased; }
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden; background:var(--bg); }
+  .diagram{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem;
+           font:600 12rem/1 var(--font-display); letter-spacing:.18rem;
+           text-transform:uppercase; color:var(--gray-2); }
+  .kicker .n{ color:var(--accent-ink); font-weight:700; }
+  .kicker .dim{ color:var(--gray-3); letter-spacing:.12rem; }
+  h1.title{ position:absolute; left:64rem; top:56rem; width:1152rem;
+            font:700 27rem/35rem var(--font-display); color:var(--ink); letter-spacing:-.2rem; }
+  .lead{ position:absolute; left:64rem; top:134rem; width:1100rem;
+         font:700 12.5rem/16.5rem var(--font-body); color:var(--gray-1); }
+
+  .source{ position:absolute; left:64rem; bottom:14rem; max-width:980rem;
+           font:10rem/1.35 var(--font-body); color:var(--gray-3); }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:14rem; font:700 10rem/1.35 var(--font-body);
+           color:var(--gray-2); letter-spacing:.1rem; }
+
+  /* diagram */
+  .base{ stroke:var(--rule); stroke-width:1; }
+  .fb{ fill:var(--gray-3); }                       /* before bar  */
+  .fa{ fill:var(--gray-1); }                       /* after bar, non-highlight */
+  .fa.h{ fill:var(--accent); }                     /* after bar, highlight pair */
+  .vl{ font:700 10.5rem var(--font-body); fill:var(--gray-2); }
+  .vl.h{ fill:var(--ink); }
+  .cat{ font:700 11.5rem var(--font-display); letter-spacing:.1em; fill:var(--gray-2);
+        text-transform:uppercase; }
+  .sub{ font:9.5rem var(--font-body); fill:var(--gray-3); }
+  .dp{ fill:#fff; stroke:var(--rule); stroke-width:1; }
+  .dpT{ font:700 10.5rem var(--font-body); fill:var(--gray-2); }
+  .dp.h{ fill:var(--accent); fill-opacity:.18; stroke:var(--accent); }
+  .dpT.h{ fill:var(--accent-ink); }
+  .ring{ fill:var(--accent); fill-opacity:.05; stroke:var(--accent); stroke-width:1.6;
+         stroke-dasharray:5 4; }
+  .lead-line{ stroke:var(--accent); stroke-width:1.4; fill:none; }
+  .lead-dot{ fill:var(--accent); }
+  .call{ fill:var(--gray-5); stroke:var(--rule); stroke-width:1; }
+  .callT{ font:11rem/1.35 var(--font-body); fill:var(--gray-1); }
+  .callB{ font:700 11rem var(--font-body); fill:var(--ink); }
+  .callK{ font:9.5rem var(--font-display); letter-spacing:.14rem; fill:var(--gray-3);
+          text-transform:uppercase; }
+  .leg{ font:9.5rem var(--font-body); fill:var(--gray-2); }
+  .unit{ font:700 10rem var(--font-body); letter-spacing:.1em; fill:var(--gray-3);
+         text-transform:uppercase; }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Before versus after cycle time for five order-to-cash process steps, one fix highlighted">
+
+  <header>
+    <p class="kicker"><span class="n">21</span><span class="dim"> | Order-to-cash — step-level cycle time</span></p>
+    <h1 class="title">One fix removed half the cycle time — four of five steps still run as before</h1>
+    <p class="lead">Step-level cycle time across the pilot’s 9 sites, days per transaction, before the 90-day intervention versus now. Most of the reduction traces to a single automated hand-off.</p>
+  </header>
+
+  <svg class="diagram" viewBox="0 0 1280 720" role="img"
+       aria-label="Five paired columns of before/after days; the credit-check pair is ringed and called out">
+
+    <!-- ===== legend (2 swatches, fixed) + unit note ===== -->
+    <g id="legend">
+      <rect x="986" y="167" width="11" height="11" fill="var(--gray-3)"/><text class="leg" x="1002" y="176">Before — 90-day baseline</text>
+      <rect x="1148" y="167" width="11" height="11" fill="var(--gray-1)"/><text class="leg" x="1164" y="176">After — now</text>
+      <text class="unit" x="64" y="181">Days per transaction · pilot, n = 9 sites¹</text>
+    </g>
+
+    <!-- ===== baseline ===== -->
+    <line class="base" x1="64" y1="600" x2="1216" y2="600"/>
+
+    <!-- ================= ITEMS =============================================
+         Item i centre cx = 172 + i·216. One <g class="item"> per item; bar
+         heights = value / 40 (scaleMax, days) × 400, baseline 600.
+         Local: before bar x=-52 w44; after bar x=+8 w44. -->
+    <g id="items">
+
+      <g class="item" id="i1" transform="translate(172,0)">
+        <rect class="dp" x="-33" y="450" width="66" height="18" rx="9"/>
+        <text class="dpT" x="0" y="464" text-anchor="middle">−42%</text>
+        <rect class="fb" x="-52" y="480" width="44" height="120"/>
+        <text class="vl" x="-30" y="472" text-anchor="middle">12</text>
+        <rect class="fa" x="8" y="530" width="44" height="70"/>
+        <text class="vl" x="30" y="522" text-anchor="middle">7</text>
+        <text class="cat" x="0" y="626" text-anchor="middle">Order capture</text>
+        <text class="sub" x="0" y="641" text-anchor="middle">1.2k orders/day²</text>
+      </g>
+
+      <g class="item" id="i2" transform="translate(388,0)">
+        <rect class="dp h" x="-33" y="388" width="66" height="18" rx="9"/>
+        <text class="dpT h" x="0" y="402" text-anchor="middle">−78%</text>
+        <rect class="fb" x="-52" y="420" width="44" height="180"/>
+        <text class="vl" x="-30" y="412" text-anchor="middle">18</text>
+        <rect class="fa h" x="8" y="560" width="44" height="40"/>
+        <text class="vl h" x="30" y="552" text-anchor="middle">4</text>
+        <text class="cat" x="0" y="626" text-anchor="middle">Credit check</text>
+        <text class="sub" x="0" y="641" text-anchor="middle">2.1k checks/day²</text>
+      </g>
+
+      <g class="item" id="i3" transform="translate(604,0)">
+        <rect class="dp" x="-33" y="348" width="66" height="18" rx="9"/>
+        <text class="dpT" x="0" y="362" text-anchor="middle">−14%</text>
+        <rect class="fb" x="-52" y="380" width="44" height="220"/>
+        <text class="vl" x="-30" y="372" text-anchor="middle">22</text>
+        <rect class="fa" x="8" y="410" width="44" height="190"/>
+        <text class="vl" x="30" y="402" text-anchor="middle">19</text>
+        <text class="cat" x="0" y="626" text-anchor="middle">Document prep</text>
+        <text class="sub" x="0" y="641" text-anchor="middle">1.9k docs/day²</text>
+      </g>
+
+      <g class="item" id="i4" transform="translate(820,0)">
+        <rect class="dp" x="-33" y="418" width="66" height="18" rx="9"/>
+        <text class="dpT" x="0" y="432" text-anchor="middle">−27%</text>
+        <rect class="fb" x="-52" y="450" width="44" height="150"/>
+        <text class="vl" x="-30" y="442" text-anchor="middle">15</text>
+        <rect class="fa" x="8" y="490" width="44" height="110"/>
+        <text class="vl" x="30" y="482" text-anchor="middle">11</text>
+        <text class="cat" x="0" y="626" text-anchor="middle">Payment match</text>
+        <text class="sub" x="0" y="641" text-anchor="middle">1.5k matches/day²</text>
+      </g>
+
+      <g class="item" id="i5" transform="translate(1036,0)">
+        <rect class="dp" x="-33" y="258" width="66" height="18" rx="9"/>
+        <text class="dpT" x="0" y="272" text-anchor="middle">−58%</text>
+        <rect class="fb" x="-52" y="290" width="44" height="310"/>
+        <text class="vl" x="-30" y="282" text-anchor="middle">31</text>
+        <rect class="fa" x="8" y="470" width="44" height="130"/>
+        <text class="vl h" x="30" y="462" text-anchor="middle">13</text>
+        <text class="cat" x="0" y="626" text-anchor="middle">Dispute handling</text>
+        <text class="sub" x="0" y="641" text-anchor="middle">3.4k disputes/day²</text>
+      </g>
+    </g>
+
+    <!-- ===== HIGHLIGHT ANNOTATION (anchors to the ringed item only) ===== -->
+    <g id="annotate">
+      <ellipse class="ring" cx="388" cy="485" rx="76" ry="118"/>
+      <path class="lead-line" d="M434 386 C 480 330 520 298 558 276"/>
+      <circle class="lead-dot" cx="434" cy="386" r="3"/>
+      <rect class="call" x="96" y="196" width="510" height="74" rx="5"/>
+      <text class="callK" x="112" y="221">The one fix that moved the line</text>
+      <text class="callT" x="112" y="243"><tspan class="callB">The credit file now feeds the decision engine directly —</tspan></text>
+      <text class="callT" x="112" y="259">the manual re-key hand-off is gone. Pilot sites only (2 of 9).</text>
+    </g>
+  </svg>
+
+  <footer>
+    <p class="source">Source: step-level time-and-motion extraction, OTC pilot, 9 sites, Jul–Sep run vs prior 90-day baseline (n ≈ 11.9k transactions)¹; step volumes are daily averages over the run window². Modelled items excluded (see methodology page).</p>
+    <p class="pageno">21 | Transformation</p>
+  </footer>
+</main>
+</body>
+</html>

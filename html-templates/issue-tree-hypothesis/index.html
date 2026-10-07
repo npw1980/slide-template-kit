@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>issue-tree-hypothesis — 3-level MECE issue tree (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  issue-tree-hypothesis  ·  family issue-tree
+  Evidence (see MANUAL.md -> SOURCE):
+    umbrex__umbrex_umbrex_patterns S1753 "Template — Issue Tree" — 3-level
+      branch-and-leaf scaffold read in corpus/sheets/sheet_176.jpg:
+      navy root box left, cornflower mid nodes, grey leaf boxes, right-
+      sweeping elbow connectors, Text leaves.
+    reviews/umbrex_patterns.md §4 "S1752/S1753 Hypothesis Tree / Issue Tree"
+      + house palette: navy ~#1F2A65, teal ~#00D4C8, light blue ~#6E93C4.
+  ----------------------------------------------------------------------------
+  NODE / LINK ANATOMY (what makes this page resizable — see MANUAL FILL):
+    Every node is one self-contained <g class="node"> with its own translate:
+      <g class="node" id="b1" transform="translate(440,154)"> — copy this.
+    Every connector is one <path> whose ONLY per-node number is a row centre
+    (V {row}). Nodes carry NO absolute geometry of their own inside.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. 1rem == 1 STAGE PIXEL at the current viewport fit, so
+  every rem length is a 1:1 stage-pixel coordinate that MANUAL.md quotes.
+  The SVG overlay maps its 0 0 1280 720 viewBox onto the stage, so SVG
+  user-units ARE stage pixels too.
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks, no requests.
+  ============================================================================
+-->
+<style>
+  :root{
+    /* Roles per DESIGN_PLAYBOOK. Palette anchors from reviews/umbrex_patterns.md:
+       navy #1F2A65 (root/ink), teal #00D4C8 (accent/emphasis), grey ramp. */
+    --bg:      #FFFFFF;
+    --ink:     #1F2A65;   /* deep navy — root node, titles, emphasis text   */
+    --accent:  #00D4C8;   /* teal — THE emphasis color (focus branch only)   */
+    --gray-1:  #23262B;   /* near-black body text                            */
+    --gray-2:  #4A4F55;   /* secondary node text                            */
+    --gray-3:  #818990;   /* notes, dimmed text, source line                 */
+    --gray-4:  #E9ECEF;   /* neutral fill: dimmed / set-aside nodes          */
+    --gray-5:  #F4F6F8;   /* leaf fill (examined)                            */
+    --rule:    #C9CFD4;   /* hairlines + connectors                          */
+
+    --font-display: "Helvetica Neue", Arial, "Liberation Sans", sans-serif;
+    --font-body:     Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#101524;                 /* studio backdrop, not part of the slide */
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{ position:relative; width:1280rem; height:720rem; overflow:hidden;
+          background:var(--bg); }
+
+  .tree{ position:absolute; inset:0; width:1280rem; height:720rem; display:block; }
+
+  /* ---- page furniture ---- */
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem;
+           font:600 12rem/1 var(--font-display); letter-spacing:.18rem;
+           text-transform:uppercase; color:var(--gray-2); }
+  .kicker .n{ color:var(--accent); font-weight:700; }
+  .kicker .dim{ color:var(--gray-3); letter-spacing:.12rem; }
+
+  h1.title{ position:absolute; left:64rem; top:58rem; width:1152rem;
+            font:700 28rem/38rem var(--font-display); color:var(--ink);
+            letter-spacing:-.2rem; }
+  h1.title sup{ font-size:13rem; color:var(--gray-2); }
+
+  .lead{ position:absolute; left:64rem; top:138rem; width:700rem;
+         font:700 13rem/16.5rem var(--font-body); color:var(--gray-1); }
+  .lead::after{ content:""; display:block; width:56rem; height:2rem;
+                background:var(--accent); margin-top:8rem; }
+
+  .legend{ position:absolute; left:64rem; bottom:34rem; width:980rem;
+           font:9.5rem/1.5 var(--font-body); color:var(--gray-3); }
+  .legend b{ color:var(--gray-2); font-weight:700; }
+
+  .source{ position:absolute; left:64rem; bottom:14rem; max-width:860rem;
+           font:10rem/1.35 var(--font-body); color:var(--gray-3); }
+  .source sup{ font-size:7rem; }
+  .pageno{ position:absolute; right:64rem; bottom:14rem;
+           font:700 10rem/1.35 var(--font-body); color:var(--gray-2);
+           letter-spacing:.1rem; }
+
+  /* ---- svg diagram classes (all geometry lives in the markup) ---- */
+  .node text{ font-family:var(--font-body); }
+  .node-label{ font-size:9rem; font-weight:700; letter-spacing:.14rem; }
+  .node-h{ font-size:12rem; font-weight:700; }
+  .node-q{ font-size:12.5rem; font-weight:700; }
+  .node-note{ font-size:9.5rem; }
+  .leaf-h{ font-size:11rem; font-weight:600; }
+  .leaf-note{ font-size:9.5rem; }
+  .num{ font-size:10rem; font-weight:700; fill:#fff; }
+  .leaf-num{ font-size:9.5rem; font-weight:700; fill:var(--gray-3); }
+  .pill{ font-size:8.5rem; font-weight:700; letter-spacing:.1rem; fill:var(--ink); }
+  .link{ fill:none; stroke:var(--rule); stroke-width:1.5rem; }
+  .link.focus{ stroke:var(--accent); stroke-width:2.2rem; }
+  .link.dim{ stroke:var(--rule); opacity:.75; }
+  .fn{ font-size:7rem; baseline-shift:super; fill:var(--accent); }
+</style>
+</head>
+<body>
+<main class="stage" aria-label="Issue tree: NorthCo margin decomposition">
+
+  <header>
+    <p class="kicker"><span class="n">03</span><span class="dim"> | Diagnostics — profit-pool decomposition</span></p>
+    <h1 class="title">Cost — not price — explains 70% of NorthCo's 350&nbsp;bps<sup>1</sup> margin loss</h1>
+    <p class="lead">MECE split — cost branch in focus</p>
+  </header>
+     <!-- ================= THE DIAGRAM ==============================
+       Node map (row centres are the only numbers resize moves):
+         root  Q    centre y = 380          (x 64, w 252)
+         branch 1   centre y = 206  (dim)   (x 440, w 258)
+         branch 2   centre y = 380  (FOCUS) (x 440, w 258)
+         branch 3   centre y = 554          (x 440, w 258)
+         leaves     centres = branch centre ± 57   (x 812, w 260)
+       ============================================================ -->
+  <svg class="tree" viewBox="0 0 1280 720" role="img"
+       aria-label="Issue tree: key question on the left, three hypotheses, six evidence leaves">
+     <!-- ---------- connectors (behind nodes; per-link only number = row centre) ---------- -->
+    <g id="links-root">
+     <path class="link dim"   d="M316 380 H372 V206 H440"/>
+     <path class="link focus" d="M316 380 H372 V380 H440"/>
+     <path class="link"       d="M316 380 H372 V554 H440"/>
+    </g>
+    <g id="links-b1">
+     <path class="link dim" d="M698 206 H754 V149 H812"/>
+     <path class="link dim" d="M698 206 H754 V206 H812"/>
+     <path class="link dim" d="M698 206 H754 V263 H812"/>
+    </g>
+    <g id="links-b2">
+     <path class="link focus" d="M698 380 H754 V323 H812"/>
+     <path class="link focus" d="M698 380 H754 V380 H812"/>
+     <path class="link focus" d="M698 380 H754 V437 H812"/>
+    </g>
+    <g id="links-b3">
+     <path class="link" d="M698 554 H754 V497 H812"/>
+     <path class="link" d="M698 554 H754 V554 H812"/>
+     <path class="link" d="M698 554 H754 V611 H812"/>
+    </g>
+     <!-- ---------- root: the key question (navy) ---------- -->
+    <g class="node" id="node-root" transform="translate(64,322)">
+     <rect x="0" y="0" width="252" height="116" rx="6" fill="var(--ink)"/>
+     <text class="node-label" x="16" y="24" fill="#A8B0E8">KEY QUESTION</text>
+     <text class="node-q" x="16" y="52" fill="#fff">
+        <tspan x="16">Why is NorthCo's EBITDA</tspan>
+        <tspan x="16" dy="18">margin down 350 bps</tspan>
+        <tspan x="16" dy="18">year-on-year?</tspan>
+      </text>
+    </g>
+     <!-- ---------- level 2: hypotheses (numbered 1-3, badge sits on the left edge) ---------- -->
+    <g class="node dimmed" id="node-b1" transform="translate(440,164)">
+     <rect x="0" y="0" width="258" height="84" rx="6" fill="var(--gray-4)" stroke="var(--rule)" stroke-width="1"/>
+     <circle cx="0" cy="42" r="11.5" fill="var(--gray-3)"/>
+     <text class="num" x="0" y="45.5" text-anchor="middle">1</text>
+     <text class="node-h" x="26" y="38" fill="var(--gray-2)">Price &amp; mix</text>
+     <text class="node-note" x="26" y="60" fill="var(--gray-3)">−110 bps · examined &amp; set aside</text>    </g>
+
+    <g class="node" id="node-b2" transform="translate(440,338)">
+     <rect x="0" y="0" width="258" height="84" rx="6" fill="#fff" stroke="var(--accent)" stroke-width="2.5"/>
+     <circle cx="0" cy="42" r="11.5" fill="var(--accent)"/>
+     <text class="num" x="0" y="45.5" text-anchor="middle">2</text>
+     <rect x="0" y="0" width="5" height="84" rx="2.5" fill="var(--accent)"/>
+     <text class="node-h" x="26" y="38" fill="var(--ink)">Cost base</text>
+     <text class="node-note" x="26" y="60" fill="var(--gray-2)">−160 bps · largest driver</text>
+     <!-- focus marker (only allowed extra shape on a branch) -->
+     <rect x="0" y="-28" width="88" height="17" rx="8.5" fill="var(--accent)"/>
+     <text class="pill" x="44" y="-16" text-anchor="middle">IN FOCUS</text>    </g>
+
+    <g class="node" id="node-b3" transform="translate(440,514)">
+     <rect x="0" y="0" width="258" height="84" rx="6" fill="#fff" stroke="var(--rule)" stroke-width="1"/>
+     <circle cx="0" cy="42" r="11.5" fill="var(--gray-2)"/>
+     <text class="num" x="0" y="45.5" text-anchor="middle">3</text>
+     <text class="node-h" x="26" y="38" fill="var(--ink)">Volume &amp; mix shift</text>
+     <text class="node-note" x="26" y="60" fill="var(--gray-3)">−80 bps · examined</text>    </g>
+     <!-- ---------- level 3: evidence leaves ("x.y" numbering) ---------- -->
+     <!-- branch 1 leaves — dimmed: examined, not carried -->
+    <g class="node" id="leaf-1-1" transform="translate(812,126)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="var(--gray-5)" stroke="var(--rule)"/>
+     <text class="leaf-h" x="12" y="19" fill="var(--gray-2)">Shelf price vs basket peers</text>
+     <text class="leaf-note" x="12" y="35" fill="var(--gray-3)">1.9% below peer index</text>
+    </g>
+     <text class="leaf-num" x="804" y="153" text-anchor="end">1.1</text>
+
+    <g class="node" id="leaf-1-2" transform="translate(812,183)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="var(--gray-5)" stroke="var(--rule)"/>
+     <text class="leaf-h" x="12" y="19" fill="var(--gray-2)">Promo depth per category</text>
+     <text class="leaf-note" x="12" y="35" fill="var(--gray-3)">no change vs FY24</text>
+    </g>
+     <text class="leaf-num" x="804" y="210" text-anchor="end">1.2</text>
+
+    <g class="node" id="leaf-1-3" transform="translate(812,240)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="var(--gray-5)" stroke="var(--rule)"/>
+     <text class="leaf-h" x="12" y="19" fill="var(--gray-2)">Private-label share</text>
+     <text class="leaf-note" x="12" y="35" fill="var(--gray-3)">+240 bps mix effect</text>
+    </g>
+     <text class="leaf-num" x="804" y="267" text-anchor="end">1.3</text>
+     <!-- branch 2 leaves — the focus branch: teal edge, ink text -->
+    <g class="node" id="leaf-2-1" transform="translate(812,300)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="#fff" stroke="var(--rule)"/>
+     <rect x="1" y="1" width="4" height="44" rx="2" fill="var(--accent)"/>
+     <text class="leaf-h" x="14" y="19" fill="var(--ink)">Labour per staffed hour</text>
+     <text class="leaf-note" x="14" y="35" fill="var(--gray-2)">+7.2% y/y across 212 stores</text>
+    </g>
+     <text class="leaf-num" x="804" y="327" text-anchor="end" fill="var(--gray-2)">2.1</text>
+
+    <g class="node" id="leaf-2-2" transform="translate(812,357)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="#fff" stroke="var(--accent)" stroke-width="1.5"/>
+     <rect x="1" y="1" width="4" height="44" rx="2" fill="var(--accent)"/>
+     <text class="leaf-h" x="14" y="19" fill="var(--ink)">Shrink &amp; outbound logistics</text>
+     <text class="leaf-note" x="14" y="35" fill="var(--gray-2)">largest single line: −90 bps</text>
+    </g>
+     <text class="leaf-num" x="804" y="384" text-anchor="end" fill="var(--gray-2)">2.2</text>
+
+    <g class="node" id="leaf-2-3" transform="translate(812,414)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="#fff" stroke="var(--rule)"/>
+     <rect x="1" y="1" width="4" height="44" rx="2" fill="var(--accent)"/>
+     <text class="leaf-h" x="14" y="19" fill="var(--ink)">Contracted vs spot freight</text>
+     <text class="leaf-note" x="14" y="35" fill="var(--gray-2)">re-let not in FY25 rate card</text>
+    </g>
+     <text class="leaf-num" x="804" y="441" text-anchor="end" fill="var(--gray-2)">2.3</text>
+     <!-- branch 3 leaves — plain examined -->
+    <g class="node" id="leaf-3-1" transform="translate(812,474)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="var(--gray-5)" stroke="var(--rule)"/>
+     <text class="leaf-h" x="12" y="19" fill="var(--gray-2)">Own-brand vs national mix</text>
+     <text class="leaf-note" x="12" y="35" fill="var(--gray-3)">flat, 41% own-brand</text>
+    </g>
+     <text class="leaf-num" x="804" y="501" text-anchor="end">3.1</text>
+
+    <g class="node" id="leaf-3-2" transform="translate(812,531)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="var(--gray-5)" stroke="var(--rule)"/>
+     <text class="leaf-h" x="12" y="19" fill="var(--gray-2)">Traffic per square foot</text>
+     <text class="leaf-note" x="12" y="35" fill="var(--gray-3)">−1.8% y/y, below market</text>
+    </g>
+     <text class="leaf-num" x="804" y="558" text-anchor="end">3.2</text>
+
+    <g class="node" id="leaf-3-3" transform="translate(812,588)">
+     <rect x="0" y="0" width="260" height="46" rx="5" fill="var(--gray-5)" stroke="var(--rule)"/>
+     <text class="leaf-h" x="12" y="19" fill="var(--gray-2)">New-store cannibalisation</text>
+     <text class="leaf-note" x="12" y="35" fill="var(--gray-3)">3 openings, −40 bps est.</text>
+    </g>
+     <text class="leaf-num" x="804" y="615" text-anchor="end">3.3</text>
+  </svg>
+
+  <footer>
+    <p class="legend"><b>Q</b> key question · <b>1–3</b> hypotheses (MECE) · <b>x.y</b> evidence leaves · grey nodes = examined and set aside</p>
+    <p class="source">Source: NorthCo P&amp;L model FY25<sup>1</sup> — EBITDA bridge Q1–Q3 vs LY; retail peer pricing index, 12 markets<sup>2</sup></p>
+    <p class="pageno">1 | Diagnostics</p>
+  </footer>
+</main>
+</body>
+</html>

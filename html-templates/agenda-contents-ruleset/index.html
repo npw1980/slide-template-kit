@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>agenda-contents-ruleset — numbered table of contents on a ruled grid (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  agenda-contents-ruleset  ·  family agenda-contents
+  A CONTENTS / TOC PAGE built as a real numbered table: a brand rule under the
+  label title, a column header ("Section | Content | Page"), one hairline per
+  row, a closing rule, and a right-aligned page column aligned by columns and
+  rules rather than leader dots. The "you are here" state is the same device as
+  the tracker variant, expressed as a tinted band + chip so a reader who lands
+  mid-deck still knows where they are.
+  Evidence: EY — "European Banking Barometer 2015" (ey__ey_european_banking_barometer_2015_2015),
+  Contents = p2 of the deck. From sw_pages/ey__ey_european_banking_barometer_2015_2015/pg-02.png:
+  "the page is titled 'Contents' in bold gray sans-serif at the upper left,
+  beneath a thin gray rule at the very top; a vivid yellow/gold horizontal rule
+  underlines the title; five numbered sections (1-5) in a left-number /
+  middle-title / right-page-number layout, with a bold right-aligned 'Page'
+  column header; thin dark horizontal rules separate each row, with a final rule
+  closing the table. No leader dots — alignment is achieved purely through
+  columns and rules." Footer band = page number left, deck title centre, EY logo
+  right (reviews/ey__ey_european_banking_barometer_2015_2015.md, layout section).
+  Row states (read / you-are-here / not-yet-reached) come from the parallel
+  Deloitte practice of reprinting contents as a progress tracker
+  (reviews/deloitte__deloitte_accelerated_access_review_uk_mapping_2015.md).
+  Known flaw noted, not copied: the EY deck skips "Section 4" on its dividers
+  (divider p36 is labelled "Section 5"). See DON'T.
+  ----------------------------------------------------------------------------
+  SCALING (zero JS): html font-size = min(100vw/1280, 100vh/720), so 1rem == 1
+  stage pixel; .stage is a fixed 1280x720 canvas. Coordinates match MANUAL.md.
+  SELF-CONTAINED: inline CSS + one inline SVG for the brand mark. No imports,
+  no webfonts, no img/link/script/iframe — zero network requests.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     One brand hue + grey ramp, per DESIGN_PLAYBOOK.md palette ruling.
+     --accent hex is cited from the EY review file (#FFE600 "brand yellow",
+     flagged in the playbook as commonly cited / unconfirmed). Yellow is used
+     as in the deck: brand rule + the "positive / you-are-here" end of the
+     page — never as a body-text colour. */
+  :root{
+    --accent:      #FFE600;  /* brand yellow — rules, chip, wash               */
+    --accent-deep: #6B5E00;  /* darkened step for yellow-on-white type         */
+    --accent-wash: #FFFCCB;  /* tint band for the current section row          */
+    --ink:         #1A1A1A;  /* body + section titles                          */
+    --gray-1:      #464646;  /* message line, secondary                        */
+    --gray-2:      #7D7D7D;  /* title (EY paints contents grey), footers       */
+    --gray-3:      #A9A9A9;  /* muted lead-in text for read rows               */
+    --rule:        #BFBFBF;  /* the top hairline of the page                   */
+    --rule-dark:   #595959;  /* row rules + closing rule (EY rules read dark)  */
+    --bg:          #FFFFFF;
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Calibri, Arial, "Helvetica Neue", sans-serif;
+    --m-side:      88rem;
+  }
+
+  html{height:100%; font-size:min(calc(100vw / 1280), calc(100vh / 720))}
+  html, body{margin:0}
+  body{background:#141208}
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg);
+    font-family:var(--font-body); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .abs{position:absolute}
+
+  /* ---------------- 1 · page furniture top ------------------------------ */
+  .rule-top{
+    left:var(--m-side); right:var(--m-side); top:64rem; height:.1rem;
+    background:var(--rule);
+  }
+  .kicker{
+    left:var(--m-side); top:78rem; width:820rem;
+    font-family:var(--font-display); font-size:11rem; font-weight:700;
+    letter-spacing:.16rem; text-transform:uppercase; color:var(--gray-2);
+  }
+
+  /* ---------------- 2 · label title + brand rule ------------------------ */
+  h1.title{
+    left:var(--m-side); top:100rem; width:560rem; margin:0;
+    font-family:var(--font-display); font-size:44rem; line-height:1;
+    font-weight:700; letter-spacing:-.8rem; color:var(--gray-2);
+  }
+  .rule-brand{
+    left:var(--m-side); top:158rem; width:760rem; height:4rem;
+    background:var(--accent);
+  }
+  .message{
+    left:var(--m-side); top:182rem; width:790rem;
+    font-size:15rem; line-height:1.45; color:var(--gray-1);
+  }
+  .message b{color:var(--ink)}
+  .edition{
+    right:var(--m-side); top:100rem; text-align:right; width:330rem;
+    font-family:var(--font-display); font-size:13rem; color:var(--gray-2);
+  }
+  .edition b{display:block; font-size:15rem; color:var(--ink); letter-spacing:-.2rem}
+
+  /* ---------------- 3 · the contents table ------------------------------ */
+  table.toc{
+    position:absolute; left:var(--m-side); right:var(--m-side); top:244rem;
+    width:calc(1280rem - 176rem); border-collapse:collapse;
+    table-layout:fixed;
+  }
+  table.toc caption{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip-path:inset(50%); white-space:nowrap;   /* caption: read by AT, not seen */
+  }
+  table.toc thead th{
+    font-family:var(--font-display); font-size:10rem; font-weight:700;
+    letter-spacing:.14rem; text-transform:uppercase; color:var(--gray-2);
+    text-align:left; padding:0 12rem 8rem 12rem;
+    border-bottom:1px solid var(--rule-dark);
+  }
+  table.toc thead th.num{width:74rem}
+  table.toc thead th.pg{width:150rem; text-align:right}
+  table.toc tbody td{
+    padding:12rem 14rem; border-bottom:1px solid var(--rule-dark);
+    vertical-align:middle;
+  }
+  .n{
+    font-family:var(--font-display); font-size:19rem; font-weight:700;
+    color:var(--ink);
+  }
+  .t{
+    font-family:var(--font-display); font-size:18rem; font-weight:700;
+    letter-spacing:-.2rem; color:var(--ink);
+  }
+  .d{
+    display:block; margin-top:3rem;
+    font-family:var(--font-body); font-size:11.5rem; line-height:1.35;
+    color:var(--gray-2);
+  }
+  .p{
+    text-align:right; font-family:var(--font-display); font-size:19rem;
+    font-weight:700; color:var(--ink);
+  }
+  /* states: read already / you are here / not yet reached */
+  tr.read .t{color:var(--gray-2); font-weight:600}
+  tr.read .n{color:var(--gray-2)}
+  tr.read .d{color:var(--gray-3)}
+  tr.read .p{color:var(--gray-2)}
+  tr.here{background:var(--accent-wash)}
+  tr.here .n{color:var(--accent-deep)}
+  tr.here .t{color:var(--ink)}
+  .chip{
+    display:inline-block; margin-left:9rem; padding:3rem 7rem;
+    font-family:var(--font-display); font-size:9rem; font-weight:700;
+    letter-spacing:.12rem; text-transform:uppercase; color:var(--ink);
+    background:var(--accent); border-radius:2rem; vertical-align:1.5rem;
+  }
+
+  /* closing note: inside the table so it can never overlap a row */
+  table.toc tfoot td{
+    border:0; padding:11rem 14rem 0 14rem;
+    font-family:var(--font-body); font-size:10.5rem; line-height:1.45;
+    color:var(--gray-2);
+  }
+
+  /* ---------------- 4 · footer band ------------------------------------- */
+  .foot-left{
+    left:var(--m-side); bottom:26rem; width:620rem;
+    font-size:11rem; color:var(--gray-2);
+  }
+  .foot-left sup{font-size:7.5rem; vertical-align:super}
+  .foot-center{
+    left:50%; transform:translateX(-50%); bottom:26rem; width:420rem;
+    text-align:center; font-size:11rem; color:var(--gray-2);
+  }
+  .foot-right{right:var(--m-side); bottom:22rem}
+  .foot-right svg{display:block}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · hairline + running head -->
+  <div class="abs rule-top"></div>
+  <div class="abs kicker">Survey of European banks · conducted January–February 2015</div>
+
+  <!-- 2 · label title + brand rule + message line -->
+  <h1 class="abs title">Contents</h1>
+  <div class="abs rule-brand"></div>
+  <p class="abs message">
+    Five numbered sections and a contacts page. <b>Sections 2 and 3 carry the
+    exhibit work</b>; section 1 sets the macro context the rest of the deck assumes.
+  </p>
+  <div class="abs edition"><b>Edition 2015</b>survey · 34 markets · 1,431 respondents</div>
+
+  <!-- 3 · contents as a semantic numbered table -->
+  <table class="toc">
+    <caption>Sections of the European Banking Barometer 2015 and where each one starts</caption>
+    <thead>
+      <tr>
+        <th class="num" scope="col">No.</th>
+        <th scope="col">Content</th>
+        <th class="pg" scope="col">Page</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="read">
+        <td class="n">1</td>
+        <td class="t">Economic environment
+          <span class="d">Growth, rates and credit conditions across the 34 reporting markets.</span>
+        </td>
+        <td class="p">9</td>
+      </tr>
+      <tr class="here">
+        <td class="n">2</td>
+        <td class="t">Business outlook and focus areas<span class="chip">you are here</span>
+          <span class="d">Net expectations by country and ranked areas of investment focus, 11 exhibits.</span>
+        </td>
+        <td class="p">12</td>
+      </tr>
+      <tr>
+        <td class="n">3</td>
+        <td class="t">Business priorities and product-line expectations
+          <span class="d">Where banks expect revenue growth — lending, payments, transaction banking.</span>
+        </td>
+        <td class="p">28</td>
+      </tr>
+      <tr>
+        <td class="n">4</td>
+        <td class="t">Headcount and compensation
+          <span class="d">Hiring intentions, bonus pools and attrition by function.</span>
+        </td>
+        <td class="p">36</td>
+      </tr>
+      <tr>
+        <td class="n">5</td>
+        <td class="t">Contacts
+          <span class="d">Country leads and the global survey team.</span>
+        </td>
+        <td class="p">45</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Note: numbering here matches the contents page as printed. The deck's own section
+        dividers skip the label for section 4 on p36 — a deck defect, not a reading instruction.</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- 4 · footer band: page | deck title | brand mark -->
+  <div class="abs foot-left">Source: EY Global Banking Barometer survey and EY analysis.<sup>1</sup></div>
+  <div class="abs foot-center">European Banking Barometer — 2015 · 2</div>
+  <div class="abs foot-right" role="img" aria-label="EY brand mark">
+    <svg width="52" height="21" viewBox="0 0 52 21" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="15" font-family="Helvetica Neue, Arial, sans-serif" font-size="19" font-weight="700" fill="#1A1A1A">EY</text>
+      <rect x="0" y="18" width="52" height="2.4" fill="#FFE600"></rect>
+    </svg>
+  </div>
+
+</div>
+</body>
+</html>

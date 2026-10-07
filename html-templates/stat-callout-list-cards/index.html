@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>stat-callout-list-cards — serif action title + row of 3 solid callout boxes (figure + sentence) + so-what band + context card (1280×720)</title>
+<!--
+  Evidence: pwc_strategy__pwc_boardroom_agenda_2022 p1 / p24 "stat callouts + photo,
+  3 coloured callout boxes" — filled boxes carrying a figure and a full sentence, white text.
+  sw_sheets/pwc_strategy__pwc_boardroom_agenda_2022_s00.jpg (p1 row 0 col 0) and
+  ..._s02.jpg (p21–p30; p24 row 3 col 4 / row 5 col 4 of that sheet — callout column beside photo).
+  Palette: reviews/pwc_strategy__pwc_boardroom_agenda_2022.md §Colour — brand orange #D04800,
+  yellow #F8B000, slate blue #98B0C8, grays #F0F0F0/#DCDCDC/#464646. Titles serif, 24–30pt.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. html maps 1rem == 1 STAGE PIXEL for the current viewport fit;
+  every length is a 1:1 stage-pixel coordinate matching MANUAL.md.
+  ----------------------------------------------------------------------------
+-->
+<style>
+  :root{
+    --bg:        #FFFFFF;
+    --ink:       #1A1A1A;   /* body text + dark-on-light card text */
+    --gray-1:    #464646;   /* secondary body text */
+    --gray-2:    #808080;   /* kicker, footnotes, page number */
+    --rule:      #DCDCDC;   /* hairlines */
+    --field:     #F0F0F0;   /* context card / so-what field */
+    --orange:    #D04800;   /* PwC brand orange — emphasis box */
+    --blue:      #98B0C8;   /* deck's only cool accent */
+    --yellow:    #F8B000;   /* deck's highlight yellow */
+    --accent:    #D04800;   /* single emphasis color for the page */
+    --font-display:Georgia, "Times New Roman", serif;
+    --font-body:   Arial, "Segoe UI", Calibri, sans-serif;
+  }
+  html{ height:100%; font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  html, body{ margin:0; }
+  body{ background:#16181d; font-family:var(--font-body); }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    margin:0 auto; background:var(--bg); color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- header ---------- */
+  .head{ position:absolute; left:56rem; right:56rem; top:40rem; }
+  .eyebrow{
+    margin:0 0 10rem; font-family:var(--font-body); font-size:12.5rem; font-weight:700;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--orange);
+  }
+  h1.claim{
+    margin:0; font-family:var(--font-display); font-weight:400; font-size:31rem; line-height:1.16;
+    color:var(--ink); max-width:1130rem;      /* holds the claim-title gate */
+  }
+  .head .rule{ height:1px; background:var(--rule); margin-top:22rem; }
+
+  /* ---------- callout-card row: the stat-callout list ---------- */
+  .cards{ position:absolute; left:56rem; right:56rem; top:214rem; display:flex; gap:20rem; }
+  .card{
+    flex:1 1 0; height:268rem; box-sizing:border-box; padding:26rem 26rem 24rem;
+    display:flex; flex-direction:column; border-radius:2rem;
+  }
+  .card .ck{
+    margin:0 0 auto; font-family:var(--font-body); font-size:10.5rem; font-weight:700;
+    letter-spacing:.16em; text-transform:uppercase;
+  }
+  .card .fig{
+    margin:14rem 0 0; font-family:var(--font-body); font-weight:700; font-size:56rem;
+    line-height:1; letter-spacing:-.015em;
+  }
+  .card .fig .unit{ font-size:27rem; font-weight:700; }
+  .card .sen{
+    margin:14rem 0 0; font-family:var(--font-body); font-size:13.5rem; line-height:1.42;
+  }
+  /* fill / ink pairs, each clears 4.5:1 against its own field (see MANUAL VERIFY) */
+  .card--orange{ background:var(--orange); }
+  .card--orange .ck, .card--orange .sen{ color:#FFFFFF; opacity:.88; }
+  .card--orange .ck{ opacity:.72; } .card--orange .fig{ color:#FFFFFF; }
+  .card--blue{ background:var(--blue); }
+  .card--blue .ck, .card--blue .fig, .card--blue .sen{ color:var(--ink); }
+  .card--blue .ck{ color:#33415C; }
+  .card--yellow{ background:var(--yellow); }
+  .card--yellow .ck, .card--yellow .fig, .card--yellow .sen{ color:var(--ink); }
+  .card--yellow .ck{ color:#5C4400; }
+
+  /* ---------- so-what band + context card ---------- */
+  .sowhat{
+    position:absolute; left:56rem; right:56rem; top:520rem; box-sizing:border-box;
+    display:flex; gap:20rem;
+  }
+  .sowhat .band{
+    flex:1 1 0; box-sizing:border-box; border-left:4rem solid var(--orange);
+    background:#FBF7F4; padding:16rem 20rem;
+  }
+  .sowhat .band p{ margin:0; font-family:var(--font-body); font-size:14rem; line-height:1.42; color:var(--ink); }
+  .sowhat .band b{ color:var(--orange); font-weight:700; }
+  .sowhat .ctx{
+    flex:0 0 300rem; box-sizing:border-box; background:var(--field); padding:16rem 20rem;
+  }
+  .sowhat .ctx .t{
+    margin:0 0 6rem; font-family:var(--font-body); font-size:10.5rem; font-weight:700;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--gray-2);
+  }
+  .sowhat .ctx p{ margin:0; font-family:var(--font-body); font-size:12rem; line-height:1.45; color:var(--gray-1); }
+
+  /* ---------- footer anatomy ---------- */
+  .foot{ position:absolute; left:56rem; right:56rem; bottom:30rem; }
+  .foot .rule{ height:1px; background:var(--rule); margin-bottom:10rem; }
+  .foot-row{ display:flex; justify-content:space-between; align-items:baseline; }
+  .source{
+    margin:0; font-family:var(--font-body); font-size:9.5rem; line-height:1.45; color:var(--gray-2);
+    max-width:1010rem;
+  }
+  .source sup{ font-size:7rem; }
+  .pageno{
+    margin:0; font-family:var(--font-body); font-size:10.5rem; font-weight:700; letter-spacing:.08em;
+    color:var(--gray-2); white-space:nowrap;
+  }
+  .pageno b{ color:var(--orange); font-weight:700; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <header class="head">
+    <p class="eyebrow">Evidence — customer economics</p>
+    <h1 class="claim">Retention now turns on personalisation, not price or the breadth of the catalogue</h1>
+    <div class="rule"></div>
+  </header>
+
+  <div class="cards" role="list">
+    <article class="card card--orange" role="listitem">
+      <p class="ck">Stated preference</p>
+      <p class="fig">68<span class="unit">%</span></p>
+      <p class="sen">of buyers in our 2023 survey say price is no longer the deciding factor — experience quality is.</p>
+    </article>
+    <article class="card card--blue" role="listitem">
+      <p class="ck">Value at stake</p>
+      <p class="fig">2.7<span class="unit">×</span></p>
+      <p class="sen">higher lifetime value among customers who rate their journey as “personalised”.</p>
+    </article>
+    <article class="card card--yellow" role="listitem">
+      <p class="ck">Downside</p>
+      <p class="fig">$1.4<span class="unit">bn</span></p>
+      <p class="sen">of annual revenue at risk for retailers who cannot personalise beyond the top decile of spend.</p>
+    </article>
+  </div>
+
+  <div class="sowhat">
+    <div class="band">
+      <p><b>So what:</b> the margin to defend is the personalised middle of the base, not the
+      price-sensitive tail — price-led retention spend funds the segment least able to reward it.</p>
+    </div>
+    <div class="ctx">
+      <p class="t">Method</p>
+      <p>3,180 consumers, five markets, Oct–Nov 2023. LTV measured on a 36-month forward window, clipped at churn.</p>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <div class="rule"></div>
+    <div class="foot-row">
+      <p class="source">Source: firm consumer demand study, Oct–Nov 2023 (n=3,180); LTV derived from transaction history for the same cohort. Figures are illustrative placeholders.<sup>1</sup></p>
+      <p class="pageno"><b>24</b> &nbsp;|&nbsp; THE CASE FOR CHANGE</p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

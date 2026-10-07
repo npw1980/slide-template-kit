@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>isometric-illustration-scene-trio — isometric scene vignettes + C-suite split stats (1280×720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  isometric-illustration-scene-trio  ·  family isometric-illustration
+  Evidence (see MANUAL.md -> SOURCE):
+    PwC — PwC Global Crisis Survey 2019 ("Crisis Preparedness as the next
+    competitive advantage", pwc_strategy__pwc_crisis_preparedness_as_the_next_
+    competitive_advantage_le) p09: numbered chapter "4", two-tone serif
+    takeaway headline (red answer / black question), body + two commentary
+    columns, and THREE isometric scene vignettes (whiteboard+figure,
+    desk+laptop+figure, figure+megaphone+bar panel) standing on gray floor
+    plates, each with a caption and a C-Suite vs Non-C-Suite percent pair
+    (42/25, 41/24, 39/20). Review line 72: isometric 3D + percentage
+    callouts used as infographic, not chart.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS; 1rem == 1 stage px via the html rule; coords 1:1 with
+  MANUAL.md. SELF-CONTAINED: inline CSS + inline SVG, system font stacks,
+  no images, no webfonts, no @import, no JS, no network calls.
+  ----------------------------------------------------------------------------
+  GEOMETRY: every vignette is one <g class="node" transform="translate(CX,330)">
+  and is fully self-contained inside that transform: floor plate (2:1 iso
+  diamond, screen(x,y) = (x−y, (x+y)/2)), object boxes (3 visible faces),
+  flat figures, caption, stat pair. Nothing inside a node references another
+  node. Add/remove nodes by copying/deleting whole <g class="node"> blocks and
+  stepping CX by the pitch (see MANUAL SLOTS/FILL). Isometric convention:
+  2:1 dimetric — right axis (+1,+0.5), left axis (−1,+0.5), vertical (0,−1).
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Palette cites reviews/pwc_strategy__pwc_crisis_preparedness_as_the_
+     next_competitive_advantage_le.md line 54: brand red ~#E30613/#E1251B;
+     taken as #D60A2C (the PwC red the house kit uses, per sibling
+     venn-diagram template; contrast-certified below). The scene-trio is
+     one-accent + gray ramp: the deck's orange second hue is collapsed to
+     gray tints, exactly per DESIGN_PLAYBOOK.
+       #58595B on #FFFFFF = 7.0:1   (body)
+       #1F1F1F on #FFFFFF = 15.9:1  (title black line)
+       #D60A2C on #FFFFFF = 4.6:1   (red headline >=14px bold, stat values)
+       #9AA0A6 on #FFFFFF = 2.9:1 -> captions/labels kept >=12.5px
+     ================================================================= */
+  :root{
+    --bg:       #FFFFFF;
+    --ink:      #1F1F1F;   /* black line of the two-tone title           */
+    --accent:   #D60A2C;   /* PwC red: red line, one emphasized stat, plate post */
+    --accent-1: #F7D3D8;   /* one lightness of accent: scene washes     */
+    --gray-1:   #58595B;   /* body copy                                  */
+    --gray-2:   #757575;   /* commentary, labels                         */
+    --gray-3:   #9AA0A6;   /* captions, source line                      */
+    --gray-4:   #E6E6E6;   /* neutral fills (plates, objects)            */
+    --gray-5:   #F2F2F2;   /* plate wash                                 */
+    --rule:     #D9D9D9;
+    --font-serif: Georgia, "Times New Roman", "Liberation Serif", serif;
+    --font-body:  Arial, "Helvetica Neue", Calibri, "Liberation Sans", sans-serif;
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); } /* 1rem = 1 stage px */
+  body{
+    min-height:100vh; display:grid; place-items:center;
+    background:#0E1A22; font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{
+    position:relative; width:1280rem; height:720rem; overflow:hidden;
+    background:var(--bg); color:var(--ink);
+  }
+  /* brand device: the red left-edge bar (every page of the source deck) */
+  .edgebar{ position:absolute; left:0; top:0; bottom:0; width:7rem; background:var(--accent); }
+
+  svg{ position:absolute; inset:0; width:1280rem; height:720rem; }
+  .t-kicker{ font:700 11px var(--font-body); letter-spacing:.14em; fill:var(--accent); }
+  .t-h1-red{ font:700 28px var(--font-serif); fill:var(--accent); }
+  .t-h1-ink{ font:700 28px var(--font-serif); fill:var(--ink); }
+  .t-lead { font:14.5px var(--font-body); fill:var(--gray-1); }
+  .t-note { font:11.5px var(--font-body); fill:var(--gray-2); }
+  .t-note-b{ font:700 11.5px var(--font-body); fill:var(--ink); }
+  .t-figure{ font:11.5px var(--font-body); fill:var(--gray-3); }
+  .t-cap { font:700 13px var(--font-body); fill:var(--ink); }
+  .t-stat{ font:700 26px var(--font-serif); }
+  .t-stat-acc{ fill:var(--accent); } .t-stat-gray{ fill:var(--gray-2); }
+  .t-stat-l{ font:700 9px var(--font-body); letter-spacing:.10em; fill:var(--gray-3); }
+  .t-src { font:10.5px var(--font-body); fill:var(--gray-3); }
+  .t-page{ font:700 10.5px var(--font-body); letter-spacing:.08em; fill:var(--gray-3); }
+  .nchip{ font:700 15px var(--font-serif); fill:#FFFFFF; }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="edgebar"></div>
+  <svg viewBox="0 0 1280 720" role="img"
+       aria-label="Who owns crisis management? Three isometric vignettes — preparedness, response, stakeholder communication — each with C-suite vs non-C-suite involvement shares.">
+
+    <!-- ============ header block (left column) ============ -->
+    <text class="t-kicker" x="64" y="80">SECTION 4 · WHO OWNS CRISIS</text>
+    <!-- big numeral device: ink square + chapter number (source: numbered chapters p03+) -->
+    <g id="numeral" transform="translate(64,104)">
+      <rect width="56" height="56" fill="var(--ink)"/>
+      <text class="nchip" x="28" y="39" text-anchor="middle">4</text>
+    </g>
+    <!-- two-tone takeaway headline: red answer line, black question line.
+         GATE: 8 words / 2 lines. -->
+    <text class="t-h1-red" x="64" y="212">Who owns crisis management?</text>
+    <text class="t-h1-ink" x="64" y="244">Everyone — and no one.</text>
+
+    <!-- lead paragraph (3 lines hand-set) -->
+    <text class="t-lead" x="64" y="284">
+      <tspan x="64" dy="0">Crisis ownership is nobody’s and everybody’s — from board</tspan>
+      <tspan x="64" dy="21">members and legal to IT and communications leads, every</tspan>
+      <tspan x="64" dy="21">function claims involvement in crisis work.</tspan>
+    </text>
+
+    <!-- two commentary blocks -->
+    <text class="t-note" x="64" y="408">
+      <tspan x="64" dy="0" class="t-note-b">Overlap is not ownership. </tspan>
+      <tspan>C-suites claim</tspan>
+      <tspan x="64" dy="16">preparedness far more often than the rest of the org</tspan>
+      <tspan x="64" dy="16">(74% vs 51%) while owning almost nothing on paper.</tspan>
+    </text>
+    <text class="t-note" x="336" y="408">
+      <tspan x="336" dy="0" class="t-note-b">Coordination is the tell. </tspan>
+      <tspan>Executives rank</tspan>
+      <tspan x="336" dy="16">cross-team response speed as their largest gap —</tspan>
+      <tspan x="336" dy="16">decisions stall without a named incident owner.</tspan>
+    </text>
+
+    <!-- ============ figure rail ============ -->
+    <text class="t-figure" x="512" y="110">Figure 3 | C-suite vs. non-C-suite involvement in each crisis area, % of respondents (1)</text>
+    <line x1="512" y1="122" x2="1216" y2="122" stroke="var(--rule)" stroke-width="1"/>
+
+    <!-- ================================================================
+         THREE ISOMETRIC NODES. One <g class="node" translate(CX,330)> each.
+         CX = 696 / 894 / 1092 (pitch 198). To add node 4: copy the whole
+         <g class="node">, set translate to next CX, swap scene + caption +
+         stats (see MANUAL SLOTS). Nothing else reflows.
+         Plate convention (node-local): 2:1 iso diamond, half-depth 52;
+         screen(x,y,z) = (x−y, (x+y)/2 − z).
+         ================================================================ -->
+
+    <!-- ---------- NODE 1: Crisis preparedness (whiteboard + presenter) ---------- -->
+    <g class="node" transform="translate(696,330)">
+      <!-- floor plate -->
+      <polygon points="-104,0 0,52 0,61 -104,9" fill="var(--gray-4)"/>
+      <polygon points="0,52 104,0 104,9 0,61"     fill="var(--gray-5)"/>
+      <polygon points="0,-52 104,0 0,52 -104,0"   fill="#FAFAFA" stroke="var(--rule)" stroke-width="1"/>
+      <!-- whiteboard on stand -->
+      <polygon points="-16,-104 -12,-102.5 -12,-54 -16,-55.5" fill="var(--gray-4)"/>
+      <polygon points="-16,-55.5 -12,-54 -12,0 -16,-1.5" fill="var(--gray-4)"/>
+      <rect x="-60" y="-116" width="56" height="60" rx="2" fill="#FFFFFF" stroke="var(--gray-3)" stroke-width="1.5"/>
+      <line x1="-52" y1="-98" x2="-16" y2="-98" stroke="var(--gray-4)" stroke-width="4"/>
+      <line x1="-52" y1="-88" x2="-22" y2="-88" stroke="var(--gray-4)" stroke-width="4"/>
+      <line x1="-52" y1="-78" x2="-30" y2="-78" stroke="var(--accent)" stroke-width="4"/>
+      <!-- bar-chart posts standing on the plate -->
+      <polygon points="66,-25 59,-21.5 59,-5.5 66,-9"   fill="var(--gray-4)"/>
+      <polygon points="56,-30 49,-26.5 49,-0.5 56,-4"   fill="var(--gray-3)"/>
+      <polygon points="46,-17 39,-13.5 39,4.5 46,1"     fill="var(--gray-4)"/>
+      <polygon points="36,-28 29,-24.5 29,9.5 36,6"     fill="var(--accent-1)" stroke="var(--accent)" stroke-width="1"/>
+      <!-- flat figure: legs / torso / head / pointing arm -->
+      <g transform="translate(-70,18)" stroke="none">
+        <rect x="-9" y="-1" width="7"  height="19" rx="2" fill="var(--gray-2)"/>
+        <rect x="2"  y="-1" width="7"  height="19" rx="2" fill="var(--gray-2)"/>
+        <path d="M-11,-40 Q-11,-47 -4.5,-47 L4.5,-47 Q11,-47 11,-40 L11,-10 L-11,-10 Z" fill="var(--gray-1)"/>
+        <circle cx="0" cy="-55" r="8" fill="var(--gray-1)"/>
+        <path d="M9,-36 L26,-30" stroke="var(--gray-1)" stroke-width="5" stroke-linecap="round"/>
+      </g>
+      <!-- caption + stat pair -->
+      <text class="t-cap"  x="0" y="112" text-anchor="middle">Crisis preparedness</text>
+      <text class="t-stat t-stat-acc"  x="-34" y="152" text-anchor="middle">42%</text>
+      <text class="t-stat t-stat-gray" x="34"  y="152" text-anchor="middle">25%</text>
+      <text class="t-stat-l" x="-34" y="168" text-anchor="middle">C-SUITE</text>
+      <text class="t-stat-l" x="34"  y="168" text-anchor="middle">NON-C-SUITE</text>
+    </g>
+
+    <!-- ---------- NODE 2: Crisis response (desk + laptop + figure) ---------- -->
+    <g class="node" transform="translate(894,330)">
+      <polygon points="-104,0 0,52 0,61 -104,9" fill="var(--gray-4)"/>
+      <polygon points="0,52 104,0 104,9 0,61"     fill="var(--gray-5)"/>
+      <polygon points="0,-52 104,0 0,52 -104,0"   fill="#FAFAFA" stroke="var(--rule)" stroke-width="1"/>
+      <!-- seated figure (drawn before the desk so the desk overlaps it) -->
+      <g transform="translate(-24,2)" stroke="none">
+        <path d="M-13,-46 Q-13,-53 -6.5,-53 L6.5,-53 Q13,-53 13,-46 L13,-20 L-13,-20 Z" fill="var(--gray-1)"/>
+        <circle cx="0" cy="-61" r="8" fill="var(--gray-1)"/>
+        <path d="M12,-40 L22,-16" stroke="var(--gray-1)" stroke-width="5" stroke-linecap="round"/>
+      </g>
+      <!-- desk block: 3 faces -->
+      <polygon points="-40,-23 20,7 -14,24 -74,-6" fill="#FFFFFF" stroke="var(--gray-3)" stroke-width="1.5"/>
+      <polygon points="20,7 -14,24 -14,37 20,20"   fill="var(--gray-4)"/>
+      <polygon points="-74,-6 -14,24 -14,37 -74,7" fill="var(--gray-5)" stroke="var(--gray-4)" stroke-width="1"/>
+      <!-- laptop: base quad + screen quad on the desk top -->
+      <polygon points="-28,-11 -2,2 -14,8 -40,-5"  fill="var(--gray-3)"/>
+      <polygon points="-2,2 -14,8 -12,-10 -4,-14"  fill="var(--accent)" opacity="0.85"/>
+      <!-- caption + stat pair -->
+      <text class="t-cap"  x="0" y="112" text-anchor="middle">Crisis response</text>
+      <text class="t-stat t-stat-acc"  x="-34" y="152" text-anchor="middle">41%</text>
+      <text class="t-stat t-stat-gray" x="34"  y="152" text-anchor="middle">24%</text>
+      <text class="t-stat-l" x="-34" y="168" text-anchor="middle">C-SUITE</text>
+      <text class="t-stat-l" x="34"  y="168" text-anchor="middle">NON-C-SUITE</text>
+    </g>
+
+    <!-- ---------- NODE 3: Stakeholder communication (megaphone + bar panel) ---------- -->
+    <g class="node" transform="translate(1092,330)">
+      <polygon points="-104,0 0,52 0,61 -104,9" fill="var(--gray-4)"/>
+      <polygon points="0,52 104,0 104,9 0,61"     fill="var(--gray-5)"/>
+      <polygon points="0,-52 104,0 0,52 -104,0"   fill="#FAFAFA" stroke="var(--rule)" stroke-width="1"/>
+      <!-- tall bar-panel block -->
+      <polygon points="68,-50 78,-45 44,-28 34,-33" fill="#FFFFFF" stroke="var(--gray-3)" stroke-width="1.5"/>
+      <polygon points="78,-45 44,-28 44,16 78,-1"  fill="var(--gray-4)"/>
+      <polygon points="34,-33 44,-28 44,16 34,11"  fill="var(--gray-5)" stroke="var(--gray-4)" stroke-width="1"/>
+      <!-- rising bars on the panel face -->
+      <polygon points="54,-25 48,-22 48,-8 54,-11"  fill="var(--gray-4)"/>
+      <polygon points="46,-31 40,-28 40,-4 46,-7"   fill="var(--gray-3)"/>
+      <polygon points="38,-35 32,-32 32,0 38,-3"    fill="var(--accent-1)" stroke="var(--accent)" stroke-width="1"/>
+      <!-- flat figure with megaphone -->
+      <g transform="translate(-52,18)" stroke="none">
+        <rect x="-9" y="-1" width="7" height="19" rx="2" fill="var(--gray-2)"/>
+        <rect x="2"  y="-1" width="7" height="19" rx="2" fill="var(--gray-2)"/>
+        <path d="M-11,-40 Q-11,-47 -4.5,-47 L4.5,-47 Q11,-47 11,-40 L11,-10 L-11,-10 Z" fill="var(--gray-1)"/>
+        <circle cx="0" cy="-55" r="8" fill="var(--gray-1)"/>
+        <path d="M9,-38 L22,-34" stroke="var(--gray-1)" stroke-width="5" stroke-linecap="round"/>
+        <polygon points="24,-44 42,-50 42,-24 24,-30" fill="var(--gray-1)"/>
+        <circle cx="24" cy="-32" r="3" fill="var(--accent)"/>
+      </g>
+      <!-- caption + stat pair -->
+      <text class="t-cap"  x="0" y="112" text-anchor="middle">Stakeholder communication</text>
+      <text class="t-stat t-stat-acc"  x="-34" y="152" text-anchor="middle">39%</text>
+      <text class="t-stat t-stat-gray" x="34"  y="152" text-anchor="middle">20%</text>
+      <text class="t-stat-l" x="-34" y="168" text-anchor="middle">C-SUITE</text>
+      <text class="t-stat-l" x="34"  y="168" text-anchor="middle">NON-C-SUITE</text>
+    </g>
+
+    <!-- ============ footer anatomy ============ -->
+    <text class="t-src" x="64" y="694">Source: PwC Global Crisis Survey 2019 — 2,084 respondents, 43 countries, 25 industries (64% C-suite). Superscript (1): multi-select, involvement “to some extent” or more.</text>
+    <text class="t-page" x="1216" y="694" text-anchor="end">9 | WHO OWNS CRISIS</text>
+  </svg>
+</div>
+</body>
+</html>

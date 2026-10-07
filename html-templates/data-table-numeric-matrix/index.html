@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>data-table-numeric-matrix — dense numeric matrix page, one highlighted row + summary bars (1280x720)</title>
+<!--
+  ============================================================================
+  TEMPLATE  data-table-numeric-matrix  ·  family data-table
+  Evidence: ey__ey_ey_ifrs_9_impairment_banking_survey_2018 p12 ("bank-level
+            data matrix; raw table; summary bars"), seen on sheet
+            sw_sheets/ey__ey_ey_ifrs_9_impairment_banking_survey_2018_s01.jpg
+            (pages p11-p20 sheet; p12 is row 1 col 2).
+            Secondary: ey__ey_european_banking_barometer_2015_2015 p5 ("boxed
+            crosstab matrix table"); kpmg__kpmg_kpmg_our_impact_plan_2023 p23
+            (region x metric grid with footnote markers), sheet s02.
+  ----------------------------------------------------------------------------
+  SCALING: zero JS. The html rule maps 1rem == 1 STAGE PIXEL at the current
+  viewport fit, so every length is a 1:1 stage-pixel coordinate with the same
+  numbers MANUAL.md quotes (1280x720 fixed stage, uniform scale). Inside the
+  inline SVG, lengths are user units — the viewBox makes 1 user unit equal 1
+  stage px, so SVG font sizes match the px values in MANUAL.md 1:1.
+  NOTE: never put HTML elements (<sup>) inside SVG <text> — chromium drops
+        everything after the first one. Footnote markers in SVG are printed
+        as the unicode glyphs ¹ ² ³.
+  ----------------------------------------------------------------------------
+  DATA ARRAY — this is THE slot. Swap the numbers; nothing else moves.
+      rows = [                                 // keep sorted DESC by stage-1
+        { bank: "Bank A", s1: 92.9, s2: 6.5, s3: 0.6, pd:  82, d: "+1.7" },
+        { bank: "Bank B", s1: 90.2, s2: 8.9, s3: 0.9, pd:  94, d: "+2.1" },
+        { bank: "Bank C", s1: 94.1, s2: 5.1, s3: 0.8, pd:  71, d: "+0.8" },
+        { bank: "Bank D", s1: 87.4, s2: 10.9, s3: 1.7, pd: 143, d: "+3.4", hl: true },
+        { bank: "Bank E", s1: 93.6, s2: 5.5, s3: 0.9, pd:  76, d: "+1.1" },
+        { bank: "Bank F", s1: 91.3, s2: 7.8, s3: 0.9, pd:  88, d: "+1.9" },
+        { bank: "Bank G", s1: 95.0, s2: 4.3, s3: 0.7, pd:  64, d: "+0.5" }
+      ];
+      total = { s1: 92.1, s2: 6.9, s3: 1.0, pd: 85, d: "+1.6" };  // volume-weighted
+    Geometry rules (the only numbers that change per cell):
+      * % columns print ONE decimal (505 / 610 / 715 right edges, text-anchor
+        end — fixed precision is what lines the decimals up).
+      * pd prints integer bp; d prints signed pp ("+x.x" / "-x.x").
+      * mini bar width px = pd value x 1.1 (band x 1015..1190 = 175 px;
+        max axis 155 bp). Only the hl row takes the accent bar + left bar;
+        every other bar is --gray-2. Emphasis follows DATA, never row order.
+      * each row is <g transform="translate(0, 36*i)">, baseline y=268 inside
+        each row group. Add a row = add one <g> and shift the total row down
+        by 36 (change its translate and the rule line above it).
+  ----------------------------------------------------------------------------
+  SELF-CONTAINED: inline CSS, inline SVG, system font stacks. No images, no
+  webfonts, no @import, no JavaScript. Nothing in this file makes a request.
+  ============================================================================
+-->
+<style>
+  /* ============================ tokens ============================
+     Roles follow DESIGN_PLAYBOOK: --accent emphasis, --ink text,
+     --gray-* secondary + "the rest", --rule hairlines, --bg ground.
+     Source deck (EY) is a two-colour system: yellow + greyscale. Review
+     ey__ey_ey_ifrs_9_impairment_banking_survey_2018.md line 25: yellow
+     ~#FFE600 = brand + all so-what boxes, grey = neutral series. The
+     emphasis text ON the yellow box is near-black (contrast > 12:1).
+     KPMG-blue house variant: --accent:#EAF1FD; --accent-ink:#0F2E8C
+     (header band hexes #0F2E8C/#123B96 quoted from
+     reviews/kpmg__kpmg_kpmg_our_impact_plan_2023.md line 43). */
+  :root{
+    --bg:          #FFFFFF;
+    --ink:         #1A1A1A;   /* body + number text */
+    --accent:      #FFE600;   /* EY yellow — the so-what box + highlighted bar */
+    --accent-ink:  #1A1A1A;   /* text printed ON the accent (near-black) */
+    --gray-1:      #7A7A7A;   /* secondary text (column notes, sources, footnotes) */
+    --gray-2:      #B8B8B8;   /* non-focus series (grey summary bars) */
+    --gray-3:      #D9D9D9;   /* row hairlines + bar baselines */
+    --gray-4:      #F2F2F2;   /* header band fill */
+    --rule:        #C9C9C9;   /* header baseline rule */
+    --font-display:"Helvetica Neue", Arial, sans-serif;
+    --font-body:   Arial, "Helvetica Neue", sans-serif;
+  }
+  html{ font-size: min(calc(100vw / 1280), calc(100vh / 720)); }  /* 1rem = 1 stage px */
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{ background:#545454; display:flex; justify-content:center; align-items:center;
+        min-height:100vh; }
+  .stage{ position:relative; width:1280rem; height:720rem; background:var(--bg);
+          overflow:hidden; font-family:var(--font-body); }
+
+  .kicker{ position:absolute; left:64rem; top:36rem; width:1152rem; font-size:14rem;
+           letter-spacing:.08em; text-transform:uppercase; color:var(--gray-1); }
+  .title { position:absolute; left:64rem; top:60rem; width:1050rem;
+           font-family:var(--font-display); font-size:28rem; font-weight:700;
+           line-height:36rem; letter-spacing:-.015em; color:var(--ink); }
+  .claim { position:absolute; left:64rem; top:106rem; width:1050rem; font-size:16rem;
+           line-height:22rem; color:var(--gray-1); }
+  .claim sup{ font-size:11rem; }
+
+  svg.table{ position:absolute; left:0; top:0; width:1280rem; height:720rem; }
+
+  .foot{ position:absolute; left:64rem; bottom:24rem; width:940rem; font-size:11rem; line-height:15rem;
+         line-height:14rem; color:var(--gray-1); }
+  .stamp{ position:absolute; right:64rem; bottom:24rem; font-size:11rem; color:var(--gray-1); }
+  .stamp b{ color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="kicker">2 · Impact assessment — stage allocation · Bank-level detail</div>
+  <div class="title">Three banks carry more than triple the sample-median stage-2 exposure</div>
+  <div class="claim">Stage shares of gross loans by bank, year-end 2018, with weighted PD and stage-2 drift vs. 2017<sup>1</sup></div>
+
+  <svg class="table" viewBox="0 0 1280 720" role="img"
+       aria-label="Table of IFRS 9 stage shares, weighted PD and stage-2 drift by bank">
+
+    <!-- ================= header block: y 160..212 ================= -->
+    <g id="header">
+      <rect x="64" y="160" width="1126" height="52" fill="var(--gray-4)"/>
+      <text x="80"  y="183" font-size="13" font-weight="700" fill="var(--ink)">Share of gross loans¹</text>
+      <text x="862" y="183" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="end">Weighted PD²</text>
+      <text x="900" y="183" font-size="13" font-weight="700" fill="var(--ink)" text-anchor="start">Stage-2 drift vs. 2017</text>
+      <text x="610" y="201" font-size="12" fill="var(--gray-1)" text-anchor="end">% of book — stage 1 / 2 / 3</text>
+      <text x="862" y="201" font-size="12" fill="var(--gray-1)" text-anchor="end">bp, 1-year horizon</text>
+      <text x="990" y="201" font-size="12" fill="var(--gray-1)" text-anchor="end">pp</text>
+      <text x="1102" y="201" font-size="12" fill="var(--gray-1)" text-anchor="end">PD, visual check</text>
+      <line x1="64" y1="212" x2="1190" y2="212" stroke="var(--rule)" stroke-width="1"/>
+    </g>
+
+    <!-- ================= rows: baseline 268 + 36*i ================= -->
+    <g id="rows">
+
+      <g transform="translate(0,0)">
+        <text x="80" y="268" font-size="14" fill="var(--ink)">Bank A</text>
+        <text x="505" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">92.9</text>
+        <text x="610" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">6.5</text>
+        <text x="715" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">0.6</text>
+        <text x="862" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">82</text>
+        <text x="990" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+1.7</text>
+        <line x1="1015" y1="263" x2="1190" y2="263" stroke="var(--gray-3)"/>
+        <rect x="1015" y="257" width="90.2" height="11" fill="var(--gray-2)"/>
+      </g>
+
+      <g transform="translate(0,36)">
+        <text x="80" y="268" font-size="14" fill="var(--ink)">Bank B</text>
+        <text x="505" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">90.2</text>
+        <text x="610" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">8.9</text>
+        <text x="715" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">0.9</text>
+        <text x="862" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">94</text>
+        <text x="990" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+2.1</text>
+        <line x1="1015" y1="263" x2="1190" y2="263" stroke="var(--gray-3)"/>
+        <rect x="1015" y="257" width="103.4" height="11" fill="var(--gray-2)"/>
+      </g>
+
+      <g transform="translate(0,72)">
+        <text x="80" y="268" font-size="14" fill="var(--ink)">Bank C</text>
+        <text x="505" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">94.1</text>
+        <text x="610" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">5.1</text>
+        <text x="715" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">0.8</text>
+        <text x="862" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">71</text>
+        <text x="990" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+0.8</text>
+        <line x1="1015" y1="263" x2="1190" y2="263" stroke="var(--gray-3)"/>
+        <rect x="1015" y="257" width="78.1" height="11" fill="var(--gray-2)"/>
+      </g>
+
+      <!-- highlighted row (hl: true): left accent bar + bold values, no tint -->
+      <g transform="translate(0,108)">
+        <rect x="64" y="251" width="4" height="24" fill="var(--accent)"/>
+        <rect x="64" y="251" width="4" height="24" fill="none" stroke="var(--ink)" stroke-opacity="0.35" stroke-width="1"/>
+        <text x="80" y="268" font-size="14" font-weight="700" fill="var(--ink)">Bank D¹</text>
+        <text x="505" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">87.4</text>
+        <text x="610" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">10.9</text>
+        <text x="715" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">1.7</text>
+        <text x="862" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">143</text>
+        <text x="990" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+3.4</text>
+        <line x1="1015" y1="263" x2="1190" y2="263" stroke="var(--gray-3)"/>
+        <rect x="1015" y="257" width="143" height="11" fill="var(--accent)" stroke="var(--ink)" stroke-opacity="0.4" stroke-width="1"/>
+      </g>
+
+      <g transform="translate(0,144)">
+        <text x="80" y="268" font-size="14" fill="var(--ink)">Bank E</text>
+        <text x="505" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">93.6</text>
+        <text x="610" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">5.5</text>
+        <text x="715" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">0.9</text>
+        <text x="862" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">76</text>
+        <text x="990" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+1.1</text>
+        <line x1="1015" y1="263" x2="1190" y2="263" stroke="var(--gray-3)"/>
+        <rect x="1015" y="257" width="83.6" height="11" fill="var(--gray-2)"/>
+      </g>
+
+      <g transform="translate(0,180)">
+        <text x="80" y="268" font-size="14" fill="var(--ink)">Bank F</text>
+        <text x="505" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">91.3</text>
+        <text x="610" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">7.8</text>
+        <text x="715" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">0.9</text>
+        <text x="862" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">88</text>
+        <text x="990" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+1.9</text>
+        <line x1="1015" y1="263" x2="1190" y2="263" stroke="var(--gray-3)"/>
+        <rect x="1015" y="257" width="96.8" height="11" fill="var(--gray-2)"/>
+      </g>
+
+      <g transform="translate(0,216)">
+        <text x="80" y="268" font-size="14" fill="var(--ink)">Bank G</text>
+        <text x="505" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">95.0</text>
+        <text x="610" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">4.3</text>
+        <text x="715" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">0.7</text>
+        <text x="862" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">64</text>
+        <text x="990" y="268" font-size="14" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+0.5</text>
+        <line x1="1015" y1="263" x2="1190" y2="263" stroke="var(--gray-3)"/>
+        <rect x="1015" y="257" width="70.4" height="11" fill="var(--gray-2)"/>
+      </g>
+
+      <!-- total row: heavier rule above, bold values, no mini bar -->
+      <g transform="translate(0,252)">
+        <line x1="64" y1="-13" x2="1190" y2="-13" stroke="var(--ink)" stroke-width="1.4"/>
+        <text x="80" y="268" font-size="14" font-weight="700" fill="var(--ink)">Weighted avg. (n=7)³</text>
+        <text x="505" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">92.1</text>
+        <text x="610" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">6.9</text>
+        <text x="715" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">1.0</text>
+        <text x="862" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">85</text>
+        <text x="990" y="268" font-size="14" font-weight="700" fill="var(--ink)" text-anchor="end" font-variant-numeric="tabular-nums">+1.6</text>
+      </g>
+    </g>
+
+    <!-- ================= so-what band: BELOW the table, y 540..598 ================= -->
+    <g id="sowhat">
+      <rect x="64" y="540" width="1126" height="58" fill="var(--accent)"/>
+      <text x="80" y="562" font-size="14" font-weight="700" fill="var(--accent-ink)">So what — Bank D is the outlier: stage 2+3 at 12.6% and PD 1.8x the sample average, with the fastest stage-2 drift in the field</text>
+      <text x="80" y="582" font-size="12" fill="var(--accent-ink)">Concentrated in unsecured retail (cards + personal loans) on two-year rolling originations — a book-level pattern, not a bank-level one.</text>
+    </g>
+
+    <!-- footnotes -->
+    <g id="footnotes">
+      <text x="80" y="628" font-size="10.5" fill="var(--gray-1)"><tspan font-weight="700">1</tspan> Stage shares as reported to the survey; shares may not sum to 100% due to rounding; banks report on different trigger grids.</text>
+      <text x="80" y="643" font-size="10.5" fill="var(--gray-1)"><tspan font-weight="700">2</tspan> 12-month weighted PD weighted by exposure; excludes stage-3 balances carried at amortised cost.</text>
+      <text x="80" y="658" font-size="10.5" fill="var(--gray-1)"><tspan font-weight="700">3</tspan> Volume-weighted across the seven reporting banks; one respondent withheld bank-level detail (not in total).</text>
+    </g>
+  </svg>
+
+  <div class="foot">Source: EY IFRS 9 impairment banking survey, June 2018 (n=8 respondents, bank-level submissions);
+    EY analysis and roll-forward of prior-year responses.</div>
+  <div class="stamp">APPENDIX · DATA DETAIL &nbsp;·&nbsp; <b>1</b></div>
+</div>
+</body>
+</html>
